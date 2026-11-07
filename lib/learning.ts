@@ -101,6 +101,13 @@ export function groupBySection<C extends { section_id: number | null }>(concepts
   return groups.filter((g) => g.concepts.length || g.section)
 }
 
+/** Display number for a concept: from a numbered slug ("8-2-1-macro…" → "8.2.1"), else section.position. */
+export function conceptNumber(slug: string, sectionIndex: number | null, index: number) {
+  const m = slug.match(/^(\d+(?:-\d+)+)-/)
+  if (m) return m[1].replace(/-/g, '.')
+  return sectionIndex === null ? String(index + 1) : `${sectionIndex + 1}.${index + 1}`
+}
+
 export type CatalogCourse = Course & { concept_count: number; question_count: number; student_count: number; enrolled: boolean; progress: number }
 
 export async function listCatalog(userId?: number): Promise<CatalogCourse[]> {

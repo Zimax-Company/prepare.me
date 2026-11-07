@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { InlineMd } from '@/components/Markdown'
 import { loadLearn } from '@/lib/learn-context'
-import { getExamSettings, groupBySection, listAttempts } from '@/lib/learning'
+import { conceptNumber, getExamSettings, groupBySection, listAttempts } from '@/lib/learning'
 import { LEVELS, LEVEL_LABEL, levelsUpTo, type Level } from '@/lib/types'
 import { EnrollPanel } from '@/components/EnrollPanel'
 import { AttemptBars } from '@/components/AttemptBars'
@@ -45,7 +45,7 @@ export default async function LearnHome({ params }: { params: Promise<{ slug: st
               const rows = (
                 <div className="stack" style={{ gap: 8 }}>
                   {g.concepts.map((c, i) => {
-                    const num = g.section ? `${gi + 1}.${i + 1}` : String(i + 1)
+                    const num = conceptNumber(c.slug, g.section ? gi : null, i)
                     if (!visibleIds.has(c.id)) {
                       return (
                         <div key={c.id} className="concept-item locked" title="Switch to a higher level to unlock">
@@ -59,7 +59,7 @@ export default async function LearnHome({ params }: { params: Promise<{ slug: st
                     const isDone = !!p?.completed_at
                     return (
                       <Link key={c.id} href={`/learn/${slug}/${c.slug}`} className="concept-item">
-                        <div className={`concept-num ${isDone ? 'done' : ''}`} style={{ fontSize: num.length > 3 ? '0.72rem' : undefined }}>{isDone ? '✓' : num}</div>
+                        <div className={`concept-num ${isDone ? 'done' : ''}`} style={{ fontSize: num.length > 4 ? '0.62rem' : num.length > 3 ? '0.72rem' : undefined }}>{isDone ? '✓' : num}</div>
                         <div className="grow">
                           <div style={{ fontWeight: 600 }}>{c.title}</div>
                           {c.summary && <div className="small muted"><InlineMd text={c.summary} /></div>}

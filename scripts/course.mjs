@@ -52,7 +52,7 @@ export function parseOutline(text) {
     if (!line) continue
     let m
     if ((m = line.match(/^(?:Level|Unit|Part|Section|Module group)\s+(\d+)\s*[:.–-]\s*(.+)$/i))) {
-      cur = { number: Number(m[1]), title: `Level ${m[1]}: ${m[2].trim()}`, name: m[2].trim(), objective: '', competencies: [], assessment: '', modules: [] }
+      cur = { number: Number(m[1]), title: `Level ${m[1]}: ${m[2].trim()}`, name: m[2].trim(), objective: '', notes: [], competencies: [], applications: [], tools: [], assessment: '', modules: [], group: null }
       sections.push(cur)
       mode = null
     } else if (!cur) {
@@ -61,14 +61,26 @@ export function parseOutline(text) {
       cur.objective = m[1].trim(); mode = null
     } else if ((m = line.match(/^Expected competencies\s*:?\s*(.*)$/i))) {
       mode = 'competencies'; if (m[1]) cur.competencies.push(m[1].trim())
-    } else if ((m = line.match(/^Assessment\s*:\s*(.*)$/i))) {
+    } else if ((m = line.match(/^Practical applications\s*:?\s*(.*)$/i))) {
+      mode = 'applications'; if (m[1]) cur.applications.push(m[1].trim())
+    } else if ((m = line.match(/^Recommended tools\s*:?\s*(.*)$/i))) {
+      mode = 'tools'; if (m[1]) cur.tools.push(m[1].trim())
+    } else if ((m = line.match(/^(?:Final\s+)?Assessment\s*:\s*(.*)$/i))) {
       cur.assessment = m[1].trim(); mode = null
+    } else if ((m = line.match(/^Module\s+(\d+(?:\.\d+)+)\s*[–—:-]\s*(.+)$/i))) {
+      // "Module 8.1 – Title" followed by "- topic" bullets: each bullet becomes a concept 8.1.1, 8.1.2, …
+      cur.group = { code: m[1], title: m[2].trim(), n: 0 }; mode = 'group'
     } else if (/^Module\s+Topics?$/i.test(line.replace(/\t+/g, ' ')) || /^-{3,}/.test(line)) {
       continue // table header / separator
     } else if ((m = line.match(/^(\d+(?:\.\d+)+)\s+(.+)$/))) {
       cur.modules.push({ code: m[1], title: m[2].trim() }); mode = null
-    } else if (mode === 'competencies') {
-      cur.competencies.push(line.replace(/^[-*•]\s*/, ''))
+    } else if (mode === 'group' && /^[-*•]\s+/.test(line)) {
+      const g = cur.group
+      cur.modules.push({ code: `${g.code}.${++g.n}`, title: line.replace(/^[-*•]\s*/, '').replace(/\.$/, '').trim(), group: `Module ${g.code} · ${g.title}` })
+    } else if (['competencies', 'applications', 'tools'].includes(mode)) {
+      cur[mode].push(line.replace(/^[-*•]\s*/, '').replace(/\.$/, ''))
+    } else if (!cur.modules.length && !/^[-*•]/.test(line)) {
+      cur.notes.push(line) // explanatory text between the objective and the module table
     }
   }
   return { meta, sections }
@@ -120,12 +132,18 @@ export function outlineToCourse(text) {
         concepts: s.modules.map((mod, i) => ({
           slug: `${mod.code.replace(/\./g, '-')}-${slugify(mod.title)}`,
           title: mod.title,
-          summary: `Module ${mod.code}`,
+          summary: mod.group ?? `Module ${mod.code}`,
           est_minutes: minutes,
           blocks: [
             ...(i === 0 ? [{
               type: 'callout', tone: 'info', title: `${s.title}`,
-              md: [s.objective, s.competencies.length ? `\nBy the end of this level you should be able to:\n${s.competencies.map((c) => `- ${c}`).join('\n')}` : ''].join('\n').trim(),
+              md: [
+                s.objective,
+                ...s.notes.map((n) => `\n${n}`),
+                s.competencies.length ? `\nBy the end of this level you should be able to:\n${s.competencies.map((c) => `- ${c}`).join('\n')}` : '',
+                s.applications.length ? `\nPractical applications:\n${s.applications.map((c) => `- ${c}`).join('\n')}` : '',
+                s.tools.length ? `\nRecommended tools:\n${s.tools.map((c) => `- ${c}`).join('\n')}` : '',
+              ].filter(Boolean).join('\n').trim(),
             }] : []),
             { type: 'text', md: `## ${mod.title}\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check.` },
           ],

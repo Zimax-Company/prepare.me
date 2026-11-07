@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Draft lesson files: content/drafts/<course-slug>/level-<n>.json  →  { "concepts": [ { slug, title, summary, est_minutes, blocks, questions } ] }
-//   node scripts/drafts.mjs check <draft.json> --course=content/courses/<slug>.json --section=<n>
+//   node scripts/drafts.mjs check <draft.json> --course=content/courses/<slug>.json --section=<n> [--only=8-1-,8-2-]
 //   node scripts/drafts.mjs merge --course=content/courses/<slug>.json --dir=content/drafts/<slug>
 import fs from 'node:fs'
 import path from 'node:path'
@@ -48,6 +48,11 @@ function mathProblems(where, s) {
     const n = line.match(/\$/g)?.length ?? 0
     if (n % 2 === 1 && !/\$\d/.test(line)) problems.push(`${where}: line ${li + 1} has an unbalanced $, possibly an unescaped "\\ne"/"\\nabla"/"\\nu" (write "\\\\ne"): ${JSON.stringify(line.slice(0, 70))}`)
   })
+  // Any $ left over after removing everything the renderer treats as maths will show up raw,
+  // e.g. "$= 1 - $" (a space before the closing $ means it is not maths). Prices like $5 are fine.
+  const leftover = s.replace(/`[^`]*`/g, '').replace(/\\\$/g, '').replace(/\$\$[\s\S]*?\$\$/g, '').replace(MATH, '')
+  const stray = leftover.match(/.{0,25}\$(?!\d).{0,25}/)
+  if (stray) problems.push(`${where}: a $ that won't render as maths (check for a space just inside the $…$): ${JSON.stringify(stray[0])}`)
   // An odd number of unescaped $ usually means a broken formula.
   const bare = s.replace(/`[^`]*`/g, '').replace(/\\\$/g, '').match(/\$/g)?.length ?? 0
   if (bare % 2 === 1 && !/\$\d/.test(s)) problems.push(`${where}: odd number of $ signs. Close every formula, or write \\\\$ for a literal dollar sign`)
@@ -67,7 +72,9 @@ if (command === 'check') {
   try { draft = JSON.parse(fs.readFileSync(file, 'utf8')) } catch (err) { die(`${file}: invalid JSON: ${err.message}`) }
   const problems = []
   const concepts = draft.concepts ?? []
-  const want = section.concepts.map((c) => c.slug)
+  // --only=8-1-,8-2- checks just the concepts whose slugs start with these prefixes (a level split across files).
+  const only = typeof flags.only === 'string' ? flags.only.split(',').filter(Boolean) : null
+  const want = section.concepts.map((c) => c.slug).filter((s) => !only || only.some((p) => s.startsWith(p)))
   const got = concepts.map((c) => c.slug)
   for (const s of want) if (!got.includes(s)) problems.push(`missing concept "${s}"`)
   for (const s of got) if (!want.includes(s)) problems.push(`unexpected concept slug "${s}" (slugs must match the course file exactly)`)
@@ -85,6 +92,15 @@ if (command === 'check') {
     if (!blocks.some((b) => b.type === 'example')) problems.push(`${w}: has no worked example block`)
     if ((c.questions ?? []).length < MIN_QUESTIONS) problems.push(`${w}: ${(c.questions ?? []).length} questions (need at least ${MIN_QUESTIONS})`)
     for (const [where, s] of strings(c, w)) problems.push(...mathProblems(where, s))
+  }
+
+  // Learners shouldn't be able to game multiple-answer questions by always ticking the same number of boxes.
+  const multi = concepts.flatMap((c) => (c.questions ?? []).filter((q) => q.type === 'multiple'))
+  if (multi.length >= 5) {
+    const counts = {}
+    for (const q of multi) { const k = `${q.answer.length} of ${(q.options ?? []).length}`; counts[k] = (counts[k] ?? 0) + 1 }
+    const [top, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]
+    if (n / multi.length > 0.6) problems.push(`multiple-answer questions are too predictable: ${n}/${multi.length} have exactly ${top} correct. Vary the number of correct options (e.g. 2 of 4, 3 of 4, 2 of 5, 4 of 5) so no pattern exceeds 60%: ${JSON.stringify(counts)}`)
   }
 
   if (problems.length) {

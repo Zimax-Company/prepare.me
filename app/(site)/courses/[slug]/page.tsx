@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { InlineMd } from '@/components/Markdown'
 import { getSessionUser } from '@/lib/auth'
-import { getConcepts, getCourseBySlug, getEnrollment, getExamSettings, getSections, groupBySection } from '@/lib/learning'
+import { conceptNumber, getConcepts, getCourseBySlug, getEnrollment, getExamSettings, getSections, groupBySection } from '@/lib/learning'
 import { db } from '@/lib/db'
 import { LEVELS, levelsUpTo, type Level } from '@/lib/types'
 import { EnrollPanel } from '@/components/EnrollPanel'
@@ -44,7 +44,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
               {groupBySection(concepts, sections).map((g, gi) => {
                 const rows = g.concepts.map((c, i) => (
                   <div key={c.id} className="concept-item">
-                    <div className="concept-num" style={{ fontSize: g.section ? '0.72rem' : undefined }}>{g.section ? `${gi + 1}.${i + 1}` : i + 1}</div>
+                    {(() => { const num = conceptNumber(c.slug, g.section ? gi : null, i); return <div className="concept-num" style={{ fontSize: num.length > 4 ? '0.62rem' : num.length > 2 ? '0.72rem' : undefined }}>{num}</div> })()}
                     <div className="grow"><div style={{ fontWeight: 600 }}>{c.title}</div>{c.summary && <div className="small muted"><InlineMd text={c.summary} /></div>}</div>
                     <LevelBadge level={c.level} />
                     <span className="small muted hide-sm">{c.est_minutes} min</span>
