@@ -3,6 +3,8 @@ import { requirePageUser } from '@/lib/auth'
 import { listCatalog } from '@/lib/learning'
 import { db } from '@/lib/db'
 import { CourseCard } from '@/components/CourseCard'
+import { GoalCard } from '@/components/GoalCard'
+import { goalStatus } from '@/lib/streaks'
 import { Empty, fmtDate, ProgressRing } from '@/components/ui'
 
 export const metadata = { title: 'My learning' }
@@ -17,6 +19,7 @@ export default async function Dashboard() {
       .select('a.id', 'a.percent', 'a.passed', 'a.submitted_at', 'a.level', 'c.title', 'c.icon').orderBy('a.id', 'desc').limit(6),
     db('concept_progress').where({ user_id: user.id }).whereNotNull('completed_at').count({ n: '*' }).first(),
   ])
+  const goal = await goalStatus(user.id)
   const avg = mine.length ? Math.round(mine.reduce((s, c) => s + c.progress, 0) / mine.length) : 0
   const passed = attempts.filter((a) => a.passed).length
 
@@ -26,6 +29,7 @@ export default async function Dashboard() {
         <h1>Hi {user.name.split(' ')[0]} 👋</h1>
         <p className="muted">Pick up where you left off.</p>
       </div>
+      {goal && <GoalCard goal={goal} />}
       <div className="grid grid-4">
         <div className="card row"><ProgressRing value={avg} size={64} stroke={7} /><div className="stat"><b>{mine.length}</b><span>courses in progress</span></div></div>
         <div className="card stat"><b>{Number(completed?.n ?? 0)}</b><span>concepts completed</span></div>

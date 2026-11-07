@@ -5,7 +5,6 @@ import { fitsRunner, leaderboard, personalBest } from '@/lib/games'
 import { getSections, toQuestion } from '@/lib/learning'
 import { levelsUpTo, type Level } from '@/lib/types'
 import { RunnerLauncher } from '@/components/game/RunnerLauncher'
-import { UsageTracker } from '@/components/UsageTracker'
 import { Empty } from '@/components/ui'
 
 export const metadata = { title: 'Play' }
@@ -33,7 +32,6 @@ export default async function Play({ searchParams }: { searchParams: Promise<{ c
 
   return (
     <main className="container page stack-lg">
-      {initial && <UsageTracker courseId={initial} />}
       <div>
         <h1 style={{ margin: 0 }}>🎮 Play</h1>
         <p className="muted" style={{ margin: 0 }}>Learn at speed. Every game uses the questions from your courses.</p>

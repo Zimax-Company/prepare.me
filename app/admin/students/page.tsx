@@ -40,7 +40,7 @@ export default async function Students({ searchParams }: { searchParams: Promise
       </form>
       <div className="card flat table-wrap" style={{ padding: 0 }}>
         <table className="table">
-          <thead><tr><th>Student</th><th>Courses</th><th style={{ width: 150 }}>Avg progress</th><th>Lessons done</th><th>Learning time ({range}d)</th><th>Exams</th><th className="hide-sm">Last active</th><th></th></tr></thead>
+          <thead><tr><th>Student</th><th>Courses</th><th style={{ width: 150 }}>Avg progress</th><th>Lessons done</th><th>Streak</th><th>Learning time ({range}d)</th><th>Exams</th><th className="hide-sm">Last active</th><th></th></tr></thead>
           <tbody>
             {rows.map((u) => (
               <tr key={u.id} style={{ opacity: u.isActive ? 1 : 0.5 }}>
@@ -48,13 +48,14 @@ export default async function Students({ searchParams }: { searchParams: Promise
                 <td>{u.courses}</td>
                 <td>{u.avgProgress === null ? <span className="muted">—</span> : <div className="row" style={{ gap: 8 }}><div className="grow"><ProgressBar value={u.avgProgress} thin /></div><span className="small">{u.avgProgress}%</span></div>}</td>
                 <td>{u.completions}</td>
+                <td>{u.streak ? <>🔥 {u.streak}</> : <span className="muted">0</span>} <span className="tiny muted">best {u.longestStreak}</span></td>
                 <td>{fmtMin(u.minutes)} <span className="tiny muted">· {fmtMin(u.minutesAll)} total</span></td>
                 <td>{u.exams ? <>{u.exams} <span className="tiny muted">avg {u.examAvg}%</span></> : 0}</td>
                 <td className="small muted hide-sm">{u.lastActive ? fmtDate(u.lastActive) : 'never'}</td>
                 <td><UserActions id={u.id} role="student" active={u.isActive} self={false} /></td>
               </tr>
             ))}
-            {!rows.length && <tr><td colSpan={8} className="center muted" style={{ padding: 32 }}>No students found.</td></tr>}
+            {!rows.length && <tr><td colSpan={9} className="center muted" style={{ padding: 32 }}>No students found.</td></tr>}
           </tbody>
         </table>
       </div>

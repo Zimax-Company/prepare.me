@@ -80,8 +80,8 @@ export default async function ConceptPage({ params }: { params: Promise<{ slug: 
             examHref={`/learn/${slug}/exam`}
           />
           <div className="row between">
-            {prev ? <Link className="btn ghost" href={`/learn/${slug}/${prev.slug}`}>← {prev.title}</Link> : <span />}
-            {next && <Link className="btn ghost" href={`/learn/${slug}/${next.slug}`}>{next.title} →</Link>}
+            {prev ? <Link className="btn ghost pager-btn" href={`/learn/${slug}/${prev.slug}`}>← {prev.title}</Link> : <span />}
+            {next && <Link className="btn ghost pager-btn" style={{ textAlign: 'right' }} href={`/learn/${slug}/${next.slug}`}>{next.title} →</Link>}
           </div>
         </article>
       </div>

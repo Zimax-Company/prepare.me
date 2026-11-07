@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { studentReport } from '@/lib/analytics'
+import { goalStatus } from '@/lib/streaks'
 import { Heatmap, Kpi } from '@/components/admin/charts'
 import { UserActions } from '@/components/admin/UserActions'
 import { fmtDate, LevelBadge, ProgressBar } from '@/components/ui'
@@ -17,6 +18,7 @@ export default async function StudentDetail({ params }: { params: Promise<{ id: 
   const id = Number((await params).id)
   const r = Number.isSafeInteger(id) ? await studentReport(id) : null
   if (!r) notFound()
+  const goal = await goalStatus(r.user.id)
   const t = r.totals
   return (
     <div className="stack-lg">
@@ -36,6 +38,8 @@ export default async function StudentDetail({ params }: { params: Promise<{ id: 
         <Kpi label={`practice accuracy (${t.practiceAnswers} answers)`} value={t.practiceAccuracy} suffix="%" />
         <Kpi label={`exams · ${t.examsPassed} passed`} value={t.exams} />
         <Kpi label="average exam score" value={t.examAvg} suffix="%" />
+        {goal && <Kpi label={`day streak · best ${goal.longest}`} value={goal.streak} hint={`Goal: ${goal.target} ${goal.kind}/day · today ${goal.progress}/${goal.target}`} />}
+        {goal && <Kpi label={`today vs goal (${goal.target} ${goal.kind === 'minutes' ? 'min' : 'lessons'})`} value={goal.progress} />}
       </div>
 
       <div className="card">

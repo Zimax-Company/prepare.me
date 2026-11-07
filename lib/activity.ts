@@ -1,5 +1,6 @@
 // Records usage. Logging must never break a request, so failures are swallowed and logged.
 import { db } from './db'
+import { localDay } from './streak-math'
 
 export type ActivityType = 'login' | 'register' | 'enroll' | 'view_concept' | 'complete_concept' | 'practice_answer' | 'exam_start' | 'exam_submit' | 'game_end'
 
@@ -17,9 +18,9 @@ export async function logEvent(userId: number, type: ActivityType, opts: { cours
   }
 }
 
-/** Adds active learning time (capped per call by the caller) to today's bucket. */
-export async function addUsage(userId: number, courseId: number, seconds: number) {
-  const day = new Date().toISOString().slice(0, 10) // UTC day
+/** Adds active learning time (capped per call by the caller) to today's bucket, in the student's time zone. */
+export async function addUsage(userId: number, courseId: number, seconds: number, timezone = 'UTC') {
+  const day = localDay(timezone)
   await db('daily_usage')
     .insert({ user_id: userId, course_id: courseId, day, seconds })
     .onConflict(['user_id', 'course_id', 'day'])

@@ -4,6 +4,7 @@ import { forbidden, handle, id, notFound, ok, parseBody } from '@/lib/http'
 import { requireUser } from '@/lib/auth'
 import { logEvent } from '@/lib/activity'
 import { getEnrollment, progressForUser } from '@/lib/learning'
+import { goalStatus } from '@/lib/streaks'
 
 export const POST = handle<{ id: string }>(async (req, params) => {
   const user = await requireUser(req)
@@ -19,5 +20,5 @@ export const POST = handle<{ id: string }>(async (req, params) => {
   await db('enrollments').where({ user_id: user.id, course_id: concept.course_id }).update({ last_activity_at: new Date() })
   if (completed) await logEvent(user.id, 'complete_concept', { courseId: Number(concept.course_id), conceptId: Number(concept.id) })
   const progress = (await progressForUser(user.id)).get(Number(concept.course_id))
-  return ok({ completed, progress })
+  return ok({ completed, progress, goal: completed ? await goalStatus(user.id, { record: true }) : null })
 })

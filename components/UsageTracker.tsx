@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { announceGoal, browserTimezone } from './goal-events'
 
 const BEAT = 60_000 // flush every minute
 const IDLE = 5 * 60_000 // stop counting after 5 minutes without interaction (reading counts as scrolling/keys)
@@ -23,9 +24,10 @@ export function UsageTracker({ courseId }: { courseId: number }) {
       const seconds = Math.round(pending / 1000)
       if (seconds < 5) return
       pending = 0
-      const body = JSON.stringify({ courseId, seconds })
+      const body = JSON.stringify({ courseId, seconds, tz: browserTimezone() })
       if (beacon && navigator.sendBeacon) navigator.sendBeacon('/api/activity/heartbeat', new Blob([body], { type: 'application/json' }))
-      else fetch('/api/activity/heartbeat', { method: 'POST', headers: { 'content-type': 'application/json' }, body, keepalive: true }).catch(() => {})
+      else fetch('/api/activity/heartbeat', { method: 'POST', headers: { 'content-type': 'application/json' }, body, keepalive: true })
+        .then((r) => r.json()).then((j) => announceGoal(j?.data?.goal)).catch(() => {})
     }
     const onVisibility = () => { if (document.visibilityState === 'hidden') flush(true); else lastTick = Date.now() }
 

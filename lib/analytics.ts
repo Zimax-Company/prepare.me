@@ -3,6 +3,7 @@ import { db, json } from './db'
 import { isCorrect } from './grading'
 import { getConcepts, getSections, toQuestion } from './learning'
 import { levelsUpTo, type Level } from './types'
+import { streaksFor } from './streaks'
 
 const DAY = 86_400_000
 export const RANGES = [7, 30, 90] as const
@@ -184,7 +185,7 @@ async function progressRows(filter: { courseId?: number; userId?: number } = {})
 
 export type StudentRow = {
   id: number; name: string; email: string; joined: Date; isActive: boolean
-  lastActive: Date | null; courses: number; avgProgress: number | null
+  lastActive: Date | null; courses: number; avgProgress: number | null; streak: number; longestStreak: number
   minutes: number; minutesAll: number; completions: number; exams: number; examAvg: number | null
 }
 
@@ -202,6 +203,7 @@ export async function studentTable({ from = since(30), limit, sort = 'lastActive
     db('exam_attempts').whereIn('user_id', ids).whereNotNull('submitted_at').groupBy('user_id').select('user_id').count({ c: '*' }).avg({ v: 'percent' }),
     progressRows(),
   ])
+  const streaks = await streaksFor(ids)
   const by = (rows: any[], key = 'v') => new Map(rows.map((r) => [n(r.user_id), r[key]]))
   const [L, MR, MA, C, E] = [by(last), by(minsRange as any[]), by(minsAll as any[]), by(comp), by(exams)]
   const progByUser = new Map<number, number[]>()
@@ -216,6 +218,7 @@ export async function studentTable({ from = since(30), limit, sort = 'lastActive
       courses: ps.length, avgProgress: ps.length ? Math.round(ps.reduce((a, b) => a + b, 0) / ps.length) : null,
       minutes: Math.round(n(MR.get(id)) / 60), minutesAll: Math.round(n(MA.get(id)) / 60),
       completions: n(C.get(id)), exams: n(ex?.c), examAvg: ex?.c ? Math.round(n(E.get(id))) : null,
+      streak: streaks.get(id)?.current ?? 0, longestStreak: streaks.get(id)?.longest ?? 0,
     }
   })
   const cmp = {

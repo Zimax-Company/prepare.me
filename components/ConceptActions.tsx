@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import { apiCall } from '@/lib/client'
 import type { PublicQuestion } from '@/lib/types'
 import { PracticeQA } from './PracticeQA'
+import { announceGoal } from './goal-events'
+import type { GoalStatus } from '@/lib/streaks'
 
 export function ConceptActions({ conceptId, completed, questions, nextHref, examHref }: {
   conceptId: number
@@ -22,7 +24,8 @@ export function ConceptActions({ conceptId, completed, questions, nextHref, exam
   async function setCompleted(value: boolean) {
     setPending(true)
     try {
-      const r = await apiCall<{ progress?: { percent: number } }>('POST', `/concepts/${conceptId}/complete`, { completed: value })
+      const r = await apiCall<{ progress?: { percent: number }; goal?: GoalStatus }>('POST', `/concepts/${conceptId}/complete`, { completed: value })
+      announceGoal(r?.goal)
       setDone(value)
       if (value) {
         setToast(`Concept complete! Course progress: ${r?.progress?.percent ?? 0}% 🎉`)

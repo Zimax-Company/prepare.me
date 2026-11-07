@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnswerRunner } from './AnswerRunner'
+import { UsageTracker } from '../UsageTracker'
 
 type CourseOpt = { id: number; title: string; icon: string; sections: { id: number; title: string; playable: number }[]; playable: number }
 
@@ -25,6 +26,7 @@ export function RunnerLauncher({ courses, initialCourse }: { courses: CourseOpt[
   if (playing && course) {
     return (
       <div className="runner-fullscreen" role="dialog" aria-label="Answer Runner">
+        <UsageTracker courseId={course.id} />
         <AnswerRunner courseId={course.id} sectionId={sectionId} courseTitle={course.title} onExit={() => { setPlaying(false); router.refresh() }} />
       </div>
     )
