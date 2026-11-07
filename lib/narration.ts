@@ -3,24 +3,29 @@
 // ("|a_n - L| < \varepsilon" → "the absolute value of a sub n minus L is less than epsilon").
 import 'server-only'
 import katex from 'katex'
-import SREmod from 'speech-rule-engine'
 import type { Block, PublicQuestion } from './types'
 
 export type NarrationSegment = { block: number; text: string }
 
 type SRE = { setupEngine: (o: object) => Promise<void>; engineReady: () => Promise<void>; toSpeech: (mml: string) => string }
-const sre = ((SREmod as unknown as { default?: SRE }).default ?? SREmod) as unknown as SRE
+let sre: SRE | null = null
 
+// Loaded lazily so a missing or broken engine never takes the page down: narration
+// just falls back to a simpler reading of the formulas.
 const g = globalThis as unknown as { __sreReady?: Promise<boolean> }
 function ready() {
-  g.__sreReady ??= sre
-    .setupEngine({ locale: 'en', domain: 'clearspeak', modality: 'speech', style: 'default' })
-    .then(() => sre.engineReady())
-    .then(() => true)
-    .catch((err) => {
-      console.error('Speech Rule Engine failed to load; formulas will be read as plain text', err)
+  g.__sreReady ??= (async () => {
+    try {
+      const mod = await import('speech-rule-engine')
+      sre = ((mod as { default?: SRE }).default ?? mod) as unknown as SRE
+      await sre.setupEngine({ locale: 'en', domain: 'clearspeak', modality: 'speech', style: 'default' })
+      await sre.engineReady()
+      return true
+    } catch (err) {
+      console.error('Speech Rule Engine unavailable; formulas will be read with the simple fallback.', err)
       return false
-    })
+    }
+  })()
   return g.__sreReady
 }
 
@@ -54,7 +59,7 @@ function speakTex(tex: string, ok: boolean) {
   if (hit !== undefined) return hit
   let out: string
   try {
-    if (!ok) throw new Error('SRE unavailable')
+    if (!ok || !sre) throw new Error('SRE unavailable')
     const mml = katex
       .renderToString(tex, { output: 'mathml', throwOnError: false, strict: 'ignore' })
       .replace(/^<span class="katex">|<\/span>$/g, '')
