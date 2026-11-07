@@ -41,6 +41,13 @@ function mathProblems(where, s) {
       problems.push(`${where}: KaTeX error in "${src.slice(0, 60)}": ${err.message.replace(/^KaTeX parse error: /, '')}`)
     }
   }
+  // "\ne", "\nabla", "\nu", "\neq", "\notin" with a single backslash become a newline + letters,
+  // splitting an inline formula across two lines. Check $ balance line by line.
+  const noDisplay = s.replace(/`[^`]*`/g, '').replace(/\\\$/g, '').replace(/\$\$[\s\S]*?\$\$/g, '')
+  noDisplay.split('\n').forEach((line, li) => {
+    const n = line.match(/\$/g)?.length ?? 0
+    if (n % 2 === 1 && !/\$\d/.test(line)) problems.push(`${where}: line ${li + 1} has an unbalanced $, possibly an unescaped "\\ne"/"\\nabla"/"\\nu" (write "\\\\ne"): ${JSON.stringify(line.slice(0, 70))}`)
+  })
   // An odd number of unescaped $ usually means a broken formula.
   const bare = s.replace(/`[^`]*`/g, '').replace(/\\\$/g, '').match(/\$/g)?.length ?? 0
   if (bare % 2 === 1 && !/\$\d/.test(s)) problems.push(`${where}: odd number of $ signs. Close every formula, or write \\\\$ for a literal dollar sign`)

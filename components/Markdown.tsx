@@ -67,7 +67,7 @@ function inline(text: string, keyPrefix = ''): ReactNode[] {
   return out
 }
 
-const BLOCK_START = /^(```|#{1,4}\s|\s*[-*]\s|\s*\d+[.)]\s|\s*\$\$)/
+const BLOCK_START = /^(```|#{1,4}\s|\s*[-*]\s|\s*\d+[.)]\s)/
 
 export function Markdown({ text, className = '' }: { text: string; className?: string }) {
   const lines = (text ?? '').replace(/\r\n/g, '\n').split('\n')
@@ -87,7 +87,10 @@ export function Markdown({ text, className = '' }: { text: string; className?: s
       continue
     }
     const trimmed = line.trim()
-    if (trimmed.startsWith('$$')) {
+    const closeAt = trimmed.startsWith('$$') ? trimmed.indexOf('$$', 2) : -1
+    // "$$…$$ more text" on one line is a paragraph with inline display maths, not a display block.
+    const displayBlock = trimmed.startsWith('$$') && (closeAt === -1 || closeAt + 2 === trimmed.length)
+    if (displayBlock) {
       // Display math: "$$ ... $$" on one line, or spread over several lines.
       let src = trimmed.slice(2)
       if (src.length >= 2 && src.endsWith('$$')) {
@@ -124,7 +127,8 @@ export function Markdown({ text, className = '' }: { text: string; className?: s
       continue
     }
     const para: string[] = []
-    while (i < lines.length && lines[i].trim() && (para.length === 0 || !BLOCK_START.test(lines[i]))) para.push(lines[i++])
+    const startsDisplay = (l: string) => { const t = l.trim(); if (!t.startsWith('$$')) return false; const c = t.indexOf('$$', 2); return c === -1 || c + 2 === t.length }
+    while (i < lines.length && lines[i].trim() && (para.length === 0 || (!BLOCK_START.test(lines[i].replace(/^\s*\$\$/, '')) && !startsDisplay(lines[i])))) para.push(lines[i++])
     blocks.push(<p key={key++}>{para.map((p, j) => <Fragment key={j}>{j > 0 && <br />}{inline(p, `${j}-`)}</Fragment>)}</p>)
   }
   return <div className={`md ${className}`}>{blocks}</div>
