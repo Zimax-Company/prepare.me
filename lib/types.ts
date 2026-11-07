@@ -43,7 +43,7 @@ export type Question = {
   in_practice: boolean
 }
 /** What the browser sees before answering: no answer, no explanation. */
-export type PublicQuestion = Pick<Question, 'id' | 'type' | 'prompt' | 'options' | 'level'>
+export type PublicQuestion = Pick<Question, 'id' | 'type' | 'prompt' | 'options' | 'level'> & { speech?: string }
 
 export type ExamSettings = {
   course_id: number

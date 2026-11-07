@@ -3,6 +3,7 @@ import { requirePageUser } from '@/lib/auth'
 import { attemptQuestions, getExamSettings, getOwnAttempt, toPublic } from '@/lib/learning'
 import { db } from '@/lib/db'
 import { ExamRunner } from '@/components/ExamRunner'
+import { narrateQuestions } from '@/lib/narration'
 
 export const metadata = { title: 'Exam in progress' }
 
@@ -14,7 +15,7 @@ export default async function ExamPage({ params }: { params: Promise<{ id: strin
   if (!attempt) redirect('/dashboard')
   if (attempt.submitted_at) redirect(`/results/${attempt.id}`)
   const [settings, course] = await Promise.all([getExamSettings(attempt.course_id), db('courses').where({ id: attempt.course_id }).first()])
-  const questions = (await attemptQuestions(attempt, settings.shuffle_options)).map(toPublic)
+  const questions = await narrateQuestions((await attemptQuestions(attempt, settings.shuffle_options)).map(toPublic))
 
   return (
     <ExamRunner

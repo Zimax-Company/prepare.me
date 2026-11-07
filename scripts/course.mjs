@@ -3,10 +3,11 @@
 //   node scripts/course.mjs convert <outline.md> [--out=content/courses/<slug>.json] [--force]
 //   node scripts/course.mjs validate [file.json ...]        (default: all of content/courses)
 //   node scripts/course.mjs import <file.json> [--replace]  (insert now, without a full re-seed)
+//   node scripts/course.mjs sync <file.json> [--force]      (what deploys do: insert, or update in place keeping progress)
 import fs from 'node:fs'
 import path from 'node:path'
 import knexFactory from 'knex'
-import { COURSES_DIR, ROOT, importCourse, listCourseFiles, parseCourse, readCourseFile } from '../database/course-loader.mjs'
+import { COURSES_DIR, ROOT, importCourse, listCourseFiles, parseCourse, readCourseFile, seedCourseFile } from '../database/course-loader.mjs'
 
 const [command, ...rest] = process.argv.slice(2)
 const flags = Object.fromEntries(rest.filter((a) => a.startsWith('--')).map((a) => { const [k, v] = a.slice(2).split('='); return [k, v ?? true] }))
@@ -185,6 +186,19 @@ if (command === 'convert') {
   } finally {
     await knex.destroy()
   }
+} else if (command === 'sync') {
+  const file = args[0] ?? die('Usage: sync <file.json> [--force]')
+  if (fs.existsSync(path.join(ROOT, '.env'))) process.loadEnvFile(path.join(ROOT, '.env'))
+  const { knexConfig } = await import('../database/config.mjs')
+  const knex = knexFactory(knexConfig())
+  try {
+    const result = await seedCourseFile(knex, readCourseFile(path.resolve(file)), { force: !!flags.force })
+    if (result === 'unchanged') info('Course is already up to date with this file.')
+  } catch (err) {
+    die(err.message)
+  } finally {
+    await knex.destroy()
+  }
 } else {
-  die(`Unknown command "${command ?? ''}". Commands: convert, validate, import`)
+  die(`Unknown command "${command ?? ''}". Commands: convert, validate, import, sync`)
 }

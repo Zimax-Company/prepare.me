@@ -7,6 +7,8 @@ import { groupBySection, markViewed, toConcept, toPublic, toQuestion } from '@/l
 import { levelsUpTo } from '@/lib/types'
 import { Blocks } from '@/components/Blocks'
 import { ConceptActions } from '@/components/ConceptActions'
+import { ReadAloud } from '@/components/ReadAloud'
+import { narrateConcept, narrateQuestions } from '@/lib/narration'
 import { LevelBadge, ProgressBar } from '@/components/ui'
 
 export default async function ConceptPage({ params }: { params: Promise<{ slug: string; concept: string }> }) {
@@ -19,6 +21,7 @@ export default async function ConceptPage({ params }: { params: Promise<{ slug: 
   const concept = toConcept(row)
   const questions = (await db('questions').where({ concept_id: concept.id, in_practice: true }).whereIn('level', levelsUpTo(enrollment.level)).orderByRaw("FIELD(level, 'beginner', 'intermediate', 'advanced'), id"))
     .map(toQuestion).map(toPublic)
+  const [narration, spokenQuestions] = await Promise.all([narrateConcept(concept.title, concept.summary, concept.blocks), narrateQuestions(questions)])
   await markViewed(user.id, concept.id)
   const section = sections.find((x) => x.id === concept.section_id)
   const prev = visible[idx - 1]
@@ -57,8 +60,8 @@ export default async function ConceptPage({ params }: { params: Promise<{ slug: 
           </nav>
         </aside>
         <article className="stack-lg" style={{ minWidth: 0 }}>
-          <header>
-            <div className="row small muted" style={{ gap: 8 }}>Concept {idx + 1} of {visible.length} <LevelBadge level={concept.level} /> <span>⏱ {concept.est_minutes} min</span></div>
+          <header data-block={-1}>
+            <div className="row wrap small muted" style={{ gap: 8 }}>Concept {idx + 1} of {visible.length} <LevelBadge level={concept.level} /> <span>⏱ {concept.est_minutes} min</span><span className="grow" /><ReadAloud key={concept.id} segments={narration} /></div>
             {section && <div className="small" style={{ color: 'var(--primary)', fontWeight: 600, marginTop: 6 }}>{section.title}</div>}
             <h1 style={{ margin: '8px 0 4px', fontSize: '2.1rem' }}>{concept.title}</h1>
             {concept.summary && <p className="muted" style={{ fontSize: '1.08rem' }}><InlineMd text={concept.summary} /></p>}
@@ -68,7 +71,7 @@ export default async function ConceptPage({ params }: { params: Promise<{ slug: 
             key={concept.id}
             conceptId={concept.id}
             completed={!!progress.get(concept.id)?.completed_at}
-            questions={questions}
+            questions={spokenQuestions}
             nextHref={next ? `/learn/${slug}/${next.slug}` : null}
             examHref={`/learn/${slug}/exam`}
           />

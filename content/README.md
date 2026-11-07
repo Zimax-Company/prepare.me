@@ -1,6 +1,15 @@
 # Course content
 
-Courses can be written as files and seeded automatically. Every deploy runs the seeders, which insert any `content/courses/*.json` file whose `slug` isn't in the database yet. Courses that already exist are never overwritten, so edits made in the admin area are safe.
+Courses can be written as files and seeded automatically. Every deploy runs the seeders, which process each `content/courses/*.json` file:
+
+| Situation | What the deploy does |
+|---|---|
+| New slug | Inserts the course |
+| File unchanged since it was last seeded | Nothing |
+| File changed, course not edited in the admin area | **Syncs in place.** Lessons are matched by slug and questions by prompt, so student progress and past exam scores are kept |
+| File changed, but someone edited the course in the admin area | Skips the course and logs a warning, so admin edits aren't silently lost |
+
+Two things are never synced from the file, because they're usually managed in the admin area: `published` and the exam settings. Lessons or questions removed from the file are deleted on sync, along with any progress on them.
 
 ```
 content/
@@ -51,17 +60,17 @@ npm run course:convert -- content/outlines/real-analysis.md
 
 This writes `content/courses/real-analysis.json`. Each module is scaffolded with a `TODO` lesson block. The first module of each level also gets a callout with the level's objective and competencies. The command refuses to overwrite an existing file unless you pass `--force`, because that file may already hold written lessons.
 
-**3. Write the content.** Fill in the JSON file: replace the `TODO` blocks, add `blocks` and `questions`. The `$schema` line gives you autocomplete in VS Code. Alternatively, seed the scaffold now and write in the admin block editor instead. Either way works, but pick one: once a course is seeded, the file is no longer read for it.
+**3. Write the content.** Fill in the JSON file: replace the `TODO` blocks, add `blocks` and `questions`. The `$schema` line gives you autocomplete in VS Code. Keep the file as the source of truth: later edits reach the live site on the next deploy. Edits made in the admin area pause syncing for that course; see the table above.
 
 **4. Check and load it.**
 
 ```bash
-npm run course:validate                    # all files; reports TODOs and concepts without questions
-npm run db:seed                            # insert any new course (what deploys do)
-npm run course:import -- content/courses/real-analysis.json --replace   # local only: reload after editing the file
+npm run course:validate                                     # all files; reports TODOs and concepts without questions
+npm run db:seed                                             # what deploys do: insert new, sync changed
+npm run course:sync -- content/courses/real-analysis.json   # sync one course now
+npm run course:sync -- content/courses/real-analysis.json --force    # also overwrite admin edits
+npm run course:import -- content/courses/real-analysis.json --replace  # local only: delete and re-create (wipes progress)
 ```
-
-`--replace` deletes and re-creates the course, including its students' enrollments, progress and attempts. It refuses to run when `NODE_ENV=production`.
 
 ## File format
 

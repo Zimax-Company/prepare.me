@@ -6,6 +6,7 @@ import type { PublicQuestion } from '@/lib/types'
 import { InlineMd, Markdown } from './Markdown'
 import { QuestionInput } from './QuestionInput'
 import { LevelBadge } from './ui'
+import { SpeakButton } from './SpeakButton'
 
 type Result = { correct: boolean; answer: string[]; explanation: string }
 
@@ -67,7 +68,7 @@ export function PracticeQA({ questions, onFinished }: { questions: PublicQuestio
         </div>
       </div>
       <div key={q.id} className="block-anim">
-        <div className="row small muted" style={{ marginBottom: 6 }}>Question {i + 1} of {questions.length} <LevelBadge level={q.level} /></div>
+        <div className="row small muted" style={{ marginBottom: 6 }}>Question {i + 1} of {questions.length} <LevelBadge level={q.level} /><span className="grow" /><SpeakButton text={q.speech} /></div>
         <div style={{ fontWeight: 600, fontSize: '1.05rem', marginBottom: 14 }}><InlineMd text={q.prompt} /></div>
         <QuestionInput q={q} value={value} onChange={(v) => setAnswers((s) => ({ ...s, [q.id]: v }))} disabled={!!result} reveal={result?.answer} />
         {result && (

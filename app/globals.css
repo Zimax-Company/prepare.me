@@ -350,3 +350,14 @@ table.table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .math-display { display: block; overflow-x: auto; overflow-y: hidden; margin: 0.4em 0 0.9em; padding: 2px 0; }
 .md .math-display:last-child { margin-bottom: 0; }
 .flip-front .katex { color: #fff; }
+
+/* ---- Read aloud ---- */
+[data-block] { border-radius: 12px; transition: box-shadow 0.3s, background 0.3s; }
+[data-block].reading { box-shadow: 0 0 0 3px var(--primary-soft), 0 0 0 4px color-mix(in srgb, var(--primary) 45%, transparent); background: color-mix(in srgb, var(--primary-soft) 35%, transparent); }
+.listen-btn { border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
+.player { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(760px, calc(100vw - 24px)); z-index: 60; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-lg); padding: 10px 12px 10px; animation: rise 0.25s both; overflow: hidden; }
+.player-progress { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--surface-2); }
+.player-progress span { display: block; height: 100%; background: var(--primary); transition: width 0.4s; }
+.player-text { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+@media (max-width: 560px) { .player-text { display: none; } }
+@media (prefers-reduced-motion: reduce) { [data-block] { transition: none; } }

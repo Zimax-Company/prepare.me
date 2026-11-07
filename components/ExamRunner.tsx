@@ -7,6 +7,7 @@ import type { Level, PublicQuestion } from '@/lib/types'
 import { InlineMd } from './Markdown'
 import { QuestionInput } from './QuestionInput'
 import { LevelBadge } from './ui'
+import { SpeakButton } from './SpeakButton'
 
 type Answers = Record<string, string[]>
 
@@ -139,7 +140,7 @@ export function ExamRunner({ attemptId, course, level, questions, initialAnswers
             {q && (
               <div key={q.id} className="block-anim">
                 <div className="row between small muted mb">
-                  <span>Question {current + 1} of {questions.length}</span>
+                  <span className="row" style={{ gap: 6 }}>Question {current + 1} of {questions.length} <SpeakButton text={q.speech} /></span>
                   <button className={`btn sm ${flagged.has(current) ? '' : 'ghost'}`} onClick={() => toggleFlag(current)} style={flagged.has(current) ? { color: 'var(--warning)', borderColor: 'var(--warning)' } : undefined}>
                     {flagged.has(current) ? '⚑ Flagged' : '⚐ Flag for review'}
                   </button>

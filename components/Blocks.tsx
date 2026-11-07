@@ -9,7 +9,7 @@ export function Blocks({ blocks, animate = true }: { blocks: Block[]; animate?: 
   return (
     <div className="blocks">
       {blocks.map((b, i) => (
-        <div key={i} className={animate ? 'block-anim' : ''} style={animate ? { animationDelay: `${Math.min(i, 8) * 60}ms` } : undefined}>
+        <div key={i} data-block={i} className={animate ? 'block-anim' : ''} style={animate ? { animationDelay: `${Math.min(i, 8) * 60}ms` } : undefined}>
           <BlockView block={b} />
         </div>
       ))}

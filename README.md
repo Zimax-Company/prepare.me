@@ -57,7 +57,7 @@ Useful commands: `npm run migrate:status`, `npm run migrate:fresh -- --seed` (re
 
 ## Adding courses from a curriculum
 
-Paste an outline into `content/outlines/`, convert it with `npm run course:convert -- content/outlines/<file>.md`, fill in lessons and questions, and it seeds on the next deploy. See [content/README.md](content/README.md). `content/courses/real-analysis.json` (8 levels, 105 modules) was generated this way and is seeded as a draft.
+Paste an outline into `content/outlines/`, convert it with `npm run course:convert -- content/outlines/<file>.md`, fill in lessons and questions, and it seeds on the next deploy. Later changes to the file sync on each deploy, and student progress is kept. See [content/README.md](content/README.md). `content/courses/real-analysis.json` (8 levels, 105 modules) was generated this way and is seeded as a draft.
 
 ## Deploying to Vercel
 
