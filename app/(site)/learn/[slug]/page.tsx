@@ -1,0 +1,86 @@
+import Link from 'next/link'
+import { loadLearn } from '@/lib/learn-context'
+import { getExamSettings, listAttempts } from '@/lib/learning'
+import { LEVELS, LEVEL_LABEL, levelsUpTo, type Level } from '@/lib/types'
+import { EnrollPanel } from '@/components/EnrollPanel'
+import { AttemptBars } from '@/components/AttemptBars'
+import { CourseCover, LevelBadge, ProgressBar, ProgressRing } from '@/components/ui'
+
+export default async function LearnHome({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const { user, course, enrollment, all, visible, locked, progress, done, percent, next } = await loadLearn(slug)
+  const [exam, attempts] = await Promise.all([getExamSettings(course.id), listAttempts(user.id, course.id)])
+  const graded = attempts.filter((a) => a.submitted_at)
+  const best = graded.reduce<number | null>((m, a) => (m == null || (a.percent ?? 0) > m ? a.percent : m), null)
+  const counts = Object.fromEntries(LEVELS.map((l) => [l, all.filter((c) => levelsUpTo(l).includes(c.level)).length])) as Record<Level, number>
+
+  return (
+    <main className="container page stack-lg">
+      <div className="card" style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ width: 110 }}><CourseCover icon={course.icon} color={course.color} height={96} /></div>
+        <div className="grow" style={{ minWidth: 240 }}>
+          <div className="row" style={{ gap: 8 }}><span className="badge">{course.category}</span><LevelBadge level={enrollment.level} /></div>
+          <h1 style={{ margin: '6px 0 4px' }}>{course.title}</h1>
+          <div className="row small muted" style={{ marginBottom: 10 }}>{done} of {visible.length} concepts complete</div>
+          <ProgressBar value={percent} />
+        </div>
+        <ProgressRing value={percent} size={96} />
+        <div className="stack" style={{ minWidth: 200 }}>
+          {next && <Link href={`/learn/${slug}/${next.slug}`} className="btn primary lg">{done === 0 ? 'Start learning →' : percent === 100 ? 'Review concepts' : 'Continue →'}</Link>}
+          <Link href={`/learn/${slug}/exam`} className="btn">📝 Take the exam</Link>
+        </div>
+      </div>
+
+      <div className="grid" style={{ gridTemplateColumns: 'minmax(0, 1fr) 340px', gap: 28 }}>
+        <section>
+          <h2>Concepts</h2>
+          <div className="stack" style={{ gap: 8 }}>
+            {visible.map((c, i) => {
+              const p = progress.get(c.id)
+              const isDone = !!p?.completed_at
+              return (
+                <Link key={c.id} href={`/learn/${slug}/${c.slug}`} className="concept-item">
+                  <div className={`concept-num ${isDone ? 'done' : ''}`}>{isDone ? '✓' : i + 1}</div>
+                  <div className="grow">
+                    <div style={{ fontWeight: 600 }}>{c.title}</div>
+                    <div className="small muted">{c.summary}</div>
+                  </div>
+                  {p?.practice_answered ? <span className="small muted hide-sm">Q&amp;A {Math.round((p.practice_correct / p.practice_answered) * 100)}%</span> : null}
+                  <LevelBadge level={c.level} />
+                  <span className="small muted hide-sm" style={{ width: 52, textAlign: 'right' }}>{c.est_minutes} min</span>
+                </Link>
+              )
+            })}
+            {locked.map((c) => (
+              <div key={c.id} className="concept-item locked" title="Switch to a higher level to unlock">
+                <div className="concept-num">🔒</div>
+                <div className="grow"><div style={{ fontWeight: 600 }}>{c.title}</div><div className="small muted">Unlocks at {LEVEL_LABEL[c.level]} level</div></div>
+                <LevelBadge level={c.level} />
+              </div>
+            ))}
+          </div>
+        </section>
+        <aside className="stack-lg">
+          <div className="card">
+            <div className="card-title">📝 Exam</div>
+            <div className="small muted mb">{exam.question_count} random questions · {exam.duration_minutes} min · pass {exam.pass_mark}%{exam.max_attempts ? ` · ${exam.max_attempts} attempts max` : ''}</div>
+            {graded.length ? (
+              <>
+                <div className="row between small"><span className="muted">Best score</span><b>{Math.round(best ?? 0)}%</b></div>
+                <AttemptBars attempts={graded.slice(0, 10).reverse()} passMark={exam.pass_mark} />
+              </>
+            ) : (
+              <p className="small muted">No attempts yet. Finish the concepts, then test yourself.</p>
+            )}
+            <Link href={`/learn/${slug}/exam`} className="btn block mt">{graded.length ? 'View attempts & retake' : 'Go to exam'}</Link>
+          </div>
+          <details className="card">
+            <summary style={{ cursor: 'pointer', fontWeight: 700 }}>Change level</summary>
+            <div className="mt"><EnrollPanel slug={slug} loggedIn current={enrollment.level} counts={counts} compact /></div>
+          </details>
+        </aside>
+      </div>
+      <style>{`@media (max-width: 900px) { main .grid[style] { grid-template-columns: 1fr !important; } }`}</style>
+    </main>
+  )
+}
