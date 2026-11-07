@@ -1,0 +1,1551 @@
+{
+  "$schema": "../course.schema.json",
+  "course": {
+    "slug": "real-analysis",
+    "title": "Real Analysis",
+    "tagline": "From logic and proof to metric spaces and Lebesgue integration, built rigorously step by step.",
+    "description": "- **Level 1: Mathematical Foundations and Proof Techniques**: Develop the mathematical language and logical reasoning required to understand and construct proofs.\n- **Level 2: The Real Number System**: Understand the mathematical structure and fundamental properties of real numbers.\n- **Level 3: Sequences and Limits**: Understand convergence and the behaviour of infinite sequences.\n- **Level 4: Infinite Series**: Study infinite sums and the conditions under which they converge.\n- **Level 5: Limits and Continuity of Functions**: Develop a rigorous understanding of function limits and continuity.\n- **Level 6: Differentiation**: Understand differentiation from a rigorous mathematical perspective.\n- **Level 7: Riemann Integration**: Establish the theoretical foundation of integration and its relationship with differentiation.\n- **Level 8: Advanced Real Analysis**: Extend classical real analysis into more abstract mathematical structures and advanced convergence concepts.",
+    "category": "Mathematics",
+    "icon": "🧮",
+    "color": "#0b7fd6",
+    "published": false
+  },
+  "exam": {
+    "duration_minutes": 60,
+    "question_count": 25,
+    "pass_mark": 65,
+    "max_attempts": 0,
+    "cooldown_minutes": 0,
+    "shuffle_options": true,
+    "show_review": true,
+    "include_lower_levels": true
+  },
+  "sections": [
+    {
+      "title": "Level 1: Mathematical Foundations and Proof Techniques",
+      "level": "beginner",
+      "objective": "Develop the mathematical language and logical reasoning required to understand and construct proofs.",
+      "competencies": [
+        "Understand mathematical statements and their logical structure.",
+        "Construct valid mathematical proofs.",
+        "Work confidently with sets and functions.",
+        "Understand the difference between intuition and mathematical proof."
+      ],
+      "assessment": "Proof-writing exercises and logical reasoning problems.",
+      "concepts": [
+        {
+          "slug": "1-1-introduction-to-mathematical-reasoning",
+          "title": "Introduction to mathematical reasoning",
+          "summary": "Module 1.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 1: Mathematical Foundations and Proof Techniques",
+              "md": "Develop the mathematical language and logical reasoning required to understand and construct proofs.\n\nBy the end of this level you should be able to:\n- Understand mathematical statements and their logical structure.\n- Construct valid mathematical proofs.\n- Work confidently with sets and functions.\n- Understand the difference between intuition and mathematical proof."
+            },
+            {
+              "type": "text",
+              "md": "## Introduction to mathematical reasoning\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-2-propositional-logic-and-logical-operators",
+          "title": "Propositional logic and logical operators",
+          "summary": "Module 1.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Propositional logic and logical operators\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-3-quantifiers-for-all-and-there-exists",
+          "title": "Quantifiers: For all (∀) and There exists (∃)",
+          "summary": "Module 1.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Quantifiers: For all (∀) and There exists (∃)\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-4-set-theory-and-set-operations",
+          "title": "Set theory and set operations",
+          "summary": "Module 1.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Set theory and set operations\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-5-relations-and-equivalence-relations",
+          "title": "Relations and equivalence relations",
+          "summary": "Module 1.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Relations and equivalence relations\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-6-functions-injective-surjective-and-bijective",
+          "title": "Functions: injective, surjective and bijective",
+          "summary": "Module 1.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Functions: injective, surjective and bijective\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-7-mathematical-induction",
+          "title": "Mathematical induction",
+          "summary": "Module 1.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Mathematical induction\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-8-direct-proofs",
+          "title": "Direct proofs",
+          "summary": "Module 1.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Direct proofs\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-9-proof-by-contradiction",
+          "title": "Proof by contradiction",
+          "summary": "Module 1.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Proof by contradiction\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-10-proof-by-contrapositive",
+          "title": "Proof by contrapositive",
+          "summary": "Module 1.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Proof by contrapositive\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "1-11-counterexamples-and-disproofs",
+          "title": "Counterexamples and disproofs",
+          "summary": "Module 1.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Counterexamples and disproofs\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 2: The Real Number System",
+      "level": "beginner",
+      "objective": "Understand the mathematical structure and fundamental properties of real numbers.",
+      "competencies": [
+        "Explain why the real number system is complete.",
+        "Determine the supremum and infimum of sets.",
+        "Prove inequalities using real number properties.",
+        "Distinguish between rational and irrational numbers."
+      ],
+      "assessment": "Exercises involving bounds, completeness and proofs.",
+      "concepts": [
+        {
+          "slug": "2-1-natural-integer-rational-and-irrational-numbers",
+          "title": "Natural, integer, rational and irrational numbers",
+          "summary": "Module 2.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 2: The Real Number System",
+              "md": "Understand the mathematical structure and fundamental properties of real numbers.\n\nBy the end of this level you should be able to:\n- Explain why the real number system is complete.\n- Determine the supremum and infimum of sets.\n- Prove inequalities using real number properties.\n- Distinguish between rational and irrational numbers."
+            },
+            {
+              "type": "text",
+              "md": "## Natural, integer, rational and irrational numbers\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-2-properties-of-real-numbers",
+          "title": "Properties of real numbers",
+          "summary": "Module 2.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Properties of real numbers\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-3-field-axioms",
+          "title": "Field axioms",
+          "summary": "Module 2.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Field axioms\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-4-order-properties",
+          "title": "Order properties",
+          "summary": "Module 2.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Order properties\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-5-absolute-values-and-inequalities",
+          "title": "Absolute values and inequalities",
+          "summary": "Module 2.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Absolute values and inequalities\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-6-intervals-and-neighbourhoods",
+          "title": "Intervals and neighbourhoods",
+          "summary": "Module 2.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Intervals and neighbourhoods\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-7-bounded-and-unbounded-sets",
+          "title": "Bounded and unbounded sets",
+          "summary": "Module 2.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Bounded and unbounded sets\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-8-upper-and-lower-bounds",
+          "title": "Upper and lower bounds",
+          "summary": "Module 2.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Upper and lower bounds\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-9-supremum-and-infimum",
+          "title": "Supremum and infimum",
+          "summary": "Module 2.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Supremum and infimum\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-10-the-completeness-property-of-real-numbers",
+          "title": "The completeness property of real numbers",
+          "summary": "Module 2.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## The completeness property of real numbers\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-11-archimedean-property",
+          "title": "Archimedean property",
+          "summary": "Module 2.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Archimedean property\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "2-12-density-of-rational-and-irrational-numbers",
+          "title": "Density of rational and irrational numbers",
+          "summary": "Module 2.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Density of rational and irrational numbers\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 3: Sequences and Limits",
+      "level": "intermediate",
+      "objective": "Understand convergence and the behaviour of infinite sequences.",
+      "competencies": [
+        "Determine whether a sequence converges.",
+        "Prove convergence using formal definitions.",
+        "Understand the relationship between boundedness and convergence.",
+        "Apply important convergence theorems."
+      ],
+      "assessment": "Sequence convergence proofs and problem-solving exercises.",
+      "concepts": [
+        {
+          "slug": "3-1-introduction-to-sequences",
+          "title": "Introduction to sequences",
+          "summary": "Module 3.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 3: Sequences and Limits",
+              "md": "Understand convergence and the behaviour of infinite sequences.\n\nBy the end of this level you should be able to:\n- Determine whether a sequence converges.\n- Prove convergence using formal definitions.\n- Understand the relationship between boundedness and convergence.\n- Apply important convergence theorems."
+            },
+            {
+              "type": "text",
+              "md": "## Introduction to sequences\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-2-bounded-and-unbounded-sequences",
+          "title": "Bounded and unbounded sequences",
+          "summary": "Module 3.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Bounded and unbounded sequences\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-3-convergent-and-divergent-sequences",
+          "title": "Convergent and divergent sequences",
+          "summary": "Module 3.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Convergent and divergent sequences\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-4-the-epsilon-n-definition-of-convergence",
+          "title": "The epsilon-N definition of convergence",
+          "summary": "Module 3.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## The epsilon-N definition of convergence\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-5-uniqueness-of-limits",
+          "title": "Uniqueness of limits",
+          "summary": "Module 3.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Uniqueness of limits\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-6-limit-laws",
+          "title": "Limit laws",
+          "summary": "Module 3.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Limit laws\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-7-monotone-sequences",
+          "title": "Monotone sequences",
+          "summary": "Module 3.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Monotone sequences\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-8-monotone-convergence-theorem",
+          "title": "Monotone convergence theorem",
+          "summary": "Module 3.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Monotone convergence theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-9-subsequences",
+          "title": "Subsequences",
+          "summary": "Module 3.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Subsequences\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-10-bolzano-weierstrass-theorem",
+          "title": "Bolzano-Weierstrass theorem",
+          "summary": "Module 3.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Bolzano-Weierstrass theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-11-cauchy-sequences",
+          "title": "Cauchy sequences",
+          "summary": "Module 3.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Cauchy sequences\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-12-cauchy-convergence-criterion",
+          "title": "Cauchy convergence criterion",
+          "summary": "Module 3.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Cauchy convergence criterion\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "3-13-limit-superior-and-limit-inferior",
+          "title": "Limit superior and limit inferior",
+          "summary": "Module 3.13",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Limit superior and limit inferior\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 4: Infinite Series",
+      "level": "intermediate",
+      "objective": "Study infinite sums and the conditions under which they converge.",
+      "competencies": [
+        "Determine whether an infinite series converges or diverges.",
+        "Select the appropriate convergence test.",
+        "Understand absolute and conditional convergence.",
+        "Determine the radius of convergence of power series."
+      ],
+      "assessment": "Series convergence problems and proof-based assignments.",
+      "concepts": [
+        {
+          "slug": "4-1-introduction-to-infinite-series",
+          "title": "Introduction to infinite series",
+          "summary": "Module 4.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 4: Infinite Series",
+              "md": "Study infinite sums and the conditions under which they converge.\n\nBy the end of this level you should be able to:\n- Determine whether an infinite series converges or diverges.\n- Select the appropriate convergence test.\n- Understand absolute and conditional convergence.\n- Determine the radius of convergence of power series."
+            },
+            {
+              "type": "text",
+              "md": "## Introduction to infinite series\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-2-partial-sums",
+          "title": "Partial sums",
+          "summary": "Module 4.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Partial sums\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-3-convergence-and-divergence-of-series",
+          "title": "Convergence and divergence of series",
+          "summary": "Module 4.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Convergence and divergence of series\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-4-necessary-condition-for-convergence",
+          "title": "Necessary condition for convergence",
+          "summary": "Module 4.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Necessary condition for convergence\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-5-geometric-series",
+          "title": "Geometric series",
+          "summary": "Module 4.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Geometric series\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-6-harmonic-series",
+          "title": "Harmonic series",
+          "summary": "Module 4.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Harmonic series\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-7-comparison-test",
+          "title": "Comparison test",
+          "summary": "Module 4.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Comparison test\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-8-limit-comparison-test",
+          "title": "Limit comparison test",
+          "summary": "Module 4.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Limit comparison test\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-9-ratio-test",
+          "title": "Ratio test",
+          "summary": "Module 4.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Ratio test\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-10-root-test",
+          "title": "Root test",
+          "summary": "Module 4.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Root test\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-11-alternating-series-test",
+          "title": "Alternating series test",
+          "summary": "Module 4.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Alternating series test\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-12-absolute-and-conditional-convergence",
+          "title": "Absolute and conditional convergence",
+          "summary": "Module 4.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Absolute and conditional convergence\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-13-rearrangement-of-series",
+          "title": "Rearrangement of series",
+          "summary": "Module 4.13",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Rearrangement of series\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-14-power-series",
+          "title": "Power series",
+          "summary": "Module 4.14",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Power series\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "4-15-radius-and-interval-of-convergence",
+          "title": "Radius and interval of convergence",
+          "summary": "Module 4.15",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Radius and interval of convergence\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 5: Limits and Continuity of Functions",
+      "level": "intermediate",
+      "objective": "Develop a rigorous understanding of function limits and continuity.",
+      "competencies": [
+        "Prove function limits using epsilon-delta arguments.",
+        "Determine continuity and discontinuity.",
+        "Understand the relationship between continuity and compactness.",
+        "Apply the major continuity theorems."
+      ],
+      "assessment": "Formal limit proofs and continuity problems.",
+      "concepts": [
+        {
+          "slug": "5-1-limits-of-real-valued-functions",
+          "title": "Limits of real-valued functions",
+          "summary": "Module 5.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 5: Limits and Continuity of Functions",
+              "md": "Develop a rigorous understanding of function limits and continuity.\n\nBy the end of this level you should be able to:\n- Prove function limits using epsilon-delta arguments.\n- Determine continuity and discontinuity.\n- Understand the relationship between continuity and compactness.\n- Apply the major continuity theorems."
+            },
+            {
+              "type": "text",
+              "md": "## Limits of real-valued functions\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-2-epsilon-delta-definition-of-limits",
+          "title": "Epsilon-delta definition of limits",
+          "summary": "Module 5.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Epsilon-delta definition of limits\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-3-one-sided-limits",
+          "title": "One-sided limits",
+          "summary": "Module 5.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## One-sided limits\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-4-limit-laws",
+          "title": "Limit laws",
+          "summary": "Module 5.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Limit laws\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-5-infinite-limits-and-limits-at-infinity",
+          "title": "Infinite limits and limits at infinity",
+          "summary": "Module 5.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Infinite limits and limits at infinity\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-6-continuity-at-a-point",
+          "title": "Continuity at a point",
+          "summary": "Module 5.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Continuity at a point\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-7-continuity-on-an-interval",
+          "title": "Continuity on an interval",
+          "summary": "Module 5.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Continuity on an interval\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-8-types-of-discontinuities",
+          "title": "Types of discontinuities",
+          "summary": "Module 5.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Types of discontinuities\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-9-intermediate-value-theorem",
+          "title": "Intermediate Value Theorem",
+          "summary": "Module 5.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Intermediate Value Theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-10-extreme-value-theorem",
+          "title": "Extreme Value Theorem",
+          "summary": "Module 5.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Extreme Value Theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-11-uniform-continuity",
+          "title": "Uniform continuity",
+          "summary": "Module 5.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Uniform continuity\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-12-heine-cantor-theorem",
+          "title": "Heine-Cantor theorem",
+          "summary": "Module 5.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Heine-Cantor theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "5-13-continuous-functions-on-compact-intervals",
+          "title": "Continuous functions on compact intervals",
+          "summary": "Module 5.13",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Continuous functions on compact intervals\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 6: Differentiation",
+      "level": "advanced",
+      "objective": "Understand differentiation from a rigorous mathematical perspective.",
+      "competencies": [
+        "Understand the formal definition of differentiation.",
+        "Prove important differentiation theorems.",
+        "Apply the Mean Value Theorem.",
+        "Understand how differentiability relates to continuity."
+      ],
+      "assessment": "Derivative proofs, theorem applications and analytical problems.",
+      "concepts": [
+        {
+          "slug": "6-1-introduction-to-derivatives",
+          "title": "Introduction to derivatives",
+          "summary": "Module 6.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 6: Differentiation",
+              "md": "Understand differentiation from a rigorous mathematical perspective.\n\nBy the end of this level you should be able to:\n- Understand the formal definition of differentiation.\n- Prove important differentiation theorems.\n- Apply the Mean Value Theorem.\n- Understand how differentiability relates to continuity."
+            },
+            {
+              "type": "text",
+              "md": "## Introduction to derivatives\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-2-derivative-from-first-principles",
+          "title": "Derivative from first principles",
+          "summary": "Module 6.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Derivative from first principles\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-3-differentiability-and-continuity",
+          "title": "Differentiability and continuity",
+          "summary": "Module 6.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Differentiability and continuity\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-4-algebra-of-derivatives",
+          "title": "Algebra of derivatives",
+          "summary": "Module 6.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Algebra of derivatives\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-5-chain-rule",
+          "title": "Chain rule",
+          "summary": "Module 6.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Chain rule\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-6-rolles-theorem",
+          "title": "Rolle's theorem",
+          "summary": "Module 6.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Rolle's theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-7-mean-value-theorem",
+          "title": "Mean Value Theorem",
+          "summary": "Module 6.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Mean Value Theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-8-cauchys-mean-value-theorem",
+          "title": "Cauchy's Mean Value Theorem",
+          "summary": "Module 6.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Cauchy's Mean Value Theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-9-applications-of-the-mean-value-theorem",
+          "title": "Applications of the Mean Value Theorem",
+          "summary": "Module 6.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Applications of the Mean Value Theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-10-taylors-theorem",
+          "title": "Taylor's theorem",
+          "summary": "Module 6.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Taylor's theorem\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-11-higher-order-derivatives",
+          "title": "Higher-order derivatives",
+          "summary": "Module 6.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Higher-order derivatives\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-12-convexity-and-concavity",
+          "title": "Convexity and concavity",
+          "summary": "Module 6.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Convexity and concavity\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "6-13-lhopitals-rule-and-its-justification",
+          "title": "L'Hôpital's rule and its justification",
+          "summary": "Module 6.13",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## L'Hôpital's rule and its justification\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 7: Riemann Integration",
+      "level": "advanced",
+      "objective": "Establish the theoretical foundation of integration and its relationship with differentiation.",
+      "competencies": [
+        "Explain integration using partitions and Riemann sums.",
+        "Determine whether functions are Riemann integrable.",
+        "Prove important integration results.",
+        "Understand the connection between differentiation and integration."
+      ],
+      "assessment": "Integrability proofs and theoretical integration problems.",
+      "concepts": [
+        {
+          "slug": "7-1-introduction-to-integration",
+          "title": "Introduction to integration",
+          "summary": "Module 7.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 7: Riemann Integration",
+              "md": "Establish the theoretical foundation of integration and its relationship with differentiation.\n\nBy the end of this level you should be able to:\n- Explain integration using partitions and Riemann sums.\n- Determine whether functions are Riemann integrable.\n- Prove important integration results.\n- Understand the connection between differentiation and integration."
+            },
+            {
+              "type": "text",
+              "md": "## Introduction to integration\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-2-partitions-of-intervals",
+          "title": "Partitions of intervals",
+          "summary": "Module 7.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Partitions of intervals\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-3-upper-and-lower-sums",
+          "title": "Upper and lower sums",
+          "summary": "Module 7.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Upper and lower sums\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-4-upper-and-lower-integrals",
+          "title": "Upper and lower integrals",
+          "summary": "Module 7.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Upper and lower integrals\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-5-riemann-integrability",
+          "title": "Riemann integrability",
+          "summary": "Module 7.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Riemann integrability\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-6-integrability-of-continuous-functions",
+          "title": "Integrability of continuous functions",
+          "summary": "Module 7.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Integrability of continuous functions\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-7-integrability-of-monotone-functions",
+          "title": "Integrability of monotone functions",
+          "summary": "Module 7.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Integrability of monotone functions\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-8-properties-of-the-riemann-integral",
+          "title": "Properties of the Riemann integral",
+          "summary": "Module 7.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Properties of the Riemann integral\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-9-fundamental-theorem-of-calculus",
+          "title": "Fundamental Theorem of Calculus",
+          "summary": "Module 7.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Fundamental Theorem of Calculus\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-10-mean-value-theorem-for-integrals",
+          "title": "Mean Value Theorem for integrals",
+          "summary": "Module 7.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Mean Value Theorem for integrals\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-11-improper-integrals",
+          "title": "Improper integrals",
+          "summary": "Module 7.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Improper integrals\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "7-12-integrability-and-sets-of-measure-zero-introductory",
+          "title": "Integrability and sets of measure zero (introductory)",
+          "summary": "Module 7.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Integrability and sets of measure zero (introductory)\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    },
+    {
+      "title": "Level 8: Advanced Real Analysis",
+      "level": "advanced",
+      "objective": "Extend classical real analysis into more abstract mathematical structures and advanced convergence concepts.",
+      "competencies": [
+        "Work with abstract metric spaces.",
+        "Understand compactness and completeness.",
+        "Distinguish pointwise from uniform convergence.",
+        "Understand the motivation and foundations of Lebesgue integration."
+      ],
+      "assessment": "Advanced proof-writing, theorem applications and research-oriented exercises.",
+      "concepts": [
+        {
+          "slug": "8-1-introduction-to-metric-spaces",
+          "title": "Introduction to metric spaces",
+          "summary": "Module 8.1",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "callout",
+              "tone": "info",
+              "title": "Level 8: Advanced Real Analysis",
+              "md": "Extend classical real analysis into more abstract mathematical structures and advanced convergence concepts.\n\nBy the end of this level you should be able to:\n- Work with abstract metric spaces.\n- Understand compactness and completeness.\n- Distinguish pointwise from uniform convergence.\n- Understand the motivation and foundations of Lebesgue integration."
+            },
+            {
+              "type": "text",
+              "md": "## Introduction to metric spaces\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-2-open-and-closed-sets",
+          "title": "Open and closed sets",
+          "summary": "Module 8.2",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Open and closed sets\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-3-interior-closure-and-boundary",
+          "title": "Interior, closure and boundary",
+          "summary": "Module 8.3",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Interior, closure and boundary\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-4-compactness",
+          "title": "Compactness",
+          "summary": "Module 8.4",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Compactness\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-5-connectedness",
+          "title": "Connectedness",
+          "summary": "Module 8.5",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Connectedness\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-6-completeness-of-metric-spaces",
+          "title": "Completeness of metric spaces",
+          "summary": "Module 8.6",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Completeness of metric spaces\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-7-sequences-and-convergence-in-metric-spaces",
+          "title": "Sequences and convergence in metric spaces",
+          "summary": "Module 8.7",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Sequences and convergence in metric spaces\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-8-pointwise-convergence-of-functions",
+          "title": "Pointwise convergence of functions",
+          "summary": "Module 8.8",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Pointwise convergence of functions\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-9-uniform-convergence",
+          "title": "Uniform convergence",
+          "summary": "Module 8.9",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Uniform convergence\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-10-uniform-convergence-and-continuity",
+          "title": "Uniform convergence and continuity",
+          "summary": "Module 8.10",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Uniform convergence and continuity\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-11-uniform-convergence-and-integration",
+          "title": "Uniform convergence and integration",
+          "summary": "Module 8.11",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Uniform convergence and integration\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-12-equicontinuity",
+          "title": "Equicontinuity",
+          "summary": "Module 8.12",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Equicontinuity\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-13-arzela-ascoli-theorem-introduction",
+          "title": "Arzelà-Ascoli theorem (introduction)",
+          "summary": "Module 8.13",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Arzelà-Ascoli theorem (introduction)\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-14-introduction-to-lebesgue-measure",
+          "title": "Introduction to Lebesgue measure",
+          "summary": "Module 8.14",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Introduction to Lebesgue measure\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-15-measurable-functions",
+          "title": "Measurable functions",
+          "summary": "Module 8.15",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Measurable functions\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        },
+        {
+          "slug": "8-16-introduction-to-lebesgue-integration",
+          "title": "Introduction to Lebesgue integration",
+          "summary": "Module 8.16",
+          "est_minutes": 20,
+          "blocks": [
+            {
+              "type": "text",
+              "md": "## Introduction to Lebesgue integration\n\nTODO: write this lesson. Explain the key idea, give a formal definition, add worked examples and finish with a quick check."
+            }
+          ],
+          "questions": []
+        }
+      ]
+    }
+  ],
+  "questions": []
+}

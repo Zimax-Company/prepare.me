@@ -46,7 +46,7 @@ function Callout({ tone, title, md }: Extract<Block, { type: 'callout' }>) {
     <div className={`callout ${tone}`}>
       <div className="callout-icon">{icon}</div>
       <div className="grow">
-        {title && <div style={{ fontWeight: 700, marginBottom: 2 }}>{title}</div>}
+        {title && <div style={{ fontWeight: 700, marginBottom: 2 }}><InlineMd text={title} /></div>}
         <Markdown text={md} />
       </div>
     </div>
@@ -82,7 +82,7 @@ function Example({ title, problem, solution }: Extract<Block, { type: 'example' 
   return (
     <div className="block-card">
       <Label icon="🧪">Worked example</Label>
-      <h3>{title}</h3>
+      <h3><InlineMd text={title} /></h3>
       <Markdown text={problem} />
       <div className="mt">
         {open ? (
@@ -157,7 +157,7 @@ function Diagram({ title, nodes }: Extract<Block, { type: 'diagram' }>) {
           <div key={i} style={{ display: 'contents' }}>
             {i > 0 && <div className={`flow-arrow ${i <= active ? 'on' : ''}`}>→</div>}
             <button className={`flow-node ${i <= active ? 'on' : ''}`} onClick={() => { setPlaying(false); setActive(i) }} style={{ font: 'inherit', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer', color: 'inherit' }}>
-              <span><span className="tiny muted" style={{ display: 'block' }}>{i + 1}</span>{n}</span>
+              <span><span className="tiny muted" style={{ display: 'block' }}>{i + 1}</span><InlineMd text={n} /></span>
             </button>
           </div>
         ))}
@@ -197,7 +197,7 @@ function Steps({ title, steps }: Extract<Block, { type: 'steps' }>) {
       <div className="steps-track">{steps.map((_, j) => <span key={j} className={j <= i ? 'on' : ''} />)}</div>
       <div key={i} className="block-anim" style={{ minHeight: 70 }}>
         <div className="small muted">Step {i + 1} of {steps.length}</div>
-        <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '2px 0 6px' }}>{step.title}</div>
+        <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '2px 0 6px' }}><InlineMd text={step.title} /></div>
         <Markdown text={step.md} />
       </div>
       <div className="row mt">

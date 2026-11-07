@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { InlineMd } from '@/components/Markdown'
 import { getSessionUser } from '@/lib/auth'
-import { getConcepts, getCourseBySlug, getEnrollment, getExamSettings } from '@/lib/learning'
+import { getConcepts, getCourseBySlug, getEnrollment, getExamSettings, getSections, groupBySection } from '@/lib/learning'
 import { db } from '@/lib/db'
 import { LEVELS, levelsUpTo, type Level } from '@/lib/types'
 import { EnrollPanel } from '@/components/EnrollPanel'
@@ -13,8 +14,9 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   const user = await getSessionUser()
   const course = await getCourseBySlug(slug, { includeDrafts: user?.role === 'admin' })
   if (!course) notFound()
-  const [concepts, enrollment, exam, qCount] = await Promise.all([
+  const [concepts, sections, enrollment, exam, qCount] = await Promise.all([
     getConcepts(course.id),
+    getSections(course.id),
     user ? getEnrollment(user.id, course.id) : null,
     getExamSettings(course.id),
     db('questions').where({ course_id: course.id }).count({ n: '*' }).first(),
@@ -38,15 +40,32 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
           {course.description && <div className="card flat"><Markdown text={course.description} /></div>}
           <div>
             <h2>What you&apos;ll learn</h2>
-            <div className="stack" style={{ gap: 8 }}>
-              {concepts.map((c, i) => (
-                <div key={c.id} className="concept-item">
-                  <div className="concept-num">{i + 1}</div>
-                  <div className="grow"><div style={{ fontWeight: 600 }}>{c.title}</div><div className="small muted">{c.summary}</div></div>
-                  <LevelBadge level={c.level} />
-                  <span className="small muted hide-sm">{c.est_minutes} min</span>
-                </div>
-              ))}
+            <div className="stack" style={{ gap: 10 }}>
+              {groupBySection(concepts, sections).map((g, gi) => {
+                const rows = g.concepts.map((c, i) => (
+                  <div key={c.id} className="concept-item">
+                    <div className="concept-num" style={{ fontSize: g.section ? '0.72rem' : undefined }}>{g.section ? `${gi + 1}.${i + 1}` : i + 1}</div>
+                    <div className="grow"><div style={{ fontWeight: 600 }}>{c.title}</div>{c.summary && <div className="small muted"><InlineMd text={c.summary} /></div>}</div>
+                    <LevelBadge level={c.level} />
+                    <span className="small muted hide-sm">{c.est_minutes} min</span>
+                  </div>
+                ))
+                if (!g.section) return <div key="loose" className="stack" style={{ gap: 8 }}>{rows}</div>
+                const levels = [...new Set(g.concepts.map((c) => c.level))]
+                return (
+                  <details key={g.section.id} className="card flat section-card" open={gi === 0}>
+                    <summary>
+                      <div className="grow">
+                        <div style={{ fontWeight: 700 }}>{g.section.title}</div>
+                        {g.section.objective && <div className="small muted">{g.section.objective}</div>}
+                      </div>
+                      <div className="row hide-sm" style={{ gap: 6 }}>{levels.map((l) => <LevelBadge key={l} level={l} />)}<span className="small muted">{g.concepts.length} modules</span></div>
+                    </summary>
+                    <div className="stack mt" style={{ gap: 8 }}>{rows}</div>
+                    {g.section.assessment && <div className="small muted mt"><b>Assessment:</b> {g.section.assessment}</div>}
+                  </details>
+                )
+              })}
             </div>
           </div>
         </div>

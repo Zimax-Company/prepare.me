@@ -24,6 +24,7 @@ export const toCourse = (r: Record<string, any>): Course => ({
 export type Concept = {
   id: number
   course_id: number
+  section_id: number | null
   slug: string
   title: string
   summary: string
@@ -36,6 +37,7 @@ export type Concept = {
 export const toConcept = (r: Record<string, any>): Concept => ({
   id: Number(r.id),
   course_id: Number(r.course_id),
+  section_id: r.section_id == null ? null : Number(r.section_id),
   slug: r.slug,
   title: r.title,
   summary: r.summary ?? '',
@@ -70,9 +72,33 @@ export async function getCourseBySlug(slug: string, { includeDrafts = false } = 
 }
 
 export async function getConcepts(courseId: number, { withBlocks = false } = {}) {
-  const cols = withBlocks ? ['*'] : ['id', 'course_id', 'slug', 'title', 'summary', 'level', 'position', 'est_minutes']
+  const cols = withBlocks ? ['*'] : ['id', 'course_id', 'section_id', 'slug', 'title', 'summary', 'level', 'position', 'est_minutes']
   const rows = await db('concepts').select(cols).where({ course_id: courseId }).orderBy([{ column: 'position' }, { column: 'id' }])
   return rows.map(toConcept)
+}
+
+export type Section = { id: number; course_id: number; position: number; title: string; objective: string; competencies: string[]; assessment: string }
+
+export async function getSections(courseId: number): Promise<Section[]> {
+  const rows = await db('course_sections').where({ course_id: courseId }).orderBy([{ column: 'position' }, { column: 'id' }])
+  return rows.map((r) => ({
+    id: Number(r.id),
+    course_id: Number(r.course_id),
+    position: Number(r.position),
+    title: r.title,
+    objective: r.objective ?? '',
+    competencies: json<string[]>(r.competencies, []),
+    assessment: r.assessment ?? '',
+  }))
+}
+
+/** Groups concepts (kept in course order) under their sections; unsectioned concepts come last. */
+export function groupBySection<C extends { section_id: number | null }>(concepts: C[], sections: Section[]) {
+  const groups = sections.map((section) => ({ section: section as Section | null, concepts: concepts.filter((c) => c.section_id === section.id) }))
+  const known = new Set(sections.map((s) => s.id))
+  const loose = concepts.filter((c) => c.section_id == null || !known.has(c.section_id))
+  if (loose.length) groups.push({ section: null, concepts: loose })
+  return groups.filter((g) => g.concepts.length || g.section)
 }
 
 export type CatalogCourse = Course & { concept_count: number; question_count: number; student_count: number; enrolled: boolean; progress: number }

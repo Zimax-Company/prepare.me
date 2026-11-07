@@ -37,6 +37,7 @@ export const conceptSchema = z.object({
   summary: z.string().trim().max(255).default(''),
   level,
   est_minutes: z.number().int().min(1).max(600).default(10),
+  section_id: z.number().int().positive().nullable().optional(),
   blocks: z.array(block).max(200).default([]),
 })
 
@@ -63,3 +64,10 @@ export const questionSchema = z
     if (q.answer.some((a) => !ids.has(a))) ctx.addIssue({ code: 'custom', path: ['answer'], message: 'Answer must reference an option' })
     if (q.type !== 'multiple' && q.answer.length !== 1) ctx.addIssue({ code: 'custom', path: ['answer'], message: 'Pick exactly one correct option' })
   })
+
+export const sectionSchema = z.object({
+  title: z.string().trim().min(1).max(200),
+  objective: z.string().max(5000).default(''),
+  competencies: z.array(z.string().max(500)).max(50).default([]),
+  assessment: z.string().max(2000).default(''),
+})

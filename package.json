@@ -18,11 +18,15 @@
     "migrate:status": "node scripts/artisan.mjs migrate:status",
     "make:migration": "node scripts/artisan.mjs make:migration",
     "db:seed": "node scripts/artisan.mjs db:seed",
-    "db:up": "docker compose up -d mysql"
+    "db:up": "docker compose up -d mysql",
+    "course:convert": "node scripts/course.mjs convert",
+    "course:validate": "node scripts/course.mjs validate",
+    "course:import": "node scripts/course.mjs import"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.15",
+    "katex": "^0.16.47",
     "knex": "^3.3.0",
     "mysql2": "^3.24.6",
     "next": "^16.4.5",

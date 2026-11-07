@@ -7,7 +7,7 @@ import { LEVELS } from '@/lib/types'
 export const POST = handle<{ slug: string }>(async (req, { slug }) => {
   const user = await requireUser(req)
   const { level } = await parseBody(req, z.object({ level: z.enum(LEVELS) }))
-  const course = await getCourseBySlug(slug)
+  const course = await getCourseBySlug(slug, { includeDrafts: user.role === 'admin' })
   if (!course) throw notFound('Course')
   await enroll(user.id, course.id, level)
   return ok({ slug, level })

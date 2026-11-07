@@ -1,6 +1,7 @@
 import Link from 'next/link'
+import { InlineMd } from '@/components/Markdown'
 import { loadLearn } from '@/lib/learn-context'
-import { getExamSettings, listAttempts } from '@/lib/learning'
+import { getExamSettings, groupBySection, listAttempts } from '@/lib/learning'
 import { LEVELS, LEVEL_LABEL, levelsUpTo, type Level } from '@/lib/types'
 import { EnrollPanel } from '@/components/EnrollPanel'
 import { AttemptBars } from '@/components/AttemptBars'
@@ -8,7 +9,9 @@ import { CourseCover, LevelBadge, ProgressBar, ProgressRing } from '@/components
 
 export default async function LearnHome({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const { user, course, enrollment, all, visible, locked, progress, done, percent, next } = await loadLearn(slug)
+  const { user, course, enrollment, sections, all, visible, progress, done, percent, next } = await loadLearn(slug)
+  const groups = groupBySection(all, sections)
+  const visibleIds = new Set(visible.map((c) => c.id))
   const [exam, attempts] = await Promise.all([getExamSettings(course.id), listAttempts(user.id, course.id)])
   const graded = attempts.filter((a) => a.submitted_at)
   const best = graded.reduce<number | null>((m, a) => (m == null || (a.percent ?? 0) > m ? a.percent : m), null)
@@ -34,30 +37,64 @@ export default async function LearnHome({ params }: { params: Promise<{ slug: st
       <div className="grid" style={{ gridTemplateColumns: 'minmax(0, 1fr) 340px', gap: 28 }}>
         <section>
           <h2>Concepts</h2>
-          <div className="stack" style={{ gap: 8 }}>
-            {visible.map((c, i) => {
-              const p = progress.get(c.id)
-              const isDone = !!p?.completed_at
+          <div className="stack" style={{ gap: 14 }}>
+            {groups.map((g, gi) => {
+              const open = g.concepts.filter((c) => visibleIds.has(c.id))
+              const doneHere = open.filter((c) => progress.get(c.id)?.completed_at).length
+              const isOpen = !g.section || g.concepts.some((c) => c.id === next?.id) || (gi === 0 && !next)
+              const rows = (
+                <div className="stack" style={{ gap: 8 }}>
+                  {g.concepts.map((c, i) => {
+                    const num = g.section ? `${gi + 1}.${i + 1}` : String(i + 1)
+                    if (!visibleIds.has(c.id)) {
+                      return (
+                        <div key={c.id} className="concept-item locked" title="Switch to a higher level to unlock">
+                          <div className="concept-num">🔒</div>
+                          <div className="grow"><div style={{ fontWeight: 600 }}>{c.title}</div><div className="small muted">Unlocks at {LEVEL_LABEL[c.level]} level</div></div>
+                          <LevelBadge level={c.level} />
+                        </div>
+                      )
+                    }
+                    const p = progress.get(c.id)
+                    const isDone = !!p?.completed_at
+                    return (
+                      <Link key={c.id} href={`/learn/${slug}/${c.slug}`} className="concept-item">
+                        <div className={`concept-num ${isDone ? 'done' : ''}`} style={{ fontSize: num.length > 3 ? '0.72rem' : undefined }}>{isDone ? '✓' : num}</div>
+                        <div className="grow">
+                          <div style={{ fontWeight: 600 }}>{c.title}</div>
+                          {c.summary && <div className="small muted"><InlineMd text={c.summary} /></div>}
+                        </div>
+                        {p?.practice_answered ? <span className="small muted hide-sm">Q&amp;A {Math.round((p.practice_correct / p.practice_answered) * 100)}%</span> : null}
+                        <LevelBadge level={c.level} />
+                        <span className="small muted hide-sm" style={{ width: 52, textAlign: 'right' }}>{c.est_minutes} min</span>
+                      </Link>
+                    )
+                  })}
+                </div>
+              )
+              if (!g.section) return <div key="loose">{rows}</div>
               return (
-                <Link key={c.id} href={`/learn/${slug}/${c.slug}`} className="concept-item">
-                  <div className={`concept-num ${isDone ? 'done' : ''}`}>{isDone ? '✓' : i + 1}</div>
-                  <div className="grow">
-                    <div style={{ fontWeight: 600 }}>{c.title}</div>
-                    <div className="small muted">{c.summary}</div>
-                  </div>
-                  {p?.practice_answered ? <span className="small muted hide-sm">Q&amp;A {Math.round((p.practice_correct / p.practice_answered) * 100)}%</span> : null}
-                  <LevelBadge level={c.level} />
-                  <span className="small muted hide-sm" style={{ width: 52, textAlign: 'right' }}>{c.est_minutes} min</span>
-                </Link>
+                <details key={g.section.id} className="card flat section-card" open={isOpen}>
+                  <summary>
+                    <div className="grow">
+                      <div style={{ fontWeight: 700 }}>{g.section.title}</div>
+                      {g.section.objective && <div className="small muted">{g.section.objective}</div>}
+                    </div>
+                    <div className="hide-sm" style={{ width: 140 }}>
+                      <div className="tiny muted" style={{ textAlign: 'right' }}>{open.length ? `${doneHere}/${open.length} done` : 'Locked'}</div>
+                      <ProgressBar value={open.length ? (doneHere / open.length) * 100 : 0} thin success={open.length > 0 && doneHere === open.length} />
+                    </div>
+                  </summary>
+                  <div className="mt">{rows}</div>
+                  {(g.section.competencies.length > 0 || g.section.assessment) && (
+                    <div className="small muted mt" style={{ borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+                      {g.section.competencies.length > 0 && <><b>You&apos;ll be able to:</b><ul style={{ margin: '4px 0 8px', paddingLeft: 18 }}>{g.section.competencies.map((x) => <li key={x}>{x}</li>)}</ul></>}
+                      {g.section.assessment && <><b>Assessment:</b> {g.section.assessment}</>}
+                    </div>
+                  )}
+                </details>
               )
             })}
-            {locked.map((c) => (
-              <div key={c.id} className="concept-item locked" title="Switch to a higher level to unlock">
-                <div className="concept-num">🔒</div>
-                <div className="grow"><div style={{ fontWeight: 600 }}>{c.title}</div><div className="small muted">Unlocks at {LEVEL_LABEL[c.level]} level</div></div>
-                <LevelBadge level={c.level} />
-              </div>
-            ))}
           </div>
         </section>
         <aside className="stack-lg">

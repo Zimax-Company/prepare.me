@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "prepare.me course file",
+  "description": "A seedable course. Files in content/courses/*.json are inserted on deploy if their slug doesn't exist yet.",
+  "type": "object",
+  "required": ["course"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "course": {
+      "type": "object",
+      "required": ["slug", "title"],
+      "properties": {
+        "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "description": "URL id: /courses/<slug>" },
+        "title": { "type": "string" },
+        "tagline": { "type": "string" },
+        "description": { "type": "string", "description": "Markdown" },
+        "category": { "type": "string" },
+        "icon": { "type": "string", "description": "An emoji" },
+        "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "published": { "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+    "exam": {
+      "type": "object",
+      "properties": {
+        "duration_minutes": { "type": "integer", "minimum": 1 },
+        "question_count": { "type": "integer", "minimum": 1 },
+        "pass_mark": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "max_attempts": { "type": "integer", "minimum": 0, "description": "0 = unlimited" },
+        "cooldown_minutes": { "type": "integer", "minimum": 0 },
+        "shuffle_options": { "type": "boolean" },
+        "show_review": { "type": "boolean" },
+        "include_lower_levels": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "sections": { "type": "array", "items": { "$ref": "#/definitions/section" } },
+    "concepts": { "type": "array", "items": { "$ref": "#/definitions/concept" }, "description": "Use instead of sections for a course without grouping." },
+    "questions": {
+      "type": "array",
+      "description": "Course-level questions. Add `concept` (a concept slug) to link one to a concept.",
+      "items": { "allOf": [{ "$ref": "#/definitions/question" }, { "properties": { "concept": { "type": "string" } } }] }
+    }
+  },
+  "definitions": {
+    "level": { "enum": ["beginner", "intermediate", "advanced"] },
+    "section": {
+      "type": "object",
+      "required": ["title", "concepts"],
+      "properties": {
+        "title": { "type": "string" },
+        "level": { "$ref": "#/definitions/level", "description": "Default difficulty for the concepts in this section" },
+        "objective": { "type": "string" },
+        "competencies": { "type": "array", "items": { "type": "string" } },
+        "assessment": { "type": "string" },
+        "concepts": { "type": "array", "items": { "$ref": "#/definitions/concept" } }
+      },
+      "additionalProperties": false
+    },
+    "concept": {
+      "type": "object",
+      "required": ["slug", "title"],
+      "properties": {
+        "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "level": { "$ref": "#/definitions/level" },
+        "est_minutes": { "type": "integer", "minimum": 1 },
+        "blocks": { "type": "array", "items": { "$ref": "#/definitions/block" } },
+        "questions": { "type": "array", "items": { "$ref": "#/definitions/question" }, "description": "Practice Q&A for this concept (also used in exams unless in_exam is false)" }
+      },
+      "additionalProperties": false
+    },
+    "question": {
+      "type": "object",
+      "required": ["prompt", "answer"],
+      "properties": {
+        "type": { "enum": ["single", "multiple", "true_false", "short"], "default": "single" },
+        "level": { "$ref": "#/definitions/level", "description": "Defaults to the concept's level" },
+        "prompt": { "type": "string" },
+        "options": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 10, "description": "For single/multiple only" },
+        "answer": {
+          "type": "array",
+          "minItems": 1,
+          "description": "single/multiple: option indexes from 0. true_false: [true] or [false]. short: accepted answers (case-insensitive).",
+          "items": { "type": ["integer", "string", "boolean"] }
+        },
+        "explanation": { "type": "string" },
+        "in_exam": { "type": "boolean", "default": true },
+        "in_practice": { "type": "boolean", "default": true }
+      }
+    },
+    "block": {
+      "type": "object",
+      "required": ["type"],
+      "oneOf": [
+        { "properties": { "type": { "const": "text" }, "md": { "type": "string" } }, "required": ["md"] },
+        { "properties": { "type": { "const": "callout" }, "tone": { "enum": ["info", "tip", "warning", "success"] }, "title": { "type": "string" }, "md": { "type": "string" } }, "required": ["tone", "md"] },
+        { "properties": { "type": { "const": "code" }, "language": { "type": "string" }, "code": { "type": "string" }, "caption": { "type": "string" } }, "required": ["code"] },
+        { "properties": { "type": { "const": "example" }, "title": { "type": "string" }, "problem": { "type": "string" }, "solution": { "type": "string" } }, "required": ["problem", "solution"] },
+        { "properties": { "type": { "const": "image" }, "url": { "type": "string" }, "alt": { "type": "string" }, "caption": { "type": "string" } }, "required": ["url"] },
+        { "properties": { "type": { "const": "video" }, "url": { "type": "string" }, "caption": { "type": "string" } }, "required": ["url"] },
+        { "properties": { "type": { "const": "diagram" }, "title": { "type": "string" }, "nodes": { "type": "array", "items": { "type": "string" } } }, "required": ["nodes"] },
+        { "properties": { "type": { "const": "flashcards" }, "cards": { "type": "array", "items": { "type": "object", "properties": { "front": { "type": "string" }, "back": { "type": "string" } }, "required": ["front", "back"] } } }, "required": ["cards"] },
+        { "properties": { "type": { "const": "steps" }, "title": { "type": "string" }, "steps": { "type": "array", "items": { "type": "object", "properties": { "title": { "type": "string" }, "md": { "type": "string" } }, "required": ["title", "md"] } } }, "required": ["steps"] },
+        { "properties": { "type": { "const": "reveal" }, "items": { "type": "array", "items": { "type": "object", "properties": { "q": { "type": "string" }, "a": { "type": "string" } }, "required": ["q", "a"] } } }, "required": ["items"] },
+        { "properties": { "type": { "const": "order" }, "prompt": { "type": "string" }, "items": { "type": "array", "items": { "type": "string" }, "description": "In the CORRECT order; shuffled for students" } }, "required": ["items"] },
+        { "properties": { "type": { "const": "match" }, "prompt": { "type": "string" }, "pairs": { "type": "array", "items": { "type": "object", "properties": { "left": { "type": "string" }, "right": { "type": "string" } }, "required": ["left", "right"] } } }, "required": ["pairs"] },
+        { "properties": { "type": { "const": "check" }, "question": { "type": "string" }, "options": { "type": "array", "items": { "type": "string" } }, "correct": { "type": "integer", "description": "Index of the correct option" }, "explanation": { "type": "string" } }, "required": ["question", "options", "correct"] }
+      ]
+    }
+  }
+}

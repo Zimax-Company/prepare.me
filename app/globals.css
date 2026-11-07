@@ -337,3 +337,16 @@ table.table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .toast { position: fixed; bottom: 20px; right: 20px; z-index: 300; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-size: 0.9rem; box-shadow: var(--shadow-lg); animation: rise 0.25s both; }
 .result-stats { grid-template-columns: repeat(4, 1fr); }
 @media (max-width: 640px) { .result-stats { grid-template-columns: repeat(2, 1fr); } }
+.section-card { padding: 16px 18px; }
+.section-card > summary { display: flex; align-items: center; gap: 16px; cursor: pointer; list-style: none; }
+.section-card > summary::-webkit-details-marker { display: none; }
+.section-card > summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; }
+.section-card[open] > summary::before { transform: rotate(90deg); }
+.side-section { margin-top: 10px; }
+.side-section > summary { cursor: pointer; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 6px 10px; list-style: none; display: flex; justify-content: space-between; gap: 8px; }
+.side-section > summary::-webkit-details-marker { display: none; }
+/* ---- Math (KaTeX) ---- */
+.katex { font-size: 1.07em; }
+.math-display { display: block; overflow-x: auto; overflow-y: hidden; margin: 0.4em 0 0.9em; padding: 2px 0; }
+.md .math-display:last-child { margin-bottom: 0; }
+.flip-front .katex { color: #fff; }

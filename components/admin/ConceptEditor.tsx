@@ -7,10 +7,10 @@ import { slugify } from '@/lib/slug'
 import { BLOCK_META, emptyBlock, LEVELS, LEVEL_LABEL, type Block, type BlockType, type Level } from '@/lib/types'
 import { Blocks } from '../Blocks'
 
-type Meta = { title: string; slug: string; summary: string; level: Level; est_minutes: number }
+type Meta = { title: string; slug: string; summary: string; level: Level; est_minutes: number; section_id: number | null }
 
-export function ConceptEditor({ id, courseId, courseSlug, initial }: { id: number; courseId: number; courseSlug: string; initial: Meta & { blocks: Block[] } }) {
-  const [meta, setMeta] = useState<Meta>({ title: initial.title, slug: initial.slug, summary: initial.summary, level: initial.level, est_minutes: initial.est_minutes })
+export function ConceptEditor({ id, courseId, courseSlug, initial, sections = [] }: { id: number; courseId: number; courseSlug: string; initial: Meta & { blocks: Block[] }; sections?: { id: number; title: string }[] }) {
+  const [meta, setMeta] = useState<Meta>({ title: initial.title, slug: initial.slug, summary: initial.summary, level: initial.level, est_minutes: initial.est_minutes, section_id: initial.section_id })
   const [blocks, setBlocks] = useState<Block[]>(initial.blocks)
   const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -101,6 +101,12 @@ export function ConceptEditor({ id, courseId, courseSlug, initial }: { id: numbe
                 <label className="field">Level<select className="input" value={meta.level} onChange={(e) => setM('level', e.target.value as Level)}>{LEVELS.map((l) => <option key={l} value={l}>{LEVEL_LABEL[l]}</option>)}</select></label>
                 <label className="field">Est. minutes<input className="input" type="number" min={1} value={meta.est_minutes} onChange={(e) => setM('est_minutes', Number(e.target.value))} /></label>
               </div>
+              {sections.length > 0 && (
+                <label className="field">Section<select className="input" value={meta.section_id ?? ''} onChange={(e) => setM('section_id', e.target.value ? Number(e.target.value) : null)}>
+                  <option value="">No section</option>
+                  {sections.map((x) => <option key={x.id} value={x.id}>{x.title}</option>)}
+                </select></label>
+              )}
               <label className="field">Summary<input className="input" value={meta.summary} onChange={(e) => setM('summary', e.target.value)} placeholder="One-line description shown in the outline" /></label>
             </div>
             <AddMenu at={0} />

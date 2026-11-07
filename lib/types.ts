@@ -76,7 +76,7 @@ export type Block =
 export type BlockType = Block['type']
 
 export const BLOCK_META: Record<BlockType, { label: string; icon: string; hint: string }> = {
-  text: { label: 'Text', icon: '¶', hint: 'Rich text with **bold**, _italic_, `code`, lists and headings' },
+  text: { label: 'Text', icon: '¶', hint: 'Rich text with **bold**, _italic_, `code`, lists, headings and maths: $x^2$ inline, $$\\int_a^b f$$ display' },
   callout: { label: 'Callout', icon: '💡', hint: 'Highlighted tip, note or warning' },
   code: { label: 'Code', icon: '</>', hint: 'Syntax block with copy button' },
   example: { label: 'Worked example', icon: '🧪', hint: 'Problem with a hidden, revealable solution' },

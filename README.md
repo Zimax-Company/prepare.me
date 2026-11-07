@@ -55,6 +55,10 @@ Demo accounts (local only):
 
 Useful commands: `npm run migrate:status`, `npm run migrate:fresh -- --seed` (resets the database), `npm run make:migration add_something`, `npm run typecheck`.
 
+## Adding courses from a curriculum
+
+Paste an outline into `content/outlines/`, convert it with `npm run course:convert -- content/outlines/<file>.md`, fill in lessons and questions, and it seeds on the next deploy. See [content/README.md](content/README.md). `content/courses/real-analysis.json` (8 levels, 105 modules) was generated this way and is seeded as a draft.
+
 ## Deploying to Vercel
 
 1. Create a MySQL database (PlanetScale, Aiven, AWS RDS, etc.).

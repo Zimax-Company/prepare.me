@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { db, json } from '@/lib/db'
-import { getExamSettings, toCourse } from '@/lib/learning'
+import { getExamSettings, getSections, toCourse } from '@/lib/learning'
 import { CourseForm } from '@/components/admin/CourseForm'
 import { ConceptManager } from '@/components/admin/ConceptManager'
+import { SectionManager } from '@/components/admin/SectionManager'
 import { ExamSettingsForm } from '@/components/admin/ExamSettingsForm'
 import { DeleteCourse } from '@/components/admin/DeleteCourse'
 
@@ -15,11 +16,12 @@ export default async function AdminCourse({ params, searchParams }: { params: Pr
   const row = Number.isSafeInteger(id) ? await db('courses').where({ id }).first() : null
   if (!row) notFound()
   const course = toCourse(row)
-  const [concepts, qCounts, settings, pool] = await Promise.all([
+  const [concepts, qCounts, settings, pool, sections] = await Promise.all([
     db('concepts').where({ course_id: id }).orderBy([{ column: 'position' }, { column: 'id' }]),
     db('questions').where({ course_id: id }).groupBy('concept_id').select('concept_id').count({ n: '*' }) as Promise<any[]>,
     getExamSettings(id),
     db('questions').where({ course_id: id, in_exam: true }).count({ n: '*' }).first(),
+    getSections(id),
   ])
   const qc = new Map(qCounts.map((r) => [Number(r.concept_id), Number(r.n)]))
 
@@ -39,10 +41,14 @@ export default async function AdminCourse({ params, searchParams }: { params: Pr
         {TABS.map(([k, label]) => <Link key={k} href={`?tab=${k}`} className={tab === k ? 'active' : ''}>{label}</Link>)}
       </div>
       {tab === 'concepts' && (
+        <div className="stack">
+        <SectionManager courseId={id} sections={sections} />
         <ConceptManager
           courseId={id}
-          concepts={concepts.map((c) => ({ id: Number(c.id), title: c.title, slug: c.slug, level: c.level, est_minutes: Number(c.est_minutes), blocks: json<unknown[]>(c.blocks, []).length, questions: qc.get(Number(c.id)) ?? 0 }))}
+          sections={sections.map((x) => ({ id: x.id, title: x.title }))}
+          concepts={concepts.map((c) => ({ id: Number(c.id), section_id: c.section_id == null ? null : Number(c.section_id), title: c.title, slug: c.slug, level: c.level, est_minutes: Number(c.est_minutes), blocks: json<unknown[]>(c.blocks, []).length, questions: qc.get(Number(c.id)) ?? 0 }))}
         />
+        </div>
       )}
       {tab === 'details' && (
         <div className="stack-lg">
