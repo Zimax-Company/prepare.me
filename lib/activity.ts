@@ -1,7 +1,7 @@
 // Records usage. Logging must never break a request, so failures are swallowed and logged.
 import { db } from './db'
 
-export type ActivityType = 'login' | 'register' | 'enroll' | 'view_concept' | 'complete_concept' | 'practice_answer' | 'exam_start' | 'exam_submit'
+export type ActivityType = 'login' | 'register' | 'enroll' | 'view_concept' | 'complete_concept' | 'practice_answer' | 'exam_start' | 'exam_submit' | 'game_end'
 
 export async function logEvent(userId: number, type: ActivityType, opts: { courseId?: number | null; conceptId?: number | null; meta?: Record<string, unknown> } = {}) {
   try {

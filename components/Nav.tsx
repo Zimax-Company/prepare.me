@@ -13,6 +13,7 @@ export async function Nav() {
         <nav className="nav-links hide-sm">
           <Link href="/courses">Courses</Link>
           {user && <Link href="/dashboard">My learning</Link>}
+          {user && <Link href="/play">🎮 Play</Link>}
           {user?.role === 'admin' && <Link href="/admin">Admin</Link>}
         </nav>
         <div className="grow" />

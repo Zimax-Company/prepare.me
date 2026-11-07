@@ -31,6 +31,7 @@ export default async function LearnHome({ params }: { params: Promise<{ slug: st
         <div className="stack" style={{ minWidth: 200 }}>
           {next && <Link href={`/learn/${slug}/${next.slug}`} className="btn primary lg">{done === 0 ? 'Start learning →' : percent === 100 ? 'Review concepts' : 'Continue →'}</Link>}
           <Link href={`/learn/${slug}/exam`} className="btn">📝 Take the exam</Link>
+          <Link href={`/play?course=${course.id}`} className="btn">🎮 Answer Runner</Link>
         </div>
       </div>
 

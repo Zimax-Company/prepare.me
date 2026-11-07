@@ -36,6 +36,7 @@ export default async function Analytics({ searchParams }: { searchParams: Promis
         <Kpi label="new enrolments" value={k.enrolls.value} prev={k.enrolls.prev} />
         <Kpi label={`practice accuracy (${k.practiceAnswers} answers)`} value={k.practiceAccuracy} suffix="%" />
         <Kpi label={`exam avg · pass rate ${k.examPassRate ?? '—'}%`} value={k.examAvg} suffix="%" />
+        <Kpi label="Answer Runner games played" value={k.games.value} prev={k.games.prev} />
       </div>
 
       <div className="grid-charts">

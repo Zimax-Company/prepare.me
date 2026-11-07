@@ -85,6 +85,7 @@ export async function overview(days: Range) {
       .avg({ avg: 'a.percent' }).sum({ passed: 'a.passed' }).count({ c: '*' }).first(),
     withPrev((a, b) => eventCount('enroll', a, b), days),
   ])
+  const games = await withPrev((a, b) => db('game_sessions as g').join('users as u', 'u.id', 'g.user_id').where('u.role', 'student').whereNotNull('g.ended_at').whereBetween('g.started_at', [a, b]).count({ v: '*' }).first().then((r: any) => n(r?.v)), days)
   const practiceCorrect = practice.filter((r: any) => json<{ correct?: boolean }>(r.meta, {}).correct).length
 
   const [activeRows, minuteRows, completionRows, examRows] = await Promise.all([
@@ -104,6 +105,7 @@ export async function overview(days: Range) {
       completions,
       exams,
       enrolls,
+      games,
       practiceAnswers: practice.length,
       practiceAccuracy: practice.length ? Math.round((practiceCorrect / practice.length) * 100) : null,
       examAvg: (examStats as any)?.c ? Math.round(n((examStats as any).avg)) : null,
