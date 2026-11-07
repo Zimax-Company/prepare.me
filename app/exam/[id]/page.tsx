@@ -4,6 +4,7 @@ import { attemptQuestions, getExamSettings, getOwnAttempt, toPublic } from '@/li
 import { db } from '@/lib/db'
 import { ExamRunner } from '@/components/ExamRunner'
 import { narrateQuestions } from '@/lib/narration'
+import { UsageTracker } from '@/components/UsageTracker'
 
 export const metadata = { title: 'Exam in progress' }
 
@@ -18,6 +19,8 @@ export default async function ExamPage({ params }: { params: Promise<{ id: strin
   const questions = await narrateQuestions((await attemptQuestions(attempt, settings.shuffle_options)).map(toPublic))
 
   return (
+    <>
+    <UsageTracker courseId={attempt.course_id} />
     <ExamRunner
       attemptId={attempt.id}
       course={{ title: course.title, icon: course.icon, slug: course.slug }}
@@ -28,5 +31,6 @@ export default async function ExamPage({ params }: { params: Promise<{ id: strin
       serverNow={new Date().toISOString()}
       durationMinutes={attempt.duration_minutes}
     />
+    </>
   )
 }

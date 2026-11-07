@@ -361,3 +361,32 @@ table.table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .player-text { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 @media (max-width: 560px) { .player-text { display: none; } }
 @media (prefers-reduced-motion: reduce) { [data-block] { transition: none; } }
+
+/* ---- Admin charts ---- */
+.chart-card { position: relative; }
+.chart-grid { stroke: var(--border); stroke-width: 1; }
+.chart-axis { fill: var(--muted); font-size: 11px; }
+.chart-value { fill: var(--text); font-size: 11px; font-weight: 600; }
+.chart-line { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart-area { fill: color-mix(in srgb, var(--primary) 14%, transparent); }
+.chart-crosshair { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart-dot { fill: var(--primary); stroke: var(--surface); stroke-width: 2; }
+.chart-bar { fill: var(--primary); transition: opacity 0.15s; }
+.chart-bar.on { opacity: 0.75; }
+.chart-tip { position: absolute; transform: translate(-50%, -100%); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 0.82rem; box-shadow: var(--shadow-lg); pointer-events: none; white-space: nowrap; z-index: 5; }
+.heat { stroke: var(--surface); stroke-width: 1; }
+.heat-0 { fill: var(--surface-2); }
+.heat-1 { fill: color-mix(in srgb, var(--primary) 28%, var(--surface-2)); }
+.heat-2 { fill: color-mix(in srgb, var(--primary) 52%, var(--surface-2)); }
+.heat-3 { fill: color-mix(in srgb, var(--primary) 76%, var(--surface-2)); }
+.heat-4 { fill: var(--primary); }
+.barlist-track { height: 8px; border-radius: 99px; background: var(--surface-2); margin-top: 4px; overflow: hidden; }
+.barlist-track span { display: block; height: 100%; background: var(--primary); border-radius: 99px; }
+.delta { font-weight: 600; margin-top: 2px; }
+.delta.up { color: var(--success); }
+.delta.down { color: var(--danger); }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+.seg a { padding: 5px 12px; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.seg a.active { background: var(--primary-soft); color: var(--primary); }
+.grid-charts { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px) { .grid-charts { grid-template-columns: 1fr; } }

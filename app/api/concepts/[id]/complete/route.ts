@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { db } from '@/lib/db'
 import { forbidden, handle, id, notFound, ok, parseBody } from '@/lib/http'
 import { requireUser } from '@/lib/auth'
+import { logEvent } from '@/lib/activity'
 import { getEnrollment, progressForUser } from '@/lib/learning'
 
 export const POST = handle<{ id: string }>(async (req, params) => {
@@ -16,6 +17,7 @@ export const POST = handle<{ id: string }>(async (req, params) => {
     .onConflict(['user_id', 'concept_id'])
     .merge({ completed_at })
   await db('enrollments').where({ user_id: user.id, course_id: concept.course_id }).update({ last_activity_at: new Date() })
+  if (completed) await logEvent(user.id, 'complete_concept', { courseId: Number(concept.course_id), conceptId: Number(concept.id) })
   const progress = (await progressForUser(user.id)).get(Number(concept.course_id))
   return ok({ completed, progress })
 })

@@ -8,6 +8,8 @@ import { levelsUpTo } from '@/lib/types'
 import { Blocks } from '@/components/Blocks'
 import { ConceptActions } from '@/components/ConceptActions'
 import { ReadAloud } from '@/components/ReadAloud'
+import { UsageTracker } from '@/components/UsageTracker'
+import { logEvent } from '@/lib/activity'
 import { narrateConcept, narrateQuestions } from '@/lib/narration'
 import { LevelBadge, ProgressBar } from '@/components/ui'
 
@@ -23,12 +25,14 @@ export default async function ConceptPage({ params }: { params: Promise<{ slug: 
     .map(toQuestion).map(toPublic)
   const [narration, spokenQuestions] = await Promise.all([narrateConcept(concept.title, concept.summary, concept.blocks), narrateQuestions(questions)])
   await markViewed(user.id, concept.id)
+  if (user.role === 'student') await logEvent(user.id, 'view_concept', { courseId: course.id, conceptId: concept.id })
   const section = sections.find((x) => x.id === concept.section_id)
   const prev = visible[idx - 1]
   const next = visible[idx + 1]
 
   return (
     <main className="container page">
+      <UsageTracker courseId={course.id} />
       <div className="learn">
         <aside className="learn-side">
           <Link href={`/learn/${slug}`} className="small muted">← {course.title}</Link>

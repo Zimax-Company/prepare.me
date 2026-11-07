@@ -1,5 +1,6 @@
 // Data access shared by server components and API routes.
 import { db, json } from './db'
+import { logEvent } from './activity'
 import { isCorrect, seeded, shuffle } from './grading'
 import { badRequest, conflict, notFound } from './http'
 import {
@@ -349,6 +350,7 @@ export async function finalizeAttempt(a: Attempt, answers?: Record<string, strin
     percent,
     passed: percent >= a.pass_mark,
   })
+  await logEvent(a.user_id, 'exam_submit', { courseId: a.course_id, meta: { attemptId: a.id, percent, passed: percent >= a.pass_mark, timedOut: late } })
   return (await getAttempt(a.id))!
 }
 

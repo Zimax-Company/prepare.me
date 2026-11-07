@@ -7,12 +7,15 @@ import { ConceptManager } from '@/components/admin/ConceptManager'
 import { SectionManager } from '@/components/admin/SectionManager'
 import { ExamSettingsForm } from '@/components/admin/ExamSettingsForm'
 import { DeleteCourse } from '@/components/admin/DeleteCourse'
+import { CourseProgress } from '@/components/admin/CourseProgress'
+import { parseRange } from '@/lib/analytics'
 
-const TABS = [['concepts', 'Concepts'], ['details', 'Details'], ['exam', 'Exam settings']] as const
+const TABS = [['concepts', 'Concepts'], ['progress', 'Progress'], ['details', 'Details'], ['exam', 'Exam settings']] as const
 
-export default async function AdminCourse({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ tab?: string }> }) {
+export default async function AdminCourse({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ tab?: string; range?: string }> }) {
   const id = Number((await params).id)
-  const tab = (await searchParams).tab ?? 'concepts'
+  const sp = await searchParams
+  const tab = sp.tab ?? 'concepts'
   const row = Number.isSafeInteger(id) ? await db('courses').where({ id }).first() : null
   if (!row) notFound()
   const course = toCourse(row)
@@ -59,6 +62,7 @@ export default async function AdminCourse({ params, searchParams }: { params: Pr
           </div>
         </div>
       )}
+      {tab === 'progress' && <CourseProgress courseId={id} range={parseRange(sp.range)} />}
       {tab === 'exam' && <div className="card"><ExamSettingsForm settings={settings} pool={Number(pool?.n ?? 0)} /></div>}
     </div>
   )
