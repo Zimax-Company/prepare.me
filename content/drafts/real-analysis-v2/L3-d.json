@@ -1,0 +1,1068 @@
+{
+  "concepts": [
+    {
+      "slug": "3-11-cauchy-sequences",
+      "title": "Cauchy sequences",
+      "summary": "Terms that eventually crowd together, with no mention of a limit.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Cauchy sequences",
+          "md": "**In this lesson you will learn to:**\n- say in plain words and in symbols what a **Cauchy sequence** is\n- prove from the definition that a sequence is Cauchy, or that it is not\n- prove that every convergent sequence is Cauchy, and every Cauchy sequence is bounded\n- avoid the classic trap of checking only neighbouring terms\n\n**You need:** the $\\varepsilon$–$N$ definition of convergence (lesson 3.4), the triangle inequality $|x + y| \\le |x| + |y|$ (lesson 2.5), bounded sequences (lesson 3.2) and the Archimedean property (lesson 2.11)."
+        },
+        {
+          "type": "text",
+          "md": "## Convergence without knowing the limit\n\nTo prove $a_n \\to L$ with the $\\varepsilon$–$N$ definition, you must first **know** $L$. You show that every term past some point is within $\\varepsilon$ of $L$.\n\nThat is a real problem in practice. Look at\n\n$$s_n = 1 + \\frac{1}{2^2} + \\frac{1}{3^2} + \\cdots + \\frac{1}{n^2}.$$\n\nThe values $1, 1.25, 1.361, 1.424, \\dots$ seem to settle down, but to what? The answer turns out to be $\\frac{\\pi^2}{6}$, and nobody would guess that from the numbers. We would like a test for convergence that does not need the limit at all.\n\nThere is a second, deeper reason. Suppose you only had the rational numbers $\\mathbb{Q}$. The sequence $1, 1.4, 1.41, 1.414, \\dots$ of decimal truncations of $\\sqrt{2}$ is made of rationals and clearly settles down, but its target $\\sqrt{2}$ is not rational (lesson 2.1). Inside $\\mathbb{Q}$ there is **no** limit to point to.\n\nCauchy's idea is to stop talking about a target. Instead of \"the terms get close to $L$\", ask that \"the terms get close to **each other**\". That is something you can check using only the terms themselves."
+        },
+        {
+          "type": "text",
+          "md": "## The definition\n\n**In plain words:** a sequence is Cauchy if, however small a distance you name, there is a point in the sequence after which **any two** terms are closer together than that distance.\n\n**Definition.** A sequence $(a_n)$ is a **Cauchy sequence** if\n\n$$\\forall \\varepsilon > 0 \\ \\ \\exists N \\in \\mathbb{N} \\ \\ \\forall m, n \\ge N : \\ |a_m - a_n| < \\varepsilon.$$\n\nRead it left to right: \"for every $\\varepsilon > 0$ there is a natural number $N$ such that for all $m$ and $n$ that are at least $N$, the distance $|a_m - a_n|$ is less than $\\varepsilon$.\" Recall that $\\forall$ means \"for all\" and $\\exists$ means \"there exists\" (lesson 1.3).\n\nCompare it with convergence to $L$: $\\forall \\varepsilon > 0\\ \\exists N\\ \\forall n \\ge N : |a_n - L| < \\varepsilon$. The only change is that $L$ has been replaced by a second term $a_m$, so **two** indices appear. They are chosen independently: $m$ and $n$ can be next to each other or a million apart.\n\n**Examples.**\n- A constant sequence $a_n = 7$ is Cauchy. Every difference $|a_m - a_n|$ is $0$, so any $N$ works. Students sometimes think a sequence must \"move\" to be Cauchy; it need not.\n- $a_n = \\frac{1}{n}$ is Cauchy. With $\\varepsilon = 0.1$, take $N = 10$: every term from $a_{10}$ on lies in $(0, 0.1]$, and two numbers in $(0, 0.1]$ differ by less than $0.1$.\n- When $m = n$ the condition is $0 < \\varepsilon$, which always holds. The real content is about $m \\ne n$."
+        },
+        {
+          "type": "check",
+          "question": "Take $a_n = \\frac{1}{n}$ and $\\varepsilon = 0.01$. Which $N$ makes $|a_m - a_n| < 0.01$ for **all** $m, n \\ge N$?",
+          "options": [
+            "$N = 10$",
+            "$N = 50$",
+            "$N = 100$",
+            "No $N$ works, because the terms never reach $0$"
+          ],
+          "correct": 2,
+          "explanation": "From $a_{100} = 0.01$ on, every term lies in $(0, 0.01]$, so any two differ by less than $0.01$. $N = 10$ fails: $a_{10} - a_{1000} = 0.1 - 0.001 = 0.099$. $N = 50$ fails: $a_{50} - a_{1000} = 0.02 - 0.001 = 0.019$. The terms never need to reach $0$; they only need to crowd together."
+        },
+        {
+          "type": "steps",
+          "title": "Proving from the definition that $\\left(\\frac1n\\right)$ is Cauchy",
+          "steps": [
+            {
+              "title": "Let epsilon be arbitrary",
+              "md": "Let $\\varepsilon > 0$ be any positive number. The proof must work for every $\\varepsilon$, so we do not pick a value."
+            },
+            {
+              "title": "Choose N",
+              "md": "By the Archimedean property (lesson 2.11) there is a natural number $N$ with $N > \\frac{1}{\\varepsilon}$, that is, $\\frac{1}{N} < \\varepsilon$. We find $N$ by working backwards from what we need at the end; that is normal."
+            },
+            {
+              "title": "Take any two indices past N",
+              "md": "Let $m, n \\ge N$. Then $0 < \\frac{1}{m} \\le \\frac{1}{N}$ and $0 < \\frac{1}{n} \\le \\frac{1}{N}$. We do **not** assume $m = n + 1$ or $m > n$: the two indices are arbitrary."
+            },
+            {
+              "title": "Bound the distance",
+              "md": "Both numbers lie in the interval $\\left(0, \\frac{1}{N}\\right]$. Two numbers in an interval of length $\\frac{1}{N}$ that excludes $0$ differ by **less** than $\\frac{1}{N}$, so\n$$\\left|\\frac{1}{m} - \\frac{1}{n}\\right| < \\frac{1}{N} < \\varepsilon.$$\nHence $\\left(\\frac{1}{n}\\right)$ is Cauchy. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why may we **not** simply take $m = n + 1$?",
+          "options": [
+            "Because $\\frac{1}{n+1}$ is not defined for every $n$",
+            "Because the definition demands the bound for **all** pairs $m, n \\ge N$, not just neighbouring terms",
+            "Because $m$ must always be smaller than $n$",
+            "We may; checking neighbours is the same thing"
+          ],
+          "correct": 1,
+          "explanation": "\"$\\forall m, n \\ge N$\" covers every pair, near or far apart. Checking only $m = n + 1$ proves something weaker, and later in this lesson you will see a sequence that passes the neighbour test but is not Cauchy. The order of $m$ and $n$ does not matter, since $|a_m - a_n| = |a_n - a_m|$."
+        },
+        {
+          "type": "text",
+          "md": "## Showing a sequence is not Cauchy\n\nTo show a sequence is **not** Cauchy, negate the definition. Swap each $\\forall$ and $\\exists$ and negate the final inequality (lesson 1.3):\n\n$$\\exists \\varepsilon > 0 \\ \\ \\forall N \\in \\mathbb{N} \\ \\ \\exists m, n \\ge N : \\ |a_m - a_n| \\ge \\varepsilon.$$\n\n**In plain words:** there is one fixed gap $\\varepsilon$ such that, however far out you go, you can always find two terms at least that far apart.\n\n**Examples.**\n- $a_n = (-1)^n$: the terms are $-1, 1, -1, 1, \\dots$ Take $\\varepsilon = 1$. For any $N$, choose $m = N$ and $n = N + 1$. One is $1$ and the other is $-1$, so $|a_m - a_n| = 2 \\ge 1$. Not Cauchy.\n- $a_n = n$: take $\\varepsilon = 1$, $m = N + 1$, $n = N$. Then $|a_m - a_n| = 1 \\ge 1$. Not Cauchy.\n\n**Edge case students get wrong:** $a_n = \\frac{(-1)^n}{n}$, that is $-1, \\frac12, -\\frac13, \\frac14, \\dots$ The signs flip forever, like $(-1)^n$, so it looks like it should fail. But every term from $a_N$ on lies in $\\left[-\\frac{1}{N}, \\frac{1}{N}\\right]$, so any two differ by at most $\\frac{2}{N}$. Given $\\varepsilon$, choose $N > \\frac{2}{\\varepsilon}$. It **is** Cauchy. Flipping sign is harmless when the size shrinks.\n\nNotice that $\\varepsilon$ is chosen **once**, before $N$. You may pick $m$ and $n$ depending on $N$, but not $\\varepsilon$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each sequence to the right verdict.",
+          "pairs": [
+            {
+              "left": "$a_n = (-1)^n$",
+              "right": "Not Cauchy: neighbouring terms are always $2$ apart"
+            },
+            {
+              "left": "$a_n = \\frac{(-1)^n}{n}$",
+              "right": "Cauchy: from $a_N$ on, terms differ by at most $\\frac{2}{N}$"
+            },
+            {
+              "left": "$a_n = n$",
+              "right": "Not Cauchy: neighbouring terms are always $1$ apart"
+            },
+            {
+              "left": "$a_n = 7$",
+              "right": "Cauchy: every difference is $0$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Every convergent sequence is Cauchy\n\n**Why it matters:** this tells us the Cauchy condition is not too strong. Every sequence we already know converges passes it.\n\n**In plain words:** if all late terms are close to one number $L$, then they are close to each other. Two people each standing within $5$ metres of a lamp-post are within $10$ metres of each other.\n\n**Theorem.** If $a_n \\to L$, then $(a_n)$ is Cauchy.\n\n**Proof.** Let $\\varepsilon > 0$. Because $a_n \\to L$, there is $N$ with $|a_n - L| < \\frac{\\varepsilon}{2}$ for all $n \\ge N$. Now take any $m, n \\ge N$. Add and subtract $L$, then use the triangle inequality:\n\n$$|a_m - a_n| = |(a_m - L) + (L - a_n)| \\le |a_m - L| + |a_n - L| < \\frac{\\varepsilon}{2} + \\frac{\\varepsilon}{2} = \\varepsilon. \\quad \\blacksquare$$\n\nTwo moves deserve attention:\n- We asked for $\\frac{\\varepsilon}{2}$, not $\\varepsilon$, at the start. Each of the two distances contributes up to $\\frac{\\varepsilon}{2}$, so they add to less than $\\varepsilon$. This \"$\\varepsilon/2$ trick\" appears all through analysis.\n- $|L - a_n| = |a_n - L|$, because distance does not depend on direction.\n\n**Examples.** $\\frac{1}{n^2} \\to 0$, $\\frac{(-1)^n}{n} \\to 0$ and $1 - \\frac{1}{n} \\to 1$, so all three are Cauchy at once, with no separate proof. The **converse**, \"Cauchy implies convergent\", is the subject of lesson 3.12."
+        },
+        {
+          "type": "check",
+          "question": "In the proof, a student chooses $N$ with $|a_n - L| < \\varepsilon$ instead of $\\frac{\\varepsilon}{2}$. What goes wrong?",
+          "options": [
+            "Nothing; the proof still ends with $|a_m - a_n| < \\varepsilon$",
+            "The proof ends with $|a_m - a_n| < 2\\varepsilon$, which is not what the definition asks for",
+            "The triangle inequality no longer applies",
+            "$N$ would no longer exist"
+          ],
+          "correct": 1,
+          "explanation": "Adding two distances each less than $\\varepsilon$ gives less than $2\\varepsilon$. (That can be repaired by renaming, but as written the proof does not reach \"$< \\varepsilon$\".) The triangle inequality holds for any numbers, and $N$ still exists for any positive tolerance."
+        },
+        {
+          "type": "steps",
+          "title": "Every Cauchy sequence is bounded",
+          "steps": [
+            {
+              "title": "Use epsilon = 1",
+              "md": "Because $(a_n)$ is Cauchy, the definition holds for every $\\varepsilon$, in particular for $\\varepsilon = 1$. So there is $N$ with $|a_m - a_n| < 1$ for all $m, n \\ge N$. Any fixed positive number would do; $1$ is simply convenient."
+            },
+            {
+              "title": "Compare every late term with one term",
+              "md": "Fix $m = N$. For every $n \\ge N$, the triangle inequality gives\n$$|a_n| = |(a_n - a_N) + a_N| \\le |a_n - a_N| + |a_N| < 1 + |a_N|.$$\nSo the whole tail is trapped by the single number $1 + |a_N|$."
+            },
+            {
+              "title": "Handle the early terms",
+              "md": "Only the finitely many terms $a_1, \\dots, a_{N-1}$ are left. Let\n$$M = \\max\\{|a_1|, \\dots, |a_{N-1}|, 1 + |a_N|\\}.$$\nA maximum of finitely many numbers always exists; that is why splitting off the start works."
+            },
+            {
+              "title": "Conclude",
+              "md": "Every term satisfies $|a_n| \\le M$, so $(a_n)$ is bounded. $\\blacksquare$ Compare the proof that convergent sequences are bounded (lesson 3.3): the term $a_N$ plays the role of the limit $L$, which we do not have."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Neighbouring terms are not enough",
+          "md": "It is **not** enough that $a_{n+1} - a_n \\to 0$. Take $a_n = \\sqrt{n}$:\n\n$$\\sqrt{n+1} - \\sqrt{n} = \\frac{1}{\\sqrt{n+1} + \\sqrt{n}} \\to 0.$$\n\nThe steps shrink to nothing, yet $\\sqrt{n}$ grows past every bound, so by the theorem above it cannot be Cauchy. Directly: take $\\varepsilon = 1$, and for any $N$ choose $m = 4N$ and $n = N$. Then $|a_m - a_n| = 2\\sqrt{N} - \\sqrt{N} = \\sqrt{N} \\ge 1$.\n\nSmall steps can add up to an unbounded distance. The Cauchy condition controls **every** pair of late terms, not just neighbours."
+        },
+        {
+          "type": "check",
+          "question": "A student shows that $a_{n+1} - a_n \\to 0$ and concludes that $(a_n)$ is Cauchy. Which sequence shows the reasoning is wrong?",
+          "options": [
+            "$a_n = \\frac{1}{n}$",
+            "$a_n = \\sqrt{n}$",
+            "$a_n = (-1)^n$",
+            "$a_n = 7$"
+          ],
+          "correct": 1,
+          "explanation": "For $\\sqrt{n}$ the steps tend to $0$ but the sequence is unbounded, so not Cauchy. $\\frac{1}{n}$ and $7$ are Cauchy, so they agree with the student's conclusion. For $(-1)^n$ the steps are always $2$, so the hypothesis fails and it tells us nothing."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Cauchy sequence",
+              "back": "Late terms are **close to each other**: $\\forall \\varepsilon > 0\\ \\exists N\\ \\forall m, n \\ge N : |a_m - a_n| < \\varepsilon$.\n\n*Example:* $\\frac{1}{n}$; from $a_{100}$ on, any two terms differ by less than $0.01$."
+            },
+            {
+              "front": "Not Cauchy",
+              "back": "**One fixed** $\\varepsilon > 0$ such that for every $N$ some $m, n \\ge N$ have $|a_m - a_n| \\ge \\varepsilon$.\n\n*Example:* $(-1)^n$ with $\\varepsilon = 1$, $m = N$, $n = N + 1$."
+            },
+            {
+              "front": "Convergent implies Cauchy",
+              "back": "If $a_n \\to L$, insert $L$ and use the triangle inequality with $\\frac{\\varepsilon}{2}$ each side.\n\n*Example:* $1 - \\frac{1}{n} \\to 1$, so it is Cauchy."
+            },
+            {
+              "front": "Cauchy implies bounded",
+              "back": "Use $\\varepsilon = 1$: the tail lies within $1$ of $a_N$; the finitely many early terms have a **maximum**.\n\n*Example:* $\\sqrt{n}$ is unbounded, so it is not Cauchy."
+            },
+            {
+              "front": "Neighbour trap",
+              "back": "$a_{n+1} - a_n \\to 0$ does **not** make a sequence Cauchy.\n\n*Example:* $\\sqrt{n+1} - \\sqrt{n} \\to 0$, but $\\sqrt{n}$ is unbounded."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You know nothing about a sequence except that it is Cauchy. Which of these can you conclude?",
+          "options": [
+            "It is monotone",
+            "It is bounded",
+            "It is eventually constant",
+            "Its limit is $0$"
+          ],
+          "correct": 1,
+          "explanation": "Every Cauchy sequence is bounded. It need not be monotone ($\\frac{(-1)^n}{n}$ flips sign), need not be eventually constant ($\\frac{1}{n}$ never repeats), and need not head to $0$ ($1 - \\frac{1}{n}$ heads to $1$)."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of the proof **if $a_n \\to L$ then $(a_n)$ is Cauchy** in order.",
+          "items": [
+            "Let $\\varepsilon > 0$.",
+            "Since $a_n \\to L$, choose $N$ with $|a_n - L| < \\frac{\\varepsilon}{2}$ for all $n \\ge N$.",
+            "Let $m, n \\ge N$ be arbitrary.",
+            "By the triangle inequality, $|a_m - a_n| \\le |a_m - L| + |L - a_n|$.",
+            "This is less than $\\frac{\\varepsilon}{2} + \\frac{\\varepsilon}{2} = \\varepsilon$, so $(a_n)$ is Cauchy. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\frac{n}{n+1}$ is Cauchy",
+          "problem": "Prove **directly from the definition** (without using its limit) that $a_n = \\frac{n}{n+1}$ is a Cauchy sequence. Hint: rewrite $\\frac{n}{n+1}$ as $1 - \\frac{1}{n+1}$ first.",
+          "solution": "**Proof.** Note that $a_n = 1 - \\frac{1}{n+1}$. So for any $m, n$,\n$$|a_m - a_n| = \\left|\\frac{1}{n+1} - \\frac{1}{m+1}\\right|.$$\n\nLet $\\varepsilon > 0$. By the Archimedean property choose $N \\in \\mathbb{N}$ with $N > \\frac{1}{\\varepsilon}$.\n\nLet $m, n \\ge N$. Then $\\frac{1}{m+1}$ and $\\frac{1}{n+1}$ both lie in $\\left(0, \\frac{1}{N+1}\\right]$, so they differ by less than $\\frac{1}{N+1}$. Hence\n$$|a_m - a_n| < \\frac{1}{N+1} < \\frac{1}{N} < \\varepsilon.$$\nSo $(a_n)$ is Cauchy. $\\blacksquare$\n\n**Check your version:** did you start with an arbitrary $\\varepsilon$? Did you take **two** arbitrary indices $m, n \\ge N$, rather than $m = n + 1$? Did you say why $N$ exists?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why care, if convergent and Cauchy turn out to be the same in $\\mathbb{R}$?",
+              "a": "Because the Cauchy condition can be checked using only the terms themselves. In lesson 3.12 you will use it to prove that $1 + \\frac{1}{2^2} + \\cdots + \\frac{1}{n^2}$ converges without ever finding $\\frac{\\pi^2}{6}$. The same idea later proves that series and integrals converge."
+            },
+            {
+              "q": "Is a Cauchy sequence just a convergent sequence with a different name?",
+              "a": "In $\\mathbb{R}$ the two turn out to be the same sequences, but that is a theorem, not a definition, and it depends on completeness. In $\\mathbb{Q}$, the truncations $1, 1.4, 1.41, \\dots$ of $\\sqrt{2}$ are Cauchy but have no rational limit."
+            },
+            {
+              "q": "Can I prove Cauchy by checking $|a_{n+1} - a_n| < \\varepsilon$?",
+              "a": "No. That only controls neighbours. $\\sqrt{n}$ passes that test and is not Cauchy. You must handle arbitrary $m, n \\ge N$."
+            },
+            {
+              "q": "Does $N$ have to be the smallest one that works?",
+              "a": "No. Any $N$ that works is fine, and a larger one always works too. In the $\\frac{1}{n}$ proof, $N > \\frac{1}{\\varepsilon}$ is convenient, not optimal."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $(a_n)$ is **Cauchy** when, for every $\\varepsilon > 0$, all terms past some $N$ are within $\\varepsilon$ of **each other**: $|a_m - a_n| < \\varepsilon$ for all $m, n \\ge N$.\n- The definition never mentions a limit, so you can check it from the terms alone.\n- To show **not Cauchy**, fix one $\\varepsilon$ and, for every $N$, find $m, n \\ge N$ at least $\\varepsilon$ apart.\n- **Convergent implies Cauchy** (triangle inequality with $\\frac{\\varepsilon}{2}$), and **Cauchy implies bounded** ($\\varepsilon = 1$ plus a maximum of finitely many terms).\n- $a_{n+1} - a_n \\to 0$ is **not** enough: $\\sqrt{n}$ is the standard counterexample."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which statement defines \"$(a_n)$ is Cauchy\"?",
+          "options": [
+            "$\\forall \\varepsilon > 0\\ \\exists N\\ \\forall n \\ge N : |a_{n+1} - a_n| < \\varepsilon$",
+            "$\\forall \\varepsilon > 0\\ \\exists N\\ \\forall m, n \\ge N : |a_m - a_n| < \\varepsilon$",
+            "$\\exists N\\ \\forall \\varepsilon > 0\\ \\forall m, n \\ge N : |a_m - a_n| < \\varepsilon$",
+            "$\\forall \\varepsilon > 0\\ \\forall m, n\\ \\exists N : |a_m - a_n| < \\varepsilon$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "All pairs of terms beyond $N$ must be within $\\varepsilon$. The first option only controls neighbouring terms, which is too weak ($\\sqrt{n}$ passes it). The third puts $N$ before $\\varepsilon$, which forces $a_m = a_n$ for $m, n \\ge N$: the sequence would be eventually constant. In the fourth, $N$ appears nowhere in the inequality, so it says $|a_m - a_n| < \\varepsilon$ for every $\\varepsilon$ and every pair, forcing the whole sequence to be constant."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $a_{n+1} - a_n \\to 0$, then $(a_n)$ is a Cauchy sequence.",
+          "answer": [
+            false
+          ],
+          "explanation": "$a_n = \\sqrt{n}$ satisfies $\\sqrt{n+1} - \\sqrt{n} \\to 0$ but is unbounded, and Cauchy sequences are bounded."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these sequences are Cauchy? Select all that apply.",
+          "options": [
+            "$\\dfrac{1}{n^2}$",
+            "$(-1)^n$",
+            "$\\sqrt{n}$",
+            "$\\dfrac{(-1)^n}{n}$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "$\\frac{1}{n^2} \\to 0$ and $\\frac{(-1)^n}{n} \\to 0$ converge, hence are Cauchy. $(-1)^n$ has $|a_N - a_{N+1}| = 2$ for every $N$, and $\\sqrt{n}$ is unbounded."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every Cauchy sequence is bounded.",
+          "answer": [
+            true
+          ],
+          "explanation": "With $\\varepsilon = 1$, all terms from $a_N$ on lie within $1$ of $a_N$, so $|a_n| < 1 + |a_N|$; the finitely many earlier terms are bounded by their largest absolute value."
+        },
+        {
+          "type": "single",
+          "prompt": "Although $\\sqrt{n+1} - \\sqrt{n} \\to 0$, the sequence $(\\sqrt n)$ is not Cauchy. Which is the best reason?",
+          "options": [
+            "Its terms are irrational.",
+            "It is increasing.",
+            "It is unbounded, and every Cauchy sequence is bounded.",
+            "The differences tend to $0$ too slowly to matter."
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Cauchy implies bounded, and $\\sqrt{n} > M$ whenever $n > M^2$. Irrational terms are irrelevant (most terms of $\\sqrt{n}$ are irrational, but so are many terms of convergent sequences). Being increasing is not the issue: $1 - \\frac{1}{n}$ is increasing and Cauchy. \"Too slowly\" is vague; what matters is that the steps add up to an unbounded distance."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof that a convergent sequence $a_n \\to L$ is Cauchy, after choosing $N$ with $|a_n - L| < \\frac{\\varepsilon}{2}$ for $n \\ge N$, the key step for $m, n \\ge N$ is:",
+          "options": [
+            "the triangle inequality: $|a_m - a_n| \\le |a_m - L| + |L - a_n|$",
+            "the Monotone Convergence Theorem",
+            "choosing a subsequence",
+            "the completeness axiom"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Inserting $L$ and applying the triangle inequality gives $|a_m - a_n| < \\frac{\\varepsilon}{2} + \\frac{\\varepsilon}{2} = \\varepsilon$. The sequence need not be monotone, no subsequence is involved, and no completeness is needed for this direction."
+        },
+        {
+          "type": "short",
+          "prompt": "To prove $\\left(\\frac{1}{n}\\right)$ is Cauchy you use the rule \"choose a natural number $N > \\frac{1}{\\varepsilon}$\". What is the smallest $N$ this rule allows when $\\varepsilon = 0.02$?",
+          "answer": [
+            "51"
+          ],
+          "explanation": "$\\frac{1}{0.02} = 50$, and the rule needs $N$ **strictly** greater than $50$, so $N = 51$. (In fact $N = 50$ also works for this sequence, but it is not what the rule gives.)"
+        },
+        {
+          "type": "true_false",
+          "prompt": "The constant sequence $a_n = 7$ is a Cauchy sequence.",
+          "answer": [
+            true
+          ],
+          "explanation": "$|a_m - a_n| = 0 < \\varepsilon$ for every $m, n$, so any $N$ works. A Cauchy sequence does not need to move."
+        },
+        {
+          "type": "single",
+          "prompt": "Which statement says \"$(a_n)$ is **not** Cauchy\"?",
+          "options": [
+            "$\\exists \\varepsilon > 0\\ \\forall N\\ \\exists m, n \\ge N : |a_m - a_n| \\ge \\varepsilon$",
+            "$\\forall \\varepsilon > 0\\ \\forall N\\ \\exists m, n \\ge N : |a_m - a_n| \\ge \\varepsilon$",
+            "$\\exists \\varepsilon > 0\\ \\exists N\\ \\forall m, n \\ge N : |a_m - a_n| \\ge \\varepsilon$",
+            "$\\forall \\varepsilon > 0\\ \\exists N\\ \\forall m, n \\ge N : |a_m - a_n| \\ge \\varepsilon$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Negating swaps every quantifier and flips $<$ to $\\ge$. The second demands a gap for **every** $\\varepsilon$, which is far too strong. The third and fourth require **all** late pairs to be far apart, but then $m = n$ would give $0 \\ge \\varepsilon$, impossible."
+        },
+        {
+          "type": "short",
+          "prompt": "For $a_n = (-1)^n$, what is $|a_N - a_{N+1}|$ for any $N$?",
+          "answer": [
+            "2"
+          ],
+          "explanation": "One of $a_N, a_{N+1}$ is $1$ and the other is $-1$, so the distance is $2$. With $\\varepsilon = 1$, this shows $(-1)^n$ is not Cauchy."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements are true for every real sequence? Select all that apply.",
+          "options": [
+            "Every convergent sequence is Cauchy.",
+            "Every bounded sequence is Cauchy.",
+            "Every Cauchy sequence is bounded.",
+            "Every Cauchy sequence is monotone.",
+            "An unbounded sequence is never Cauchy."
+          ],
+          "answer": [
+            0,
+            2,
+            4
+          ],
+          "explanation": "Convergent implies Cauchy, and Cauchy implies bounded, so an unbounded sequence cannot be Cauchy. But $(-1)^n$ is bounded and not Cauchy, and $\\frac{(-1)^n}{n}$ is Cauchy but not monotone."
+        },
+        {
+          "type": "short",
+          "prompt": "For $a_n = \\sqrt{n}$, compute $a_{36} - a_9$.",
+          "answer": [
+            "3"
+          ],
+          "explanation": "$\\sqrt{36} - \\sqrt{9} = 6 - 3 = 3$. In general $a_{4N} - a_N = \\sqrt{N}$, which is at least $1$ for every $N$, so $\\sqrt{n}$ is not Cauchy even though its neighbouring steps shrink."
+        }
+      ]
+    },
+    {
+      "slug": "3-12-cauchy-convergence-criterion",
+      "title": "Cauchy convergence criterion",
+      "summary": "In $\\mathbb{R}$, a sequence converges if and only if it is Cauchy.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Cauchy convergence criterion",
+          "md": "**In this lesson you will learn to:**\n- state the Cauchy criterion: in $\\mathbb{R}$, convergent and Cauchy mean the same thing\n- explain why it fails in $\\mathbb{Q}$, and what \"complete\" means\n- follow the proof that every Cauchy sequence in $\\mathbb{R}$ converges\n- use the criterion to prove convergence **without knowing the limit**, and to prove divergence\n\n**You need:** Cauchy sequences, and the facts that convergent sequences are Cauchy and Cauchy sequences are bounded (lesson 3.11); subsequences (lesson 3.9); the Bolzano–Weierstrass theorem (lesson 3.10)."
+        },
+        {
+          "type": "text",
+          "md": "## The question left open\n\nIn lesson 3.11 you proved one direction: **every convergent sequence is Cauchy**. The natural question is the converse. If the terms crowd together, must they crowd around some number?\n\nIf yes, we get a test for convergence that never mentions the limit. That is exactly what we wanted for sums like $1 + \\frac{1}{2^2} + \\cdots + \\frac{1}{n^2}$, whose limit we cannot guess.\n\n**Theorem (Cauchy criterion).** A sequence of real numbers converges if and only if it is a Cauchy sequence.\n\n\"If and only if\" packs two statements together:\n- **convergent $\\Rightarrow$ Cauchy.** Already proved, using only the triangle inequality.\n- **Cauchy $\\Rightarrow$ convergent.** New. This is the hard half, and it uses a special property of $\\mathbb{R}$.\n\n**Examples.**\n- $\\frac{(-1)^n}{n}$ is Cauchy (lesson 3.11), so it converges. Here we happen to know the limit is $0$.\n- $(-1)^n$ is not Cauchy, so it diverges. The criterion works in both directions: \"not Cauchy\" proves divergence.\n- **Edge case:** the criterion tells you **that** a limit exists, never **what** it is. For $1 + \\frac{1}{2^2} + \\cdots + \\frac{1}{n^2}$ it will prove convergence, but finding the value $\\frac{\\pi^2}{6}$ needs entirely different tools."
+        },
+        {
+          "type": "check",
+          "question": "You have shown that a real sequence is Cauchy. What does the Cauchy criterion now give you?",
+          "options": [
+            "The value of its limit",
+            "That it converges to some real number, though not which one",
+            "That it is monotone",
+            "Nothing new, because Cauchy and convergent are different properties"
+          ],
+          "correct": 1,
+          "explanation": "In $\\mathbb{R}$, Cauchy implies convergent, so a limit exists. The criterion does not identify it. Cauchy sequences need not be monotone ($\\frac{(-1)^n}{n}$), and in $\\mathbb{R}$ the two properties are exactly the same."
+        },
+        {
+          "type": "text",
+          "md": "## Why it fails in Q: completeness\n\nThe hard half is **false** if you only have rational numbers.\n\nLet $a_n$ be $\\sqrt{2}$ cut off after $n$ decimal places: $a_1 = 1.4$, $a_2 = 1.41$, $a_3 = 1.414$, and so on. Every $a_n$ is rational.\n\n**It is Cauchy.** If $m \\ge n$, then $a_m$ agrees with $a_n$ in the first $n$ decimal places, so $a_n \\le a_m \\le \\sqrt{2} < a_n + 10^{-n}$, which gives $|a_m - a_n| < 10^{-n}$. Given $\\varepsilon > 0$, choose $N$ with $10^{-N} < \\varepsilon$. For $m, n \\ge N$ the distance is less than $10^{-\\min(m,n)} \\le 10^{-N} < \\varepsilon$.\n\n**It has no rational limit.** In $\\mathbb{R}$ it converges to $\\sqrt{2}$. Limits are unique (lesson 3.5), so no rational number can also be its limit, and $\\sqrt{2}$ is irrational (lesson 2.1).\n\nSo inside $\\mathbb{Q}$ there is a Cauchy sequence with nowhere to converge: $\\mathbb{Q}$ has a **hole** at $\\sqrt{2}$.\n\nA number system in which every Cauchy sequence converges is called **complete**. $\\mathbb{R}$ is complete; $\\mathbb{Q}$ is not. This is the same \"no gaps\" idea as the completeness axiom of lesson 2.10 (every nonempty set bounded above has a supremum). In fact, for an ordered field with the Archimedean property, the two versions are equivalent. So any proof of \"Cauchy $\\Rightarrow$ convergent\" **must** use completeness somewhere; the triangle inequality alone cannot do it, since it works just as well in $\\mathbb{Q}$."
+        },
+        {
+          "type": "check",
+          "question": "A friend proves \"every Cauchy sequence converges\" using only the triangle inequality and the definition of a Cauchy sequence. What can you say before reading the proof?",
+          "options": [
+            "It must be correct, since both tools are valid",
+            "It must contain a mistake, because the same argument would work in $\\mathbb{Q}$, where the result is false",
+            "It is correct, but only for monotone sequences",
+            "It is correct, but only for bounded sequences"
+          ],
+          "correct": 1,
+          "explanation": "The triangle inequality and the Cauchy definition make sense in $\\mathbb{Q}$ too. If they were enough, every Cauchy sequence of rationals would have a rational limit, but the truncations of $\\sqrt{2}$ do not. A correct proof needs a property $\\mathbb{Q}$ lacks, such as completeness. Restricting to bounded sequences does not help: every Cauchy sequence is already bounded."
+        },
+        {
+          "type": "text",
+          "md": "## The plan of the proof\n\nThe proof that Cauchy implies convergent strings together three results you already have.\n\n1. **Cauchy $\\Rightarrow$ bounded** (lesson 3.11).\n2. **Bounded $\\Rightarrow$ a convergent subsequence**, by Bolzano–Weierstrass (lesson 3.10). This is where completeness enters: Bolzano–Weierstrass rests on the Monotone Convergence Theorem, which rests on the completeness axiom.\n3. **A Cauchy sequence follows any convergent subsequence.** This is the new step.\n\n**Why step 3 is believable.** Suppose some subsequence $a_{n_1}, a_{n_2}, \\dots$ heads to $L$. Far out, the subsequence terms are near $L$. And because the sequence is Cauchy, **every** late term is near every other late term, including those subsequence terms. So every late term is near $L$.\n\nIn symbols, for a late index $n$ and a late subsequence index $n_k$:\n\n$$|a_n - L| \\le |a_n - a_{n_k}| + |a_{n_k} - L|.$$\n\nThe first distance is small because the sequence is Cauchy; the second is small because the subsequence converges. Each is made less than $\\frac{\\varepsilon}{2}$, the same trick as in lesson 3.11.\n\n**A non-example shows why Cauchy is needed in step 3.** $(-1)^n$ has the subsequence $a_2, a_4, a_6, \\dots = 1, 1, 1, \\dots$ converging to $1$, yet the whole sequence does not converge. It is not Cauchy, so the odd terms are free to stay far from the even ones."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: every Cauchy sequence in $\\mathbb{R}$ converges",
+          "steps": [
+            {
+              "title": "Get a candidate limit",
+              "md": "Let $(a_n)$ be Cauchy. It is bounded, so by Bolzano–Weierstrass it has a subsequence $(a_{n_k})$ converging to some $L \\in \\mathbb{R}$. We now show the **whole** sequence tends to $L$."
+            },
+            {
+              "title": "Use the Cauchy property with epsilon/2",
+              "md": "Let $\\varepsilon > 0$. Choose $N$ with $|a_m - a_n| < \\frac{\\varepsilon}{2}$ for all $m, n \\ge N$."
+            },
+            {
+              "title": "Pick one good subsequence term",
+              "md": "Choose an index $k$ with **both** $n_k \\ge N$ and $|a_{n_k} - L| < \\frac{\\varepsilon}{2}$. This is possible: the subsequence converges, so the second holds for all large $k$, and $n_k \\ge k$ (the indices are strictly increasing), so the first holds once $k \\ge N$. Taking $k$ large enough gives both."
+            },
+            {
+              "title": "Compare every late term with it",
+              "md": "For any $n \\ge N$, both $n$ and $n_k$ are at least $N$, so\n$$|a_n - L| \\le |a_n - a_{n_k}| + |a_{n_k} - L| < \\frac{\\varepsilon}{2} + \\frac{\\varepsilon}{2} = \\varepsilon.$$\nNotice that $k$ is fixed **once**; the same subsequence term serves every $n \\ge N$."
+            },
+            {
+              "title": "Conclude",
+              "md": "For every $\\varepsilon > 0$ we found $N$ with $|a_n - L| < \\varepsilon$ for all $n \\ge N$. So $a_n \\to L$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why must the chosen subsequence index satisfy $n_k \\ge N$?",
+          "options": [
+            "So that $a_{n_k}$ equals $L$ exactly",
+            "So that the Cauchy bound $|a_n - a_{n_k}| < \\frac{\\varepsilon}{2}$ applies, which needs both indices to be at least $N$",
+            "Because subsequence indices are always smaller than $N$",
+            "It is not needed; any $k$ works"
+          ],
+          "correct": 1,
+          "explanation": "The Cauchy condition only controls pairs of indices that are **both** at least $N$. If $n_k < N$, the term $a_{n_k}$ could be far from $a_n$. The subsequence term need not equal $L$, only be within $\\frac{\\varepsilon}{2}$ of it."
+        },
+        {
+          "type": "text",
+          "md": "## Using the criterion: convergence without the limit\n\nHere is the payoff. Recall that $\\sum_{k=1}^{n} b_k$ means $b_1 + b_2 + \\cdots + b_n$ (lesson 1.7). Let\n\n$$s_n = \\sum_{k=1}^{n} \\frac{1}{k^2}.$$\n\n**Key estimate.** For $k \\ge 2$, $\\frac{1}{k^2} < \\frac{1}{k(k-1)} = \\frac{1}{k-1} - \\frac{1}{k}$. Adding these from $k = n + 1$ to $k = m$ (with $m > n \\ge 1$), the middle terms cancel in pairs, which is called **telescoping**:\n\n$$0 < s_m - s_n = \\sum_{k=n+1}^{m} \\frac{1}{k^2} < \\sum_{k=n+1}^{m} \\left(\\frac{1}{k-1} - \\frac{1}{k}\\right) = \\frac{1}{n} - \\frac{1}{m} < \\frac{1}{n}.$$\n\nFor example, with $n = 2$ and $m = 4$: $\\frac{1}{9} + \\frac{1}{16} \\approx 0.174$, while $\\left(\\frac12 - \\frac13\\right) + \\left(\\frac13 - \\frac14\\right) = \\frac12 - \\frac14 = 0.25$.\n\n**Cauchy.** Let $\\varepsilon > 0$ and choose $N > \\frac{1}{\\varepsilon}$. For $m, n \\ge N$ with $m > n$, $|s_m - s_n| < \\frac{1}{n} \\le \\frac{1}{N} < \\varepsilon$. If $m < n$, swap their names; if $m = n$, the distance is $0$. So $(s_n)$ is Cauchy, and by the criterion it **converges**. $\\blacksquare$\n\nWe never needed the limit. Since $(s_n)$ is increasing and bounded by $2$, the Monotone Convergence Theorem would also work here, but the Cauchy argument does not rely on monotonicity, which matters for sums whose terms change sign. Infinite sums like this are the subject of Level 4."
+        },
+        {
+          "type": "check",
+          "question": "Using telescoping, what is $\\displaystyle\\sum_{k=4}^{6} \\left(\\frac{1}{k-1} - \\frac{1}{k}\\right)$?",
+          "options": [
+            "$\\frac{1}{6}$",
+            "$\\frac{1}{4} - \\frac{1}{6}$",
+            "$\\frac{1}{3}$",
+            "$\\frac{1}{18}$"
+          ],
+          "correct": 0,
+          "explanation": "Write it out: $\\left(\\frac13 - \\frac14\\right) + \\left(\\frac14 - \\frac15\\right) + \\left(\\frac15 - \\frac16\\right)$. The middle terms cancel, leaving $\\frac13 - \\frac16 = \\frac16$. The first term starts at $\\frac{1}{k-1}$ with $k = 4$, which is $\\frac13$, not $\\frac14$; that is the common slip."
+        },
+        {
+          "type": "text",
+          "md": "## Using the criterion: proving divergence\n\nThe criterion also proves divergence: a sequence that is **not** Cauchy cannot converge.\n\nTake the **harmonic sums**\n\n$$H_n = \\sum_{k=1}^{n} \\frac{1}{k} = 1 + \\frac12 + \\frac13 + \\cdots + \\frac1n.$$\n\n**Key estimate.** $H_{2n} - H_n = \\frac{1}{n+1} + \\frac{1}{n+2} + \\cdots + \\frac{1}{2n}$. That is $n$ terms, and each is at least the smallest one, $\\frac{1}{2n}$. So\n\n$$H_{2n} - H_n \\ge n \\cdot \\frac{1}{2n} = \\frac12.$$\n\nCheck with $n = 2$: $H_4 - H_2 = \\frac13 + \\frac14 = \\frac{7}{12} \\ge \\frac12$.\n\n**Not Cauchy.** Take $\\varepsilon = \\frac12$. For any $N$, choose $m = 2N$ and $n = N$, both at least $N$. Then $|H_{2N} - H_N| \\ge \\frac12$. So $(H_n)$ is not Cauchy, and by the criterion it diverges.\n\n**This is the trap from lesson 3.11 again.** The neighbouring steps $H_{n+1} - H_n = \\frac{1}{n+1}$ tend to $0$, so the sequence looks as if it is settling. But blocks of terms from $N$ to $2N$ always add up to at least $\\frac12$, so the sums creep past every bound. You will meet this again as the harmonic series in lesson 4.6."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of the proof that the harmonic sums $H_n = \\sum_{k=1}^{n} \\frac1k$ diverge in order.",
+          "items": [
+            "For every $n$, $H_{2n} - H_n = \\frac{1}{n+1} + \\cdots + \\frac{1}{2n}$, a sum of $n$ terms.",
+            "Each of those terms is at least $\\frac{1}{2n}$, so $H_{2n} - H_n \\ge \\frac12$.",
+            "Take $\\varepsilon = \\frac12$ and let $N$ be any natural number.",
+            "The indices $m = 2N$ and $n = N$ are both at least $N$, and $|H_{2N} - H_N| \\ge \\frac12$.",
+            "So $(H_n)$ is not Cauchy, and by the Cauchy criterion it diverges. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The criterion needs completeness",
+          "md": "\"Cauchy $\\Rightarrow$ convergent\" is false in $\\mathbb{Q}$, so any proof of it must use a property that $\\mathbb{Q}$ lacks. Our proof uses it through Bolzano–Weierstrass, which rests on the Monotone Convergence Theorem and the completeness axiom. A proof that only uses the triangle inequality cannot be correct.\n\nThe other half, \"convergent $\\Rightarrow$ Cauchy\", needs no completeness and holds in $\\mathbb{Q}$ as well."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Cauchy criterion",
+              "back": "A real sequence **converges if and only if** it is Cauchy.\n\n*Example:* $s_n = \\sum_{k=1}^n \\frac{1}{k^2}$ is Cauchy, so it converges, though we never find the limit."
+            },
+            {
+              "front": "Complete",
+              "back": "A number system is complete when **every Cauchy sequence converges** in it. $\\mathbb{R}$ is complete; $\\mathbb{Q}$ is not.\n\n*Example:* truncations of $\\sqrt{2}$ are Cauchy in $\\mathbb{Q}$ with no rational limit."
+            },
+            {
+              "front": "Following a subsequence",
+              "back": "If $(a_n)$ is **Cauchy** and some subsequence tends to $L$, then $a_n \\to L$.\n\n*Non-example:* $(-1)^n$ has a subsequence tending to $1$ but is not Cauchy, and diverges."
+            },
+            {
+              "front": "Telescoping",
+              "back": "A sum whose middle terms **cancel in pairs**.\n\n*Example:* $\\sum_{k=n+1}^{m} \\left(\\frac{1}{k-1} - \\frac1k\\right) = \\frac1n - \\frac1m$."
+            },
+            {
+              "front": "Harmonic sums",
+              "back": "$H_n = \\sum_{k=1}^n \\frac1k$. Not Cauchy, since $H_{2n} - H_n \\ge \\frac12$, so **divergent**.\n\n*Example:* $H_4 - H_2 = \\frac13 + \\frac14 = \\frac{7}{12}$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You want to prove that $t_n = \\sum_{k=1}^{n} \\frac{(-1)^k}{k^2}$ converges. Its terms go up and down, and you have no idea what the limit is. Which tool fits best?",
+          "options": [
+            "The $\\varepsilon$–$N$ definition of convergence",
+            "The Monotone Convergence Theorem",
+            "The Cauchy criterion",
+            "Bolzano–Weierstrass on its own"
+          ],
+          "correct": 2,
+          "explanation": "The $\\varepsilon$–$N$ definition needs the limit, which you do not know. The Monotone Convergence Theorem needs a monotone sequence, and $(t_n)$ goes up and down. Bolzano–Weierstrass alone only gives a convergent **subsequence**. The Cauchy criterion needs neither the limit nor monotonicity; the next block asks you to carry it out."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: an alternating sum converges",
+          "problem": "Let $t_n = \\displaystyle\\sum_{k=1}^{n} \\frac{(-1)^k}{k^2}$. Use the Cauchy criterion to prove that $(t_n)$ converges. You may use the estimate from this lesson: for $m > n \\ge 1$, $\\displaystyle\\sum_{k=n+1}^{m} \\frac{1}{k^2} < \\frac1n$.",
+          "solution": "**Proof.** Let $m > n \\ge 1$. Then\n$$|t_m - t_n| = \\left|\\sum_{k=n+1}^{m} \\frac{(-1)^k}{k^2}\\right| \\le \\sum_{k=n+1}^{m} \\left|\\frac{(-1)^k}{k^2}\\right| = \\sum_{k=n+1}^{m} \\frac{1}{k^2} < \\frac1n.$$\nThe first inequality is the triangle inequality applied to a finite sum: the size of a sum is at most the sum of the sizes.\n\nLet $\\varepsilon > 0$ and choose $N \\in \\mathbb{N}$ with $N > \\frac{1}{\\varepsilon}$ (Archimedean property). For $m, n \\ge N$, say $m > n$, we get $|t_m - t_n| < \\frac1n \\le \\frac1N < \\varepsilon$. If $m = n$ the distance is $0$.\n\nSo $(t_n)$ is Cauchy, and by the Cauchy criterion it converges. $\\blacksquare$\n\n**Check your version:** did you take absolute values before using the estimate (the signs make $t_m - t_n$ possibly negative)? Did you handle arbitrary $m, n \\ge N$, not just neighbours? Did you name the Cauchy criterion as the reason it converges?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "If convergent and Cauchy are the same in $\\mathbb{R}$, why have two names?",
+              "a": "They are defined differently: one mentions a limit $L$, the other only compares terms. The theorem that they agree is a fact about $\\mathbb{R}$, not a definition. In $\\mathbb{Q}$ they differ, and in Level 8 (lesson 8.6) you will meet other spaces where they may differ too."
+            },
+            {
+              "q": "Does the criterion ever tell me the limit?",
+              "a": "No. It proves a limit exists. For $\\sum \\frac{1}{k^2}$, the value $\\frac{\\pi^2}{6}$ needs entirely different methods."
+            },
+            {
+              "q": "Could I use the Monotone Convergence Theorem instead?",
+              "a": "Only for monotone sequences. $s_n = \\sum \\frac{1}{k^2}$ is increasing, so it works there. The alternating sum $t_n = \\sum \\frac{(-1)^k}{k^2}$ is not monotone, and the Cauchy criterion handles it directly."
+            },
+            {
+              "q": "The harmonic steps $\\frac{1}{n+1}$ shrink to $0$. Why does $H_n$ not converge?",
+              "a": "Shrinking steps only control neighbours. The block from $N + 1$ to $2N$ always adds up to at least $\\frac12$, so far-apart terms stay far apart and the sequence is not Cauchy."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- **Cauchy criterion:** a real sequence converges **if and only if** it is Cauchy.\n- \"Convergent $\\Rightarrow$ Cauchy\" needs only the triangle inequality; \"Cauchy $\\Rightarrow$ convergent\" needs **completeness** and fails in $\\mathbb{Q}$.\n- Proof: Cauchy $\\Rightarrow$ bounded $\\Rightarrow$ convergent subsequence (Bolzano–Weierstrass) $\\Rightarrow$ the whole sequence follows it ($\\frac{\\varepsilon}{2}$ trick).\n- The criterion proves convergence **without knowing the limit**, as for $\\sum \\frac{1}{k^2}$ via telescoping.\n- A sequence that is **not Cauchy diverges**, as for the harmonic sums, where $H_{2n} - H_n \\ge \\frac12$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "In $\\mathbb{Q}$, every Cauchy sequence of rational numbers converges to a rational number.",
+          "answer": [
+            false
+          ],
+          "explanation": "The decimal truncations $1, 1.4, 1.41, \\dots$ of $\\sqrt{2}$ form a Cauchy sequence of rationals, but its limit $\\sqrt{2}$ is irrational and limits are unique, so there is no rational limit."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the main practical advantage of the Cauchy criterion over the $\\varepsilon$-$N$ definition?",
+          "options": [
+            "It gives the value of the limit.",
+            "It only needs to be checked for one value of $\\varepsilon$.",
+            "It applies only to monotone sequences.",
+            "It proves convergence without knowing the limit in advance."
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "The Cauchy condition involves only the terms $a_m, a_n$. It does not identify the limit, it must hold for every $\\varepsilon$, and it applies to all sequences, monotone or not."
+        },
+        {
+          "type": "short",
+          "prompt": "For the harmonic sums $H_n = \\sum_{k=1}^n \\frac1k$, the standard estimate is $H_{2n} - H_n \\ge c$ for all $n$. What is the largest such constant $c$ (valid for every $n \\ge 1$)?",
+          "answer": [
+            "1/2",
+            "0.5",
+            "½"
+          ],
+          "explanation": "$H_{2n} - H_n$ is a sum of $n$ terms each at least $\\frac{1}{2n}$, so it is at least $\\frac12$, with equality at $n = 1$: $H_2 - H_1 = \\frac12$. Hence $c = \\frac12$ is the largest constant."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following are used in the proof that every Cauchy sequence in $\\mathbb{R}$ converges (via Bolzano–Weierstrass)? Select all that apply.",
+          "options": [
+            "Cauchy sequences are bounded",
+            "The Bolzano–Weierstrass theorem",
+            "The triangle inequality",
+            "Every Cauchy sequence is monotone"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "Boundedness lets us apply Bolzano–Weierstrass to get a convergent subsequence, and the triangle inequality shows the whole sequence follows it. Cauchy sequences need not be monotone: $\\frac{(-1)^n}{n}$ is Cauchy."
+        },
+        {
+          "type": "single",
+          "prompt": "Suppose $(a_n)$ is Cauchy and has a subsequence converging to $L$. What follows?",
+          "options": [
+            "$a_n \\to L$",
+            "$(a_n)$ might converge to a different limit",
+            "$(a_n)$ might diverge",
+            "Only the subsequence is known to converge"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "This is the final step of the criterion's proof: for $n \\ge N$, $|a_n - L| \\le |a_n - a_{n_k}| + |a_{n_k} - L|$ with $n_k \\ge N$ chosen so both terms are less than $\\frac{\\varepsilon}{2}$. The other options would be possible for a sequence that is not Cauchy, like $(-1)^n$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For an Archimedean ordered field, the statement \"every Cauchy sequence converges\" is equivalent to the least-upper-bound property.",
+          "answer": [
+            true
+          ],
+          "explanation": "The least-upper-bound property gives \"every Cauchy sequence converges\" (via the Monotone Convergence Theorem and Bolzano–Weierstrass, as in this lesson). Conversely, in an Archimedean ordered field, a bisection argument applied to a nonempty set that is bounded above produces a Cauchy sequence whose limit is the supremum. The Archimedean hypothesis is needed for this direction."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every Cauchy sequence of real numbers converges to a real number.",
+          "answer": [
+            true
+          ],
+          "explanation": "This is the hard half of the Cauchy criterion, and it holds because $\\mathbb{R}$ is complete. The same statement is false in $\\mathbb{Q}$."
+        },
+        {
+          "type": "single",
+          "prompt": "For $s_n = \\sum_{k=1}^{n} \\frac{1}{k^2}$ and $m > n \\ge 1$, which bound does telescoping give for $s_m - s_n$?",
+          "options": [
+            "$s_m - s_n < \\frac{1}{n}$",
+            "$s_m - s_n < \\frac{1}{m}$",
+            "$s_m - s_n < \\frac{1}{n^2}$",
+            "$s_m - s_n < \\frac{1}{m - n}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$s_m - s_n < \\sum_{k=n+1}^{m} \\left(\\frac{1}{k-1} - \\frac1k\\right) = \\frac1n - \\frac1m < \\frac1n$. The other bounds fail: for $n = 1$, $m = 3$, $s_3 - s_1 = \\frac14 + \\frac19 \\approx 0.36 > \\frac13 = \\frac1m$; for $n = 2$, $m = 10$, $s_{10} - s_2 \\approx 0.30 > \\frac14 = \\frac{1}{n^2}$; for $n = 1$, $m = 101$, $s_{101} - s_1 \\approx 0.64 > \\frac{1}{100} = \\frac{1}{m-n}$."
+        },
+        {
+          "type": "short",
+          "prompt": "Compute $\\displaystyle\\sum_{k=11}^{20} \\left(\\frac{1}{k-1} - \\frac{1}{k}\\right)$.",
+          "answer": [
+            "1/20",
+            "0.05"
+          ],
+          "explanation": "The sum telescopes: the first term is $\\frac{1}{10}$ and the last is $-\\frac{1}{20}$, so the total is $\\frac{1}{10} - \\frac{1}{20} = \\frac{1}{20}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these are Cauchy sequences in $\\mathbb{R}$? Select all that apply.",
+          "options": [
+            "$\\sqrt{2}$ cut off after $n$ decimal places",
+            "$H_n = \\sum_{k=1}^{n} \\frac1k$",
+            "$s_n = \\sum_{k=1}^{n} \\frac{1}{k^2}$",
+            "$(-1)^n$",
+            "$\\sqrt{n}$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "The truncations of $\\sqrt{2}$ satisfy $|a_m - a_n| < 10^{-\\min(m,n)}$, and $s_n$ satisfies $|s_m - s_n| < \\frac{1}{\\min(m,n)}$, so both are Cauchy. $H_{2N} - H_N \\ge \\frac12$, $(-1)^n$ jumps by $2$, and $\\sqrt{n}$ is unbounded, so those three are not."
+        },
+        {
+          "type": "single",
+          "prompt": "The proof that every Cauchy sequence in $\\mathbb{R}$ converges must ultimately rely on which property, since the result is false in $\\mathbb{Q}$?",
+          "options": [
+            "The triangle inequality",
+            "The completeness axiom",
+            "The field axioms",
+            "Uniqueness of limits"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The triangle inequality, the field axioms and uniqueness of limits all hold in $\\mathbb{Q}$ too. Completeness (every nonempty set bounded above has a supremum) is what $\\mathbb{Q}$ lacks; it reaches the proof through the Monotone Convergence Theorem and Bolzano–Weierstrass."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $(a_n)$ is Cauchy, then $a_{n+1} - a_n \\to 0$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Take $m = n + 1$ in the Cauchy condition: for $n \\ge N$, $|a_{n+1} - a_n| < \\varepsilon$. The converse is what fails: $\\sqrt{n}$ and $H_n$ have shrinking steps but are not Cauchy."
+        }
+      ]
+    },
+    {
+      "slug": "3-13-limit-superior-and-limit-inferior",
+      "title": "Limit superior and limit inferior",
+      "summary": "$\\limsup$ and $\\liminf$: the eventual ceiling and floor of any bounded sequence.",
+      "est_minutes": 40,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Limit superior and limit inferior",
+          "md": "**In this lesson you will learn to:**\n- form the **tail suprema** and **tail infima** of a bounded sequence\n- define and compute $\\limsup a_n$ and $\\liminf a_n$\n- tell $\\limsup$ apart from $\\sup$\n- describe $\\limsup$ and $\\liminf$ as the largest and smallest limits of subsequences\n- test convergence by checking whether $\\liminf a_n = \\limsup a_n$\n\n**You need:** supremum and infimum (lesson 2.9), the Monotone Convergence Theorem (lesson 3.8), subsequences (lesson 3.9) and Bolzano–Weierstrass (lesson 3.10)."
+        },
+        {
+          "type": "text",
+          "md": "## Describing a sequence that does not settle\n\nMany bounded sequences never converge. Look at\n\n$$a_n = (-1)^n\\left(1 + \\frac1n\\right): \\quad -2,\\ \\tfrac32,\\ -\\tfrac43,\\ \\tfrac54,\\ -\\tfrac65,\\ \\dots$$\n\nThere is no limit, yet the long-run behaviour is clear: the terms keep swinging between values near $1$ and values near $-1$. We want two numbers that capture this: an **eventual ceiling** ($1$) and an **eventual floor** ($-1$).\n\nYour first thought might be the supremum and infimum of all the terms (lesson 2.9). Here $\\sup_n a_n = \\frac32$ and $\\inf_n a_n = -2$. But those come from the first two terms, which tell us nothing about where the sequence ends up. Change the first term to $-1000$ and the infimum changes, though the long-run behaviour does not.\n\nThe fix is to **ignore the start**. Throw away the first few terms, take the supremum of what is left, and see what happens as you throw away more and more. That gives the **limit superior**, written $\\limsup$. The same with infima gives the **limit inferior**, $\\liminf$.\n\nUnlike an ordinary limit, these two **always exist** for a bounded sequence, and comparing them tells you whether the sequence converges."
+        },
+        {
+          "type": "text",
+          "md": "## Tails and tail suprema\n\nThe **tail** of $(a_n)$ from index $n$ is the set of terms from $a_n$ onwards: $\\{a_k : k \\ge n\\}$.\n\nFor a bounded sequence, define the **tail supremum** and **tail infimum**\n\n$$s_n = \\sup_{k \\ge n} a_k, \\qquad t_n = \\inf_{k \\ge n} a_k.$$\n\nRead $\\sup_{k \\ge n} a_k$ as \"the supremum of the terms $a_k$ over all indices $k \\ge n$\". These exist by the completeness axiom (lesson 2.10), because the tail is a nonempty bounded set.\n\n**Examples.**\n- $a_n = (-1)^n$: every tail contains both $1$ and $-1$, so $s_n = 1$ and $t_n = -1$ for every $n$.\n- $a_n = 1 + \\frac1n$: the terms decrease, so the largest term in the tail is the first one: $s_n = 1 + \\frac1n$. The terms approach $1$ without reaching it, so $t_n = 1$.\n- **Edge case:** $a_n = -\\frac1n$, that is $-1, -\\frac12, -\\frac13, \\dots$ The terms increase towards $0$ but never reach it. So $s_n = 0$ for every $n$, even though $0$ is **not** a term. A supremum need not be attained (lesson 2.9); students often wrongly write $s_n = -\\frac1n$ here.\n\n**Why $(s_n)$ is decreasing.** Moving from $n$ to $n + 1$ removes $a_n$ from the tail. A smaller set has a supremum that is no bigger, so $s_{n+1} \\le s_n$. In the same way $t_{n+1} \\ge t_n$, so $(t_n)$ is increasing. And since $a_n$ is in its own tail, $t_n \\le a_n \\le s_n$."
+        },
+        {
+          "type": "check",
+          "question": "For $a_n = -\\frac1n$, what is the tail supremum $s_5 = \\sup_{k \\ge 5} a_k$?",
+          "options": [
+            "$-\\frac15$",
+            "$-\\frac16$",
+            "$0$",
+            "It does not exist, because no term is the largest"
+          ],
+          "correct": 2,
+          "explanation": "The tail is $-\\frac15, -\\frac16, -\\frac17, \\dots$, which increases towards $0$. Every term is below $0$, and terms get as close to $0$ as you like, so the least upper bound is $0$. $-\\frac15$ is the smallest term of the tail, not the largest. The supremum exists even though no term attains it."
+        },
+        {
+          "type": "text",
+          "md": "## The definition\n\nEach $s_n$ is the ceiling of the tail from $n$. As $n$ grows, the ceilings come down (or stay put). Since $(s_n)$ is decreasing and bounded below (by any lower bound for the sequence), the Monotone Convergence Theorem says it converges. Likewise $(t_n)$ is increasing and bounded above, so it converges.\n\n**Definition.** For a bounded sequence $(a_n)$,\n\n$$\\limsup_{n \\to \\infty} a_n = \\lim_{n \\to \\infty} s_n = \\inf_{n} \\sup_{k \\ge n} a_k, \\qquad \\liminf_{n \\to \\infty} a_n = \\lim_{n \\to \\infty} t_n = \\sup_{n} \\inf_{k \\ge n} a_k.$$\n\n**In plain words:** $\\limsup a_n$ is the eventual ceiling, the limit of the tail suprema; $\\liminf a_n$ is the eventual floor. The second formula, \"$\\inf$ of the $\\sup$s\", holds because a decreasing sequence converges to its infimum (that is how the Monotone Convergence Theorem is proved).\n\n**Examples** (using the tails found above):\n- $a_n = (-1)^n$: $s_n = 1$ and $t_n = -1$ for all $n$, so $\\limsup a_n = 1$ and $\\liminf a_n = -1$.\n- $a_n = 1 + \\frac1n$: $s_n = 1 + \\frac1n \\to 1$ and $t_n = 1$, so both equal $1$.\n- $a_n = -\\frac1n$: $s_n = 0$ and $t_n = -\\frac1n \\to 0$, so both equal $0$.\n\nSince $t_n \\le s_n$ for every $n$, the limits satisfy $\\liminf a_n \\le \\limsup a_n$ always."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each bounded sequence to its $\\limsup$ and $\\liminf$.",
+          "pairs": [
+            {
+              "left": "$a_n = (-1)^n$",
+              "right": "$\\limsup = 1$, $\\liminf = -1$"
+            },
+            {
+              "left": "$a_n = 2 + (-1)^n$",
+              "right": "$\\limsup = 3$, $\\liminf = 1$"
+            },
+            {
+              "left": "$a_n = 1 + \\frac1n$",
+              "right": "$\\limsup = \\liminf = 1$"
+            },
+            {
+              "left": "$a_n = -\\frac1n$",
+              "right": "$\\limsup = \\liminf = 0$"
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Worked example: computing tail suprema",
+          "problem": "Let $a_n = (-1)^n\\left(1 + \\frac1n\\right)$. Find $s_n$, $t_n$, $\\limsup a_n$ and $\\liminf a_n$, and decide whether $(a_n)$ converges.",
+          "solution": "The terms are $-2, \\frac32, -\\frac43, \\frac54, -\\frac65, \\dots$ Even-indexed terms $1 + \\frac1k$ are positive and decrease as $k$ grows; odd-indexed terms $-\\left(1 + \\frac1k\\right)$ are negative and increase.\n\n**Tail suprema.** The largest term with index $k \\ge n$ is the first even one:\n$$s_n = \\begin{cases} 1 + \\frac1n & n \\text{ even}, \\\\ 1 + \\frac{1}{n+1} & n \\text{ odd}. \\end{cases}$$\nIn both cases $1 < s_n \\le 1 + \\frac1n$, so $s_n \\to 1$ by squeezing.\n\n**Tail infima.** Similarly the smallest term with index $k \\ge n$ is the first odd one, so $-1 - \\frac1n \\le t_n < -1$ and $t_n \\to -1$.\n\nHence $\\limsup a_n = 1$ and $\\liminf a_n = -1$. Since these differ, $(a_n)$ diverges (you will see why shortly). Note that $\\sup_n a_n = \\frac32$ and $\\inf_n a_n = -2$ are different from the $\\limsup$ and $\\liminf$. $\\blacksquare$"
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "limsup is not sup",
+          "md": "$\\sup_n a_n$ can be decided by a single early term; $\\limsup a_n$ ignores any finite number of terms. For $a_n = 1 + \\frac1n$, $\\sup_n a_n = 2$ (from $a_1$) but $\\limsup a_n = 1$.\n\nIn general, since $s_1 = \\sup_n a_n$ and $(s_n)$ decreases,\n\n$$\\inf_n a_n \\le \\liminf a_n \\le \\limsup a_n \\le \\sup_n a_n.$$"
+        },
+        {
+          "type": "check",
+          "question": "A sequence has $a_1 = 100$ and $a_n = (-1)^n$ for all $n \\ge 2$. What are $\\sup_n a_n$ and $\\limsup a_n$?",
+          "options": [
+            "$\\sup_n a_n = 100$ and $\\limsup a_n = 100$",
+            "$\\sup_n a_n = 100$ and $\\limsup a_n = 1$",
+            "$\\sup_n a_n = 1$ and $\\limsup a_n = 1$",
+            "$\\sup_n a_n = 100$ and $\\limsup a_n$ does not exist"
+          ],
+          "correct": 1,
+          "explanation": "The supremum of all the terms includes $a_1 = 100$. But every tail from $n = 2$ on has supremum $1$, so $s_n = 1$ for $n \\ge 2$ and $\\limsup a_n = 1$. One early term changes $\\sup$ but never $\\limsup$. For a bounded sequence the $\\limsup$ always exists."
+        },
+        {
+          "type": "text",
+          "md": "## The subsequence view\n\nThere is a second way to see $\\limsup$ and $\\liminf$, often quicker in practice.\n\nA **subsequential limit** of $(a_n)$ is a number $\\ell$ that some subsequence converges to. For example, $(-1)^n$ has subsequential limits $1$ (the even terms) and $-1$ (the odd terms). By Bolzano–Weierstrass, every bounded sequence has at least one.\n\n**Theorem.** For a bounded sequence, $\\limsup a_n$ is the **largest** subsequential limit and $\\liminf a_n$ is the **smallest**.\n\n**Why, in plain words.**\n- No subsequence can end up above $\\limsup a_n$: each term $a_{n_k}$ is at most its tail ceiling $s_{n_k}$, and those ceilings come down to $\\limsup a_n$.\n- Some subsequence does end up at $\\limsup a_n$: since $s_n$ is the least upper bound of the tail, each tail has a term within any small distance of $s_n$. Picking such terms further and further out builds a subsequence that tends to $\\lim s_n$.\n\n**Examples.**\n- $a_n = \\sin\\left(\\frac{n\\pi}{2}\\right)$ cycles through $1, 0, -1, 0, \\dots$ Its subsequential limits are $1$, $0$ and $-1$, so $\\limsup a_n = 1$ and $\\liminf a_n = -1$. The middle value $0$ plays no part.\n- $a_n = (-1)^n + \\frac1n$: even terms $1 + \\frac1n \\to 1$, odd terms $-1 + \\frac1n \\to -1$. So $\\limsup a_n = 1$ and $\\liminf a_n = -1$.\n- **Edge case:** a convergent sequence $a_n \\to L$ has every subsequence tending to $L$ (lesson 3.9), so $L$ is its only subsequential limit and $\\limsup a_n = \\liminf a_n = L$."
+        },
+        {
+          "type": "check",
+          "question": "The sequence $0, 1, 2, 0, 1, 2, 0, 1, 2, \\dots$ repeats forever. What are its $\\limsup$ and $\\liminf$?",
+          "options": [
+            "$\\limsup = 2$, $\\liminf = 0$",
+            "$\\limsup = 1$, $\\liminf = 1$",
+            "$\\limsup = 2$, $\\liminf = 1$",
+            "They do not exist, because the sequence diverges"
+          ],
+          "correct": 0,
+          "explanation": "The subsequential limits are $0$, $1$ and $2$ (take every third term). The largest is $2$ and the smallest is $0$. The average $1$ is not relevant, and $\\limsup$ and $\\liminf$ exist for every bounded sequence, convergent or not."
+        },
+        {
+          "type": "text",
+          "md": "## A test for convergence\n\n**Theorem.** A bounded sequence $(a_n)$ converges if and only if $\\liminf a_n = \\limsup a_n$. When this happens, the common value is $\\lim a_n$.\n\n**In plain words:** the sequence converges exactly when its eventual ceiling and eventual floor meet. If they are apart, the terms keep visiting both levels and cannot settle.\n\nThe proof below uses the **squeeze principle** for sequences: if $t_n \\le a_n \\le s_n$ for all $n$, and both $t_n \\to L$ and $s_n \\to L$, then $a_n \\to L$. (Given $\\varepsilon > 0$, eventually $L - \\varepsilon < t_n$ and $s_n < L + \\varepsilon$, so $a_n$ is trapped in between.)\n\n**Examples.**\n- $1 + \\frac1n$: $\\liminf = \\limsup = 1$, so it converges to $1$, as you knew.\n- $(-1)^n\\left(1 + \\frac1n\\right)$: $\\liminf = -1 \\ne 1 = \\limsup$, so it diverges.\n- **Edge case:** $\\frac{(-1)^n}{n}$ changes sign forever, yet its tail suprema and infima both shrink to $0$, so $\\liminf = \\limsup = 0$ and it converges. Oscillating is not the same as diverging."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: convergence and limsup = liminf",
+          "steps": [
+            {
+              "title": "Sandwich each term",
+              "md": "For every $n$, $t_n \\le a_n \\le s_n$, because $a_n$ belongs to the tail $\\{a_k : k \\ge n\\}$, whose infimum is $t_n$ and supremum is $s_n$."
+            },
+            {
+              "title": "Use the assumption",
+              "md": "Suppose $\\liminf a_n = \\limsup a_n = L$. By definition this means $t_n \\to L$ and $s_n \\to L$."
+            },
+            {
+              "title": "Squeeze",
+              "md": "By the squeeze principle, $a_n \\to L$. $\\blacksquare$ (for this direction)"
+            },
+            {
+              "title": "Prove the converse",
+              "md": "Now suppose $a_n \\to L$. Every subsequence tends to $L$, so $L$ is the only subsequential limit. Since $\\limsup$ is the largest and $\\liminf$ the smallest subsequential limit, both equal $L$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the first step of the proof, why is $t_n \\le a_n \\le s_n$ true?",
+          "options": [
+            "Because $(a_n)$ is monotone",
+            "Because $a_n$ is one of the terms in the tail from $n$, and $t_n$ and $s_n$ are that tail's infimum and supremum",
+            "Because the sequence converges",
+            "Because $s_n$ and $t_n$ are terms of the sequence"
+          ],
+          "correct": 1,
+          "explanation": "The tail from $n$ starts with $a_n$, so $a_n$ lies between the tail's lower and upper bounds. This needs no monotonicity or convergence. And $s_n$, $t_n$ need not be terms at all: for $-\\frac1n$, $s_n = 0$ is never a term."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "$s_n = \\sup_{k \\ge n} a_k$",
+              "back": "**Tail supremum**: the ceiling of the terms from $a_n$ on. Decreasing in $n$; its limit is $\\limsup a_n$.\n\n*Example:* for $-\\frac1n$, $s_n = 0$ for every $n$."
+            },
+            {
+              "front": "$t_n = \\inf_{k \\ge n} a_k$",
+              "back": "**Tail infimum**: the floor of the terms from $a_n$ on. Increasing in $n$; its limit is $\\liminf a_n$.\n\n*Example:* for $(-1)^n$, $t_n = -1$ for every $n$."
+            },
+            {
+              "front": "$\\limsup a_n$ via subsequences",
+              "back": "The **largest** subsequential limit of a bounded sequence. $\\liminf a_n$ is the smallest.\n\n*Example:* $\\sin\\left(\\frac{n\\pi}{2}\\right)$ has subsequential limits $1, 0, -1$, so $\\limsup = 1$."
+            },
+            {
+              "front": "Convergence test",
+              "back": "A bounded sequence converges **iff** $\\liminf a_n = \\limsup a_n$, and then that value is the limit.\n\n*Example:* $\\frac{(-1)^n}{n}$ has both equal to $0$, so it converges to $0$."
+            },
+            {
+              "front": "$\\limsup$ versus $\\sup$",
+              "back": "$\\limsup a_n \\le \\sup_n a_n$. The $\\sup$ can be set by **one early term**; the $\\limsup$ ignores finitely many terms.\n\n*Example:* $1 + \\frac1n$ has $\\sup = 2$, $\\limsup = 1$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "For a bounded sequence you find $\\liminf a_n = \\limsup a_n = 3$. What can you conclude?",
+          "options": [
+            "Every term equals $3$",
+            "$a_n \\to 3$",
+            "The sequence is monotone with limit $3$",
+            "Only that some subsequence tends to $3$"
+          ],
+          "correct": 1,
+          "explanation": "Equal $\\liminf$ and $\\limsup$ force convergence to the common value. The terms need not equal $3$ ($3 + \\frac1n$), need not be monotone ($3 + \\frac{(-1)^n}{n}$), and the conclusion is much stronger than one subsequence."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps for finding $\\limsup$ and $\\liminf$ of $a_n = (-1)^n + \\frac1n$ in order.",
+          "items": [
+            "Write out a few terms: $0, \\frac32, -\\frac23, \\frac54, \\dots$, and notice the even and odd terms behave differently.",
+            "Split into the even-indexed terms $1 + \\frac1n$ and the odd-indexed terms $-1 + \\frac1n$.",
+            "Find their limits: the even terms tend to $1$ and the odd terms tend to $-1$.",
+            "Every term is even- or odd-indexed, so these are the only subsequential limits.",
+            "The largest is $\\limsup a_n = 1$ and the smallest is $\\liminf a_n = -1$; they differ, so $(a_n)$ diverges."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $(-1)^n \\frac{n}{n+1}$",
+          "problem": "Let $a_n = (-1)^n \\dfrac{n}{n+1}$. Find the tail suprema $s_n$ and tail infima $t_n$, then $\\limsup a_n$, $\\liminf a_n$, $\\sup_n a_n$ and $\\inf_n a_n$. Does $(a_n)$ converge?",
+          "solution": "**Terms.** $-\\frac12, \\frac23, -\\frac34, \\frac45, -\\frac56, \\dots$ Even-indexed terms $\\frac{n}{n+1} = 1 - \\frac{1}{n+1}$ are positive and **increase** towards $1$. Odd-indexed terms are negative and **decrease** towards $-1$.\n\n**Tail suprema.** Every tail contains even terms as close to $1$ as you like, and no term reaches $1$. So $s_n = 1$ for every $n$, and $\\limsup a_n = 1$.\n\n**Tail infima.** In the same way every tail has odd terms as close to $-1$ as you like, none reaching it, so $t_n = -1$ for every $n$, and $\\liminf a_n = -1$.\n\n**Sup and inf.** $\\sup_n a_n = 1$ and $\\inf_n a_n = -1$, neither attained. This time they agree with the $\\limsup$ and $\\liminf$, unlike $(-1)^n\\left(1 + \\frac1n\\right)$, because here the terms grow in size instead of shrinking.\n\n**Convergence.** $\\liminf a_n = -1 \\ne 1 = \\limsup a_n$, so $(a_n)$ diverges.\n\n**Check your version:** did you notice that $s_n$ is **not** a term of the sequence? Did you use $\\liminf \\ne \\limsup$ (not just \"it oscillates\") as the reason it diverges?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Do $\\limsup$ and $\\liminf$ exist for every sequence?",
+              "a": "For every **bounded** sequence, yes: they are limits of monotone bounded sequences. For unbounded ones we extend the definition: if $(a_n)$ is not bounded above, we set $\\limsup a_n = +\\infty$; if it is not bounded below, $\\liminf a_n = -\\infty$. For example $\\limsup n = +\\infty$."
+            },
+            {
+              "q": "Is $\\limsup(a_n + b_n) = \\limsup a_n + \\limsup b_n$?",
+              "a": "Not always. With $a_n = (-1)^n$ and $b_n = -(-1)^n$, $a_n + b_n = 0$, so $\\limsup(a_n + b_n) = 0$, but $\\limsup a_n + \\limsup b_n = 1 + 1 = 2$. The ceilings of the two sequences are reached at different times. Only $\\limsup(a_n + b_n) \\le \\limsup a_n + \\limsup b_n$ holds in general."
+            },
+            {
+              "q": "Is $\\limsup a_n$ always one of the terms?",
+              "a": "No. For $-\\frac1n$ it is $0$, which is never a term. It is a limit of tail suprema, and suprema need not be attained."
+            },
+            {
+              "q": "Where will I use this?",
+              "a": "The root test for series (lesson 4.10) is stated with $\\limsup \\sqrt[n]{|a_n|}$, precisely because that $\\limsup$ exists even when the ordinary limit does not."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- The **tail suprema** $s_n = \\sup_{k \\ge n} a_k$ decrease and the **tail infima** $t_n = \\inf_{k \\ge n} a_k$ increase, so both converge for a bounded sequence.\n- $\\limsup a_n = \\lim s_n$ is the eventual ceiling; $\\liminf a_n = \\lim t_n$ is the eventual floor. Both always exist for bounded sequences.\n- $\\limsup a_n$ is the **largest** subsequential limit and $\\liminf a_n$ the **smallest**.\n- $\\limsup$ is not $\\sup$: $\\inf_n a_n \\le \\liminf a_n \\le \\limsup a_n \\le \\sup_n a_n$, and early terms affect only the outer two.\n- A bounded sequence **converges iff $\\liminf a_n = \\limsup a_n$**, and then that common value is the limit."
+        }
+      ],
+      "questions": [
+        {
+          "type": "short",
+          "prompt": "Find $\\limsup_{n \\to \\infty} \\left((-1)^n + \\frac1n\\right)$.",
+          "answer": [
+            "1",
+            "one"
+          ],
+          "explanation": "Even terms $1 + \\frac1n \\to 1$ and odd terms $-1 + \\frac1n \\to -1$, so the subsequential limits are $\\pm 1$ and the largest is $1$. (The supremum of the sequence is $1 + \\frac12 = \\frac32$, which is different.)"
+        },
+        {
+          "type": "single",
+          "prompt": "Find $\\liminf_{n \\to \\infty} \\sin\\left(\\frac{n\\pi}{2}\\right)$.",
+          "options": [
+            "$0$",
+            "$1$",
+            "$-1$",
+            "It does not exist"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The terms cycle through $1, 0, -1, 0$, so every tail has infimum $-1$. Hence $t_n = -1$ for all $n$ and the $\\liminf$ is $-1$. $0$ is a subsequential limit but not the smallest, and $1$ is the $\\limsup$. For a bounded sequence the $\\liminf$ always exists."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For all bounded sequences, $\\limsup(a_n + b_n) = \\limsup a_n + \\limsup b_n$.",
+          "answer": [
+            false
+          ],
+          "explanation": "With $a_n = (-1)^n$ and $b_n = -(-1)^n$, the left side is $0$ and the right side is $1 + 1 = 2$. Only the inequality $\\le$ holds in general."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $(a_n)$ be a bounded sequence. Which statements are always true? Select all that apply.",
+          "options": [
+            "$\\liminf a_n \\le \\limsup a_n$",
+            "$(a_n)$ converges if and only if $\\liminf a_n = \\limsup a_n$",
+            "$\\limsup a_n \\ge \\sup_n a_n$",
+            "$\\limsup a_n$ is the largest subsequential limit of $(a_n)$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The third is backwards: $s_n \\le s_1 = \\sup_n a_n$ for all $n$, so $\\limsup a_n \\le \\sup_n a_n$, with strict inequality for $1 + \\frac1n$. The other three are parts of the main theorems of this lesson."
+        },
+        {
+          "type": "single",
+          "prompt": "For a bounded sequence, the tail suprema $s_n = \\sup_{k \\ge n} a_k$ form a sequence that is:",
+          "options": [
+            "increasing",
+            "decreasing",
+            "constant",
+            "not necessarily monotone"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\{a_k : k \\ge n+1\\} \\subseteq \\{a_k : k \\ge n\\}$, and the supremum of a subset is at most the supremum of the larger set, so $s_{n+1} \\le s_n$. (\"Decreasing\" here allows equal steps; $(s_n)$ is constant for $(-1)^n$, but not for $1 + \\frac1n$, so \"constant\" is wrong in general.)"
+        },
+        {
+          "type": "true_false",
+          "prompt": "For a bounded sequence, $\\limsup a_n \\le \\sup_n a_n$.",
+          "answer": [
+            true
+          ],
+          "explanation": "$\\limsup a_n = \\inf_n s_n \\le s_1 = \\sup_n a_n$."
+        },
+        {
+          "type": "short",
+          "prompt": "For $a_n = 1 + \\frac1n$ we have $\\sup_n a_n = 2$. What is $\\limsup a_n$?",
+          "answer": [
+            "1",
+            "one"
+          ],
+          "explanation": "$s_n = 1 + \\frac1n \\to 1$. The value $2$ comes only from the first term $a_1$, which $\\limsup$ ignores."
+        },
+        {
+          "type": "single",
+          "prompt": "For $a_n = -\\frac1n$, what is the tail supremum $s_n = \\sup_{k \\ge n} a_k$?",
+          "options": [
+            "$-\\frac1n$",
+            "$0$",
+            "$-\\frac{1}{n+1}$",
+            "It does not exist"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The tail $-\\frac1n, -\\frac{1}{n+1}, \\dots$ increases towards $0$ without reaching it, so its least upper bound is $0$. $-\\frac1n$ is the **smallest** term of the tail. A supremum exists for any nonempty bounded set, attained or not."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every bounded sequence has a $\\limsup$ and a $\\liminf$ that are real numbers, even if the sequence diverges.",
+          "answer": [
+            true
+          ],
+          "explanation": "$(s_n)$ is decreasing and bounded, and $(t_n)$ is increasing and bounded, so both converge by the Monotone Convergence Theorem. For example, $(-1)^n$ diverges but has $\\limsup = 1$ and $\\liminf = -1$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "For which of these sequences is $\\liminf a_n = \\limsup a_n$? Select all that apply.",
+          "options": [
+            "$\\dfrac{(-1)^n}{n}$",
+            "$\\sin\\left(\\dfrac{n\\pi}{2}\\right)$",
+            "$1 + \\dfrac1n$",
+            "$(-1)^n$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$\\frac{(-1)^n}{n} \\to 0$ and $1 + \\frac1n \\to 1$ converge, so their $\\liminf$ and $\\limsup$ agree. $\\sin\\left(\\frac{n\\pi}{2}\\right)$ has $\\limsup = 1$, $\\liminf = -1$, and so does $(-1)^n$."
+        },
+        {
+          "type": "short",
+          "prompt": "Find $\\liminf_{n \\to \\infty} (-1)^n \\frac{n}{n+1}$.",
+          "answer": [
+            "-1",
+            "−1"
+          ],
+          "explanation": "The odd-indexed terms $-\\frac{n}{n+1}$ tend to $-1$ and the even-indexed terms tend to $1$. The smallest subsequential limit is $-1$. (Every tail infimum $t_n$ equals $-1$, which is never a term.)"
+        },
+        {
+          "type": "single",
+          "prompt": "A bounded sequence has exactly three subsequential limits: $-2$, $0$ and $3$. What is its $\\limsup$?",
+          "options": [
+            "$3$",
+            "$0$",
+            "$\\frac13$",
+            "$-2$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The $\\limsup$ is the largest subsequential limit, $3$. The $\\liminf$ is the smallest, $-2$. The average $\\frac13$ and the middle value $0$ play no role."
+        }
+      ]
+    }
+  ]
+}

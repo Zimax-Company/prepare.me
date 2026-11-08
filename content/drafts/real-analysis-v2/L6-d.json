@@ -1,0 +1,1112 @@
+{
+  "concepts": [
+    {
+      "slug": "6-11-higher-order-derivatives",
+      "title": "Higher-order derivatives",
+      "summary": "$f''$, $f'''$, $f^{(n)}$: the classes $C^n$, Leibniz's rule and the second derivative test.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "Differentiating a function more than once, and what the extra derivatives tell you.\n\n**In this lesson you will learn to:**\n- compute and write $f''$, $f'''$ and $f^{(n)}$, and know when $f''(c)$ exists\n- sort functions into the smoothness classes $C^0, C^1, C^2, \\dots, C^\\infty$\n- find the $n$th derivative of a product with Leibniz's rule\n- prove and use the second derivative test, and spot when it says nothing\n\n**You need:** the definition of the derivative (lesson 6.2), the product rule (6.4), the class $C^1$ and the example $x^2\\sin(1/x)$ (6.3), and the Mean Value Theorem (6.7)."
+        },
+        {
+          "type": "text",
+          "md": "## Differentiating again\n\nIf $f$ is differentiable on an interval $I$, then $f'$ is a new function on $I$. Nothing stops you asking whether **it** is differentiable. Physics does this all the time: if $f(t)$ is position, $f'(t)$ is velocity and the derivative of velocity is acceleration. Taylor's theorem (lesson 6.10) also needed many derivatives in a row.\n\n**Notation.**\n- $f''$ (\"$f$ double prime\") is the derivative of $f'$. $f'''$ is the derivative of $f''$.\n- After three primes we switch to a number in brackets: $f^{(n)}$ is the **$n$th derivative**. The brackets matter: $f^{(4)}$ is the fourth derivative, while $f^4$ means $f \\cdot f \\cdot f \\cdot f$.\n- By convention $f^{(0)} = f$: differentiating zero times leaves $f$ alone.\n- In Leibniz notation, $f^{(n)}(x)$ is also written $\\dfrac{d^n f}{dx^n}$.\n\n**Examples.**\n- $f(x) = x^3$: $f'(x) = 3x^2$, $f''(x) = 6x$, $f'''(x) = 6$, and $f^{(n)}(x) = 0$ for every $n \\ge 4$. A polynomial of degree $d$ always dies after $d + 1$ derivatives.\n- $f(x) = \\sin x$: the derivatives cycle $\\cos x, -\\sin x, -\\cos x, \\sin x, \\dots$ with period $4$, so $f^{(4)} = f$ and $f^{(10)} = f^{(2)} = -\\sin x$.\n- $f(x) = 1/x$ on $(0, \\infty)$: $f' = -x^{-2}$, $f'' = 2x^{-3}$, $f''' = -6x^{-4}$. The pattern $f^{(n)}(x) = \\dfrac{(-1)^n\\, n!}{x^{n+1}}$ is proved by induction. (Recall $n! = 1 \\cdot 2 \\cdots n$, with $0! = 1$.) Students often forget the sign $(-1)^n$, which flips at every step."
+        },
+        {
+          "type": "check",
+          "question": "You need $f^{(25)}(x)$ for $f(x) = \\cos x$. What is it?",
+          "options": [
+            "$\\cos x$",
+            "$-\\sin x$",
+            "$\\sin x$",
+            "$-\\cos x$"
+          ],
+          "correct": 1,
+          "explanation": "The derivatives of $\\cos x$ cycle with period $4$: $-\\sin x, -\\cos x, \\sin x, \\cos x$. Since $25 = 4 \\cdot 6 + 1$, $f^{(25)} = f^{(1)} = -\\sin x$. Choosing $\\cos x$ means you used $f^{(24)}$; $\\sin x$ is $f^{(3)}$; $-\\cos x$ is $f^{(2)}$."
+        },
+        {
+          "type": "text",
+          "md": "## When does $f''(c)$ exist?\n\nThe formal definition builds each derivative from the one before. Set $f^{(0)} = f$. If $f^{(n-1)}$ exists on an interval around $c$ and is differentiable at $c$, define\n\n$$f^{(n)}(c) = \\big(f^{(n-1)}\\big)'(c) = \\lim_{x \\to c}\\frac{f^{(n-1)}(x) - f^{(n-1)}(c)}{x - c}.$$\n\nLook at what the limit needs: the values $f^{(n-1)}(x)$ for $x$ **near** $c$, not just at $c$. So\n\n> $f''(c)$ can exist only if $f'$ exists at every point of some interval around $c$.\n\n**Non-example.** Let $f(x) = x^2$ when $x$ is rational and $f(x) = 0$ when $x$ is irrational. At $0$, $\\left|\\frac{f(h) - f(0)}{h}\\right| \\le |h| \\to 0$, so $f'(0) = 0$. But at any $c \\neq 0$, $f$ is not even continuous (it jumps between values near $c^2$ and $0$), so $f'(c)$ does not exist. Hence $f'$ exists only at the single point $0$, and $f''(0)$ is meaningless.\n\n**A useful consequence.** If $f''(c)$ exists, then $f'$ is differentiable at $c$, so $f'$ is **continuous** at $c$ (lesson 6.3: differentiable implies continuous). The same argument shows: if $f^{(n)}$ exists on $I$, then $f, f', \\dots, f^{(n-1)}$ are all continuous on $I$. Only the last one, $f^{(n)}$ itself, might fail to be continuous."
+        },
+        {
+          "type": "check",
+          "question": "You are told that $f''(2)$ exists. Which conclusion is safe?",
+          "options": [
+            "$f''$ is continuous at $2$",
+            "$f'$ exists only at $2$",
+            "$f'$ exists on an interval around $2$ and is continuous at $2$",
+            "$f'''(2)$ exists"
+          ],
+          "correct": 2,
+          "explanation": "$f''(2)$ is a limit that uses $f'(x)$ for $x$ near $2$, so $f'$ exists near $2$; and $f'$ is differentiable at $2$, hence continuous there. Nothing is known about continuity of $f''$ or about $f'''$, and \"$f'$ exists only at $2$\" contradicts the definition."
+        },
+        {
+          "type": "text",
+          "md": "## Smoothness classes $C^n$\n\nLesson 6.3 introduced $C^1(I)$: functions that are differentiable on $I$ with $f'$ continuous. We extend this to count how many times you can differentiate.\n\n- $C^0(I)$ is the set of functions **continuous** on $I$.\n- $f \\in C^n(I)$ means $f^{(n)}$ exists at every point of $I$ **and** $f^{(n)}$ is continuous on $I$.\n- $f \\in C^\\infty(I)$ means $f^{(n)}$ exists on $I$ for **every** $n$. (Then each $f^{(n)}$ is automatically continuous, because $f^{(n+1)}$ exists.)\n\nEach class sits inside the one before: if $f^{(n+1)}$ exists and is continuous, then $f^{(n)}$ is differentiable, so it is continuous. In symbols,\n\n$$C^\\infty(I) \\subsetneq \\cdots \\subsetneq C^2(I) \\subsetneq C^1(I) \\subsetneq C^0(I).$$\n\nHere $A \\subsetneq B$ means \"$A$ is a subset of $B$ but not equal to it\": every inclusion is strict, so each step has a function that belongs to the bigger class but not the smaller.\n\n**Examples.**\n- Polynomials, $e^x$, $\\sin x$ and $\\cos x$ are in $C^\\infty(\\mathbb{R})$.\n- $1/x$ is in $C^\\infty\\big((0,\\infty)\\big)$. The class depends on the interval: $1/x$ is not even defined at $0$.\n- $|x|$ is in $C^0(\\mathbb{R})$ but not $C^1$: it has no derivative at $0$.\n- $x^2\\sin(1/x)$ (value $0$ at $0$) is differentiable everywhere but **not** $C^1$: $f'$ exists but jumps around near $0$. This is the edge case: \"differentiable on $I$\" is weaker than \"$C^1$ on $I$\".\n\nThe pattern continues: $x^n|x|$ is in $C^n(\\mathbb{R})$ but is not $n + 1$ times differentiable at $0$. The next example checks the case $n = 1$."
+        },
+        {
+          "type": "example",
+          "title": "Exactly $C^1$",
+          "problem": "Let $f(x) = x|x|$. Show that $f \\in C^1(\\mathbb{R})$ but $f''(0)$ does not exist.",
+          "solution": "**Away from $0$.** For $x > 0$, $f(x) = x^2$ and $f'(x) = 2x$. For $x < 0$, $f(x) = -x^2$ and $f'(x) = -2x$.\n\n**At $0$ use the definition**, because the two formulas meet there:\n\n$$\\frac{f(h) - f(0)}{h} = \\frac{h|h|}{h} = |h| \\to 0,$$\n\nso $f'(0) = 0$. Altogether\n\n$$f'(x) = 2|x| \\quad \\text{for all } x \\in \\mathbb{R},$$\n\nwhich is continuous, so $f \\in C^1(\\mathbb{R})$.\n\n**Second derivative.** $f' = 2|x|$ has the corner of $|x|$ at $0$: its difference quotients $\\frac{2|h|}{h}$ are $+2$ for $h > 0$ and $-2$ for $h < 0$, so they have no limit. Hence $f''(0)$ does not exist. $\\blacksquare$\n\n**The move to notice:** at the join point we never differentiate the formulas; we go back to the difference quotient."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function on $\\mathbb{R}$ (with value $0$ at $x = 0$) to the best description",
+          "pairs": [
+            {
+              "left": "$|x|$",
+              "right": "$C^0$ but not differentiable at $0$"
+            },
+            {
+              "left": "$x^2\\sin(1/x)$",
+              "right": "Differentiable but not $C^1$"
+            },
+            {
+              "left": "$x|x|$",
+              "right": "$C^1$ but not twice differentiable at $0$"
+            },
+            {
+              "left": "$e^{x}$",
+              "right": "$C^\\infty$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Leibniz's rule for products\n\nThe product rule gives $(fg)' = f'g + fg'$. Differentiate again, using the product rule on each term:\n\n$$(fg)'' = f''g + f'g' + f'g' + fg'' = f''g + 2f'g' + fg''.$$\n\nThe coefficients $1, 2, 1$ are the same as in $(a + b)^2 = a^2 + 2ab + b^2$. Once more gives $1, 3, 3, 1$, as in $(a+b)^3$. This is no accident.\n\n**Binomial coefficients.** For integers $0 \\le k \\le n$, $\\dbinom{n}{k}$ (read \"$n$ choose $k$\") is\n\n$$\\binom{n}{k} = \\frac{n!}{k!\\,(n-k)!}.$$\n\nFor example $\\binom{4}{2} = \\frac{24}{2 \\cdot 2} = 6$, $\\binom{10}{1} = 10$ and $\\binom{n}{0} = \\binom{n}{n} = 1$. They are the numbers in Pascal's triangle.\n\n**Theorem (Leibniz rule).** If $f$ and $g$ are $n$ times differentiable at $c$, then so is $fg$, and\n\n$$(fg)^{(n)}(c) = \\sum_{k=0}^{n}\\binom{n}{k} f^{(k)}(c)\\,g^{(n-k)}(c).$$\n\nIn words: share out $n$ derivatives between $f$ and $g$ in every possible way ($k$ to $f$, $n - k$ to $g$), weighting each split by $\\binom{n}{k}$.\n\nThe proof is an induction on $n$ using the product rule and Pascal's identity $\\binom{n}{k-1} + \\binom{n}{k} = \\binom{n+1}{k}$, exactly like the proof of the binomial theorem.\n\n**Why it saves work:** if one factor is a polynomial, most terms vanish. For $(x\\,e^x)^{(n)}$, only $k = 0, 1$ survive (since $x'' = 0$), giving $x e^x + n e^x = (x + n)e^x$."
+        },
+        {
+          "type": "example",
+          "title": "Leibniz in action",
+          "problem": "Compute $\\dfrac{d^{10}}{dx^{10}}\\left(x^2 e^x\\right)$.",
+          "solution": "Take $f(x) = x^2$ and $g(x) = e^x$. Every derivative of $g$ is $e^x$, while $f' = 2x$, $f'' = 2$ and $f^{(k)} = 0$ for $k \\ge 3$. Only the terms $k = 0, 1, 2$ survive:\n\n$$\\left(x^2e^x\\right)^{(10)} = \\binom{10}{0}x^2e^x + \\binom{10}{1}2x\\,e^x + \\binom{10}{2}2\\,e^x = e^x\\left(x^2 + 20x + 90\\right),$$\n\nusing $\\binom{10}{1} = 10$ and $\\binom{10}{2} = 45$. $\\blacksquare$\n\n**Tip:** give the derivatives to the polynomial factor ($f$), because it runs out quickly. Giving them to $e^x$ instead would leave all eleven terms."
+        },
+        {
+          "type": "check",
+          "question": "In Leibniz's formula for $(fg)^{(3)}$, what is the term containing $f'g''$?",
+          "options": [
+            "$f'g''$",
+            "$2f'g''$",
+            "$3f'g''$",
+            "$6f'g''$"
+          ],
+          "correct": 2,
+          "explanation": "$f'g''$ gives $k = 1$ derivative to $f$ and $2$ to $g$, with coefficient $\\binom{3}{1} = 3$. The coefficients for $n = 3$ are $1, 3, 3, 1$. A coefficient of $2$ comes from $n = 2$, and $6 = 3!$ is not a binomial coefficient here."
+        },
+        {
+          "type": "text",
+          "md": "## The second derivative test\n\nAt a turning point $f'(c) = 0$ (Fermat's theorem, lesson 6.6), but that alone does not say whether $c$ is a maximum, a minimum or neither. The second derivative often decides.\n\n**Plain words.** If $f'' > 0$ at $c$, then $f'$ is increasing through $c$: it goes from negative to positive. So $f$ goes down, then up, and $c$ is the bottom of a valley.\n\n**Theorem (second derivative test).** Let $f$ be differentiable on an open interval containing $c$, with $f'(c) = 0$.\n- If $f''(c) > 0$, then $f$ has a **strict local minimum** at $c$: $f(x) > f(c)$ for all $x \\ne c$ near $c$.\n- If $f''(c) < 0$, then $f$ has a **strict local maximum** at $c$.\n\n**Examples.**\n- $f(x) = x^3 - 3x$: $f'(x) = 3x^2 - 3 = 0$ at $x = \\pm 1$, and $f''(x) = 6x$. At $x = 1$, $f''(1) = 6 > 0$: local minimum, $f(1) = -2$. At $x = -1$, $f''(-1) = -6 < 0$: local maximum, $f(-1) = 2$.\n- $f(x) = \\cos x$ at $c = 0$: $f'(0) = -\\sin 0 = 0$ and $f''(0) = -\\cos 0 = -1 < 0$, a local maximum.\n\n**Edge case.** The test needs $f'(c) = 0$ first. For $f(x) = x^2 + x$ at $c = 0$, $f''(0) = 2 > 0$ but $f'(0) = 1$, so $0$ is not a minimum at all (the minimum is at $x = -\\tfrac12$).\n\nThe maximum case follows by applying the minimum case to $-f$. The proof of the minimum case is next."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of the second derivative test",
+          "steps": [
+            {
+              "title": "State what we prove",
+              "md": "Let $f$ be differentiable on an open interval containing $c$, with $f'(c) = 0$ and $f''(c) > 0$. We show $f$ has a strict local minimum at $c$."
+            },
+            {
+              "title": "Unpack the definition of $f''(c)$",
+              "md": "Since $f'(c) = 0$,\n\n$$f''(c) = \\lim_{x \\to c}\\frac{f'(x) - f'(c)}{x - c} = \\lim_{x\\to c}\\frac{f'(x)}{x - c} > 0.$$"
+            },
+            {
+              "title": "Read off the sign of $f'$ near $c$",
+              "md": "A limit that is positive forces the quantity to be positive nearby: there is $\\delta > 0$ with $\\frac{f'(x)}{x - c} > 0$ for $0 < |x - c| < \\delta$. When $x > c$ the denominator is positive, so $f'(x) > 0$; when $x < c$ it is negative, so $f'(x) < 0$. Hence $f' < 0$ on $(c - \\delta, c)$ and $f' > 0$ on $(c, c + \\delta)$.\n\nThe subtle point: we learn about $f'$ at points **near** $c$, even though $f''$ was only given **at** $c$."
+            },
+            {
+              "title": "Turn the sign of $f'$ into values of $f$ with the MVT",
+              "md": "For $c < x < c + \\delta$: $f(x) - f(c) = f'(\\xi)(x - c)$ with $\\xi \\in (c, x)$; both factors are positive, so $f(x) > f(c)$. For $c - \\delta < x < c$: $f(x) - f(c) = f'(\\xi)(x - c)$ with $\\xi \\in (x, c)$, a product of two negatives, so again $f(x) > f(c)$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why can we not simply say \"$f''(c) > 0$, so $f''$ is positive near $c$, so $f'$ is increasing near $c$\"?",
+          "options": [
+            "Because $f''$ might not exist, or might not be positive, at points near $c$; we only know its value at $c$",
+            "Because $f''(c) > 0$ means $f'$ is decreasing",
+            "Because the MVT cannot be applied to $f'$ in any situation",
+            "There is no problem; that argument is the proof"
+          ],
+          "correct": 0,
+          "explanation": "The hypothesis is about $f''$ at the single point $c$. Nothing says $f''$ exists, let alone stays positive, nearby. The proof avoids this by working with the limit defining $f''(c)$, which gives the sign of $f'$ near $c$ directly. $f''(c) > 0$ does not mean $f'$ is decreasing, and the MVT can be applied to $f'$ when $f'$ is differentiable on an interval; it just is not given here."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "When the second derivative test is silent",
+          "md": "If $f'(c) = 0$ and $f''(c) = 0$, the test gives **no information**. All three behaviours occur at $c = 0$:\n\n- $x^4$ has a minimum,\n- $-x^4$ has a maximum,\n- $x^3$ has neither (it keeps increasing through $0$).\n\nIn such cases look at higher derivatives (via Taylor's theorem, lesson 6.10) or at the sign of $f'$ on each side of $c$ directly."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "$f^{(n)}$",
+              "back": "The **$n$th derivative**: differentiate $f$ $n$ times. $f^{(0)} = f$; brackets distinguish it from the power $f^n$.\n\n*Example:* $f(x) = x^3$ gives $f^{(3)}(x) = 6$."
+            },
+            {
+              "front": "When $f''(c)$ exists",
+              "back": "Only if $f'$ exists on an **interval around** $c$ and is differentiable at $c$.\n\n*Example:* if $f'$ exists only at $0$, then $f''(0)$ is undefined."
+            },
+            {
+              "front": "$C^n(I)$",
+              "back": "Functions whose $n$th derivative exists on $I$ and is **continuous** there.\n\n*Example:* $x|x| \\in C^1(\\mathbb{R})$ but not $C^2$."
+            },
+            {
+              "front": "$C^\\infty(I)$",
+              "back": "Functions with derivatives of **every** order on $I$.\n\n*Example:* $e^x$, $\\sin x$ and every polynomial on $\\mathbb{R}$."
+            },
+            {
+              "front": "$\\binom{n}{k}$",
+              "back": "\"$n$ choose $k$\": $\\frac{n!}{k!(n-k)!}$, the numbers in **Pascal's triangle**.\n\n*Example:* $\\binom{4}{2} = 6$."
+            },
+            {
+              "front": "Leibniz rule",
+              "back": "$(fg)^{(n)} = \\sum_{k=0}^{n}\\binom{n}{k} f^{(k)}g^{(n-k)}$: share $n$ derivatives between the **two factors**.\n\n*Example:* $(fg)'' = f''g + 2f'g' + fg''$."
+            },
+            {
+              "front": "Second derivative test",
+              "back": "If $f'(c) = 0$ and $f''(c) > 0$: strict local **minimum**. If $f''(c) < 0$: strict local maximum. If $f''(c) = 0$: no information.\n\n*Example:* $x^3 - 3x$ has a minimum at $1$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = x^4 - 4x^3$ you find $f'(0) = 0$ and $f''(0) = 0$. A classmate says \"so $0$ is not a turning point\". What is the right response?",
+          "options": [
+            "Correct: $f''(0) = 0$ rules out a maximum or minimum",
+            "Wrong: $f''(0) = 0$ means $0$ is a minimum",
+            "The test is silent; check the sign of $f'$ near $0$ or use higher derivatives",
+            "Wrong: $f''(0) = 0$ means $0$ is a maximum"
+          ],
+          "correct": 2,
+          "explanation": "With $f'(c) = f''(c) = 0$ the test gives no information: $x^4$, $-x^4$ and $x^3$ show all three outcomes. Here $f'(x) = 4x^2(x - 3)$ is negative on both sides of $0$, so $f$ is decreasing through $0$ and has no extremum there; but you only know that after checking."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to classify the turning points of $f(x) = x^3 - 3x$.",
+          "items": [
+            "Compute $f'(x) = 3x^2 - 3$.",
+            "Solve $f'(x) = 0$ to get $x = 1$ and $x = -1$.",
+            "Compute $f''(x) = 6x$.",
+            "Evaluate $f''(1) = 6 > 0$ and $f''(-1) = -6 < 0$.",
+            "Conclude: a strict local minimum at $x = 1$ and a strict local maximum at $x = -1$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: exactly $C^2$",
+          "problem": "Let $f(x) = x^2|x|$. Show that $f \\in C^2(\\mathbb{R})$ but $f'''(0)$ does not exist. Follow the $x|x|$ example: formulas away from $0$, the definition at $0$.",
+          "solution": "**First derivative.** For $x > 0$, $f(x) = x^3$ and $f'(x) = 3x^2$. For $x < 0$, $f(x) = -x^3$ and $f'(x) = -3x^2$. At $0$:\n\n$$\\frac{f(h) - f(0)}{h} = \\frac{h^2|h|}{h} = h|h| \\to 0,$$\n\nso $f'(0) = 0$. In one formula, $f'(x) = 3x|x|$ for all $x$.\n\n**Second derivative.** By the worked example, $x|x|$ has derivative $2|x|$ everywhere, so $f''(x) = 3 \\cdot 2|x| = 6|x|$ for all $x$. This is continuous, so $f \\in C^2(\\mathbb{R})$.\n\n**Third derivative.** $6|x|$ has a corner at $0$ (difference quotients $\\pm 6$), so $f'''(0)$ does not exist. $\\blacksquare$\n\n**Check your version:** did you use the difference quotient at $0$ rather than differentiating the formulas there? Did you say why $f''$ is continuous? Did you name the one-sided quotients $+6$ and $-6$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is every function in $C^\\infty$ equal to its Taylor series?",
+              "a": "No. The function equal to $e^{-1/x^2}$ for $x \\ne 0$ and $0$ at $0$ is $C^\\infty(\\mathbb{R})$ with $f^{(n)}(0) = 0$ for every $n$. Its Taylor series at $0$ is identically $0$, yet $f(x) > 0$ for $x \\ne 0$. Having all derivatives is weaker than being given by a power series."
+            },
+            {
+              "q": "If $f$ is differentiable everywhere, is $f'$ at least continuous?",
+              "a": "Not necessarily. $x^2\\sin(1/x)$ is differentiable on $\\mathbb{R}$, but $f'(x) = 2x\\sin(1/x) - \\cos(1/x)$ has no limit at $0$. That is exactly why $C^1$ is a separate class."
+            },
+            {
+              "q": "Why does the Leibniz rule look like the binomial theorem?",
+              "a": "Both come from the same counting. In $(a + b)^n$ you choose $a$ or $b$ from each of $n$ brackets; in $(fg)^{(n)}$ each of the $n$ derivatives lands on $f$ or on $g$. The number of ways to choose $k$ of the $n$ is $\\binom{n}{k}$ in both cases."
+            },
+            {
+              "q": "Does $f''(c) > 0$ mean $f$ curves upwards near $c$?",
+              "a": "Only at $c$ itself, in the limit sense. If $f''$ is continuous at $c$, then $f'' > 0$ on a whole interval, and $f$ is convex there (lesson 6.12). Without continuity of $f''$, the picture near $c$ can be messier, but the second derivative test still holds."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $f^{(n)}$ is built one derivative at a time; $f''(c)$ needs $f'$ to exist on an **interval around** $c$.\n- $f \\in C^n(I)$ when $f^{(n)}$ exists and is continuous on $I$. The classes are nested and strictly decreasing: $x^n|x|$ is $C^n$ but not $C^{n+1}$.\n- At join points (like $0$ for $x|x|$), go back to the difference quotient.\n- **Leibniz rule:** $(fg)^{(n)} = \\sum_{k}\\binom{n}{k} f^{(k)}g^{(n-k)}$; let the polynomial factor take the derivatives.\n- **Second derivative test:** $f'(c) = 0$ with $f''(c) > 0$ gives a strict local minimum, $f''(c) < 0$ a strict local maximum, and $f''(c) = 0$ tells you nothing."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which statement about $f(x) = x|x|$ is correct?",
+          "options": [
+            "$f$ is not differentiable at $0$",
+            "$f$ is differentiable but $f'$ is not continuous at $0$",
+            "$f \\in C^1(\\mathbb{R})$, but $f''(0)$ does not exist",
+            "$f \\in C^2(\\mathbb{R})$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$f'(x) = 2|x|$ for all $x$, which is continuous but not differentiable at $0$. So $f$ is differentiable with continuous derivative ($C^1$), but not twice differentiable at $0$, so not $C^2$."
+        },
+        {
+          "type": "short",
+          "prompt": "Evaluate $\\dfrac{d^{10}}{dx^{10}}\\left(x^2e^x\\right)$ at $x = 0$.",
+          "answer": [
+            "90"
+          ],
+          "explanation": "By Leibniz's rule the derivative is $e^x(x^2 + 20x + 90)$, which equals $90$ at $x = 0$. The $90$ is $\\binom{10}{2} \\cdot 2 = 45 \\cdot 2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f'(c) = 0$ and $f''(c) = 0$, then $f$ has no local extremum at $c$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = x^4$ has $f'(0) = f''(0) = 0$ and a strict minimum at $0$. When $f''(c) = 0$ the second derivative test says nothing either way."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which functions belong to $C^1(\\mathbb{R})$? (Each is defined to be $0$ at $x = 0$.)",
+          "options": [
+            "$|x|$",
+            "$x|x|$",
+            "$x^2\\sin(1/x)$",
+            "$x^3\\sin(1/x)$"
+          ],
+          "answer": [
+            1,
+            3
+          ],
+          "explanation": "$x|x|$ has $f' = 2|x|$, which is continuous. For $x^3\\sin(1/x)$: $f'(0) = \\lim_{h \\to 0} h^2\\sin(1/h) = 0$ and $f'(x) = 3x^2\\sin(1/x) - x\\cos(1/x) \\to 0$, so $f'$ is continuous. $|x|$ is not differentiable at $0$, and $x^2\\sin(1/x)$ has a derivative that is discontinuous at $0$."
+        },
+        {
+          "type": "single",
+          "prompt": "In Leibniz's formula for $(fg)^{(4)}$, what is the coefficient of $f''g''$?",
+          "options": [
+            "$4$",
+            "$6$",
+            "$2$",
+            "$12$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The coefficient of $f^{(k)}g^{(n-k)}$ is $\\binom{n}{k}$; here $\\binom{4}{2} = \\frac{4!}{2!\\,2!} = 6$. The row of Pascal's triangle for $n = 4$ is $1, 4, 6, 4, 1$."
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = 1/x$ on $(0, \\infty)$, what is $f^{(n)}(x)$?",
+          "options": [
+            "$\\dfrac{n!}{x^{n+1}}$",
+            "$\\dfrac{(-1)^n}{x^{n+1}}$",
+            "$\\dfrac{(-1)^n n!}{x^{n}}$",
+            "$\\dfrac{(-1)^n n!}{x^{n+1}}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "By induction: $f'(x) = -x^{-2}$, and differentiating $(-1)^n n!\\,x^{-(n+1)}$ gives $(-1)^{n+1}(n+1)!\\,x^{-(n+2)}$. The first option forgets the alternating sign, the second the factorial, and the third has the wrong power."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^5$. What is $f^{(5)}(x)$?",
+          "answer": [
+            "120"
+          ],
+          "explanation": "$f' = 5x^4$, $f'' = 20x^3$, $f''' = 60x^2$, $f^{(4)} = 120x$, $f^{(5)} = 120 = 5!$. One more derivative gives $0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f''(c)$ exists, then $f'$ is continuous at $c$.",
+          "answer": [
+            true
+          ],
+          "explanation": "$f''(c)$ existing means $f'$ is differentiable at $c$, and differentiable implies continuous (lesson 6.3). Note that $f''$ itself need not be continuous at $c$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions belong to $C^\\infty(\\mathbb{R})$?",
+          "options": [
+            "$e^x$",
+            "$\\sin x$",
+            "$x|x|$",
+            "$x^7 - x$",
+            "$|x|^3$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "$e^x$, $\\sin x$ and polynomials have derivatives of every order. $x|x|$ is only $C^1$, and $|x|^3 = x^2|x|$ is $C^2$ but $f'''(0)$ does not exist."
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = x^3 - 3x$, what does the second derivative test say at $x = -1$?",
+          "options": [
+            "A strict local minimum",
+            "A strict local maximum",
+            "No information, because $f''(-1) = 0$",
+            "The test does not apply, because $f'(-1) \\ne 0$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$f'(-1) = 3 - 3 = 0$ and $f''(-1) = 6 \\cdot (-1) = -6 < 0$, so $f$ has a strict local maximum at $-1$ (with value $2$)."
+        },
+        {
+          "type": "short",
+          "prompt": "Using Leibniz's rule, evaluate $\\dfrac{d^5}{dx^5}\\left(x e^x\\right)$ at $x = 0$.",
+          "answer": [
+            "5"
+          ],
+          "explanation": "Only $k = 0, 1$ survive: $(xe^x)^{(5)} = x e^x + \\binom{5}{1} e^x = (x + 5)e^x$. At $x = 0$ this is $5$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which is the smallest class that fails to contain $f(x) = x^2|x|$?",
+          "options": [
+            "$C^0(\\mathbb{R})$",
+            "$C^1(\\mathbb{R})$",
+            "$C^2(\\mathbb{R})$",
+            "$C^3(\\mathbb{R})$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$f'(x) = 3x|x|$ and $f''(x) = 6|x|$ are continuous, so $f \\in C^2$. But $6|x|$ is not differentiable at $0$, so $f'''(0)$ does not exist and $f \\notin C^3$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is a polynomial of degree $4$, then $f^{(5)}(x) = 0$ for every $x$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Each derivative lowers the degree by one, so $f^{(4)}$ is a constant and $f^{(5)} = 0$. For example $(x^4)^{(4)} = 24$ and $(x^4)^{(5)} = 0$."
+        }
+      ]
+    },
+    {
+      "slug": "6-12-convexity-and-concavity",
+      "title": "Convexity and concavity",
+      "summary": "Chords above the graph: characterising convexity through $f'$ and $f''$.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "Making \"the graph bends upwards\" precise, and testing it with derivatives.\n\n**In this lesson you will learn to:**\n- describe the points between $x$ and $y$ as $tx + (1-t)y$\n- define convex, strictly convex and concave functions using chords\n- test convexity with $f'$ (increasing slopes, tangent lines) and with $f''$\n- find inflection points without falling for \"$f''(c) = 0$\"\n- prove inequalities such as AM–GM from convexity\n\n**You need:** the Mean Value Theorem (lesson 6.7), \"$f' \\ge 0$ means $f$ is increasing\" (6.9) and higher derivatives (6.11)."
+        },
+        {
+          "type": "text",
+          "md": "## Points between two points\n\nConvexity is about a function's values **between** two points, so first we need a tidy way to name every point between $x$ and $y$.\n\nFor $t \\in [0, 1]$ (read \"$t$ in the closed interval from $0$ to $1$\"), the number\n\n$$z = tx + (1 - t)y$$\n\nis a **weighted average** of $x$ and $y$, with weight $t$ on $x$ and $1 - t$ on $y$. It is called a **convex combination** of $x$ and $y$.\n\n- $t = 1$ gives $z = x$, and $t = 0$ gives $z = y$.\n- $t = \\tfrac12$ gives the midpoint $\\frac{x + y}{2}$.\n- As $t$ runs from $0$ to $1$, $z$ slides from $y$ to $x$ and hits every point in between exactly once.\n\n**Example.** With $x = 1$, $y = 5$, $t = \\tfrac14$: $z = \\tfrac14 \\cdot 1 + \\tfrac34 \\cdot 5 = 4$. The weight $\\tfrac34$ is on $y$, so $z$ is closer to $y$. Students often expect $z$ to be near $x$ when $t$ is small; it is the other way round.\n\nApplying the **same** weights to the heights $f(x)$ and $f(y)$ gives $t f(x) + (1 - t) f(y)$. That is the height of the **chord** (the straight line segment joining $(x, f(x))$ to $(y, f(y))$) above the point $z$. Convexity compares this chord height with the graph height $f(z)$."
+        },
+        {
+          "type": "check",
+          "question": "Take $f(x) = x^2$, $x = 0$, $y = 4$ and $t = \\tfrac14$. What are the point $z = tx + (1-t)y$ and the chord height $tf(x) + (1-t)f(y)$?",
+          "options": [
+            "$z = 1$, chord height $4$",
+            "$z = 3$, chord height $12$",
+            "$z = 3$, chord height $9$",
+            "$z = 1$, chord height $1$"
+          ],
+          "correct": 1,
+          "explanation": "$z = \\tfrac14 \\cdot 0 + \\tfrac34 \\cdot 4 = 3$ and the chord height is $\\tfrac14 \\cdot 0 + \\tfrac34 \\cdot 16 = 12$. The graph height is $f(3) = 9$, below the chord. $z = 1$ puts the weight $\\tfrac14$ on $y$ by mistake, and $9$ is $f(z)$, not the chord height."
+        },
+        {
+          "type": "text",
+          "md": "## Convex and concave functions\n\n**Plain words.** $f$ is convex when every chord lies on or above the graph: a bowl shape.\n\n**Definition.** A function $f : I \\to \\mathbb{R}$ on an interval $I$ is **convex** if for all $x, y \\in I$ and $t \\in [0, 1]$,\n\n$$f\\big(tx + (1 - t)y\\big) \\le t f(x) + (1 - t) f(y).$$\n\n- $f$ is **strictly convex** if the inequality is strict ($<$) whenever $x \\ne y$ and $0 < t < 1$: the chord is strictly above the graph between its endpoints.\n- $f$ is **concave** if $-f$ is convex, that is, the inequality is reversed ($\\ge$): every chord lies on or below the graph.\n\n**Examples.**\n- $x^2$ is strictly convex; the check above showed one chord ($12$) above the graph ($9$).\n- $|x|$ is convex: by the triangle inequality, $|tx + (1-t)y| \\le t|x| + (1-t)|y|$. It has a corner at $0$, so convexity needs **no** differentiability.\n- A linear function $f(x) = mx + b$ is **both** convex and concave: its chords lie exactly on the graph, so equality holds. This edge case surprises people, but \"convex\" allows equality. It is not strictly convex.\n\n**Non-example.** $x^3$ on $\\mathbb{R}$ is not convex. Take $x = -2$, $y = 0$, $t = \\tfrac12$: the midpoint is $-1$ and $f(-1) = -1$, but the chord height is $\\frac{-8 + 0}{2} = -4$. The graph is **above** the chord, so the inequality fails. (On $[0, \\infty)$, though, $x^3$ is convex: the interval matters.)"
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function to its shape on the stated interval.",
+          "pairs": [
+            {
+              "left": "$x^2$ on $\\mathbb{R}$",
+              "right": "Strictly convex"
+            },
+            {
+              "left": "$\\sqrt{x}$ on $[0, \\infty)$",
+              "right": "Strictly concave"
+            },
+            {
+              "left": "$2x + 1$ on $\\mathbb{R}$",
+              "right": "Both convex and concave"
+            },
+            {
+              "left": "$x^3$ on $\\mathbb{R}$",
+              "right": "Neither convex nor concave"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Convexity through the first derivative\n\nChecking the chord inequality for **all** $x$, $y$ and $t$ is hard. For differentiable functions there are easier tests. Picture walking along a bowl from left to right: the slope starts negative and keeps growing. That is the first test.\n\n**Theorem.** Let $f$ be differentiable on an open interval $I$. The following are equivalent (each implies the others):\n\n1. $f$ is convex on $I$;\n2. $f'$ is increasing on $I$ (here, as in lesson 6.9, \"increasing\" means non-decreasing: $x < y \\Rightarrow f'(x) \\le f'(y)$);\n3. $f(y) \\ge f(x) + f'(x)(y - x)$ for all $x, y \\in I$.\n\nCondition 3 says the graph lies **above every tangent line**: $f(x) + f'(x)(y - x)$ is the height at $y$ of the tangent line drawn at $x$.\n\n**Examples.**\n- $e^x$ has $f'(x) = e^x$, which is increasing, so $e^x$ is convex. The tangent line at $x = 0$ is $1 + y$, so condition 3 gives the useful inequality $e^y \\ge 1 + y$ for all $y$.\n- $x^2$ has $f'(x) = 2x$, increasing: convex. The tangent at $x = 1$ is $1 + 2(y - 1) = 2y - 1$, and indeed $y^2 - (2y - 1) = (y - 1)^2 \\ge 0$.\n\n**Common mix-up.** Convexity is about $f'$ **increasing**, not $f'$ **positive**. $x^2$ is convex but decreasing on $(-\\infty, 0]$; $\\sqrt{x}$ is increasing but concave."
+        },
+        {
+          "type": "check",
+          "question": "You know $e^x$ is convex and its tangent line at $0$ is $y = 1 + x$. Which inequality follows straight from the tangent-line property?",
+          "options": [
+            "$e^x \\le 1 + x$ for all $x$",
+            "$e^x \\ge 1 + x$ for all $x$",
+            "$e^x \\ge 1 + x$ only for $x \\ge 0$",
+            "$e^x \\ge x$ only for $x > 0$"
+          ],
+          "correct": 1,
+          "explanation": "For a convex differentiable function the graph lies on or above every tangent line, at every point of the interval, so $e^x \\ge 1 + x$ for all real $x$ (with equality only at $0$). The reversed inequality is the concave case. Restricting to $x \\ge 0$ or $x > 0$ throws away half of what the property gives."
+        },
+        {
+          "type": "text",
+          "md": "## Convexity through the second derivative\n\nIf $f'$ is itself differentiable, \"$f'$ increasing\" can be tested with $f''$: by lesson 6.9 applied to $f'$, $f'' \\ge 0$ makes $f'$ increasing.\n\n**Theorem.** Let $f$ be twice differentiable on an open interval $I$.\n- $f$ is convex on $I$ if and only if $f'' \\ge 0$ on $I$.\n- If $f'' > 0$ on $I$, then $f$ is strictly convex on $I$.\n- Concave versions: replace $f'' \\ge 0$ by $f'' \\le 0$, and $f'' > 0$ by $f'' < 0$.\n\n**Examples.**\n- $f(x) = x^3 - 3x^2$: $f''(x) = 6x - 6$. This is $\\ge 0$ exactly when $x \\ge 1$, so $f$ is convex on $[1, \\infty)$ and concave on $(-\\infty, 1]$.\n- $\\ln x$ on $(0, \\infty)$: $(\\ln x)'' = -1/x^2 < 0$, so $\\ln$ is strictly concave.\n- $1/x$ on $(0, \\infty)$: $f'' = 2/x^3 > 0$, strictly convex.\n\n**Edge case.** The second bullet has no converse. $x^4$ is strictly convex on $\\mathbb{R}$, yet $f''(x) = 12x^2$ is $0$ at $x = 0$. Strict convexity only guarantees $f'' \\ge 0$, not $f'' > 0$. (It is strict because $f'(x) = 4x^3$ is strictly increasing.)"
+        },
+        {
+          "type": "check",
+          "question": "On which set is $f(x) = x^3 - 3x^2$ convex?",
+          "options": [
+            "$(-\\infty, 1]$",
+            "$[0, 2]$",
+            "$[1, \\infty)$",
+            "$\\mathbb{R}$"
+          ],
+          "correct": 2,
+          "explanation": "$f''(x) = 6x - 6 \\ge 0$ exactly when $x \\ge 1$. $(-\\infty, 1]$ is where $f$ is concave; $[0, 2]$ is where $f$ decreases ($f'(x) = 3x(x - 2) \\le 0$), which mixes up $f'$ and $f''$."
+        },
+        {
+          "type": "example",
+          "title": "Proof that $f'' \\ge 0$ implies convexity",
+          "problem": "Let $f$ be twice differentiable on an open interval $I$ with $f'' \\ge 0$. Prove that $f$ is convex.",
+          "solution": "**Step 1: slopes increase.** By lesson 6.9 applied to $f'$, $f'' \\ge 0$ implies $f'$ is increasing on $I$.\n\n**Step 2: set up.** Let $x < y$ in $I$, $t \\in (0, 1)$ (the cases $t = 0, 1$ are trivial), and $z = tx + (1 - t)y$, so $x < z < y$ with\n\n$$z - x = (1 - t)(y - x), \\qquad y - z = t(y - x).$$\n\n**Step 3: compare two chord slopes.** By the MVT on $[x, z]$ and $[z, y]$ there are $\\xi_1 \\in (x, z)$, $\\xi_2 \\in (z, y)$ with\n\n$$\\frac{f(z) - f(x)}{z - x} = f'(\\xi_1) \\le f'(\\xi_2) = \\frac{f(y) - f(z)}{y - z},$$\n\nwhere the inequality uses $\\xi_1 < \\xi_2$ and $f'$ increasing.\n\n**Step 4: clear denominators.** Substitute the expressions for $z - x$ and $y - z$ and multiply by $t(1-t)(y - x) > 0$:\n\n$$t\\big(f(z) - f(x)\\big) \\le (1 - t)\\big(f(y) - f(z)\\big).$$\n\nRearranging gives $f(z) \\le t f(x) + (1 - t) f(y)$. $\\blacksquare$\n\n**The key idea:** the left piece of a chord has a smaller slope than the right piece. That is what \"bowl shaped\" means."
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we need $\\xi_1 < \\xi_2$?",
+          "options": [
+            "So that $f'(\\xi_1) \\le f'(\\xi_2)$, using that $f'$ is increasing",
+            "So that $f(\\xi_1) \\le f(\\xi_2)$",
+            "Because the MVT only gives points in increasing order",
+            "It is not needed; any two points would do"
+          ],
+          "correct": 0,
+          "explanation": "$f'$ increasing only compares $f'$ at two points when we know which point is on the left. $\\xi_1 \\in (x, z)$ and $\\xi_2 \\in (z, y)$ are separated by $z$, so $\\xi_1 < \\xi_2$ and $f'(\\xi_1) \\le f'(\\xi_2)$. The proof never compares values of $f$ at the $\\xi$'s, and the MVT says nothing about order on its own."
+        },
+        {
+          "type": "text",
+          "md": "## Inflection points\n\nAn **inflection point** is a point $c$ where $f$ changes from convex to concave, or from concave to convex: convex on one side of $c$ (on some interval ending at $c$) and concave on the other.\n\n**Finding them.** For twice differentiable $f$, look for points where $f''$ **changes sign**. Points where $f''(c) = 0$ are only candidates.\n\n**Examples.**\n- $f(x) = x^3 - 3x^2$: $f''(x) = 6(x - 1)$ is negative for $x < 1$ and positive for $x > 1$. So $x = 1$ is an inflection point.\n- $f(x) = x^3$: $f''(x) = 6x$ changes sign at $0$: inflection point at $0$.\n- $f(x) = x^{1/3}$: for $x \\ne 0$, $f''(x) = -\\tfrac29 x^{-5/3}$, positive for $x < 0$ and negative for $x > 0$. So $0$ is an inflection point even though $f'(0)$ and $f''(0)$ do not exist (the tangent there is vertical). Inflection is about shape, not about formulas.\n\n**Non-example.** $f(x) = x^4$ has $f''(0) = 0$, but $f''(x) = 12x^2 \\ge 0$ on both sides: $f$ is convex everywhere, so $0$ is **not** an inflection point. $f''(c) = 0$ is neither necessary nor sufficient for an inflection point."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Pitfalls with convexity and inflection points",
+          "md": "- **Strictly convex does not imply $f'' > 0$.** $f(x) = x^4$ is strictly convex on $\\mathbb{R}$, but $f''(0) = 0$.\n- **$f''(c) = 0$ does not make $c$ an inflection point.** Again $x^4$: $f''(0) = 0$, but $f$ is convex on both sides of $0$. An inflection point is one where the function changes from convex to concave (or vice versa).\n- **Convex functions need not be differentiable.** $|x|$ is convex but has a corner at $0$; the derivative tests above only apply where $f$ is differentiable."
+        },
+        {
+          "type": "check",
+          "question": "Each function below has $f''(0) = 0$. Which one has an inflection point at $0$?",
+          "options": [
+            "$x^4$",
+            "$-x^4$",
+            "$x^5$",
+            "$x^6$"
+          ],
+          "correct": 2,
+          "explanation": "For $x^5$, $f''(x) = 20x^3$ is negative for $x < 0$ and positive for $x > 0$, so the shape changes from concave to convex. For $x^4$ and $x^6$, $f'' \\ge 0$ on both sides (convex throughout); for $-x^4$, $f'' \\le 0$ on both sides (concave throughout)."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Convex combination",
+              "back": "A **weighted average** $tx + (1-t)y$ with $t \\in [0,1]$; it covers every point between $x$ and $y$.\n\n*Example:* $x = 1$, $y = 5$, $t = \\tfrac14$ gives $4$."
+            },
+            {
+              "front": "Convex function",
+              "back": "$f(tx + (1-t)y) \\le tf(x) + (1-t)f(y)$: every **chord** lies on or above the graph.\n\n*Example:* $x^2$, $|x|$, $e^x$."
+            },
+            {
+              "front": "Strictly convex",
+              "back": "The chord inequality is **strict** for $x \\ne y$ and $0 < t < 1$.\n\n*Example:* $x^4$, even though $f''(0) = 0$."
+            },
+            {
+              "front": "Concave function",
+              "back": "$-f$ is convex: every chord lies on or **below** the graph.\n\n*Example:* $\\ln x$ and $\\sqrt{x}$ on $(0, \\infty)$."
+            },
+            {
+              "front": "Tangent-line test",
+              "back": "For differentiable $f$: convex $\\iff$ the graph lies **above every tangent**, $f(y) \\ge f(x) + f'(x)(y - x)$.\n\n*Example:* $e^y \\ge 1 + y$."
+            },
+            {
+              "front": "Second derivative test for convexity",
+              "back": "Twice differentiable $f$ is convex on an open interval $\\iff$ $f'' \\ge 0$ there; $f'' > 0$ gives **strict** convexity.\n\n*Example:* $1/x$ on $(0,\\infty)$."
+            },
+            {
+              "front": "Inflection point",
+              "back": "A point where $f$ **changes** between convex and concave.\n\n*Example:* $x^3$ at $0$. *Non-example:* $x^4$ at $0$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You know only that $f$ is differentiable on $(0, \\infty)$ and that its graph lies above each of its tangent lines. What can you conclude?",
+          "options": [
+            "$f$ is increasing",
+            "$f'' \\ge 0$ on $(0, \\infty)$",
+            "$f$ is convex on $(0, \\infty)$",
+            "$f$ is strictly convex on $(0, \\infty)$"
+          ],
+          "correct": 2,
+          "explanation": "The tangent-line property is equivalent to convexity for differentiable functions. You cannot conclude $f'' \\ge 0$, because $f''$ need not exist: $f(x) = x^2$ for $x \\ge 0$ and $0$ for $x < 0$ is convex and differentiable, but $f''(0)$ does not exist. \"Above\" here allows touching, so strict convexity does not follow (a linear function satisfies it). And convex functions can decrease, like $(x-1)^2$."
+        },
+        {
+          "type": "example",
+          "title": "Weighted AM–GM from concavity",
+          "problem": "Prove that for $x, y > 0$ and $t \\in [0, 1]$,\n\n$$x^t y^{1-t} \\le t x + (1 - t) y.$$",
+          "solution": "**Choose the concave function.** On $(0, \\infty)$, $(\\ln u)'' = -1/u^2 < 0$, so $\\ln$ is concave.\n\n**Apply the concave inequality** (chord below the graph):\n\n$$\\ln\\big(tx + (1-t)y\\big) \\ge t\\ln x + (1 - t)\\ln y = \\ln\\left(x^t y^{1-t}\\right),$$\n\nusing the log laws $t\\ln x = \\ln(x^t)$ and $\\ln a + \\ln b = \\ln(ab)$.\n\n**Undo the logarithm.** Since $\\exp$ is increasing, applying it to both sides keeps the inequality: $tx + (1-t)y \\ge x^t y^{1-t}$. $\\blacksquare$\n\nWith $t = \\frac12$ this is the familiar $\\sqrt{xy} \\le \\frac{x + y}{2}$: the geometric mean is at most the arithmetic mean."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to find where $f(x) = x^4 - 6x^2$ is convex and where it is concave.",
+          "items": [
+            "Compute $f'(x) = 4x^3 - 12x$ and $f''(x) = 12x^2 - 12$.",
+            "Factor: $f''(x) = 12(x - 1)(x + 1)$, which is zero at $x = \\pm 1$.",
+            "Check signs: $f'' > 0$ for $|x| > 1$ and $f'' < 0$ for $|x| < 1$.",
+            "Conclude: convex on $(-\\infty, -1]$ and on $[1, \\infty)$, concave on $[-1, 1]$, with inflection points at $x = \\pm 1$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the power-mean inequality",
+          "problem": "Let $p \\ge 1$. Prove that for all $x, y > 0$,\n\n$$\\left(\\frac{x + y}{2}\\right)^p \\le \\frac{x^p + y^p}{2}.$$\n\nHint: which function is convex, and which value of $t$ gives midpoints?",
+          "solution": "**Choose the function.** Let $f(u) = u^p$ on $(0, \\infty)$. Then $f''(u) = p(p - 1)u^{p-2}$. Since $p \\ge 1$, $p(p-1) \\ge 0$, and $u^{p-2} > 0$, so $f'' \\ge 0$ and $f$ is convex.\n\n**Apply the definition with $t = \\tfrac12$:**\n\n$$f\\left(\\tfrac12 x + \\tfrac12 y\\right) \\le \\tfrac12 f(x) + \\tfrac12 f(y),$$\n\nwhich is exactly $\\left(\\frac{x + y}{2}\\right)^p \\le \\frac{x^p + y^p}{2}$. $\\blacksquare$\n\n**Check your version:** did you show $f'' \\ge 0$, including why $p(p-1) \\ge 0$ (the edge case $p = 1$ gives equality, which is allowed)? Did you name $t = \\tfrac12$? Did you work on an open interval, where the $f''$ test applies?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is $\\max(f, g)$ convex when $f$ and $g$ are?",
+              "a": "Yes. $\\max(f,g)(tx + (1-t)y) \\le \\max\\big(tf(x) + (1-t)f(y),\\ tg(x) + (1-t)g(y)\\big) \\le t\\max(f,g)(x) + (1-t)\\max(f,g)(y)$. This is why $|x| = \\max(x, -x)$ is convex."
+            },
+            {
+              "q": "Is a sum of convex functions convex?",
+              "a": "Yes: add the two defining inequalities. For example $x^2 + |x|$ is convex."
+            },
+            {
+              "q": "Is a product of convex functions convex?",
+              "a": "Not in general. $x$ and $x^2$ are convex on $\\mathbb{R}$, but their product $x^3$ is not."
+            },
+            {
+              "q": "Why do people care about convexity in optimisation?",
+              "a": "For a convex function every local minimum is a global minimum. If $f(c) \\le f(x)$ near $c$ but $f(y) < f(c)$ far away, the chord from $c$ to $y$ would dip below $f(c)$ just next to $c$, while convexity puts the graph under that chord, contradicting the local minimum."
+            },
+            {
+              "q": "Is a convex function automatically continuous?",
+              "a": "On an **open** interval, yes (we do not prove it here). At an endpoint it can jump: $f = 0$ on $[0, 1)$ with $f(1) = 5$ is convex on $[0, 1]$ but not continuous at $1$."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $tx + (1-t)y$ with $t \\in [0, 1]$ names every point between $x$ and $y$; $t f(x) + (1-t)f(y)$ is the chord height above it.\n- **Convex:** chords on or above the graph. **Concave:** $-f$ convex. Linear functions are both; $|x|$ is convex without being differentiable.\n- For differentiable $f$: convex $\\iff$ $f'$ increasing $\\iff$ graph above every tangent line.\n- For twice differentiable $f$: convex $\\iff$ $f'' \\ge 0$; $f'' > 0$ gives strict convexity, but $x^4$ shows the converse fails.\n- An **inflection point** is where convexity changes; $f''(c) = 0$ is only a candidate.\n- Convexity proves inequalities: AM–GM from concavity of $\\ln$, $e^x \\ge 1 + x$ from a tangent line."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is twice differentiable and strictly convex on $\\mathbb{R}$, then $f''(x) > 0$ for all $x$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = x^4$ is strictly convex but $f''(0) = 0$. Only $f'' \\ge 0$ follows."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A convex function on an open interval need not be differentiable at every point.",
+          "answer": [
+            true
+          ],
+          "explanation": "$f(x) = |x|$ is convex on $\\mathbb{R}$ but not differentiable at $0$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the largest interval on which $f(x) = x^3 - 3x^2$ is concave?",
+          "options": [
+            "$[1, \\infty)$",
+            "$(-\\infty, 1]$",
+            "$[0, 2]$",
+            "$(-\\infty, 0]$ only"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$f''(x) = 6x - 6 \\le 0$ exactly when $x \\le 1$. The largest interval of concavity is $(-\\infty, 1]$; $(-\\infty, 0]$ is contained in it but is not the full answer. $[1, \\infty)$ is where $f$ is convex."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f$ be differentiable on an open interval $I$. Which conditions are equivalent to $f$ being convex on $I$?",
+          "options": [
+            "$f'$ is increasing (non-decreasing) on $I$",
+            "$f(y) \\ge f(x) + f'(x)(y - x)$ for all $x, y \\in I$",
+            "$f' \\ge 0$ on $I$",
+            "$f$ is increasing on $I$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "The first two are standard characterisations. $f' \\ge 0$ and \"$f$ increasing\" are equivalent to each other but not to convexity: $\\sqrt{x}$ on $(0,\\infty)$ is increasing but concave, and $x^2$ on $\\mathbb{R}$ is convex but not increasing."
+        },
+        {
+          "type": "single",
+          "prompt": "Which function is concave on $(0, \\infty)$?",
+          "options": [
+            "$e^x$",
+            "$x^2$",
+            "$\\ln x$",
+            "$1/x$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$(\\ln x)'' = -1/x^2 < 0$. The others have positive second derivatives on $(0,\\infty)$: $e^x$, $2$, and $2/x^3$."
+        },
+        {
+          "type": "short",
+          "prompt": "At what $x$ does $f(x) = x^3 - 3x^2$ have its inflection point?",
+          "answer": [
+            "1",
+            "x=1",
+            "x = 1"
+          ],
+          "explanation": "$f''(x) = 6(x - 1)$ changes sign from negative to positive at $x = 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The function $f(x) = 2x + 1$ is both convex and concave on $\\mathbb{R}$.",
+          "answer": [
+            true
+          ],
+          "explanation": "For a linear function the chord lies exactly on the graph, so $f(tx + (1-t)y) = tf(x) + (1-t)f(y)$. Equality satisfies both $\\le$ and $\\ge$. It is not strictly convex or strictly concave."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = x^2$ with $x = 0$, $y = 4$ and $t = \\tfrac12$, compute the chord height $tf(x) + (1-t)f(y)$.",
+          "answer": [
+            "8"
+          ],
+          "explanation": "$\\tfrac12 \\cdot 0 + \\tfrac12 \\cdot 16 = 8$. The graph height at the midpoint $2$ is $f(2) = 4 < 8$, as convexity predicts."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are convex on $\\mathbb{R}$?",
+          "options": [
+            "$|x|$",
+            "$x^4$",
+            "$e^x$",
+            "$x^3$",
+            "$-x^2$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "$|x|$ is convex by the triangle inequality; $x^4$ and $e^x$ have $f'' \\ge 0$. $x^3$ has $f'' = 6x < 0$ for $x < 0$, and $-x^2$ is concave ($f'' = -2$)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is twice differentiable and $f''(c) = 0$, then $c$ is an inflection point of $f$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = x^4$ has $f''(0) = 0$ but is convex on both sides of $0$. An inflection point needs $f''$ to change sign, not just to vanish."
+        },
+        {
+          "type": "single",
+          "prompt": "Which inequality follows from the fact that the convex function $e^x$ lies above its tangent line at $x = 0$?",
+          "options": [
+            "$e^x \\ge 1 + x$ for all real $x$",
+            "$e^x \\le 1 + x$ for all real $x$",
+            "$e^x \\ge x^2$ for all real $x$",
+            "$e^x \\ge e\\,x$ only for $x > 0$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The tangent at $0$ is $y = e^0 + e^0(x - 0) = 1 + x$, and convexity puts the graph above it everywhere. The tangent at $x = 1$ would give $e^x \\ge ex$, and that holds for **all** $x$, not only $x > 0$. $e^x \\ge x^2$ is not a tangent-line statement (and fails, e.g., at $x = -1$: $e^{-1} < 1$)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The function $f(x) = x^{1/3}$ has an inflection point at $0$, even though $f''(0)$ does not exist.",
+          "answer": [
+            true
+          ],
+          "explanation": "For $x \\ne 0$, $f''(x) = -\\tfrac29 x^{-5/3}$, which is positive for $x < 0$ and negative for $x > 0$. So $f$ is convex on $(-\\infty, 0]$ and concave on $[0, \\infty)$: the shape changes at $0$."
+        }
+      ]
+    },
+    {
+      "slug": "6-13-lhopitals-rule-and-its-justification",
+      "title": "L'Hôpital's rule and its justification",
+      "summary": "Evaluating $0/0$ limits with derivatives, proved from Cauchy's Mean Value Theorem.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "A derivative-based method for limits where the quotient law breaks down, and why it works.\n\n**In this lesson you will learn to:**\n- recognise indeterminate forms such as $\\frac00$ and $\\frac{\\infty}{\\infty}$\n- state L'Hôpital's rule with all its hypotheses, and check them before using it\n- prove the rule from Cauchy's Mean Value Theorem\n- apply it repeatedly, and rewrite products like $x\\ln x$ so that it applies\n- avoid the classic misuses\n\n**You need:** one-sided limits (lesson 5.3), the limit laws (5.4), limits involving $\\infty$ (5.5), Rolle's theorem (6.6) and Cauchy's Mean Value Theorem (6.8)."
+        },
+        {
+          "type": "text",
+          "md": "## Why $\\frac00$ is not a number\n\nThe quotient law (lesson 5.4) says $\\lim \\frac{f}{g} = \\frac{\\lim f}{\\lim g}$, **provided** $\\lim g \\ne 0$. When both $f(x) \\to 0$ and $g(x) \\to 0$, the law says nothing. The limit might be anything:\n\n- $\\dfrac{x}{x} \\to 1$ as $x \\to 0$,\n- $\\dfrac{x^2}{x} = x \\to 0$,\n- $\\dfrac{5x}{x} \\to 5$,\n- $\\dfrac{x}{x^2} = \\dfrac1x$ has no finite limit at $0$.\n\nAll four have \"numerator $\\to 0$, denominator $\\to 0$\", yet the answers differ. So \"$\\frac00$\" is a **form**, a description of the situation, not a value. Forms like this are called **indeterminate forms**: knowing the limits of the pieces does not determine the limit of the whole. The common ones are\n\n$$\\frac00, \\quad \\frac{\\infty}{\\infty}, \\quad 0 \\cdot \\infty, \\quad \\infty - \\infty.$$\n\n**Not indeterminate:** $\\frac{1}{0^+}$ (gives $+\\infty$), $\\frac{0}{\\infty}$ (gives $0$), $\\frac{\\infty}{0^+}$ (gives $+\\infty$). Here the pieces do decide the answer.\n\nThe race between numerator and denominator is decided by how **fast** each goes to $0$, and speed is what derivatives measure. That is the idea behind L'Hôpital's rule."
+        },
+        {
+          "type": "check",
+          "question": "Which of these limits is **not** an indeterminate form as written?",
+          "options": [
+            "$\\displaystyle\\lim_{x\\to 1}\\frac{x^2 - 1}{x - 1}$",
+            "$\\displaystyle\\lim_{x\\to 0}\\frac{\\sin x}{x}$",
+            "$\\displaystyle\\lim_{x\\to 0}\\frac{x^2 + 1}{x + 1}$",
+            "$\\displaystyle\\lim_{x\\to 0^+} x\\ln x$"
+          ],
+          "correct": 2,
+          "explanation": "$\\frac{x^2+1}{x+1}$ has numerator and denominator tending to $1$, so the quotient law gives $1$ directly. The first two are $\\frac00$ forms, and $x\\ln x$ is a $0 \\cdot (-\\infty)$ form."
+        },
+        {
+          "type": "text",
+          "md": "## The rule\n\n**Plain words.** In a $\\frac00$ (or $\\frac{\\infty}{\\infty}$) form, you may replace $\\frac{f}{g}$ by $\\frac{f'}{g'}$: differentiate the top and the bottom **separately**. If the new limit exists, the old one equals it.\n\n**Theorem (L'Hôpital's rule, $\\frac00$ form).** Let $f, g$ be differentiable on $(a, b)$ with $g'(x) \\neq 0$ for all $x \\in (a, b)$. Suppose\n\n$$\\lim_{x \\to a^+} f(x) = \\lim_{x\\to a^+} g(x) = 0 \\qquad \\text{and} \\qquad \\lim_{x \\to a^+}\\frac{f'(x)}{g'(x)} = L,$$\n\nwhere $L \\in \\mathbb{R}$ or $L = \\pm\\infty$. Then\n\n$$\\lim_{x\\to a^+}\\frac{f(x)}{g(x)} = L.$$\n\nSo there are three things to check: the form is $\\frac00$; $g'$ is never $0$ just to the right of $a$; and the limit of $\\frac{f'}{g'}$ exists (finite or infinite). Notice what is **not** needed: $f$ and $g$ need not be defined or differentiable at $a$.\n\nThe same holds for left-hand limits, and hence for two-sided limits at $a$. There are also versions for $x \\to \\pm\\infty$ and for the $\\frac{\\infty}{\\infty}$ form: if $|g(x)| \\to \\infty$ as $x \\to a^+$, the conclusion holds under the same hypotheses on $f'/g'$, with no condition on $f$.\n\n**Examples.**\n- $\\displaystyle\\lim_{x\\to 2}\\frac{x^3 - 8}{x - 2}$: a $\\frac00$ form, $g' = 1 \\ne 0$, and $\\frac{3x^2}{1} \\to 12$. So the limit is $12$ (factoring $x^3 - 8 = (x-2)(x^2 + 2x + 4)$ agrees).\n- $\\displaystyle\\lim_{x\\to 0}\\frac{1 - \\cos x}{x^2}$: $\\frac00$, $g'(x) = 2x \\ne 0$ for $x \\ne 0$, and $\\frac{\\sin x}{2x} \\to \\frac12$, using the standard limit $\\frac{\\sin x}{x} \\to 1$ from Level 5. So the limit is $\\frac12$."
+        },
+        {
+          "type": "check",
+          "question": "Evaluate $\\displaystyle\\lim_{x\\to 3}\\frac{x^2 - 9}{x - 3}$ with L'Hôpital's rule, after checking the hypotheses.",
+          "options": [
+            "$0$",
+            "$3$",
+            "$6$",
+            "It does not exist"
+          ],
+          "correct": 2,
+          "explanation": "Both top and bottom tend to $0$, and $g'(x) = 1 \\ne 0$. The ratio of derivatives is $\\frac{2x}{1} \\to 6$. Factoring confirms it: $\\frac{(x-3)(x+3)}{x-3} = x + 3 \\to 6$. Answering $0$ treats $\\frac00$ as $0$; answering $3$ forgets to evaluate $2x$ at $x = 3$."
+        },
+        {
+          "type": "text",
+          "md": "## Why it works\n\n**Intuition.** Suppose $f(a) = g(a) = 0$. Near $a$ each function is close to its tangent line, so $f(x) \\approx f'(a)(x - a)$ and $g(x) \\approx g'(a)(x - a)$. The factors $(x - a)$ cancel, leaving $\\frac{f'(a)}{g'(a)}$.\n\nThe real proof must avoid assuming $f'(a)$ and $g'(a)$ exist, and must handle the \"$\\approx$\". The tool is **Cauchy's Mean Value Theorem** (lesson 6.8). Reminder: if $f, g$ are continuous on $[a, x]$, differentiable on $(a, x)$, and $g' \\ne 0$ on $(a, x)$, then there is a point $\\xi$ strictly between $a$ and $x$ with\n\n$$\\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f'(\\xi)}{g'(\\xi)}.$$\n\nThe point $\\xi$ is the **same** in the top and the bottom. That is exactly what we need: once $f(a) = g(a) = 0$, the left side is $\\frac{f(x)}{g(x)}$.\n\nTwo small issues must be dealt with first. $f$ and $g$ may not be defined at $a$, so we define them to be $0$ there; this makes them continuous on $[a, x]$ because their limits at $a$ are $0$. And we must make sure $g(x) \\ne 0$, so that $\\frac{f(x)}{g(x)}$ makes sense; Rolle's theorem handles that. Then as $x \\to a^+$, the point $\\xi$ is squeezed towards $a$ as well, and $\\frac{f'(\\xi)}{g'(\\xi)} \\to L$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of L'Hôpital's rule via Cauchy's MVT",
+          "steps": [
+            {
+              "title": "Extend to the endpoint",
+              "md": "Define $f(a) = g(a) = 0$. Since $f(x) \\to 0$ and $g(x) \\to 0$ as $x \\to a^+$, $f$ and $g$ are now continuous on $[a, x]$ for every $x \\in (a, b)$, and differentiable on $(a, x)$. Changing or adding the value at $a$ does not affect any limit as $x \\to a^+$."
+            },
+            {
+              "title": "Show $g$ does not vanish",
+              "md": "If $g(x) = 0$ for some $x \\in (a, b)$, then $g(a) = g(x) = 0$ and Rolle's theorem on $[a, x]$ would give a zero of $g'$ in $(a, x)$, which is excluded. So $g(x) \\neq 0$ and $f/g$ is defined on $(a,b)$."
+            },
+            {
+              "title": "Apply Cauchy's MVT",
+              "md": "For each $x \\in (a, b)$ there is $\\xi_x \\in (a, x)$ with\n\n$$\\frac{f(x)}{g(x)} = \\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f'(\\xi_x)}{g'(\\xi_x)}.$$\n\nWe write $\\xi_x$ because the point depends on $x$."
+            },
+            {
+              "title": "Let $x \\to a^+$",
+              "md": "Since $a < \\xi_x < x$, we have $\\xi_x \\to a^+$ as $x \\to a^+$. Formally: given a neighbourhood $V$ of $L$ (an open interval around $L$, or a ray $(M, \\infty)$ if $L = +\\infty$), choose $\\delta > 0$ with $\\frac{f'(t)}{g'(t)} \\in V$ for $a < t < a + \\delta$; then for $a < x < a + \\delta$, also $a < \\xi_x < a + \\delta$, so $\\frac{f(x)}{g(x)} \\in V$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why do we first show that $g(x) \\ne 0$ for $x \\in (a, b)$?",
+          "options": [
+            "Because Cauchy's MVT needs $g(x) \\ne 0$ as a hypothesis",
+            "So that the quotient $\\frac{f(x)}{g(x)}$, whose limit we want, is defined",
+            "Because otherwise $f'(\\xi_x)$ would be $0$",
+            "To make $g$ continuous at $a$"
+          ],
+          "correct": 1,
+          "explanation": "We are computing a limit of $\\frac{f(x)}{g(x)}$, so it must make sense near $a$. Rolle's theorem rules out $g(x) = 0$ using $g' \\ne 0$. Cauchy's MVT itself only needs continuity, differentiability and $g' \\ne 0$; it is the hypothesis $g' \\ne 0$, not $g \\ne 0$. Continuity at $a$ came from defining $g(a) = 0$, and nothing forces $f'(\\xi_x) = 0$."
+        },
+        {
+          "type": "text",
+          "md": "## Repeating the rule and changing the form\n\n**Repeated use.** Sometimes $\\frac{f'}{g'}$ is again $\\frac00$. Then apply the rule to $\\frac{f'}{g'}$, checking the hypotheses again. The logic runs **backwards**: if the last limit exists, the rule gives the one before it, and so on up to the original. For example, $\\displaystyle\\lim_{x\\to\\infty}\\frac{x^2}{e^x}$ is $\\frac{\\infty}{\\infty}$; one step gives $\\frac{2x}{e^x}$, still $\\frac{\\infty}{\\infty}$; another gives $\\frac{2}{e^x} \\to 0$. So $\\frac{2x}{e^x} \\to 0$, and then $\\frac{x^2}{e^x} \\to 0$.\n\n**Other forms.** The rule only handles quotients. Rewrite other indeterminate forms first:\n- $0 \\cdot \\infty$: write $fg = \\dfrac{f}{1/g}$ or $\\dfrac{g}{1/f}$, choosing whichever gives simpler derivatives.\n- Powers like $x^x$ ($0^0$ form): write $x^x = e^{x\\ln x}$, find the limit of the exponent, then use continuity of $\\exp$ (lesson 5.6).\n\n**Edge case.** Do not rewrite the wrong way. $x\\ln x = \\dfrac{x}{1/\\ln x}$ is also a $\\frac00$ form, but differentiating $1/\\ln x$ gives $-\\frac{1}{x(\\ln x)^2}$, and the new quotient is $-x(\\ln x)^2$: worse than where you started. The better choice, $\\frac{\\ln x}{1/x}$, is in the example below."
+        },
+        {
+          "type": "example",
+          "title": "Repeated application, justified",
+          "problem": "Evaluate $\\displaystyle\\lim_{x \\to 0}\\frac{x - \\sin x}{x^3}$.",
+          "solution": "Each step needs a $\\frac00$ form and $g' \\neq 0$ on a punctured neighbourhood of $0$ (an interval around $0$ with $0$ removed). The rule is applied from the _last_ quotient backwards: once the final limit exists, each earlier one follows.\n\n- $\\frac{x - \\sin x}{x^3}$: both tend to $0$; $g'(x) = 3x^2 \\neq 0$ for $x \\neq 0$. Passes to $\\frac{1 - \\cos x}{3x^2}$.\n- $\\frac{1 - \\cos x}{3x^2}$: both tend to $0$; $(3x^2)' = 6x \\neq 0$ for $x \\neq 0$. Passes to $\\frac{\\sin x}{6x}$.\n- $\\frac{\\sin x}{6x} \\to \\frac16$ by the standard limit $\\frac{\\sin x}{x} \\to 1$.\n\nWorking backwards, $\\lim_{x\\to 0}\\frac{1 - \\cos x}{3x^2} = \\frac16$, and therefore\n\n$$\\lim_{x \\to 0}\\frac{x - \\sin x}{x^3} = \\frac16. \\qquad \\blacksquare$$"
+        },
+        {
+          "type": "example",
+          "title": "Rewriting a product: $x\\ln x$",
+          "problem": "Show that $\\displaystyle\\lim_{x\\to 0^+} x\\ln x = 0$.",
+          "solution": "This has the form $0\\cdot(-\\infty)$. Rewrite it as a quotient:\n\n$$x\\ln x = \\frac{\\ln x}{1/x}.$$\n\nAs $x \\to 0^+$, $|1/x| \\to \\infty$, so the $\\frac{\\infty}{\\infty}$ version applies, with $g(x) = 1/x$ and $g'(x) = -1/x^2 \\neq 0$ on $(0, \\infty)$. The ratio of derivatives is\n\n$$\\frac{1/x}{-1/x^2} = -x \\to 0.$$\n\nHence $\\lim_{x\\to 0^+} x\\ln x = 0$. $\\blacksquare$\n\n**Why this split:** $\\ln x$ has the simple derivative $1/x$, so put it on top and move $x$ to the bottom as $1/x$."
+        },
+        {
+          "type": "check",
+          "question": "You want $\\displaystyle\\lim_{x\\to\\infty} x e^{-x}$. Which rewrite lets L'Hôpital's rule finish the job in one step?",
+          "options": [
+            "$\\dfrac{x}{e^{x}}$, an $\\frac{\\infty}{\\infty}$ form",
+            "$\\dfrac{e^{-x}}{1/x}$, a $\\frac00$ form",
+            "Differentiate the product: $(xe^{-x})' = e^{-x} - xe^{-x}$",
+            "No rewrite is needed; apply the rule to $x e^{-x}$ directly"
+          ],
+          "correct": 0,
+          "explanation": "$\\frac{x}{e^x}$ gives $\\frac{1}{e^x} \\to 0$ in one step. The second rewrite is legal but gives $\\frac{-e^{-x}}{-1/x^2} = x^2e^{-x}$, which is worse. Differentiating the product is not L'Hôpital at all, and the rule only applies to quotients."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Misusing L'Hôpital's rule",
+          "md": "- **Check the form first.** $\\lim_{x \\to 0}\\frac{x^2 + 1}{x + 1} = 1$ by continuity. Blindly differentiating gives $\\frac{2x}{1} \\to 0$, which is wrong.\n- **The converse is false.** $\\lim_{x\\to\\infty}\\frac{x + \\sin x}{x} = 1$, but $\\frac{(x + \\sin x)'}{x'} = 1 + \\cos x$ has no limit. If $\\lim f'/g'$ does not exist, the rule says _nothing_.\n- **Beware circularity.** Using the rule to find $\\lim_{x\\to 0}\\frac{\\sin x}{x}$ needs $\\sin'(0) = \\cos 0 = 1$, but that derivative is _defined_ by this very limit.\n- **Differentiate numerator and denominator separately.** The rule uses $\\frac{f'}{g'}$, not $\\left(\\frac fg\\right)'$."
+        },
+        {
+          "type": "check",
+          "question": "A student says: \"$\\frac{f'}{g'} = 1 + \\cos x$ has no limit as $x \\to \\infty$, so $\\lim_{x\\to\\infty}\\frac{x + \\sin x}{x}$ does not exist.\" What is wrong?",
+          "options": [
+            "Nothing; if $\\lim \\frac{f'}{g'}$ fails to exist, so does $\\lim \\frac fg$",
+            "The rule only says that if $\\lim \\frac{f'}{g'}$ exists, then $\\lim \\frac fg$ equals it; here it gives no information, and in fact $\\frac{x + \\sin x}{x} = 1 + \\frac{\\sin x}{x} \\to 1$",
+            "The student should have differentiated the quotient $\\frac{x + \\sin x}{x}$ instead",
+            "The form is not $\\frac{\\infty}{\\infty}$, so the answer is $0$"
+          ],
+          "correct": 1,
+          "explanation": "L'Hôpital's rule is a one-way implication. When $\\lim f'/g'$ does not exist the rule is silent, and a direct calculation gives $1$ (since $|\\sin x| \\le 1$, $\\frac{\\sin x}{x} \\to 0$). The form is $\\frac{\\infty}{\\infty}$, and differentiating the quotient is a different (wrong) operation."
+        },
+        {
+          "type": "diagram",
+          "title": "Using L'Hôpital's rule correctly",
+          "nodes": [
+            "Check the form is $\\frac00$ or $\\frac{\\infty}{\\infty}$",
+            "Check $g' \\neq 0$ near the point",
+            "Differentiate $f$ and $g$ separately",
+            "Find $\\lim f'/g'$ (repeat if needed)",
+            "If it exists, it equals $\\lim f/g$"
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Indeterminate form",
+              "back": "A limit situation where the limits of the pieces **do not decide** the answer.\n\n*Example:* $\\frac00$: $\\frac{x}{x} \\to 1$ but $\\frac{x^2}{x} \\to 0$."
+            },
+            {
+              "front": "L'Hôpital's rule ($\\frac00$)",
+              "back": "If $f, g \\to 0$, $g' \\ne 0$ nearby and $\\frac{f'}{g'} \\to L$, then $\\frac fg \\to L$.\n\n*Example:* $\\frac{x^3 - 8}{x - 2} \\to 12$ at $2$."
+            },
+            {
+              "front": "The $\\frac{\\infty}{\\infty}$ version",
+              "back": "Same conclusion when $|g(x)| \\to \\infty$; **no condition** on $f$.\n\n*Example:* $\\frac{x^2}{e^x} \\to 0$ as $x \\to \\infty$, using the rule twice."
+            },
+            {
+              "front": "Cauchy's Mean Value Theorem",
+              "back": "$\\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f'(\\xi)}{g'(\\xi)}$ for one **common** $\\xi$ between $a$ and $x$.\n\n*Example:* the key step in proving L'Hôpital's rule."
+            },
+            {
+              "front": "Rewriting $0 \\cdot \\infty$",
+              "back": "Turn a product into a **quotient**, $fg = \\frac{f}{1/g}$, choosing the split with simpler derivatives.\n\n*Example:* $x\\ln x = \\frac{\\ln x}{1/x} \\to 0$ as $x \\to 0^+$."
+            },
+            {
+              "front": "The converse fails",
+              "back": "$\\lim \\frac fg$ can exist while $\\lim \\frac{f'}{g'}$ **does not**.\n\n*Example:* $\\frac{x + \\sin x}{x} \\to 1$ but $1 + \\cos x$ has no limit."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to evaluate $\\displaystyle\\lim_{x\\to\\infty}\\frac{x^2}{e^x}$.",
+          "items": [
+            "Check the form: $x^2 \\to \\infty$ and $e^x \\to \\infty$, so it is $\\frac{\\infty}{\\infty}$, and $(e^x)' = e^x \\ne 0$.",
+            "Differentiate top and bottom separately to get $\\frac{2x}{e^x}$, again $\\frac{\\infty}{\\infty}$.",
+            "Differentiate again to get $\\frac{2}{e^x}$, which tends to $0$.",
+            "Since the last limit exists, the rule gives $\\frac{2x}{e^x} \\to 0$.",
+            "Applying the rule once more, $\\frac{x^2}{e^x} \\to 0$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\lim_{x \\to 0^+} x^x$",
+          "problem": "Evaluate $\\displaystyle\\lim_{x\\to 0^+} x^x$. It is a $0^0$ form, so the rule does not apply directly. Rewrite first.",
+          "solution": "**Rewrite as an exponential.** For $x > 0$, $x^x = e^{x\\ln x}$.\n\n**Find the limit of the exponent.** By the worked example, $x\\ln x = \\frac{\\ln x}{1/x}$, an $\\frac{\\infty}{\\infty}$ form with $g'(x) = -1/x^2 \\ne 0$, and $\\frac{1/x}{-1/x^2} = -x \\to 0$. So $x\\ln x \\to 0$.\n\n**Use continuity of $\\exp$.** Since $\\exp$ is continuous at $0$, $e^{x\\ln x} \\to e^0 = 1$.\n\n$$\\lim_{x\\to 0^+} x^x = 1. \\qquad \\blacksquare$$\n\n**Check your version:** did you rewrite before differentiating? Did you check the form and $g' \\ne 0$ for the exponent? Did you say why you may move the limit inside $\\exp$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Can I use L'Hôpital's rule to find $\\lim_{x\\to 0}\\frac{\\sin x}{x}$?",
+              "a": "Not honestly. The rule would need $(\\sin x)' = \\cos x$, and proving that derivative at $0$ uses exactly the limit $\\frac{\\sin x}{x} \\to 1$. The limit must come from somewhere else first, such as the squeeze theorem."
+            },
+            {
+              "q": "Why do we need $g' \\ne 0$ near $a$?",
+              "a": "Without it the argument breaks: Cauchy's MVT would not give the ratio form, and $g$ could vanish so that $\\frac fg$ is undefined. There are known examples with $g'$ having zeros arbitrarily close to $a$ where $\\frac{f'}{g'}$ has a limit but $\\frac fg$ does not."
+            },
+            {
+              "q": "Is L'Hôpital's rule the same as Taylor's theorem?",
+              "a": "They are related. Both say a function near $a$ is governed by its derivatives at or near $a$. For $\\frac{x - \\sin x}{x^3}$ you could also use $\\sin x = x - \\frac{x^3}{6} + R_3(x)$ from lesson 6.10, which gives $\\frac16$ immediately. Taylor is often quicker when many repeated applications would be needed."
+            },
+            {
+              "q": "Does the rule work at $\\infty$?",
+              "a": "Yes. If $x \\to \\infty$, substitute $x = 1/u$ and let $u \\to 0^+$; the chain rule turns the problem into the version at a finite point. Both the $\\frac00$ and $\\frac{\\infty}{\\infty}$ forms are allowed."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $\\frac00$, $\\frac{\\infty}{\\infty}$, $0 \\cdot \\infty$ and $\\infty - \\infty$ are **forms**, not values; the limits of the pieces do not decide the answer.\n- **L'Hôpital's rule:** if the form is $\\frac00$ or $\\frac{\\infty}{\\infty}$, $g' \\ne 0$ near the point, and $\\lim \\frac{f'}{g'} = L$ exists, then $\\lim \\frac fg = L$.\n- The proof sets $f(a) = g(a) = 0$, uses Rolle to keep $g \\ne 0$, and uses **Cauchy's MVT** for a common point $\\xi_x \\to a$.\n- Repeated use is fine; the logic runs back from the last limit. Rewrite products and powers into quotients first.\n- The rule is one-way: if $\\lim \\frac{f'}{g'}$ does not exist, it says nothing. Always check the form first."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Evaluate $\\displaystyle\\lim_{x\\to 0}\\frac{1 - \\cos x}{x^2}$.",
+          "options": [
+            "$0$",
+            "$1$",
+            "$\\tfrac12$",
+            "$2$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "L'Hôpital gives $\\frac{\\sin x}{2x} \\to \\frac12$. The step is a $\\frac00$ form with nonvanishing denominator derivative ($2x \\ne 0$) near $0$, and then the standard limit $\\frac{\\sin x}{x} \\to 1$ finishes."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $\\lim_{x\\to a} f(x)/g(x)$ exists (with $f, g$ differentiable and $f(x), g(x) \\to 0$), then $\\lim_{x \\to a} f'(x)/g'(x)$ also exists.",
+          "answer": [
+            false
+          ],
+          "explanation": "Take $f(x) = x^2\\sin(1/x)$ and $g(x) = x$ at $a = 0$: $f/g = x\\sin(1/x) \\to 0$, while $f'/g' = 2x\\sin(1/x) - \\cos(1/x)$ has no limit."
+        },
+        {
+          "type": "single",
+          "prompt": "A student computes $\\displaystyle\\lim_{x\\to 0}\\frac{x^2 + 1}{x + 1}$ with L'Hôpital and gets $\\lim_{x\\to 0}\\frac{2x}{1} = 0$. What is the correct value of the limit?",
+          "options": [
+            "$0$",
+            "$1$",
+            "$2$",
+            "It does not exist"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The limit is not indeterminate: numerator and denominator tend to $1$, so the limit is $\\frac11 = 1$ by the quotient law. The rule's hypotheses fail."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which are hypotheses of L'Hôpital's rule for $\\lim_{x\\to a^+} f(x)/g(x)$ in the $\\frac00$ form?",
+          "options": [
+            "$f(x) \\to 0$ and $g(x) \\to 0$ as $x \\to a^+$",
+            "$g'(x) \\neq 0$ for $x$ in some interval $(a, b)$",
+            "$\\lim_{x\\to a^+} f'(x)/g'(x)$ exists (finite or infinite)",
+            "$f$ and $g$ are differentiable at $a$",
+            "$f'$ and $g'$ are continuous on $(a, b)$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The proof uses only these three (plus differentiability on $(a, b)$). Differentiability at $a$ and continuity of $f', g'$ are not needed: we even define $f(a) = g(a) = 0$ ourselves."
+        },
+        {
+          "type": "short",
+          "prompt": "Evaluate $\\displaystyle\\lim_{x \\to 0}\\frac{e^x - 1 - x}{x^2}$.",
+          "answer": [
+            "1/2",
+            "0.5",
+            "½"
+          ],
+          "explanation": "Two applications: $\\frac{e^x - 1}{2x}$, then $\\frac{e^x}{2} \\to \\frac12$. Both steps are $\\frac00$ forms whose denominators have nonzero derivative for $x \\neq 0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\displaystyle\\lim_{x \\to 0^+} x\\ln x = 0$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Write $x\\ln x = \\frac{\\ln x}{1/x}$; the $\\frac{\\infty}{\\infty}$ version gives $\\frac{1/x}{-1/x^2} = -x \\to 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Evaluate $\\displaystyle\\lim_{x\\to 0}\\frac{x - \\sin x}{x^3}$.",
+          "options": [
+            "$0$",
+            "$\\tfrac13$",
+            "$1$",
+            "$\\tfrac16$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "Applying the rule twice gives $\\frac{\\sin x}{6x} \\to \\frac16$. Each step is a $\\frac00$ form with $g' \\ne 0$ for $x \\ne 0$."
+        },
+        {
+          "type": "short",
+          "prompt": "Evaluate $\\displaystyle\\lim_{x\\to 2}\\frac{x^3 - 8}{x - 2}$.",
+          "answer": [
+            "12"
+          ],
+          "explanation": "A $\\frac00$ form with $g' = 1$. The ratio of derivatives is $3x^2 \\to 12$. Factoring, $\\frac{(x-2)(x^2 + 2x + 4)}{x - 2} = x^2 + 2x + 4 \\to 12$, agrees."
+        },
+        {
+          "type": "single",
+          "prompt": "Which of these limit forms is **not** indeterminate?",
+          "options": [
+            "$\\frac00$",
+            "$\\frac{\\infty}{\\infty}$",
+            "$0 \\cdot \\infty$",
+            "$\\frac{0}{\\infty}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "If $f \\to 0$ and $g \\to \\infty$, then $\\frac fg \\to 0$: the pieces decide the answer. The other three can give any value; for example $\\frac{x}{x}$, $\\frac{x^2}{x}$ and $\\frac{x}{x^2}$ are all $\\frac00$ at $0$ with different behaviour."
+        },
+        {
+          "type": "short",
+          "prompt": "Evaluate $\\displaystyle\\lim_{x\\to\\infty}\\frac{x^2}{e^x}$.",
+          "answer": [
+            "0"
+          ],
+          "explanation": "Two applications of the $\\frac{\\infty}{\\infty}$ version: $\\frac{2x}{e^x}$, then $\\frac{2}{e^x} \\to 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is $\\displaystyle\\lim_{x\\to 0^+} x^x$?",
+          "options": [
+            "$0$",
+            "$1$",
+            "$e$",
+            "It does not exist"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$x^x = e^{x\\ln x}$ and $x\\ln x \\to 0$ (rewrite as $\\frac{\\ln x}{1/x}$), so by continuity of $\\exp$ the limit is $e^0 = 1$. \"$0^0$\" is an indeterminate form, so $0$ is a guess, not a calculation."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these limits are $\\frac00$ forms at the given point?",
+          "options": [
+            "$\\frac{\\sin x}{x}$ as $x \\to 0$",
+            "$\\frac{x^2 - 1}{x - 1}$ as $x \\to 1$",
+            "$\\frac{1 - \\cos x}{x^2}$ as $x \\to 0$",
+            "$\\frac{x^2 + 1}{x + 1}$ as $x \\to 0$",
+            "$\\frac{e^x - 1}{x}$ as $x \\to 0$"
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            4
+          ],
+          "explanation": "In each of these the top and bottom both tend to $0$. For $\\frac{x^2 + 1}{x + 1}$ at $0$ both tend to $1$, so it is not indeterminate and the limit is simply $1$."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1060 @@
+{
+  "concepts": [
+    {
+      "slug": "5-8-types-of-discontinuities",
+      "title": "Types of discontinuities",
+      "summary": "Removable, jump and essential: classifying how continuity can fail.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Classifying discontinuities",
+          "md": "When a function is not continuous at a point, it can fail in quite different ways. This lesson sorts those failures into three types.\n\n**In this lesson you will learn to:**\n- use one-sided limits to decide whether a discontinuity is **removable**, a **jump** or **essential**\n- avoid the classic trap of calling a blow-up an \"infinite jump\"\n- prove that a monotone function can only have jump discontinuities, and only countably many\n\n**You need:** one-sided limits (lesson 5.3) and continuity at a point (lesson 5.6)."
+        },
+        {
+          "type": "text",
+          "md": "## Three ways to fail\n\nRecall from lesson 5.6: if $c$ is in the domain of $f$ and $f$ is defined on an open interval around $c$, then $f$ is **continuous at $c$** exactly when\n\n$$\\lim_{x \\to c} f(x) = f(c).$$\n\nHidden in that one equation are two demands: the limit must **exist** as a real number, and it must **equal** the value $f(c)$. So continuity can fail because the limit exists but is the wrong number, or because the limit does not exist at all. And a limit can fail to exist in more than one way.\n\nThe tool for telling these apart is the pair of one-sided limits from lesson 5.3. We use the shorthand\n\n$$f(c^-) = \\lim_{x \\to c^-} f(x), \\qquad f(c^+) = \\lim_{x \\to c^+} f(x),$$\n\nread \"$f$ of $c$ minus\" (the limit from the left) and \"$f$ of $c$ plus\" (the limit from the right). Remember that $\\lim_{x\\to c} f(x)$ exists exactly when both one-sided limits exist and are equal.\n\n**One convention.** In this course a **discontinuity** of $f$ is a point $c$ **in the domain** of $f$ where $f$ is not continuous. A point where $f$ is not defined at all, such as $0$ for $f(x) = 1/x$, is not called a discontinuity: there is no value $f(0)$ to compare with. (Some textbooks speak more loosely; when you read them, check their convention.)"
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = 1/x$ for $x \\ne 0$, with nothing defined at $0$. Using this course's convention, which statement is right?",
+          "options": [
+            "$f$ has a discontinuity at $0$",
+            "$f$ is continuous at $0$",
+            "$0$ is not in the domain, so $f$ is neither continuous nor discontinuous there; $f$ is continuous at every point of its domain",
+            "$f$ has a jump at $0$"
+          ],
+          "correct": 2,
+          "explanation": "Continuity and discontinuity are only judged at points of the domain. $f$ is continuous at every $c \\ne 0$. It is not \"continuous at $0$\" either, because there is no $f(0)$. It certainly has no jump: the one-sided limits are $\\pm\\infty$, not real numbers."
+        },
+        {
+          "type": "text",
+          "md": "## Removable discontinuities\n\nThe mildest failure: the limit exists, but $f(c)$ is the wrong number. Changing one value repairs everything.\n\n**Definition.** $f$ has a **removable discontinuity** at $c$ if $\\lim_{x\\to c} f(x) = L$ exists as a real number but $L \\ne f(c)$. Redefining $f(c) = L$ makes $f$ continuous at $c$.\n\n**Examples.**\n- $f(x) = x^2$ for $x \\ne 0$ and $f(0) = 5$. The limit at $0$ is $0$, but $f(0) = 5$. Redefine $f(0) = 0$ and the discontinuity is gone.\n- $f(x) = \\dfrac{x^2 - 1}{x - 1}$ for $x \\ne 1$ and $f(1) = 0$. For $x \\ne 1$ we can cancel: $f(x) = x + 1$, so $\\lim_{x\\to1} f(x) = 2 \\ne 0$. Removable; the right value is $2$.\n- **Edge case.** $f(x) = x \\sin(1/x)$ for $x \\ne 0$ and $f(0) = 1$. The graph wiggles infinitely often near $0$, which tempts people to say \"essential\". But $|x\\sin(1/x)| \\le |x| \\to 0$, so by the squeeze theorem (lesson 5.4) the limit is $0$. Removable: wiggling is fine as long as the wiggles shrink.\n\n**Non-example.** $f(x) = x^2$ with $f(0) = 0$. The limit equals the value, so this is not a discontinuity at all.\n\nIn a removable discontinuity both one-sided limits exist and are **equal**; only the single value at $c$ is out of line."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = \\dfrac{x^2 - 9}{x - 3}$ for $x \\ne 3$ and $f(3) = 1$. What value should $f(3)$ be given to make $f$ continuous at $3$?",
+          "options": [
+            "$0$",
+            "$3$",
+            "$6$",
+            "No value works"
+          ],
+          "correct": 2,
+          "explanation": "For $x \\ne 3$, $\\frac{x^2-9}{x-3} = \\frac{(x-3)(x+3)}{x-3} = x + 3$, which tends to $6$. Setting $f(3) = 6$ removes the discontinuity. $0$ is what you get by plugging $3$ into the numerator only; $3$ is just the point itself."
+        },
+        {
+          "type": "text",
+          "md": "## Jump discontinuities\n\nNext, the graph breaks into two pieces that each settle down, but at different heights.\n\n**Definition.** $f$ has a **jump discontinuity** at $c$ if both one-sided limits $f(c^-)$ and $f(c^+)$ exist as **real numbers** but are different: $f(c^-) \\ne f(c^+)$. The number $f(c^+) - f(c^-)$ is the **size of the jump**.\n\n**Examples.**\n- The floor function $\\lfloor x \\rfloor$ (the greatest integer $\\le x$) at $x = 1$: just left of $1$ the value is $0$, at and just right of $1$ it is $1$. So $f(1^-) = 0$ and $f(1^+) = 1$: a jump of size $1$. The same happens at every integer.\n- $f(x) = 1$ for $x \\ge 0$ and $f(x) = -1$ for $x < 0$. Here $f(0^-) = -1$ and $f(0^+) = 1$: a jump of size $2$.\n- **Edge case.** Notice that $\\lfloor x \\rfloor$ is right-continuous at $1$: $f(1) = 1 = f(1^+)$. Students sometimes conclude \"it agrees with one side, so it's continuous\" or \"so it's removable\". Neither: whatever value $f(c)$ takes, it cannot match two different one-sided limits, and no change of $f(c)$ can fix a jump.\n\n**Non-example.** If $f(c^-) = f(c^+)$ but both differ from $f(c)$, that is a removable discontinuity, not a jump."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = \\dfrac{x^2 - x}{|x|}$ for $x \\neq 0$ and $f(0) = 0$. What happens at $0$?",
+          "options": [
+            "$f$ is continuous at $0$.",
+            "A removable discontinuity.",
+            "A jump discontinuity.",
+            "An essential discontinuity."
+          ],
+          "correct": 2,
+          "explanation": "For $x > 0$, $|x| = x$ and $f(x) = x - 1 \\to -1$. For $x < 0$, $|x| = -x$ and $f(x) = -(x - 1) = 1 - x \\to 1$. Both one-sided limits exist and differ, so it is a jump (of size $-2$). It is not removable, because the two sides disagree, and not essential, because both one-sided limits are real numbers."
+        },
+        {
+          "type": "text",
+          "md": "## Essential discontinuities\n\nThe worst case: on at least one side, $f$ does not settle down to any real number.\n\n**Definition.** $f$ has an **essential discontinuity** at $c$ if **at least one** of $f(c^-)$, $f(c^+)$ fails to exist as a real number.\n\nThere are two common ways this happens.\n\n- **Oscillation.** $f(x) = \\sin(1/x)$ for $x \\ne 0$ and $f(0) = 0$. As $x \\to 0^+$, $1/x$ runs off to $\\infty$ and $\\sin(1/x)$ swings between $-1$ and $1$ infinitely often. Along $x_n = \\frac{1}{n\\pi}$ the values are $0$; along $y_n = \\frac{1}{2n\\pi + \\pi/2}$ they are $1$. Two sequences tending to $0$ with different limits of $f$, so $f(0^+)$ does not exist (sequential criterion, lesson 5.2). The left side is the same.\n- **Blow-up.** $f(x) = 1/x$ for $x \\ne 0$ and $f(0) = 0$. Now $0$ is in the domain. As $x \\to 0^+$, $f(x) \\to \\infty$, which is not a real number, so $f(0^+)$ does not exist.\n- **Edge case: one bad side is enough.** $f(x) = 0$ for $x \\le 0$ and $f(x) = \\sin(1/x)$ for $x > 0$. The left limit is a perfectly good $0$, but the right limit does not exist. Still essential.\n\n**Names.** Removable and jump discontinuities, where both one-sided limits exist, are together called discontinuities of the **first kind**. Essential discontinuities are also called discontinuities of the **second kind**."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Unbounded is not \"infinite jump\"",
+          "md": "A jump discontinuity requires both one-sided limits to be **finite real numbers**. For $f(x) = 1/x$ with $f(0) := 0$, the one-sided limits are $-\\infty$ and $+\\infty$. These are not real numbers (lesson 5.5: \"$\\to \\infty$\" is shorthand for growing without bound, not a value), so the discontinuity is **essential**, not a jump."
+        },
+        {
+          "type": "order",
+          "prompt": "Put these questions in the order you should ask them to classify the behaviour of $f$ at a point $c$ of its domain.",
+          "items": [
+            "Find the one-sided limits $f(c^-)$ and $f(c^+)$.",
+            "Does either one fail to exist as a real number? If so, the discontinuity is essential.",
+            "Are they different real numbers? If so, it is a jump.",
+            "They are equal, say to $L$. Is $L \\ne f(c)$? If so, it is removable; if $L = f(c)$, $f$ is continuous at $c$."
+          ]
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function (at $x = 0$ unless stated) with its type of discontinuity.",
+          "pairs": [
+            {
+              "left": "$f(x) = x^2$ for $x \\neq 0$, $f(0) = 5$",
+              "right": "Removable"
+            },
+            {
+              "left": "$\\lfloor x \\rfloor$ at $x = 1$",
+              "right": "Jump"
+            },
+            {
+              "left": "$f(x) = \\sin(1/x)$ for $x \\neq 0$, $f(0) = 0$",
+              "right": "Essential (oscillation)"
+            },
+            {
+              "left": "$f(x) = 1/x$ for $x \\neq 0$, $f(0) = 0$",
+              "right": "Essential (unbounded)"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Discontinuity",
+              "back": "A point $c$ **in the domain** where $f$ is not continuous.\n\n*Example:* $\\lfloor x \\rfloor$ at $c = 1$. *Non-example:* $1/x$ at $0$ (not in the domain)."
+            },
+            {
+              "front": "$f(c^-)$ and $f(c^+)$",
+              "back": "Shorthand for the **left** limit $\\lim_{x\\to c^-} f(x)$ and the **right** limit $\\lim_{x\\to c^+} f(x)$.\n\n*Example:* for $\\lfloor x\\rfloor$, $f(1^-) = 0$ and $f(1^+) = 1$."
+            },
+            {
+              "front": "Removable discontinuity",
+              "back": "The limit at $c$ **exists** but is not $f(c)$. Redefining $f(c)$ fixes it.\n\n*Example:* $x^2$ with $f(0) = 5$; the limit is $0$."
+            },
+            {
+              "front": "Jump discontinuity",
+              "back": "Both one-sided limits are **real numbers** but **different**.\n\n*Example:* $\\lfloor x\\rfloor$ at $1$: left limit $0$, right limit $1$."
+            },
+            {
+              "front": "Essential discontinuity",
+              "back": "**At least one** one-sided limit is not a real number (oscillation or blow-up).\n\n*Example:* $\\sin(1/x)$ with $f(0) = 0$."
+            },
+            {
+              "front": "First and second kind",
+              "back": "**First kind:** both one-sided limits exist (removable or jump). **Second kind:** essential.\n\n*Example:* a jump is first kind; $1/x$ with $f(0)=0$ is second kind."
+            },
+            {
+              "front": "Size of a jump",
+              "back": "The difference $f(c^+) - f(c^-)$ of the two one-sided limits.\n\n*Example:* $\\lfloor x\\rfloor$ jumps by $1$ at every integer."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A function is defined by $f(x) = 2x$ for $x < 1$, $f(1) = 7$, and $f(x) = x + 1$ for $x > 1$. A classmate says \"$f(1) = 7$ matches neither side, so it's a jump.\" What is the correct classification at $1$?",
+          "options": [
+            "Jump, as the classmate says",
+            "Removable",
+            "Essential",
+            "$f$ is continuous at $1$"
+          ],
+          "correct": 1,
+          "explanation": "$f(1^-) = 2 \\cdot 1 = 2$ and $f(1^+) = 1 + 1 = 2$. The sides agree, so the limit is $2$; only the value $f(1) = 7$ is wrong. Redefining $f(1) = 2$ fixes it: removable. A jump needs the two **sides** to disagree; the value at the point is irrelevant to that test."
+        },
+        {
+          "type": "text",
+          "md": "## Monotone functions only jump\n\nHere is a pleasing fact: a function that only ever goes up (or only ever goes down) cannot have removable or essential discontinuities.\n\nRecall the words from lesson 3.7, now for functions: $f$ is **increasing** on an interval $I$ if $x < y$ implies $f(x) \\le f(y)$, **decreasing** if $x < y$ implies $f(x) \\ge f(y)$, and **monotone** if it is one or the other.\n\nWhy should one-sided limits exist? Approach $c$ from the left. The values $f(x)$ for $x < c$ keep rising (or stay level) but never pass $f(c)$. A rising quantity with a ceiling must settle down, exactly like the monotone convergence theorem (lesson 3.8). In fact, for increasing $f$ (lesson 5.3 proves this):\n\n$$f(c^-) = \\sup\\{f(x) : x < c\\}, \\qquad f(c^+) = \\inf\\{f(x) : x > c\\},$$\n\nand $f(c^-) \\le f(c) \\le f(c^+)$.\n\n**Theorem.** If $f$ is monotone on an open interval $I$, every discontinuity of $f$ in $I$ is a jump discontinuity, and the set of discontinuities is **countable**.\n\nA set is **countable** if its elements can be listed as a finite or infinite sequence $s_1, s_2, s_3, \\dots$. The rationals $\\mathbb{Q}$ are countable; the irrationals are not (lesson 2.12 discussed how they \"outnumber\" the rationals). So a monotone function can have infinitely many jumps, even one at every rational, but never a jump at every point of an interval."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: an increasing function only jumps, and only countably often",
+          "steps": [
+            {
+              "title": "Get the one-sided limits",
+              "md": "Let $f$ be increasing on the open interval $I$ and fix $c \\in I$. As above, $f(c^-)$ and $f(c^+)$ exist as real numbers and\n\n$$f(c^-) \\le f(c) \\le f(c^+).$$\n\nThey are real numbers because $f(c)$ bounds the left-hand values above and the right-hand values below. (For decreasing $f$, apply the argument to $-f$.)"
+            },
+            {
+              "title": "Show there is no other kind of discontinuity",
+              "md": "If $f(c^-) = f(c^+)$, the inequality squeezes $f(c)$ between two equal numbers, so all three are equal and $\\lim_{x\\to c} f(x) = f(c)$: $f$ is continuous at $c$. So at a discontinuity we must have $f(c^-) < f(c^+)$. Both limits are real and different: a jump. Removable is impossible because it needs equal sides; essential is impossible because both sides exist."
+            },
+            {
+              "title": "Give each jump its own rational",
+              "md": "For each discontinuity $c$, the open interval $J_c = \\big(f(c^-), f(c^+)\\big)$ is nonempty. By density of $\\mathbb{Q}$ (lesson 2.12) it contains a rational; choose one and call it $q_c$."
+            },
+            {
+              "title": "Check different jumps get different rationals",
+              "md": "Take two discontinuities $c < d$ and a point $t$ between them. Since $f$ is increasing, $f(c^+) \\le f(t) \\le f(d^-)$. So $J_c$ lies entirely to the left of $J_d$: they do not overlap, and $q_c \\ne q_d$. This is the subtle step: without it, two jumps could share a rational."
+            },
+            {
+              "title": "Conclude",
+              "md": "The rule $c \\mapsto q_c$ is injective (lesson 1.6) from the set of discontinuities into $\\mathbb{Q}$. Listing $\\mathbb{Q}$ as a sequence and keeping only the $q_c$ lists the discontinuities, so they form a countable set. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we need the intervals $J_c = \\big(f(c^-), f(c^+)\\big)$ for different discontinuities to be disjoint?",
+          "options": [
+            "So that each interval contains a rational number",
+            "So that different discontinuities are assigned different rationals, making the assignment injective",
+            "So that $f$ is continuous between the discontinuities",
+            "So that the jumps all have the same size"
+          ],
+          "correct": 1,
+          "explanation": "Every nonempty open interval contains a rational whether or not the intervals overlap; disjointness is what stops two discontinuities from receiving the same rational. It says nothing about continuity between jumps (there may be more jumps in between) or about jump sizes."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: classify every discontinuity",
+          "problem": "Let\n$$f(x) = \\begin{cases} x + 1, & x < 0,\\\\ 3, & x = 0,\\\\ x^2 + 1, & 0 < x < 2,\\\\ x, & x \\ge 2. \\end{cases}$$\nFind every discontinuity of $f$, classify each one, and say how to fix any that can be fixed by changing one value.",
+          "solution": "**Away from $0$ and $2$** each piece is a polynomial, so $f$ is continuous there. Only $0$ and $2$ need checking.\n\n**At $0$.** $f(0^-) = 0 + 1 = 1$ and $f(0^+) = 0^2 + 1 = 1$. The sides agree, so $\\lim_{x\\to0} f(x) = 1$, but $f(0) = 3$. **Removable**: redefine $f(0) = 1$.\n\n**At $2$.** $f(2^-) = 2^2 + 1 = 5$ and $f(2^+) = 2$. Both real, different. **Jump** of size $2 - 5 = -3$. Note $f(2) = 2$ agrees with the right side, but that does not help: no single value can match both $5$ and $2$, so this cannot be fixed by changing $f(2)$.\n\n**Check your answer:** did you compute both one-sided limits at each point before looking at the value $f(c)$? Did you avoid calling $x = 0$ a jump just because $f(0)$ sits apart from the graph?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Can a function be discontinuous at every rational and continuous at every irrational?",
+              "a": "Yes: **Thomae's function** $t(x) = \\frac1q$ if $x = \\frac{p}{q}$ in lowest terms ($q \\geq 1$), and $t(x) = 0$ if $x \\notin \\mathbb{Q}$. For any $\\varepsilon > 0$ only finitely many rationals in a bounded interval have $\\frac1q \\geq \\varepsilon$, so $\\lim_{x\\to c} t(x) = 0$ for **every** $c$. Hence $t$ is continuous exactly where $t(c) = 0$ (the irrationals), and each rational is a removable discontinuity."
+            },
+            {
+              "q": "Is the reverse possible: continuous on $\\mathbb{Q}$, discontinuous on the irrationals?",
+              "a": "No. The set of points where a function $f : \\mathbb{R}\\to\\mathbb{R}$ is continuous always has a special form (a countable intersection of open sets), and a result called the Baire category theorem shows $\\mathbb{Q}$ cannot have that form. The proof is beyond this course, but it explains the asymmetry."
+            },
+            {
+              "q": "If $|f|$ is continuous at $c$, must $f$ be?",
+              "a": "No. $f(x) = 1$ for $x \\geq 0$ and $f(x) = -1$ for $x < 0$ has a jump at $0$, but $|f(x)| = 1$ for every $x$, which is continuous."
+            },
+            {
+              "q": "Is $\\frac{\\sin x}{x}$ \"removably discontinuous\" at $0$?",
+              "a": "Many books say so. In this course $0$ is not in its domain, so it is not a discontinuity. Instead we say the function has a **continuous extension**: define the value at $0$ to be the limit $1$ and the new function is continuous everywhere."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **discontinuity** is a point of the domain where $f$ is not continuous. Classify it with the one-sided limits $f(c^-)$ and $f(c^+)$.\n- **Removable:** the sides agree on a limit $L$, but $f(c) \\ne L$. Redefine $f(c) = L$ to fix it.\n- **Jump:** both sides are real numbers, but different. No change of $f(c)$ fixes it.\n- **Essential:** at least one side is not a real number (oscillation or blow-up). Blowing up to $\\pm\\infty$ is essential, not an \"infinite jump\".\n- A **monotone** function has only jump discontinuities, and at most countably many."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Let $f(x) = \\sin(1/x)$ for $x \\neq 0$ and $f(0) = 0$. What type of discontinuity does $f$ have at $0$?",
+          "options": [
+            "Removable",
+            "Jump",
+            "Essential",
+            "None: $f$ is continuous at $0$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Neither one-sided limit exists: on each side, $f$ takes the values $0$ and $1$ along sequences tending to $0$. So the discontinuity is essential (second kind). It is not removable or a jump, since those need the one-sided limits to exist."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f(x) = x^2$ for $x \\neq 0$ and $f(0) = 5$. What type of discontinuity does $f$ have at $0$?",
+          "options": [
+            "Jump",
+            "Removable",
+            "Essential",
+            "None: $f$ is continuous at $0$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\lim_{x\\to 0} f(x) = 0$ exists but differs from $f(0) = 5$. Redefining $f(0) = 0$ makes $f$ continuous. The two sides agree, so it is not a jump."
+        },
+        {
+          "type": "single",
+          "prompt": "What type of discontinuity does $\\lfloor x \\rfloor$ have at each integer $n$?",
+          "options": [
+            "Removable",
+            "Essential",
+            "It is continuous at integers.",
+            "Jump"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$\\lim_{x\\to n^-}\\lfloor x\\rfloor = n - 1$ and $\\lim_{x\\to n^+}\\lfloor x\\rfloor = n$: both exist and differ. Being right-continuous ($\\lfloor n \\rfloor = n$) does not make it continuous."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A monotone function on an open interval can have an essential discontinuity.",
+          "answer": [
+            false
+          ],
+          "explanation": "For monotone $f$, both one-sided limits always exist (they are a supremum and an infimum), so every discontinuity is a jump."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $t$ be Thomae's function: $t(p/q) = 1/q$ for $p/q$ in lowest terms with $q \\geq 1$, and $t(x) = 0$ for irrational $x$. Which statements are true?",
+          "options": [
+            "$t$ is continuous at every irrational number.",
+            "$t$ is discontinuous at every rational number.",
+            "Each discontinuity of $t$ is a jump discontinuity.",
+            "$\\lim_{x\\to c} t(x) = 0$ for every $c \\in \\mathbb{R}$."
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "Since $\\lim_{x\\to c} t(x) = 0$ everywhere, $t$ is continuous exactly where $t(c) = 0$, i.e. at irrationals. At a rational, $t(c) > 0 = \\lim$, so the discontinuity is removable, not a jump."
+        },
+        {
+          "type": "single",
+          "prompt": "The set of discontinuities of a monotone function $f : \\mathbb{R} \\to \\mathbb{R}$ is always",
+          "options": [
+            "empty",
+            "finite",
+            "at most countable",
+            "a closed interval"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Distinct jumps give disjoint open intervals $\\big(f(c^-), f(c^+)\\big)$, each containing a different rational, so there are at most countably many. The set need not be empty or finite: an increasing function can jump at every rational. It can never be a whole interval, which is uncountable."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$f(x) = 1/x$ for $x \\ne 0$, with $f(0) = 0$, has a jump discontinuity at $0$.",
+          "answer": [
+            false
+          ],
+          "explanation": "A jump needs both one-sided limits to be real numbers. Here $f(0^-) = -\\infty$ and $f(0^+) = +\\infty$ in the sense of lesson 5.5, so neither exists as a real number. The discontinuity is essential."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = \\dfrac{x^2 - 4}{x - 2}$ for $x \\ne 2$ and $f(2) = 0$. To what value should $f(2)$ be changed to make $f$ continuous at $2$?",
+          "answer": [
+            "4",
+            "f(2) = 4",
+            "f(2)=4"
+          ],
+          "explanation": "For $x \\ne 2$, $\\frac{x^2-4}{x-2} = x + 2 \\to 4$. The discontinuity is removable and the right value is $4$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these have a discontinuity of the **first kind** at $0$? Select all that apply.",
+          "options": [
+            "$f(x) = 1$ for $x \\ge 0$, $f(x) = -1$ for $x < 0$",
+            "$f(x) = x\\sin(1/x)$ for $x \\ne 0$, $f(0) = 1$",
+            "$f(x) = \\sin(1/x)$ for $x \\ne 0$, $f(0) = 0$",
+            "$f(x) = 1/x^2$ for $x \\ne 0$, $f(0) = 0$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "First kind means both one-sided limits exist. The first is a jump ($-1$ and $1$). The second is removable: $|x\\sin(1/x)| \\le |x| \\to 0$, so the limit is $0 \\ne 1$. The third oscillates and the fourth blows up to $+\\infty$, so both are essential (second kind)."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f(x) = 0$ for $x \\le 0$ and $f(x) = \\sin(1/x)$ for $x > 0$. What happens at $0$?",
+          "options": [
+            "$f$ is continuous at $0$, since $f(0^-) = f(0) = 0$",
+            "A removable discontinuity",
+            "A jump discontinuity",
+            "An essential discontinuity"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "The left limit is $0$, but the right limit does not exist because $\\sin(1/x)$ oscillates between $-1$ and $1$. One side failing is enough: essential. Agreement on the left alone does not give continuity, and removable or jump would need both sides to exist."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A removable discontinuity at $c$ can always be fixed by changing the value of $f$ at the single point $c$.",
+          "answer": [
+            true
+          ],
+          "explanation": "By definition the limit $L = \\lim_{x\\to c} f(x)$ exists; setting $f(c) = L$ makes the limit equal the value. A jump or essential discontinuity cannot be fixed this way."
+        }
+      ]
+    },
+    {
+      "slug": "5-9-intermediate-value-theorem",
+      "title": "Intermediate Value Theorem",
+      "summary": "A continuous function on an interval cannot skip values: completeness at work.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "The Intermediate Value Theorem",
+          "md": "This is the first of the big theorems about functions that are continuous on a whole interval.\n\n**In this lesson you will learn to:**\n- state the Intermediate Value Theorem (IVT) and check its hypotheses\n- use it to show an equation has a solution in a given interval\n- prove it from the completeness of $\\mathbb{R}$\n- use the bisection method to trap a root as tightly as you like\n\n**You need:** continuity on an interval (lesson 5.7), the supremum and completeness (lessons 2.9 and 2.10), and the sign of a continuous function near a point (lesson 5.6)."
+        },
+        {
+          "type": "text",
+          "md": "## Why we need a theorem\n\nSuppose you want to solve $x^5 - 3x + 1 = 0$. There is no formula for roots of a general fifth-degree polynomial, so you cannot just write the answer down. But you can ask a weaker question: **is there a solution at all, and roughly where?**\n\nTry two values: at $x = 0$ the left side is $1$ (positive), and at $x = 1$ it is $1 - 3 + 1 = -1$ (negative). If you draw the graph without lifting your pen, going from above the $x$-axis to below it, you must cross the axis somewhere between $0$ and $1$. That crossing point is a solution.\n\nThe Intermediate Value Theorem turns \"you must cross the axis\" into a proved fact. It lets you prove that solutions **exist** even when you cannot find them exactly. The same idea shows that every odd-degree polynomial has a real root, and that certain functions must have a point where $f(c) = c$.\n\nBut is the pen picture really a proof? The box below shows that it hides something important."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The pen picture fails in the rationals",
+          "md": "Work only with rational numbers. Let $f(x) = x^2 - 2$ for rational $x$ in $[0, 2]$. It is continuous (it is a polynomial), $f(0) = -2 < 0$ and $f(2) = 2 > 0$. Yet $f(x) = 0$ would need $x = \\sqrt{2}$, which is **not rational** (lesson 2.1).\n\nSo in $\\mathbb{Q}$ a continuous function can change sign without ever being zero: the graph slips through a \"gap\" in the number line. The IVT is true in $\\mathbb{R}$ only because $\\mathbb{R}$ has no gaps. That is the **completeness property** (lesson 2.10): every nonempty set of reals that is bounded above has a supremum. The proof below uses it directly."
+        },
+        {
+          "type": "check",
+          "question": "$f(x) = x^2 - 2$ changes sign on the rationals in $[0, 2]$ but has no rational root. Which property of $\\mathbb{R}$, missing in $\\mathbb{Q}$, rescues the IVT?",
+          "options": [
+            "The Archimedean property",
+            "Completeness: every nonempty set bounded above has a supremum",
+            "The field axioms",
+            "The order axioms"
+          ],
+          "correct": 1,
+          "explanation": "$\\mathbb{Q}$ satisfies the field axioms, the order axioms and the Archimedean property, yet the IVT fails there. The one ingredient $\\mathbb{Q}$ lacks is completeness: for example $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$ has no rational supremum."
+        },
+        {
+          "type": "text",
+          "md": "## The statement\n\n**In plain words:** a function that is continuous on a closed interval takes every value between its values at the two ends.\n\n**Theorem (IVT).** Let $f : [a, b] \\to \\mathbb{R}$ be continuous, and let $k$ be any number between $f(a)$ and $f(b)$. Then there exists $c \\in [a, b]$ with\n\n$$f(c) = k.$$\n\n\"Between\" allows either order: $f(a) \\le k \\le f(b)$ or $f(b) \\le k \\le f(a)$. The theorem promises that **some** $c$ exists. It does not say where, or how many.\n\n**Examples.**\n- $f(x) = x^2$ on $[0, 2]$: $f(0) = 0$ and $f(2) = 4$. Since $3$ is between them, some $c \\in [0, 2]$ has $c^2 = 3$. That proves $\\sqrt{3}$ exists as a real number.\n- $f(x) = \\sin x$ on $[0, 3\\pi]$ with $k = 0$: here $c = 0, \\pi, 2\\pi, 3\\pi$ all work. **Edge case:** $c$ need not be unique, and it may be an endpoint.\n- **Edge case:** if $k = f(a)$ the theorem is trivially true with $c = a$.\n\n**Bolzano's theorem** is the special case $k = 0$: if $f$ is continuous on $[a, b]$ and $f(a) < 0 < f(b)$, then $f(c) = 0$ for some $c \\in (a, b)$. The general IVT follows by applying Bolzano to $g(x) = f(x) - k$ (or $k - f(x)$), since $g(c) = 0$ means $f(c) = k$."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is continuous on $[1, 4]$ with $f(1) = 5$ and $f(4) = -2$. Which value is $f$ **guaranteed** by the IVT to take on $[1, 4]$?",
+          "options": [
+            "$6$",
+            "$-3$",
+            "$3$",
+            "$10$"
+          ],
+          "correct": 2,
+          "explanation": "The IVT guarantees every value between $-2$ and $5$, and $3$ is one of them. $f$ might take $6$, $-3$ or $10$ too, but nothing forces it to: $f$ could be a straight line from $5$ down to $-2$."
+        },
+        {
+          "type": "text",
+          "md": "## Every hypothesis matters\n\nThe IVT has two hypotheses: $f$ is **continuous**, and it is continuous on an **interval**. Drop either and the conclusion can fail.\n\n**Non-example: not continuous.** The floor function $\\lfloor x \\rfloor$ on $[0, 1]$ has $\\lfloor 0 \\rfloor = 0$ and $\\lfloor 1 \\rfloor = 1$, but never equals $\\frac12$. It jumps over it at $x = 1$.\n\n**Non-example: domain not an interval.** $f(x) = 1/x$ on $[-1, 1] \\setminus \\{0\\}$ (the interval with $0$ removed) has $f(-1) = -1$ and $f(1) = 1$, yet never equals $0$. It is continuous at every point of its domain, but the domain has a hole at $0$, and no value at $0$ would make it continuous there.\n\n**The converse is false.** Say $f$ has the **intermediate value property** if it takes every value between any two of its values. The IVT says continuous functions on intervals have this property. But a function can have it without being continuous: $f(x) = \\sin(1/x)$ for $x \\ne 0$ and $f(0) = 0$. Any interval containing $0$ and some other point contains a whole swing of $\\sin(1/x)$, so $f$ maps it onto $[-1, 1]$; yet $f$ has an essential discontinuity at $0$ (lesson 5.8).\n\n**No sign change does not mean no root.** $x^2$ on $[-1, 1]$ is positive at both ends but has a root at $0$. The IVT only tells you something when it applies; when it doesn't, it says nothing."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each situation with the correct conclusion.",
+          "pairs": [
+            {
+              "left": "$x^3 - 2$ on $[1, 2]$",
+              "right": "IVT applies: there is a root in $(1, 2)$"
+            },
+            {
+              "left": "$\\lfloor x \\rfloor$ on $[0, 1]$, value $\\frac12$",
+              "right": "IVT fails: the function is not continuous"
+            },
+            {
+              "left": "$1/x$ on $[-1, 1]\\setminus\\{0\\}$, value $0$",
+              "right": "IVT fails: the domain is not an interval"
+            },
+            {
+              "left": "$x^2$ on $[-1, 1]$, value $0$",
+              "right": "No sign change, so the IVT is silent, yet a root exists"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Using the IVT to find a root\n\nTo show an equation $f(x) = 0$ has a solution in $(a, b)$:\n\n1. **Check continuity** of $f$ on $[a, b]$. Polynomials, $\\sin$, $\\cos$, and sums, products and compositions of continuous functions are continuous (lessons 5.6 and 5.7). Quotients are continuous where the bottom is not zero.\n2. **Evaluate** $f(a)$ and $f(b)$.\n3. **Look for a sign change**: one is negative and the other positive.\n4. **Conclude** by the IVT that $f(c) = 0$ for some $c$, and since $f(a), f(b) \\ne 0$, $c$ is strictly inside.\n\n**Worked example.** $p(x) = x^5 - 3x + 1$ on $[0, 1]$. It is a polynomial, so continuous. $p(0) = 1 > 0$ and $p(1) = -1 < 0$. By the IVT, $p(c) = 0$ for some $c \\in [0, 1]$, and $c \\ne 0, 1$, so $c \\in (0, 1)$.\n\n**Equations that are not \"$= 0$\".** To solve $\\cos x = x$, move everything to one side: $g(x) = \\cos x - x$. Then $g(0) = 1 > 0$ and $g(\\pi/2) = -\\pi/2 < 0$, so $\\cos x = x$ has a solution in $(0, \\pi/2)$.\n\n**A common slip.** Students check that $p(a)$ and $p(b)$ have opposite signs but forget to say $p$ is continuous. Without continuity the conclusion is not justified (think of $\\lfloor x \\rfloor - \\frac12$ on $[0, 1]$)."
+        },
+        {
+          "type": "check",
+          "question": "Which interval is guaranteed by the IVT to contain a root of $x^3 + x - 1$?",
+          "options": [
+            "$(-1, 0)$",
+            "$(1, 2)$",
+            "$(0, 1)$",
+            "$(2, 3)$"
+          ],
+          "correct": 2,
+          "explanation": "$p(0) = -1 < 0 < 1 = p(1)$, a sign change. On the other intervals the signs agree: $p(-1) = -3$ and $p(0) = -1$; $p(1) = 1$, $p(2) = 9$ and $p(3) = 29$. (In fact $p$ is strictly increasing, so its only root lies in $(0,1)$.)"
+        },
+        {
+          "type": "steps",
+          "title": "Proof of Bolzano’s theorem via the supremum",
+          "steps": [
+            {
+              "title": "Choose the candidate point",
+              "md": "Suppose $f$ is continuous on $[a,b]$ with $f(a) < 0 < f(b)$. Let\n\n$$S = \\{x \\in [a, b] : f(x) < 0\\},$$\n\nthe set of points where $f$ is negative. Then $a \\in S$, so $S$ is nonempty, and $S$ is bounded above by $b$. By completeness $c = \\sup S$ exists, and $a \\leq c \\leq b$. The idea: $c$ is the \"last moment\" before $f$ stops being negative, so it should be where $f$ hits $0$."
+            },
+            {
+              "title": "The tool: continuity keeps signs",
+              "md": "If $f$ is continuous at $c$ and $f(c) > 0$, take $\\varepsilon = f(c)$ in the definition (lesson 5.6). There is $\\delta > 0$ with $|f(x) - f(c)| < f(c)$, hence $f(x) > 0$, for all $x \\in [a, b]$ with $|x - c| < \\delta$. Similarly, if $f(c) < 0$, then $f < 0$ near $c$."
+            },
+            {
+              "title": "Rule out f(c) > 0",
+              "md": "If $f(c) > 0$, then $c \\ne a$ (as $f(a) < 0$) and $f > 0$ on $(c - \\delta, c]$. So no point of $S$ lies in $(c - \\delta, c]$, and none lies above $c$ either, because $c$ is an upper bound. Thus $c - \\delta$ is a smaller upper bound of $S$, contradicting that $c$ is the **least** upper bound."
+            },
+            {
+              "title": "Rule out f(c) < 0",
+              "md": "If $f(c) < 0$, then $c \\neq b$ (as $f(b) > 0$), and $f < 0$ on $[c, c + \\delta) \\cap [a, b]$. Pick any $x$ with $c < x < \\min(c + \\delta, b)$. Then $f(x) < 0$, so $x \\in S$, yet $x > c$. This contradicts $c$ being an **upper bound** of $S$."
+            },
+            {
+              "title": "Conclude",
+              "md": "Both alternatives are impossible, so $f(c) = 0$. Since $f(a) \\neq 0 \\neq f(b)$, in fact $c \\in (a, b)$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, assuming $f(c) > 0$ led to a contradiction. Which property of $c = \\sup S$ did that contradiction break?",
+          "options": [
+            "That $c$ is an upper bound of $S$",
+            "That $c$ is the least upper bound: $c - \\delta$ turned out to be a smaller upper bound",
+            "That $c \\in S$",
+            "That $c \\le b$"
+          ],
+          "correct": 1,
+          "explanation": "When $f(c) > 0$, a whole stretch $(c - \\delta, c]$ contains no point of $S$, so $c - \\delta$ is also an upper bound, which is smaller than $c$. That breaks \"least\". The case $f(c) < 0$ breaks the other half, \"upper bound\". We never claimed $c \\in S$, and $c \\le b$ is never in doubt."
+        },
+        {
+          "type": "text",
+          "md": "## The bisection method\n\nThe IVT says a root exists. The **bisection method** turns its idea into a way to trap the root.\n\nStart with $[a, b]$ where $f(a) < 0 < f(b)$. Look at the midpoint $m = \\frac{a + b}{2}$:\n- if $f(m) = 0$, you have found a root;\n- if $f(m) < 0$, the sign change is now on $[m, b]$;\n- if $f(m) > 0$, it is on $[a, m]$.\n\nKeep the half with the sign change and repeat. Each step halves the length, so after $n$ steps the root lies in an interval of length\n\n$$\\frac{b - a}{2^n}.$$\n\n**Example.** $p(x) = x^3 + x - 1$ on $[0, 1]$. The midpoint $\\frac12$ gives $p(\\frac12) = \\frac18 + \\frac12 - 1 = -\\frac38 < 0$, so the root is in $[\\frac12, 1]$. Next, $p(\\frac34) = \\frac{27}{64} + \\frac34 - 1 = \\frac{11}{64} > 0$, so the root is in $[\\frac12, \\frac34]$, and so on.\n\nThe method also gives a **second proof** of Bolzano's theorem: the left endpoints increase, the right endpoints decrease, and the lengths shrink to $0$, so both endpoint sequences converge to the same point $c$ (monotone convergence, lesson 3.8). Continuity then forces $f(c) = 0$."
+        },
+        {
+          "type": "order",
+          "prompt": "Order the steps of the bisection argument for finding a root of continuous $f$ with $f(a) < 0 < f(b)$.",
+          "items": [
+            "Set $[a_0, b_0] = [a, b]$, so $f(a_0) < 0 < f(b_0)$.",
+            "Let $m$ be the midpoint of $[a_n, b_n]$ and test the sign of $f(m)$.",
+            "Keep the half $[a_{n+1}, b_{n+1}]$ on which $f(a_{n+1}) \\leq 0 \\leq f(b_{n+1})$.",
+            "The nested intervals have lengths $(b-a)/2^n \\to 0$, so $a_n$ and $b_n$ converge to a common limit $c$.",
+            "By continuity, $f(c) = \\lim f(a_n) \\leq 0$ and $f(c) = \\lim f(b_n) \\geq 0$, so $f(c) = 0$."
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Intermediate Value Theorem",
+              "back": "If $f$ is **continuous on $[a,b]$** and $k$ lies between $f(a)$ and $f(b)$, then $f(c) = k$ for some $c \\in [a,b]$.\n\n*Example:* $x^2$ on $[0,2]$ takes the value $3$."
+            },
+            {
+              "front": "Bolzano's theorem",
+              "back": "The case $k = 0$: continuous on $[a,b]$ with $f(a) < 0 < f(b)$ gives a **root** $c \\in (a,b)$.\n\n*Example:* $x^5 - 3x + 1$ has a root in $(0,1)$."
+            },
+            {
+              "front": "Intermediate value property",
+              "back": "$f$ takes **every value** between any two of its values. Continuity on an interval implies it; the converse fails.\n\n*Example:* $\\sin(1/x)$ with $f(0)=0$ has it but is discontinuous."
+            },
+            {
+              "front": "Bisection method",
+              "back": "Repeatedly halve an interval with a **sign change**, keeping the half that still has one. After $n$ steps the length is $(b-a)/2^n$.\n\n*Example:* $[0,1] \\to [\\frac12, 1] \\to [\\frac12, \\frac34]$ for $x^3 + x - 1$."
+            },
+            {
+              "front": "Fixed point",
+              "back": "A point $c$ with $f(c) = c$: the graph meets the line $y = x$.\n\n*Example:* every continuous $f : [0,1] \\to [0,1]$ has one."
+            },
+            {
+              "front": "Completeness (reminder)",
+              "back": "Every nonempty set of reals **bounded above** has a supremum. The IVT depends on it.\n\n*Example:* in $\\mathbb{Q}$, $x^2 - 2$ changes sign with no root."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You want to prove that $e^x = 3 - x$ has a solution. Which function should you apply the IVT to, and on which interval?",
+          "options": [
+            "$g(x) = e^x$ on $[0, 3]$, since $3$ is between $g(0)$ and $g(3)$",
+            "$g(x) = e^x - 3 + x$ on $[0, 1]$, since $g(0) = -2 < 0 < g(1) = e - 2$",
+            "$g(x) = e^x + 3 - x$ on $[0, 1]$",
+            "$g(x) = e^x - 3 + x$ on $[2, 3]$"
+          ],
+          "correct": 1,
+          "explanation": "Move everything to one side: $g(x) = e^x - (3 - x)$ is continuous, $g(0) = 1 - 3 = -2$ and $g(1) = e - 2 > 0$. The first option would find $x$ with $e^x = 3$, a different equation. $e^x + 3 - x$ is the wrong sign combination. On $[2, 3]$, $g$ is positive at both ends, so there is no sign change."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a fixed point theorem",
+          "problem": "Prove that every continuous $f : [0, 1] \\to [0, 1]$ has a fixed point, i.e. some $c \\in [0, 1]$ with $f(c) = c$.\n\nHint: turn \"$f(c) = c$\" into \"something $= 0$\".",
+          "solution": "Let $g(x) = f(x) - x$. It is continuous on $[0, 1]$ as a difference of continuous functions, and $g(c) = 0$ exactly when $f(c) = c$.\n\n**Signs at the ends.** Since every value of $f$ lies in $[0, 1]$,\n\n$$g(0) = f(0) - 0 \\geq 0, \\qquad g(1) = f(1) - 1 \\leq 0.$$\n\n**Cases.** If $g(0) = 0$ then $c = 0$ is a fixed point; if $g(1) = 0$ then $c = 1$ is. Otherwise $g(0) > 0 > g(1)$, and the IVT gives $c \\in (0, 1)$ with $g(c) = 0$, i.e. $f(c) = c$. $\\blacksquare$\n\n**Check your answer:** did you say why $g$ is continuous? Did you use the fact that $f$ maps **into** $[0, 1]$ to get the signs? Did you handle the case where an endpoint is already a fixed point, where the inequalities are not strict?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Does the IVT tell me where the root is?",
+              "a": "Only that it is somewhere in the interval. To pin it down, use bisection: each step halves the interval, so $10$ steps shrink an interval of length $1$ to length $\\frac{1}{1024}$."
+            },
+            {
+              "q": "Why does every odd-degree polynomial have a real root?",
+              "a": "Take $p(x) = x^3 - 5x^2 + 1$. For large positive $x$ the $x^3$ term wins and $p(x) > 0$; for large negative $x$, $x^3$ is hugely negative and $p(x) < 0$. So $p$ changes sign on some $[-R, R]$, and the IVT gives a root. For even degree this fails: $x^2 + 1$ is always positive."
+            },
+            {
+              "q": "If $f$ is continuous and $f(a)$, $f(b)$ have the same sign, does $f$ have no root in $[a, b]$?",
+              "a": "Not necessarily. $x^2 - \\frac14$ on $[-1, 1]$ is positive at both ends but has roots at $\\pm\\frac12$. The IVT only gives roots; it never rules them out."
+            },
+            {
+              "q": "Is the image of an interval always an interval?",
+              "a": "Under a continuous function, yes. If $f$ takes values $u < v$ on an interval $I$, say at points $s$ and $t$, apply the IVT on the closed interval between $s$ and $t$: every value between $u$ and $v$ is taken. So the set of values has no gaps, which is what being an interval means."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- **IVT:** if $f$ is continuous on $[a, b]$ and $k$ is between $f(a)$ and $f(b)$, then $f(c) = k$ for some $c \\in [a, b]$. The point $c$ need not be unique.\n- To show $f(x) = 0$ has a solution: check **continuity**, find a **sign change**, apply the IVT.\n- Both hypotheses matter: a jump (floor function) or a hole in the domain ($1/x$) can skip values. The converse is false.\n- The IVT fails in $\\mathbb{Q}$; the proof uses **completeness** through $c = \\sup\\{x : f(x) < 0\\}$.\n- **Bisection** traps a root in an interval of length $(b - a)/2^n$ after $n$ steps."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "For $p(x) = x^3 + x - 1$, in which interval does the IVT guarantee a root?",
+          "options": [
+            "$(-1, 0)$",
+            "$(0, 1)$",
+            "$(1, 2)$",
+            "$(2, 3)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$p(0) = -1$ and $p(1) = 1$ have opposite signs, and $p$ is continuous. On the other intervals $p$ has the same sign at both ends ($p(-1) = -3$, $p(2) = 9$, $p(3) = 29$), so the IVT guarantees nothing there. (In fact $p$ is strictly increasing, as a sum of increasing functions, so its only root is in $(0, 1)$.)"
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f : [a, b] \\to \\mathbb{R}$ has the intermediate value property (it takes every value between any two of its values), then $f$ is continuous.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = \\sin(1/x)$ for $x \\neq 0$, $f(0) = 0$ has the intermediate value property on $[-1, 1]$ but has an essential discontinuity at $0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements follow from the Intermediate Value Theorem (possibly with a short additional argument)?",
+          "options": [
+            "Every polynomial of odd degree has a real root.",
+            "Every continuous $f : [0, 1] \\to [0, 1]$ has a fixed point.",
+            "Every continuous function on $(0, 1)$ is bounded.",
+            "The image of an interval under a continuous function is an interval."
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "An odd-degree polynomial takes both signs for large $|x|$; the fixed point follows from $g(x) = f(x) - x$; and images of intervals are intervals by the IVT. The third claim is false: $1/x$ on $(0,1)$ is continuous but unbounded."
+        },
+        {
+          "type": "single",
+          "prompt": "$f(x) = 1/x$ on $[-1, 1]\\setminus\\{0\\}$ satisfies $f(-1) = -1 < 0 < 1 = f(1)$ but never equals $0$. Why does the IVT not apply?",
+          "options": [
+            "$f$ is not continuous at $1$.",
+            "$f$ is not bounded.",
+            "The IVT only applies to polynomials.",
+            "The domain is not an interval, so $f$ is not continuous on all of $[-1, 1]$."
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "The IVT requires a continuous function on the whole interval $[-1, 1]$. Here $f$ is undefined at $0$, and no value at $0$ would make it continuous there. $f$ is continuous at $1$; unboundedness is a symptom, not the hypothesis that fails; and the IVT applies to every continuous function, not only polynomials."
+        },
+        {
+          "type": "short",
+          "prompt": "Starting from an interval of length $1$, how many bisection steps are needed before the interval containing the root has length at most $\\frac{1}{1000}$? Give the smallest number.",
+          "answer": [
+            "10",
+            "ten"
+          ],
+          "explanation": "After $n$ steps the length is $2^{-n}$. We need $2^{-n} \\leq 10^{-3}$, i.e. $2^n \\geq 1000$. Since $2^9 = 512 < 1000 \\leq 1024 = 2^{10}$, the answer is $10$."
+        },
+        {
+          "type": "single",
+          "prompt": "In the supremum proof of Bolzano's theorem ($f(a) < 0 < f(b)$), which point is shown to be a root?",
+          "options": [
+            "$c = \\inf\\{x \\in [a,b] : f(x) < 0\\}$",
+            "$c = \\sup\\{x \\in [a,b] : f(x) < 0\\}$",
+            "$c = \\frac{a + b}{2}$",
+            "$c = \\sup\\{f(x) : x \\in [a, b]\\}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The proof takes $c = \\sup S$ with $S = \\{x : f(x) < 0\\}$ and rules out $f(c) > 0$ and $f(c) < 0$ using continuity. The infimum of $S$ is just $a$, the midpoint need not be a root, and the last option is a value of $f$, not a point."
+        },
+        {
+          "type": "single",
+          "prompt": "The IVT fails for continuous functions on the rationals: $x^2 - 2$ changes sign on $\\mathbb{Q} \\cap [0, 2]$ with no rational root. Which property of $\\mathbb{R}$ does the proof of the IVT rely on?",
+          "options": [
+            "The Archimedean property",
+            "Density of the rationals",
+            "Completeness (the supremum property)",
+            "Commutativity of addition"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The proof defines $c = \\sup\\{x : f(x) < 0\\}$, which needs completeness. $\\mathbb{Q}$ is Archimedean, dense and commutative, yet the IVT fails there, so none of those can be the key ingredient."
+        },
+        {
+          "type": "multiple",
+          "prompt": "$f$ is continuous on $[1, 4]$ with $f(1) = -2$ and $f(4) = 5$. Which values is $f$ guaranteed to take on $[1, 4]$? Select all that apply.",
+          "options": [
+            "$0$",
+            "$4.5$",
+            "$6$",
+            "$-3$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "Every value between $-2$ and $5$ is guaranteed, so $0$ and $4.5$. $6$ and $-3$ lie outside that range: $f$ may take them, but nothing forces it to (a straight line from $-2$ to $5$ does not)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is continuous on $[a, b]$ and $f(a)$ and $f(b)$ are both positive, then $f$ has no root in $[a, b]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$x^2 - \\frac14$ on $[-1, 1]$ is positive at both ends but is zero at $\\pm\\frac12$. The IVT can prove a root exists; it cannot prove one doesn't."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The IVT guarantees that the point $c$ with $f(c) = k$ is unique.",
+          "answer": [
+            false
+          ],
+          "explanation": "It only guarantees at least one. For example $\\sin x$ on $[0, 3\\pi]$ equals $0$ at $0$, $\\pi$, $2\\pi$ and $3\\pi$."
+        },
+        {
+          "type": "short",
+          "prompt": "Apply one step of bisection to $p(x) = x^3 + x - 1$ on $[0, 1]$. What is the left endpoint of the new interval?",
+          "answer": [
+            "0.5",
+            "1/2",
+            ".5",
+            "½"
+          ],
+          "explanation": "The midpoint is $\\frac12$ and $p(\\frac12) = \\frac18 + \\frac12 - 1 = -\\frac38 < 0$. Since $p(1) = 1 > 0$, the sign change is on $[\\frac12, 1]$, so the left endpoint is $\\frac12$."
+        }
+      ]
+    },
+    {
+      "slug": "5-10-extreme-value-theorem",
+      "title": "Extreme Value Theorem",
+      "summary": "On a closed bounded interval, a continuous function attains a maximum and a minimum.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "The Extreme Value Theorem",
+          "md": "Optimisation asks for the largest or smallest value of a function. This lesson says exactly when such values are guaranteed to exist.\n\n**In this lesson you will learn to:**\n- tell the **supremum** of a function apart from its **maximum**\n- state the Extreme Value Theorem (EVT) and explain why each hypothesis is needed\n- prove it with the Bolzano-Weierstrass theorem\n- find a maximum on a closed interval by comparing a few candidates\n\n**You need:** supremum and infimum (lesson 2.9), the Bolzano-Weierstrass theorem (lesson 3.10), and the sequential criterion for continuity (lesson 5.6)."
+        },
+        {
+          "type": "text",
+          "md": "## Maximum versus supremum\n\nCalculus problems say \"find the largest value of $f$\". But a largest value need not exist, even for a nice function.\n\nLet $f : A \\to \\mathbb{R}$. We say $f$ **attains a maximum** at $x_0 \\in A$ if\n\n$$f(x) \\le f(x_0) \\quad \\text{for all } x \\in A.$$\n\nThe number $f(x_0)$ is then the **maximum value** of $f$, and $x_0$ is a **maximum point**. A **minimum** is defined the same way with $\\ge$.\n\nThe **supremum** of $f$, written $\\sup f$ or $\\sup_{x\\in A} f(x)$, is the supremum (least upper bound, lesson 2.9) of the set of values $\\{f(x) : x \\in A\\}$. The **infimum** $\\inf f$ is the greatest lower bound. The key difference: a maximum must be **reached** by some input; a supremum need not be.\n\n**Examples.**\n- $f(x) = x$ on $(0, 1)$: $\\sup f = 1$, but no $x$ in $(0, 1)$ has $f(x) = 1$. No maximum. Likewise $\\inf f = 0$ is not reached: no minimum.\n- $f(x) = 1/x$ on $(0, 1]$: the values grow without bound, so $f$ is **unbounded above** and has no supremum at all (as a real number). Its minimum is $1$, at $x = 1$.\n- **Edge case:** a constant function $f(x) = 3$ on $[0, 1]$ attains its maximum and minimum, both equal to $3$, at **every** point. Maximum points need not be unique.\n\nWhen a maximum exists, it equals the supremum. So \"does $f$ attain a maximum?\" means \"is $\\sup f$ a real number that some input actually reaches?\""
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = x^2$ on $[0, 1)$. Which statement is correct?",
+          "options": [
+            "The maximum of $f$ is $1$",
+            "$\\sup f = 1$, but $f$ has no maximum; its minimum is $0$",
+            "$f$ has neither a supremum nor a minimum",
+            "$f$ is unbounded above"
+          ],
+          "correct": 1,
+          "explanation": "The values $x^2$ get as close to $1$ as you like but never reach it, because $1 \\notin [0, 1)$. So $\\sup f = 1$ with no maximum. The minimum is $f(0) = 0$, which is reached. $f$ is bounded above by $1$."
+        },
+        {
+          "type": "text",
+          "md": "## The theorem\n\n**In plain words:** a function that is continuous on a closed, bounded interval always reaches a largest and a smallest value.\n\n**Theorem (EVT).** Let $f : [a, b] \\to \\mathbb{R}$ be continuous. Then $f$ is bounded, and there exist $x_{\\min}, x_{\\max} \\in [a, b]$ with\n\n$$f(x_{\\min}) \\leq f(x) \\leq f(x_{\\max}) \\quad \\text{for all } x \\in [a, b].$$\n\nSo $\\sup f = f(x_{\\max})$ is a maximum and $\\inf f = f(x_{\\min})$ is a minimum.\n\n**Examples.**\n- $f(x) = x^2$ on $[-1, 2]$: the minimum is $0$ at $x = 0$ and the maximum is $4$ at $x = 2$. **Edge case:** the maximum is at an endpoint, not where the derivative is zero. Endpoints are always candidates.\n- $f(x) = \\sin x$ on $[0, \\pi]$: the maximum is $1$ at $\\frac{\\pi}{2}$; the minimum is $0$, attained at **both** endpoints.\n- $f(x) = 1/x$ on $[1, 2]$: maximum $1$ at $x = 1$, minimum $\\frac12$ at $x = 2$. Compare with $(0, 1]$ above: on a closed bounded interval avoiding $0$, $1/x$ behaves perfectly.\n\nLike the IVT (lesson 5.9), the EVT is an **existence** theorem. It promises that $x_{\\max}$ exists; it does not tell you where. Finding it is a separate job, done later in this lesson."
+        },
+        {
+          "type": "check",
+          "question": "For which of these does the EVT guarantee a maximum and a minimum?",
+          "options": [
+            "$f(x) = \\frac{1}{x - 3}$ on $[0, 4]$",
+            "$f(x) = x^3 - x$ on $[-5, 5]$",
+            "$f(x) = x^3 - x$ on $(-5, 5)$",
+            "$f(x) = \\lfloor x \\rfloor$ on $[0, 2]$"
+          ],
+          "correct": 1,
+          "explanation": "$x^3 - x$ is a polynomial, hence continuous, and $[-5, 5]$ is closed and bounded. $\\frac{1}{x-3}$ is undefined at $3 \\in [0, 4]$, so it is not continuous on $[0, 4]$. $(-5, 5)$ is not closed. $\\lfloor x\\rfloor$ is not continuous on $[0, 2]$ (it does happen to attain a maximum there, but the EVT does not guarantee it)."
+        },
+        {
+          "type": "text",
+          "md": "## Each hypothesis matters\n\nThe EVT needs three things: $f$ **continuous**, and the domain an interval that is **closed** (contains its endpoints) and **bounded** (does not run off to infinity). Remove any one and it can fail. In each example below the function is as simple as possible, $f(x) = x$, so you can see that the trouble comes from the missing hypothesis.\n\n- **Not closed.** $f(x) = x$ on $[0, 1)$. The values approach $1$ but the input $1$ is missing. No maximum.\n- **Not bounded.** $f(x) = x$ on $[0, \\infty)$. The values grow forever. No maximum, not even a supremum.\n- **Not continuous.** $f(x) = x$ on $[0, 1)$ and $f(1) = 0$. The domain $[0, 1]$ is now closed and bounded, but the value at $1$ has been moved down. $\\sup f = 1$ is still not attained.\n\nA subtler non-example: $f(x) = \\frac{x^2}{1 + x^2}$ on $\\mathbb{R}$. It is continuous and bounded ($0 \\le f(x) < 1$), with $\\sup f = 1$, but $f(x) < 1$ for every $x$. Here the unbounded domain lets $f$ creep up to $1$ forever without reaching it.\n\nA set that is both closed and bounded is called **compact**. The EVT holds for continuous functions on any compact subset of $\\mathbb{R}$; you will meet this in lessons 5.12 and 5.13."
+        },
+        {
+          "type": "match",
+          "prompt": "Each function fails to attain a maximum. Match it with the reason.",
+          "pairs": [
+            {
+              "left": "$f(x) = x$ on $[0, 1)$",
+              "right": "The domain is not closed"
+            },
+            {
+              "left": "$f(x) = x$ on $[0, \\infty)$",
+              "right": "The domain is not bounded"
+            },
+            {
+              "left": "$f(x) = x$ on $[0, 1)$, $f(1) = 0$",
+              "right": "The function is not continuous"
+            },
+            {
+              "left": "$f(x) = \\frac{x^2}{1 + x^2}$ on $\\mathbb{R}$",
+              "right": "Bounded with supremum $1$, but $f(x) < 1$ for every $x$"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Sufficient, not necessary",
+          "md": "The EVT gives sufficient conditions only. Functions can attain their extrema without them: $\\sin x$ attains $\\pm 1$ on the unbounded set $\\mathbb{R}$, and the discontinuous $\\lfloor x \\rfloor$ attains a maximum ($2$, at $x = 2$) on $[0, 2]$. The theorem tells you when extrema are **guaranteed**. If a hypothesis fails, the EVT says nothing either way: you must investigate directly."
+        },
+        {
+          "type": "text",
+          "md": "## The key tool: Bolzano-Weierstrass\n\nThe proof rests on two facts you already have.\n\n**Bolzano-Weierstrass (lesson 3.10).** Every bounded sequence of real numbers has a convergent subsequence. Recall that a **subsequence** $(x_{n_k})$ picks out infinitely many terms $x_{n_1}, x_{n_2}, \\dots$ in order, with $n_1 < n_2 < \\cdots$ (lesson 3.9). A useful consequence is $n_k \\ge k$.\n\nFor a sequence in $[a, b]$ we get more: the limit is also in $[a, b]$. If $a \\le x_{n_k} \\le b$ for every $k$ and $x_{n_k} \\to x$, then $a \\le x \\le b$, because limits preserve non-strict inequalities. This is exactly where **closed** matters. In $[0, 1)$ the sequence $1 - \\frac1n$ converges to $1$, which has escaped.\n\n**Sequential criterion (lesson 5.6).** If $f$ is continuous at $x$ and $x_k \\to x$, then $f(x_k) \\to f(x)$. Continuity carries convergence of inputs over to convergence of outputs.\n\nSo the plan for the proof is: build a sequence of inputs that \"tries\" to break the theorem, use Bolzano-Weierstrass to get a convergent subsequence with limit inside $[a, b]$, then use continuity to see what $f$ does at that limit."
+        },
+        {
+          "type": "check",
+          "question": "On $[0, 1)$, $f(x) = x$ has no maximum. In the proof strategy above, exactly which step breaks down?",
+          "options": [
+            "A maximising sequence such as $x_n = 1 - \\frac1n$ has no convergent subsequence",
+            "The subsequence converges, but its limit $1$ is not in the domain, so continuity at the limit cannot be used",
+            "$f$ is not continuous on $[0, 1)$",
+            "The values $f(x_n)$ do not approach $\\sup f$"
+          ],
+          "correct": 1,
+          "explanation": "$1 - \\frac1n$ is bounded and converges, so Bolzano-Weierstrass is fine. But its limit $1$ lies outside $[0, 1)$, so we cannot apply continuity at $1$ to get a maximum point. $f$ is continuous on $[0, 1)$, and $f(x_n) = 1 - \\frac1n$ does approach $\\sup f = 1$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of the Extreme Value Theorem",
+          "steps": [
+            {
+              "title": "Assume f is unbounded and build a bad sequence",
+              "md": "Suppose $f$ is not bounded on $[a, b]$. Then for each $n \\in \\mathbb{N}$ the number $n$ is not a bound, so there is $x_n \\in [a, b]$ with $|f(x_n)| > n$."
+            },
+            {
+              "title": "Extract a convergent subsequence",
+              "md": "$(x_n)$ lies in $[a, b]$, so it is bounded. By Bolzano-Weierstrass some subsequence $x_{n_k} \\to x$, and since $a \\le x_{n_k} \\le b$, also $x \\in [a, b]$."
+            },
+            {
+              "title": "Reach a contradiction, so f is bounded",
+              "md": "By continuity at $x$, $f(x_{n_k}) \\to f(x)$. A convergent sequence is bounded (lesson 3.3). But $|f(x_{n_k})| > n_k \\ge k$, which is unbounded. Contradiction, so $f$ is bounded."
+            },
+            {
+              "title": "Approach the supremum",
+              "md": "Now $M = \\sup\\{f(x) : x \\in [a, b]\\}$ is a real number. For each $n$, $M - \\frac1n$ is not an upper bound (it is less than the **least** upper bound), so there is $y_n \\in [a, b]$ with\n\n$$M - \\tfrac{1}{n} < f(y_n) \\leq M.$$"
+            },
+            {
+              "title": "Show the supremum is attained",
+              "md": "By Bolzano-Weierstrass, some subsequence $y_{n_k} \\to y \\in [a, b]$. By continuity, $f(y_{n_k}) \\to f(y)$. By the squeeze theorem, $f(y_{n_k}) \\to M$. Limits are unique (lesson 3.5), so $f(y) = M$ and $x_{\\max} = y$ works. For the minimum, apply this to $-f$, whose maximum is minus the minimum of $f$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why do we pass to a subsequence $(x_{n_k})$ instead of working with $(x_n)$ itself?",
+          "options": [
+            "Because $(x_n)$ might not converge; Bolzano-Weierstrass only promises that some subsequence does",
+            "Because a subsequence of a bounded sequence is unbounded",
+            "Because $f$ is only continuous along subsequences",
+            "Because subsequences are always monotone"
+          ],
+          "correct": 0,
+          "explanation": "The $x_n$ were chosen one at a time with no control over where they lie, so $(x_n)$ may bounce around without converging. Bolzano-Weierstrass gives a convergent subsequence, and that is all we need. A subsequence of a bounded sequence is bounded, continuity is about all sequences, and subsequences need not be monotone."
+        },
+        {
+          "type": "text",
+          "md": "## Finding the maximum in practice\n\nThe EVT says the maximum exists. To find it on $[a, b]$, use what you know from school calculus (derivatives are developed properly in Level 6): at a maximum point strictly inside the interval where $f$ is differentiable, the derivative is $0$. This is Fermat's theorem, proved in lesson 6.6. So a maximum point must be one of:\n\n- an **endpoint**, $a$ or $b$;\n- a **critical point** in $(a, b)$, where $f'(x) = 0$;\n- a point where $f$ is not differentiable.\n\nThis is the **closed interval method**: list the candidates, evaluate $f$ at each, and pick the largest (and smallest).\n\n**Example.** $f(x) = x^2 - 2x$ on $[0, 3]$. $f'(x) = 2x - 2 = 0$ gives $x = 1$. Candidates: $f(0) = 0$, $f(1) = -1$, $f(3) = 3$. Maximum $3$ at $x = 3$; minimum $-1$ at $x = 1$.\n\n**Why the EVT matters here.** The method only compares candidates; it assumes the winner exists. On $(0, 1]$, $f(x) = 1/x$ has no critical points and one endpoint, $1$, where $f = 1$. The method would wrongly report \"maximum $1$\". In fact $1$ is the **minimum** and there is no maximum. On a closed bounded interval with continuous $f$, the EVT rules this mistake out."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps for finding the maximum of $f(x) = x^3 - 3x$ on $[0, 2]$ in order.",
+          "items": [
+            "Note that $f$ is continuous on the closed bounded interval $[0, 2]$, so by the EVT a maximum exists.",
+            "Solve $f'(x) = 3x^2 - 3 = 0$ to get the critical point $x = 1$ in $(0, 2)$.",
+            "Evaluate the candidates: $f(0) = 0$, $f(1) = -2$, $f(2) = 2$.",
+            "The largest is $f(2) = 2$, so the maximum value is $2$, at the endpoint $x = 2$."
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Maximum of a function",
+              "back": "A value $f(x_0)$ with $f(x) \\le f(x_0)$ for **all** $x$ in the domain. It must be **reached**.\n\n*Example:* $x^2$ on $[-1,2]$ has maximum $4$ at $x = 2$."
+            },
+            {
+              "front": "Supremum $\\sup f$",
+              "back": "The least upper bound of the set of values $\\{f(x)\\}$. It **need not be reached**.\n\n*Example:* $x$ on $(0,1)$ has $\\sup f = 1$ but no maximum."
+            },
+            {
+              "front": "Extreme Value Theorem",
+              "back": "A **continuous** $f$ on a **closed, bounded** interval $[a,b]$ is bounded and attains a maximum and a minimum.\n\n*Example:* $\\sin x$ on $[0, \\pi]$: max $1$, min $0$."
+            },
+            {
+              "front": "Compact set",
+              "back": "A subset of $\\mathbb{R}$ that is **closed and bounded**. The EVT holds on any compact set.\n\n*Example:* $[0, 1]$. *Non-examples:* $[0,1)$, $[0, \\infty)$."
+            },
+            {
+              "front": "Bolzano-Weierstrass (reminder)",
+              "back": "Every **bounded** sequence has a convergent subsequence; in $[a,b]$ the limit stays in $[a,b]$.\n\n*Example:* $(-1)^n$ has the subsequence $1, 1, 1, \\dots$"
+            },
+            {
+              "front": "Closed interval method",
+              "back": "To find extrema on $[a,b]$, compare $f$ at the **endpoints**, critical points and non-differentiable points.\n\n*Example:* $x^2 - 2x$ on $[0,3]$: max $3$, min $-1$."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a positive function stays away from zero",
+          "problem": "Let $f : [0, 1] \\to \\mathbb{R}$ be continuous with $f(x) > 0$ for every $x$. Prove that there is a number $m > 0$ with $f(x) \\ge m$ for all $x \\in [0, 1]$. Then give an example showing this fails on $(0, 1]$.",
+          "solution": "**Proof.** $f$ is continuous on the closed bounded interval $[0, 1]$, so by the EVT it attains a minimum: there is $x_{\\min} \\in [0, 1]$ with $f(x) \\ge f(x_{\\min})$ for all $x$. Let $m = f(x_{\\min})$. Since every value of $f$ is positive, $m > 0$. So $f(x) \\ge m > 0$ for all $x$. $\\blacksquare$\n\n**Why \"positive everywhere\" alone is not enough.** On $(0, 1]$ take $f(x) = x$. It is continuous and positive, but $\\inf f = 0$: for any $m > 0$ the point $x = \\min(m/2, 1)$ has $f(x) < m$. The minimum would be at $0$, which is missing.\n\n**Check your answer:** did you say why the EVT applies (continuous, closed, bounded)? Did you use that the minimum is **attained**, so $m$ is an actual value of $f$ and hence positive? An infimum alone could be $0$."
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Where in the proof is closedness of $[a,b]$ used?",
+              "a": "To ensure the limit $x$ of the subsequence lies in the domain, so that $f$ is defined and continuous there. On $[0,1)$ a maximising sequence could converge to $1 \\notin [0, 1)$."
+            },
+            {
+              "q": "Is the maximum point unique?",
+              "a": "No. $\\sin x$ on $[0, 4\\pi]$ has maximum $1$ at both $\\frac{\\pi}{2}$ and $\\frac{5\\pi}{2}$, and a constant function attains its maximum everywhere. The EVT gives at least one maximum point."
+            },
+            {
+              "q": "Is a continuous function on a closed interval like $[0, infty)$ covered?",
+              "a": "No. $[0, \\infty)$ is closed but not bounded, and $f(x) = x$ has no maximum there. You need both closed and bounded."
+            },
+            {
+              "q": "How does this help to compute a maximum in practice?",
+              "a": "Combined with Fermat's theorem (lesson 6.6): an extremum on $[a,b]$ occurs at an endpoint, at a critical point where $f' = 0$, or where $f$ is not differentiable. The EVT guarantees that comparing these candidates (when there are finitely many) actually finds the maximum."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **maximum** must be reached by some input; a **supremum** need not be. $x$ on $(0, 1)$ has $\\sup = 1$ but no maximum.\n- **EVT:** a continuous $f$ on a closed, bounded interval $[a, b]$ is bounded and attains a maximum and a minimum.\n- All three hypotheses (continuous, closed, bounded) are needed, but they are sufficient, not necessary.\n- The proof: Bolzano-Weierstrass gives a convergent subsequence, **closedness** keeps its limit in $[a, b]$, and **continuity** carries the limit through $f$.\n- To find extrema on $[a, b]$, compare $f$ at endpoints and critical points; the EVT guarantees the winner exists."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "Every continuous function $f : (0, 1) \\to \\mathbb{R}$ is bounded.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = 1/x$ is continuous on $(0, 1)$ but unbounded. The interval is not closed, so the EVT does not apply."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following functions attain **both** a maximum and a minimum on the given domain?",
+          "options": [
+            "$\\sin x$ on $\\mathbb{R}$",
+            "$x$ on $(0, 1)$",
+            "$x^2$ on $[-1, 2]$",
+            "$1/x$ on $[1, \\infty)$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$\\sin x$ attains $1$ and $-1$ (even though $\\mathbb{R}$ is unbounded); $x^2$ on $[-1, 2]$ attains $0$ (at $0$) and $4$ (at $2$). The identity on $(0,1)$ attains neither $0$ nor $1$, and $1/x$ on $[1, \\infty)$ has maximum $1$ but infimum $0$, not attained."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the maximum value of $f(x) = x^3 - 3x$ on $[0, 2]$?",
+          "answer": [
+            "2",
+            "two"
+          ],
+          "explanation": "$f'(x) = 3x^2 - 3 = 0$ gives $x = 1$ in the interval. Compare $f(0) = 0$, $f(1) = -2$, $f(2) = 8 - 6 = 2$. The maximum is $2$, attained at $x = 2$."
+        },
+        {
+          "type": "single",
+          "prompt": "Why does $f(x) = x$ on $[0, 1)$ fail to attain a maximum, despite being continuous and bounded?",
+          "options": [
+            "The domain is not closed.",
+            "The domain is not bounded.",
+            "$f$ is not uniformly continuous.",
+            "$f$ is not differentiable."
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$\\sup f = 1$ is approached along $x_n \\to 1$, but $1 \\notin [0, 1)$. The domain is bounded, $f$ is differentiable, and $f$ is uniformly continuous (a notion from lesson 5.11), so none of the other options is the problem."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof that a continuous $f$ on $[a,b]$ is bounded, assume $|f(x_n)| > n$ for some $x_n \\in [a,b]$. What is the next step?",
+          "options": [
+            "Apply the IVT to $f$ on $[x_1, x_2]$.",
+            "Use Bolzano-Weierstrass to extract a subsequence $x_{n_k} \\to x \\in [a, b]$.",
+            "Conclude directly that $f$ is discontinuous at $x_1$.",
+            "Show that $(x_n)$ is monotone."
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "A convergent subsequence with limit in $[a,b]$ lets continuity force $f(x_{n_k}) \\to f(x)$, contradicting $|f(x_{n_k})| > n_k$. Nothing makes $(x_n)$ monotone, nothing points to $x_1$ specifically, and the IVT is not needed."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f : [0,1] \\to \\mathbb{R}$ be continuous with $f(x) > 0$ for every $x$. Which conclusion is justified?",
+          "options": [
+            "$\\inf f$ could be $0$.",
+            "$f$ is increasing.",
+            "$f$ attains the value $1$.",
+            "There is $m > 0$ with $f(x) \\geq m$ for all $x \\in [0, 1]$."
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "By the EVT $f$ attains its minimum $m = f(x_{\\min})$, and $m > 0$ because every value of $f$ is positive. So $\\inf f = m > 0$. Nothing forces monotonicity or the value $1$ (think of $f(x) = 5$)."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the minimum value of $f(x) = x^2 - 2x$ on $[0, 3]$?",
+          "answer": [
+            "-1",
+            "−1",
+            "minus 1"
+          ],
+          "explanation": "$f'(x) = 2x - 2 = 0$ at $x = 1$. Candidates: $f(0) = 0$, $f(1) = -1$, $f(3) = 3$. The smallest is $-1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The EVT guarantees that a continuous function on $[a, b]$ attains its maximum at exactly one point.",
+          "answer": [
+            false
+          ],
+          "explanation": "It guarantees at least one maximum point. A constant function attains its maximum at every point, and $\\sin x$ on $[0, 4\\pi]$ attains $1$ at two points."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these is the EVT guaranteed to apply to (so that a maximum and a minimum exist)? Select all that apply.",
+          "options": [
+            "$f(x) = \\cos x$ on $[0, 10]$",
+            "$f(x) = \\frac{1}{x}$ on $[1, 5]$",
+            "$f(x) = x^4 - 7x$ on $[-2, 2]$",
+            "$f(x) = \\frac{1}{x}$ on $(0, 5]$",
+            "$f(x) = \\lfloor x \\rfloor$ on $[0, 3]$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The first three are continuous on closed bounded intervals ($\\frac1x$ is continuous on $[1, 5]$ because $0$ is not in it). $(0, 5]$ is not closed (and $\\frac1x$ is unbounded there). $\\lfloor x \\rfloor$ is not continuous on $[0, 3]$; it happens to attain extremes, but the EVT does not guarantee that."
+        },
+        {
+          "type": "single",
+          "prompt": "$f(x) = \\dfrac{x^2}{1 + x^2}$ on $\\mathbb{R}$ is continuous with $\\sup f = 1$. Why does it have no maximum?",
+          "options": [
+            "$f$ is unbounded",
+            "The domain $\\mathbb{R}$ is not bounded, and $f(x) < 1$ for every $x$",
+            "$f$ is not continuous at $0$",
+            "$\\sup f$ is actually $\\infty$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$f(x) = 1 - \\frac{1}{1+x^2} < 1$ for every $x$, but approaches $1$ as $|x| \\to \\infty$. The unbounded domain lets $f$ creep towards $1$ without reaching it. $f$ is bounded ($0 \\le f < 1$), continuous everywhere, and $\\sup f = 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is continuous on $[a, b]$, then $f$ is bounded on $[a, b]$.",
+          "answer": [
+            true
+          ],
+          "explanation": "This is the first half of the EVT, proved by contradiction with Bolzano-Weierstrass. It fails on non-closed intervals: $1/x$ on $(0, 1]$."
+        }
+      ]
+    }
+  ]
+}

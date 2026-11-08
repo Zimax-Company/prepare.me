@@ -1,0 +1,1463 @@
+{
+  "concepts": [
+    {
+      "slug": "6-1-introduction-to-derivatives",
+      "title": "Introduction to derivatives",
+      "summary": "From secant slopes to tangent slopes: the derivative as a limit.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Level 6: Differentiation",
+          "md": "Understand differentiation from a rigorous point of view: what a derivative is, which theorems it obeys, and how differentiability relates to continuity.\n\n**In this lesson you will learn to:**\n- compute the slope of a secant line and write it as a **difference quotient**\n- state the definition of the **derivative** $f'(c)$ as a limit, in two equivalent forms\n- spot when the limit fails, for example for $|x|$ at $0$\n- use the **linear approximation** form of the derivative\n\n**You need:** limits of functions and the $\\varepsilon$–$\\delta$ definition (lessons 5.1–5.2), one-sided limits (lesson 5.3) and continuity at a point (lesson 5.6)."
+        },
+        {
+          "type": "text",
+          "md": "## From average slope to slope at a point\n\nA car travels $s(t) = t^2$ metres after $t$ seconds. What is its speed at exactly $t = 1$? Speed is distance divided by time, but at a single instant no time passes, so the formula gives $\\frac{0}{0}$.\n\nWhat we *can* compute is the **average** speed over a short time interval. From $t = 1$ to $t = 1 + h$ the car covers $(1+h)^2 - 1 = 2h + h^2$ metres in $h$ seconds, so its average speed is\n\n$$\\frac{(1+h)^2 - 1}{h} = \\frac{2h + h^2}{h} = 2 + h \\qquad (h \\ne 0).$$\n\nTry some values:\n- $h = 1$: average speed $3$.\n- $h = 0.1$: average speed $2.1$.\n- $h = 0.01$: average speed $2.01$.\n- $h = -0.01$ (the second just *before* $t = 1$): average speed $1.99$.\n\nAs $h$ shrinks, from either side, the averages close in on $2$. So the speed at $t = 1$ should be $2$ metres per second.\n\nGeometrically, each average is the slope of a **secant line**: a straight line through two points of the graph, here $(1, 1)$ and $(1+h, (1+h)^2)$. As $h$ shrinks, the secant swings round towards the **tangent line** at $(1, 1)$. The derivative makes this precise using the limits you met in Level 5."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "You cannot just put h = 0",
+          "md": "The tempting shortcut is to set $h = 0$ in $\\frac{(1+h)^2 - 1}{h}$. That gives $\\frac{0}{0}$, which is not a number.\n\nThe simplified form $2 + h$ is only equal to the quotient when $h \\ne 0$. What we really want is the **limit** as $h \\to 0$, and a limit never uses the value at $h = 0$ itself (lesson 5.1). Here $2 + h \\to 2$, so the answer is $2$."
+        },
+        {
+          "type": "check",
+          "question": "For $s(t) = t^2$, what is the average speed between $t = 1$ and $t = 1.5$?",
+          "options": [
+            "$2$",
+            "$2.5$",
+            "$1.25$",
+            "$3$"
+          ],
+          "correct": 1,
+          "explanation": "Here $h = 0.5$, and the average speed is $2 + h = 2.5$. Check: $\\frac{1.5^2 - 1^2}{0.5} = \\frac{1.25}{0.5} = 2.5$. The value $2$ is the speed at the instant $t = 1$, not the average; $1.25$ is the distance covered, not divided by the time; $3$ is the average over $[1, 2]$."
+        },
+        {
+          "type": "text",
+          "md": "## The difference quotient\n\nTo study any function, not just $t^2$, we name the secant slope.\n\nFirst, notation. $I$ will be an **interval** (lesson 2.6), such as $(0, 1)$, $[0, \\infty)$ or all of $\\mathbb{R}$. We write $f : I \\to \\mathbb{R}$ for a function that takes inputs from $I$ and gives real outputs, and $c \\in I$ for a fixed point of $I$. The set $I \\setminus \\{c\\}$ is read \"$I$ without $c$\".\n\n**Definition.** For $x \\in I$ with $x \\ne c$, the **difference quotient** of $f$ at $c$ is\n\n$$\\frac{f(x) - f(c)}{x - c}.$$\n\nIt is the slope of the secant through $(c, f(c))$ and $(x, f(x))$: change in height divided by change in input.\n\n**Examples:**\n- $f(x) = 3x + 1$. The quotient is $\\frac{(3x + 1) - (3c + 1)}{x - c} = \\frac{3(x - c)}{x - c} = 3$. Every secant of a straight line is the line itself, so the slope is always $3$.\n- $f(x) = x^2$. The quotient is $\\frac{x^2 - c^2}{x - c} = \\frac{(x - c)(x + c)}{x - c} = x + c$.\n- $f(x) = 5$ (a constant). The quotient is $\\frac{5 - 5}{x - c} = 0$.\n\n**The edge case.** The quotient is **not defined** at $x = c$: the denominator would be $0$. Every cancellation above, such as dividing $x - c$ by itself, is allowed only because $x \\ne c$."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = x^2$ and $c = 3$, which expression equals the difference quotient $\\dfrac{f(x) - f(3)}{x - 3}$ for every $x \\ne 3$?",
+          "options": [
+            "$x - 3$",
+            "$2x$",
+            "$x + 3$",
+            "$6$"
+          ],
+          "correct": 2,
+          "explanation": "$\\frac{x^2 - 9}{x - 3} = \\frac{(x - 3)(x + 3)}{x - 3} = x + 3$. The value $6$ is the **limit** as $x \\to 3$, not the quotient itself (at $x = 4$ the quotient is $7$). $2x$ is the derivative formula, and $x - 3$ comes from a wrong cancellation."
+        },
+        {
+          "type": "text",
+          "md": "## The derivative\n\nThe slope at a point is the limit of the secant slopes.\n\n**Definition.** Let $f : I \\to \\mathbb{R}$ and $c \\in I$. We say $f$ is **differentiable at** $c$ if the limit\n\n$$f'(c) = \\lim_{x \\to c} \\frac{f(x) - f(c)}{x - c}$$\n\nexists **as a real number**, where $x$ ranges over $I \\setminus \\{c\\}$. The number $f'(c)$, read \"$f$ prime of $c$\", is the **derivative** of $f$ at $c$. You will also see it written $\\frac{df}{dx}(c)$.\n\n**The $h$ form.** Write $x = c + h$, so $h = x - c$ is the step away from $c$. Then $x \\to c$ exactly when $h \\to 0$, and\n\n$$f'(c) = \\lim_{h \\to 0} \\frac{f(c + h) - f(c)}{h}.$$\n\nBoth forms say the same thing; use whichever makes the algebra easier.\n\n**Examples:**\n- $f(x) = 3x + 1$: the quotient is always $3$, so $f'(c) = 3$ for every $c$.\n- $f(x) = 5$: the quotient is always $0$, so $f'(c) = 0$. A constant does not change, so its rate of change is zero.\n- $f(x) = x^2$: the quotient is $x + c \\to 2c$, so $f'(c) = 2c$. At $c = 1$ this is $2$, the car's speed.\n\n**Differentiable on $I$.** If $f$ is differentiable at every $c \\in I$, we say $f$ is **differentiable on** $I$. The rule $x \\mapsto f'(x)$ is then a new function $f' : I \\to \\mathbb{R}$, the **derivative function**. For $f(x) = x^2$, $f'(x) = 2x$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each expression to what it means.",
+          "pairs": [
+            {
+              "left": "$\\dfrac{f(x) - f(c)}{x - c}$ with $x \\ne c$",
+              "right": "Slope of one secant line"
+            },
+            {
+              "left": "$\\displaystyle\\lim_{x \\to c} \\frac{f(x) - f(c)}{x - c}$",
+              "right": "The derivative $f'(c)$, if this limit is a real number"
+            },
+            {
+              "left": "$\\displaystyle\\lim_{h \\to 0} \\frac{f(c + h) - f(c)}{h}$",
+              "right": "The same derivative, written with $x = c + h$"
+            },
+            {
+              "left": "$x \\mapsto f'(x)$ for every $x \\in I$",
+              "right": "The derivative function $f'$"
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "title": "Proving $f'(c) = 2c$ for $f(x) = x^2$ with $\\varepsilon$ and $\\delta$",
+          "steps": [
+            {
+              "title": "Fix the point",
+              "md": "Let $c$ be **any** real number. We want to show the difference quotient tends to $2c$ as $x \\to c$."
+            },
+            {
+              "title": "Simplify the quotient for $x \\ne c$",
+              "md": "$$\\frac{x^2 - c^2}{x - c} = \\frac{(x - c)(x + c)}{x - c} = x + c.$$\n\nCancelling $x - c$ is legal because the quotient is only ever used with $x \\ne c$."
+            },
+            {
+              "title": "Measure the distance from the target",
+              "md": "$$\\left| \\frac{x^2 - c^2}{x - c} - 2c \\right| = |x + c - 2c| = |x - c|.$$"
+            },
+            {
+              "title": "Choose $\\delta$",
+              "md": "Given $\\varepsilon > 0$, take $\\delta = \\varepsilon$. If $0 < |x - c| < \\delta$, the distance above is $|x - c| < \\varepsilon$. This is exactly the $\\varepsilon$–$\\delta$ definition of the limit (lesson 5.2)."
+            },
+            {
+              "title": "Conclude",
+              "md": "So $f'(c) = 2c$. Since $c$ was arbitrary, $f$ is differentiable on $\\mathbb{R}$ with $f'(x) = 2x$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why are we allowed to cancel $x - c$ from the top and bottom?",
+          "options": [
+            "Because $x - c$ is positive",
+            "Because the limit only looks at $x \\ne c$, so $x - c \\ne 0$",
+            "Because we set $x = c$ at the end",
+            "Because $f$ is continuous"
+          ],
+          "correct": 1,
+          "explanation": "Dividing by $x - c$ is fine whenever $x - c \\ne 0$, and the limit as $x \\to c$ only uses $x \\ne c$. The sign of $x - c$ does not matter ($x$ can be on either side of $c$). We never set $x = c$; and continuity of $f$ plays no part in cancelling."
+        },
+        {
+          "type": "text",
+          "md": "## When the limit fails\n\nThe words \"exists as a real number\" do real work. Here are three ways they can fail.\n\n**A corner: $f(x) = |x|$ at $0$.** Recall $|h| = h$ when $h > 0$ and $|h| = -h$ when $h < 0$ (lesson 2.5). The quotient is\n\n$$\\frac{|h| - |0|}{h} = \\frac{|h|}{h} = \\begin{cases} 1 & h > 0, \\\\ -1 & h < 0. \\end{cases}$$\n\nThe right-hand limit is $1$ and the left-hand limit is $-1$. They differ, so the two-sided limit does not exist (lesson 5.3) and $|x|$ is **not differentiable at $0$**. The graph has a corner: secants on the right have slope $1$, on the left slope $-1$. Notice $|x|$ is continuous at $0$, so continuity alone does not give a derivative (lesson 6.3 returns to this).\n\n**A vertical tangent: $f(x) = x^{1/3}$ at $0$.** The quotient is $\\frac{h^{1/3}}{h} = h^{-2/3}$, which grows without bound as $h \\to 0$. A limit of $+\\infty$ is not a real number, so $f'(0)$ does **not** exist.\n\n**At an endpoint.** If $I = [0, 1]$ and $c = 0$, only $x > 0$ is available in $I \\setminus \\{c\\}$. The definition then automatically means a one-sided limit. For example, $f(x) = x$ on $[0, 1]$ has $f'(0) = 1$, using only $h > 0$."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = |x|$, what is $\\displaystyle\\lim_{h\\to 0^-}\\frac{f(h)-f(0)}{h}$?",
+          "options": [
+            "$1$",
+            "$0$",
+            "$-1$",
+            "It does not exist"
+          ],
+          "correct": 2,
+          "explanation": "For $h < 0$, $|h|/h = -h/h = -1$, so the left-hand limit is $-1$. ($1$ is the right-hand limit; $0$ is the value of $f$ at the minimum, not a slope.) The left-hand limit does exist. It is the **two-sided** limit, and hence $f'(0)$, that does not exist, because the two sides disagree."
+        },
+        {
+          "type": "text",
+          "md": "## The derivative as the best straight-line approximation\n\nThere is a second way to read the definition, and later proofs (the chain rule in lesson 6.5, Taylor's theorem in lesson 6.10) depend on it.\n\nSuppose $f'(c) = L$. Define the **error** of the secant slope by\n\n$$\\eta(x) = \\frac{f(x) - f(c)}{x - c} - L \\qquad (x \\ne c).$$\n\n($\\eta$ is the Greek letter \"eta\".) Saying $f'(c) = L$ is the same as saying $\\eta(x) \\to 0$ as $x \\to c$. Multiply through by $x - c$ and rearrange:\n\n$$f(x) = f(c) + L(x - c) + \\eta(x)(x - c), \\qquad \\eta(x) \\to 0 \\text{ as } x \\to c.$$\n\nIn words: near $c$, $f$ equals the straight line $y = f(c) + L(x - c)$ (the tangent line) plus an error that is small **even compared with** the step $x - c$. Conversely, if $f$ can be written this way, then $f'(c) = L$.\n\n**Example.** $f(x) = x^2$ at $c = 3$, with $L = 6$:\n\n$$x^2 = 9 + 6(x - 3) + (x - 3)^2,$$\n\nso $\\eta(x) = x - 3$, which tends to $0$. Using just the tangent line, $3.01^2 \\approx 9 + 6(0.01) = 9.06$. The true value is $9.0601$: the error $0.0001$ is tiny next to the step $0.01$.\n\n**Non-example.** For $|x|$ at $0$, no number $L$ works: the error $\\frac{|x|}{x} - L$ is $1 - L$ on one side and $-1 - L$ on the other, and both cannot tend to $0$."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = x^2$ at $c = 1$ we can write $x^2 = 1 + 2(x - 1) + \\eta(x)(x - 1)$. What is $\\eta(x)$?",
+          "options": [
+            "$x + 1$",
+            "$x - 1$",
+            "$2x$",
+            "$(x - 1)^2$"
+          ],
+          "correct": 1,
+          "explanation": "$x^2 - 1 - 2(x - 1) = x^2 - 2x + 1 = (x - 1)^2 = (x - 1)(x - 1)$, so $\\eta(x) = x - 1$, which tends to $0$ as required. $x + 1$ is the whole difference quotient (it includes $L = 2$); $2x$ is $f'(x)$; $(x - 1)^2$ is the full error term, before dividing out one factor of $x - 1$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Secant line",
+              "back": "A straight line through **two points** of a graph, $(c, f(c))$ and $(x, f(x))$.\n\n*Example:* for $x^2$, the secant through $(1, 1)$ and $(2, 4)$ has slope $3$."
+            },
+            {
+              "front": "Difference quotient of $f$ at $c$",
+              "back": "The secant slope $\\dfrac{f(x)-f(c)}{x-c}$, defined only for $x \\ne c$.\n\n*Example:* for $x^2$ it equals $x + c$."
+            },
+            {
+              "front": "$f$ is differentiable at $c$",
+              "back": "The difference quotient has a **limit** as $x \\to c$, and that limit is a finite real number, called $f'(c)$.\n\n*Example:* $x^2$ at $c$, with $f'(c) = 2c$."
+            },
+            {
+              "front": "$h$ form of the derivative",
+              "back": "$f'(c) = \\displaystyle\\lim_{h \\to 0} \\frac{f(c+h) - f(c)}{h}$, from writing $x = c + h$.\n\n*Example:* for $x^2$ the quotient is $2c + h \\to 2c$."
+            },
+            {
+              "front": "$f$ is differentiable on $I$",
+              "back": "$f$ is differentiable at **every** point of $I$ (one-sided at endpoints in $I$).\n\n*Example:* $x^2$ on $\\mathbb{R}$, with derivative function $f'(x) = 2x$."
+            },
+            {
+              "front": "Linear approximation form of $f'(c) = L$",
+              "back": "$f(x) = f(c) + L(x-c) + \\eta(x)(x-c)$ with $\\eta(x) \\to 0$ as $x \\to c$: tangent line plus a **small** error.\n\n*Example:* $x^2 = 9 + 6(x-3) + (x-3)^2$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A student computes the secant slopes of $f$ at $c$ for $h = 1, 0.1, 0.01, 0.001$ and gets $4.1, 4.01, 4.001, 4.0001$. What can they conclude?",
+          "options": [
+            "$f'(c) = 4$, proved",
+            "$f'(c)$ is probably $4$, but four values do not prove the limit",
+            "$f'(c) = 4.0001$",
+            "$f$ is not differentiable at $c$"
+          ],
+          "correct": 1,
+          "explanation": "A few values suggest a limit but cannot prove it: the limit involves **every** $h$ near $0$, on both sides. (Lesson 1.1 made the same point about checking examples.) $4.0001$ is just one secant slope, and nothing here suggests the limit fails."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to compute $f'(2)$ for $f(x) = x^3$ from the definition.",
+          "items": [
+            "For $x \\ne 2$, write the difference quotient $\\dfrac{x^3 - 8}{x - 2}$.",
+            "Factorise the top: $x^3 - 8 = (x - 2)(x^2 + 2x + 4)$.",
+            "Cancel $x - 2$, which is allowed since $x \\ne 2$: the quotient is $x^2 + 2x + 4$.",
+            "Let $x \\to 2$: by the limit laws, $x^2 + 2x + 4 \\to 4 + 4 + 4 = 12$.",
+            "So $f$ is differentiable at $2$ and $f'(2) = 12$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the derivative of $1/x$",
+          "problem": "Let $f(x) = \\dfrac{1}{x}$ for $x \\ne 0$, and fix $c \\ne 0$. Use the $h$ form of the definition to show that $f'(c) = -\\dfrac{1}{c^2}$. Try it before you open the solution.",
+          "solution": "For $h \\ne 0$ small enough that $c + h \\ne 0$, put the two fractions over a common denominator:\n\n$$\\frac{f(c+h) - f(c)}{h} = \\frac{1}{h}\\left(\\frac{1}{c+h} - \\frac{1}{c}\\right) = \\frac{1}{h} \\cdot \\frac{c - (c + h)}{c(c+h)} = \\frac{-h}{h\\,c(c+h)} = -\\frac{1}{c(c+h)}.$$\n\nAs $h \\to 0$, $c(c + h) \\to c^2 \\ne 0$, so by the quotient law for limits (lesson 5.4)\n\n$$f'(c) = -\\frac{1}{c^2}. \\qquad \\blacksquare$$\n\nAt $c = 1$ this gives $f'(1) = -1$.\n\n**Check your version:** did you say why $h \\ne 0$ lets you cancel? Did you keep $c + h \\ne 0$? Did you note that the denominator's limit $c^2$ is not $0$ before using the quotient law?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is the derivative the slope of a secant with a really tiny $h$?",
+              "a": "No. Every fixed $h$ gives an approximation, never the exact value in general. For $x^3$ at $0$ every secant slope is $h^2 > 0$, yet $f'(0) = 0$. The derivative is the **limit** of the secant slopes."
+            },
+            {
+              "q": "If $f$ has a minimum at $c$, is $f'(c) = 0$ automatically?",
+              "a": "Only if $f'(c)$ exists. $|x|$ has a minimum at $0$ but no derivative there. (When the derivative does exist at an interior minimum, it is $0$: this is part of lesson 6.6.)"
+            },
+            {
+              "q": "Why do we insist the limit is a real number? Isn't $+\\infty$ a fine slope for a vertical line?",
+              "a": "A vertical line has no slope as a real number, and the theorems of this level (such as \"differentiable implies continuous\", lesson 6.3) need a finite limit. So $x^{1/3}$ is not differentiable at $0$, even though its graph has a vertical tangent there."
+            },
+            {
+              "q": "Does it matter whether I use $x \\to c$ or $h \\to 0$?",
+              "a": "No. They are the same limit after the substitution $x = c + h$. The $h$ form is often neater when $f(c + h)$ expands nicely, as for polynomials."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- The **difference quotient** $\\frac{f(x) - f(c)}{x - c}$ ($x \\ne c$) is the slope of a secant line.\n- $f'(c)$ is the **limit** of the difference quotient as $x \\to c$, equivalently of $\\frac{f(c+h) - f(c)}{h}$ as $h \\to 0$. It must be a finite real number.\n- You cannot substitute $x = c$: that gives $\\frac{0}{0}$. Simplify for $x \\ne c$ first, then take the limit.\n- The limit can fail: one-sided slopes disagree ($|x|$ at $0$) or blow up ($x^{1/3}$ at $0$).\n- $f'(c) = L$ means $f(x) = f(c) + L(x - c) + \\eta(x)(x - c)$ with $\\eta(x) \\to 0$: the tangent line is the best straight-line approximation."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Using the definition, what is $f'(2)$ for $f(x) = x^3$?",
+          "options": [
+            "$4$",
+            "$8$",
+            "$12$",
+            "$6$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\frac{x^3 - 8}{x - 2} = x^2 + 2x + 4 \\to 12$ as $x \\to 2$. $8$ is $f(2)$, not $f'(2)$; $4$ and $6$ come from using the $x^2$ formula by mistake."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable at $c$, then $\\dfrac{f(c+h)-f(c)}{h} \\to f'(c)$ as $h \\to 0$.",
+          "answer": [
+            true
+          ],
+          "explanation": "This is the definition rewritten with the substitution $x = c + h$; $x \\to c$ exactly when $h \\to 0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f$ be defined on an open interval containing $c$ and let $L \\in \\mathbb{R}$. Which statements are equivalent to \"$f'(c) = L$\"?",
+          "options": [
+            "$\\displaystyle\\lim_{h\\to 0}\\frac{f(c+h)-f(c)}{h} = L$",
+            "$\\displaystyle\\lim_{x\\to c}\\frac{f(x)-f(c)}{x-c} = L$",
+            "$\\displaystyle\\lim_{h\\to 0}\\frac{f(c+h)-f(c-h)}{2h} = L$",
+            "$f(x) = f(c) + L(x-c) + \\eta(x)(x-c)$ for some function $\\eta$ with $\\eta(x)\\to 0$ as $x \\to c$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first two are the definition, and the fourth is the linear approximation form (set $\\eta(x)$ equal to the difference quotient minus $L$). The symmetric quotient in the third option is not equivalent: for $f(x)=|x|$ at $c=0$ it is identically $0$, yet $f'(0)$ does not exist."
+        },
+        {
+          "type": "short",
+          "prompt": "Using the definition, compute $f'(1)$ for $f(x) = 1/x$ $(x \\neq 0)$.",
+          "answer": [
+            "-1",
+            "−1"
+          ],
+          "explanation": "$\\frac{1/x - 1}{x - 1} = \\frac{1-x}{x(x-1)} = -\\frac{1}{x} \\to -1$ as $x \\to 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The derivative $f'(c)$ equals the slope of the secant through $(c, f(c))$ and $(c+h, f(c+h))$ for a suitably small fixed $h > 0$.",
+          "answer": [
+            false
+          ],
+          "explanation": "For a fixed $h$ the secant slope is only an approximation. $f'(c)$ is the limit of these slopes as $h \\to 0$, and in general no single fixed $h$ gives it exactly (for $f(x)=x^3$ at $c=0$, every secant slope $h^2$ is positive while $f'(0)=0$)."
+        },
+        {
+          "type": "single",
+          "prompt": "Which statement about $f(x) = |x|$ at $c = 0$ is correct?",
+          "options": [
+            "$f'(0) = 0$, because $f$ has a minimum at $0$",
+            "$f'(0) = 1$, because the right-hand quotient is $1$",
+            "$f'(0)$ does not exist, because the one-sided limits of the difference quotient are $1$ and $-1$",
+            "$f'(0)$ does not exist, because $f$ is not continuous at $0$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The difference quotient $|h|/h$ is $1$ for $h>0$ and $-1$ for $h<0$, so the limit does not exist. A minimum does not force a derivative to exist; one side alone does not decide a two-sided limit; and $f$ is continuous at $0$, so the last option gives the wrong reason."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = x^2$, compute the slope of the secant line through $(1, f(1))$ and $(3, f(3))$.",
+          "answer": [
+            "4"
+          ],
+          "explanation": "$\\frac{f(3) - f(1)}{3 - 1} = \\frac{9 - 1}{2} = 4$. (This also equals $x + c = 3 + 1$.)"
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = 7x - 2$, what is $f'(c)$ for any real $c$?",
+          "options": [
+            "$7c - 2$",
+            "$7$",
+            "$0$",
+            "$-2$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The difference quotient is $\\frac{7(x - c)}{x - c} = 7$ for every $x \\ne c$, so its limit is $7$. $7c - 2$ is $f(c)$; $0$ is the derivative of a constant; $-2$ is the intercept."
+        },
+        {
+          "type": "true_false",
+          "prompt": "To find $f'(c)$, you can substitute $x = c$ directly into $\\dfrac{f(x) - f(c)}{x - c}$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Substituting gives $\\frac{0}{0}$, which is undefined. The quotient is only defined for $x \\ne c$; the derivative is its **limit** as $x \\to c$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "At which of these points does the derivative fail to exist?",
+          "options": [
+            "$|x|$ at $0$",
+            "$x^{1/3}$ at $0$",
+            "$x^2$ at $0$",
+            "$|x|$ at $5$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "For $|x|$ at $0$ the one-sided limits are $1$ and $-1$. For $x^{1/3}$ the quotient $h^{-2/3}$ tends to $+\\infty$, not a real number. $x^2$ has $f'(0) = 0$, and near $5$ we have $|x| = x$, so the derivative there is $1$."
+        },
+        {
+          "type": "single",
+          "prompt": "Suppose $f(2) = 5$ and $f'(2) = 3$. Using the tangent line, which is the best estimate of $f(2.1)$?",
+          "options": [
+            "$5.3$",
+            "$5.1$",
+            "$8$",
+            "$3.5$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$f(x) \\approx f(c) + f'(c)(x - c) = 5 + 3(0.1) = 5.3$. $5.1$ forgets the slope; $8$ adds $f'(2)$ without multiplying by the step $0.1$; $3.5$ mixes up $f$ and $f'$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^2 + x$. Using the $h$ form, the difference quotient at $c = 2$ simplifies to $5 + h$. What is $f'(2)$?",
+          "answer": [
+            "5"
+          ],
+          "explanation": "$\\frac{(2+h)^2 + (2+h) - 6}{h} = \\frac{5h + h^2}{h} = 5 + h \\to 5$ as $h \\to 0$."
+        }
+      ]
+    },
+    {
+      "slug": "6-2-derivative-from-first-principles",
+      "title": "Derivative from first principles",
+      "summary": "Computing $f'$ straight from the limit: algebra first, then a limit argument.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Computing derivatives from the definition",
+          "md": "**In this lesson you will learn to:**\n- compute $f'(c)$ \"from first principles\", in two stages: algebra, then a limit\n- use three algebra tricks: factorising, common denominators and rationalising\n- differentiate $x^n$, $\\sqrt{x}$ and $\\sin x$ straight from the definition\n- handle a function defined in pieces, where no rule applies\n\n**You need:** the definition $f'(c) = \\lim_{h \\to 0} \\frac{f(c+h) - f(c)}{h}$ (lesson 6.1), the limit laws and the squeeze theorem (lesson 5.4), and continuity (lesson 5.6)."
+        },
+        {
+          "type": "text",
+          "md": "## Why work from the definition?\n\nYou may know rules such as \"the derivative of $x^3$ is $3x^2$\". Lesson 6.4 proves the rules, and the proofs rest on derivatives computed directly from the definition. There are also functions, defined in pieces, where no rule applies and the definition is the only tool. Differentiating **from first principles** means evaluating\n\n$$f'(c) = \\lim_{h \\to 0} \\frac{f(c+h) - f(c)}{h}$$\n\ndirectly. The work always has two stages.\n\n**Stage 1: algebra.** For $h \\ne 0$, rewrite the quotient so that the $h$ in the denominator cancels. Nothing about limits happens here; you are just simplifying.\n\n**Stage 2: the limit.** Evaluate the limit of what remains, using the limit laws, the squeeze theorem or continuity.\n\n**Example.** $f(x) = x^2 + x$ at a point $c$.\n\nStage 1: $f(c+h) - f(c) = (c^2 + 2ch + h^2 + c + h) - (c^2 + c) = 2ch + h^2 + h$, so for $h \\ne 0$\n\n$$\\frac{f(c+h) - f(c)}{h} = 2c + h + 1.$$\n\nStage 2: as $h \\to 0$ this tends to $2c + 1$. So $f'(c) = 2c + 1$.\n\n**Edge case.** For a constant $f(x) = k$ the top is $k - k = 0$, so the quotient is $0$ for every $h \\ne 0$ and $f'(c) = 0$. There is nothing to cancel, and that is fine."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Do not cancel before you have a factor of h",
+          "md": "A common slip is to \"cancel\" $h$ from $\\frac{(c+h)^2 - c^2}{h}$ by striking out the $h$ inside $(c+h)^2$. That is not cancelling; it is deleting. You can only cancel a **factor** $h$ that multiplies the whole numerator. Expand or factorise first until you can write the top as $h \\times (\\text{something})$."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = 3x^2$ at $c = 1$, which expression is the difference quotient after Stage 1 (for $h \\ne 0$)?",
+          "options": [
+            "$6 + 3h$",
+            "$6$",
+            "$3 + h$",
+            "$6h + 3h^2$"
+          ],
+          "correct": 0,
+          "explanation": "$3(1+h)^2 - 3 = 6h + 3h^2 = h(6 + 3h)$, so the quotient is $6 + 3h$, and $f'(1) = 6$. The value $6$ is the Stage 2 limit, not the Stage 1 quotient; $6h + 3h^2$ is the numerator before dividing by $h$; $3 + h$ forgets the factor $2$ in $(1+h)^2 = 1 + 2h + h^2$."
+        },
+        {
+          "type": "text",
+          "md": "## Powers: the factorisation trick\n\nFor $x^n$ we use the $x \\to c$ form and a factorisation. You know $x^2 - c^2 = (x - c)(x + c)$ and $x^3 - c^3 = (x - c)(x^2 + xc + c^2)$. In general, for any positive integer $n$ ($n \\in \\mathbb{N}$),\n\n$$x^n - c^n = (x - c)\\left(x^{n-1} + x^{n-2}c + \\cdots + x c^{n-2} + c^{n-1}\\right).$$\n\nThe bracket has exactly $n$ terms. In each term the powers of $x$ and $c$ add up to $n - 1$. (Multiply out to check: everything cancels in pairs except $x^n - c^n$.)\n\nStage 1: for $x \\ne c$,\n\n$$\\frac{x^n - c^n}{x - c} = x^{n-1} + x^{n-2}c + \\cdots + c^{n-1}.$$\n\nStage 2: as $x \\to c$, each of the $n$ terms tends to $c^{n-1}$. So the sum tends to $n c^{n-1}$, and\n\n$$(x^n)' = n x^{n-1}.$$\n\n**Examples:**\n- $n = 3$, $c = 2$: the bracket is $x^2 + 2x + 4 \\to 12 = 3 \\cdot 2^2$.\n- $n = 1$: the bracket is the single term $1$, so $(x)' = 1$. Correct: $y = x$ has slope $1$.\n- $n = 4$, $c = -1$: $4 \\cdot (-1)^3 = -4$. The negative sign is easy to lose.\n\nThis covers positive integer powers only. Negative powers like $x^{-3}$ come from the quotient rule in lesson 6.4."
+        },
+        {
+          "type": "check",
+          "question": "Using $(x^n)' = n x^{n-1}$, what is the derivative of $x^5$ at $c = -1$?",
+          "options": [
+            "$-5$",
+            "$5$",
+            "$-1$",
+            "$4$"
+          ],
+          "correct": 1,
+          "explanation": "$5 \\cdot (-1)^4 = 5 \\cdot 1 = 5$. An even power of $-1$ is $+1$. $-5$ uses $(-1)^5$ instead of $(-1)^4$; $-1$ is $f(-1)$; $4$ is the new exponent, not the derivative."
+        },
+        {
+          "type": "text",
+          "md": "## Fractions and roots: two more tricks\n\n**Common denominator (for fractions).** For $f(x) = \\frac{1}{x}$, the top of the quotient is a difference of fractions. Combine them:\n\n$$\\frac{1}{c+h} - \\frac{1}{c} = \\frac{c - (c+h)}{c(c+h)} = \\frac{-h}{c(c+h)}.$$\n\nNow there is a factor $h$ on top. Dividing by $h$ gives $-\\frac{1}{c(c+h)} \\to -\\frac{1}{c^2}$ (for $c \\ne 0$).\n\n**Rationalising (for square roots).** For $f(x) = \\sqrt{x}$, the top $\\sqrt{c+h} - \\sqrt{c}$ has no visible factor $h$. Multiply top and bottom by the **conjugate** $\\sqrt{c+h} + \\sqrt{c}$, and use $(a - b)(a + b) = a^2 - b^2$:\n\n$$(\\sqrt{c+h} - \\sqrt{c})(\\sqrt{c+h} + \\sqrt{c}) = (c + h) - c = h.$$\n\nThe square roots disappear and a factor $h$ appears. The steps below finish the job.\n\n**Edge case.** At $c = 0$, $\\sqrt{x}$ is defined only for $x \\ge 0$, so only $h > 0$ is allowed. The quotient is $\\frac{\\sqrt{h}}{h} = \\frac{1}{\\sqrt{h}}$, which grows without bound. So $\\sqrt{x}$ is **not** differentiable at $0$, and the formula $\\frac{1}{2\\sqrt{x}}$ (undefined at $0$) agrees."
+        },
+        {
+          "type": "steps",
+          "title": "Proving $(\\sqrt{x})' = \\dfrac{1}{2\\sqrt{x}}$ for $x > 0$",
+          "steps": [
+            {
+              "title": "Set up",
+              "md": "Fix $c > 0$. For $h \\neq 0$ with $c + h > 0$, consider $\\dfrac{\\sqrt{c+h} - \\sqrt{c}}{h}$. We need $c + h > 0$ so that $\\sqrt{c+h}$ is defined."
+            },
+            {
+              "title": "Rationalise",
+              "md": "Multiply numerator and denominator by $\\sqrt{c+h} + \\sqrt{c}$, which is positive, so we are not multiplying by $0$:\n\n$$\\frac{\\sqrt{c+h}-\\sqrt{c}}{h} = \\frac{(c+h) - c}{h(\\sqrt{c+h}+\\sqrt{c})} = \\frac{1}{\\sqrt{c+h}+\\sqrt{c}}.$$"
+            },
+            {
+              "title": "Use continuity",
+              "md": "The square root is continuous at $c$ (lesson 5.6), so $\\sqrt{c+h} \\to \\sqrt{c}$ as $h \\to 0$."
+            },
+            {
+              "title": "Conclude",
+              "md": "By the quotient law for limits (the denominator tends to $2\\sqrt{c} \\neq 0$), the quotient tends to $\\dfrac{1}{2\\sqrt{c}}$. $\\blacksquare$\n\nFor example, at $c = 4$ the derivative is $\\frac{1}{2 \\cdot 2} = \\frac{1}{4}$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why does the argument need $c > 0$ rather than $c \\ge 0$?",
+          "options": [
+            "Because $\\sqrt{0}$ is undefined",
+            "Because at $c = 0$ the final denominator $2\\sqrt{c}$ is $0$, so the quotient law fails and the limit is infinite",
+            "Because the conjugate $\\sqrt{c+h} + \\sqrt{c}$ is negative when $c = 0$",
+            "It does not; the proof works at $c = 0$ too"
+          ],
+          "correct": 1,
+          "explanation": "At $c = 0$ the simplified quotient is $\\frac{1}{\\sqrt{h}}$, which tends to $+\\infty$, so the derivative does not exist. $\\sqrt{0} = 0$ is defined, and the conjugate is never negative."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function to the algebra trick that makes a factor $h$ appear.",
+          "pairs": [
+            {
+              "left": "$x^4$",
+              "right": "Factorise $x^n - c^n$ (or expand $(c+h)^4$)"
+            },
+            {
+              "left": "$\\dfrac{1}{x + 2}$",
+              "right": "Put the two fractions over a common denominator"
+            },
+            {
+              "left": "$\\sqrt{x + 1}$",
+              "right": "Multiply top and bottom by the conjugate"
+            },
+            {
+              "left": "$\\sin x$",
+              "right": "Use the addition formula $\\sin(x+h) = \\sin x \\cos h + \\cos x \\sin h$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Trigonometric functions\n\nFor $\\sin$, algebra alone cannot remove the $h$. We need two facts about small angles, measured in radians:\n\n$$\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1, \\qquad \\lim_{h \\to 0} \\frac{1 - \\cos h}{h} = 0.$$\n\nThe first is usually proved by comparing areas in a circle and then using the squeeze theorem; we take it as known in this course. The second follows from the first, as the worked example shows. In plain words: for tiny angles, $\\sin h$ is almost exactly $h$, and $\\cos h$ is almost exactly $1$.\n\nTry it: $\\sin(0.01) \\approx 0.0099998$, so $\\frac{\\sin(0.01)}{0.01} \\approx 0.99998$.\n\nThe method is still algebra then limit. Stage 1 uses an **addition formula** to split $\\sin(x + h)$ into pieces. Stage 2 uses the two limits above. The same pattern gives $\\cos' = -\\sin$, using $\\cos(x + h) = \\cos x \\cos h - \\sin x \\sin h$.\n\n**Watch out:** these limits need radians. In degrees, $\\frac{\\sin h^\\circ}{h} \\to \\frac{\\pi}{180}$, and every derivative picks up an extra factor."
+        },
+        {
+          "type": "example",
+          "title": "The derivative of $\\sin$",
+          "problem": "Assuming the standard limits $\\displaystyle\\lim_{h\\to 0}\\frac{\\sin h}{h} = 1$ and $\\displaystyle\\lim_{h\\to 0}\\frac{1-\\cos h}{h} = 0$, prove that $\\sin' = \\cos$.",
+          "solution": "Fix $x$. By the addition formula, for $h \\neq 0$,\n\n$$\\frac{\\sin(x+h) - \\sin x}{h} = \\frac{\\sin x \\cos h + \\cos x \\sin h - \\sin x}{h} = -\\sin x \\cdot \\frac{1-\\cos h}{h} + \\cos x \\cdot \\frac{\\sin h}{h}.$$\n\nAs $h \\to 0$ the first term tends to $-\\sin x \\cdot 0 = 0$ and the second to $\\cos x \\cdot 1$, by the limit laws. Here $\\sin x$ and $\\cos x$ are fixed numbers, because $x$ is fixed. Hence $\\sin'(x) = \\cos x$. $\\blacksquare$\n\nThe second limit follows from the first: $\\frac{1-\\cos h}{h} = \\frac{\\sin^2 h}{h(1+\\cos h)} = \\frac{\\sin h}{h}\\cdot\\frac{\\sin h}{1+\\cos h} \\to 1 \\cdot 0 = 0$."
+        },
+        {
+          "type": "check",
+          "question": "Using $\\cos(x+h) = \\cos x \\cos h - \\sin x \\sin h$ and the same two limits, what is $\\cos'(x)$?",
+          "options": [
+            "$\\sin x$",
+            "$-\\sin x$",
+            "$-\\cos x$",
+            "$\\cos x$"
+          ],
+          "correct": 1,
+          "explanation": "The quotient is $-\\cos x \\cdot \\frac{1 - \\cos h}{h} - \\sin x \\cdot \\frac{\\sin h}{h} \\to 0 - \\sin x$. The minus sign comes from the addition formula; dropping it gives $\\sin x$, a very common slip."
+        },
+        {
+          "type": "text",
+          "md": "## Functions defined in pieces\n\nSometimes a function is given by one formula away from a point and a separate value at the point:\n\n$$f(x) = \\begin{cases} x^2 \\sin(1/x) & x \\ne 0, \\\\ 0 & x = 0. \\end{cases}$$\n\nAway from $0$ the rules of lesson 6.4 apply to the formula. At $0$ there is no single formula, so the definition is the only tool. Usually the squeeze theorem (lesson 5.4) does Stage 2: if $|q(h)| \\le |h|$ and $|h| \\to 0$, then $q(h) \\to 0$.\n\n**Example: $x|x|$ at $0$.** The quotient is $\\frac{h|h| - 0}{h} = |h| \\to 0$. So $f'(0) = 0$. This surprises people: $|x|$ is not differentiable at $0$, but multiplying by $x$ flattens the corner.\n\n**Non-example: $x \\sin(1/x)$ at $0$** (with value $0$ at $0$). The quotient is $\\frac{h \\sin(1/h)}{h} = \\sin(1/h)$. As $h \\to 0$, $1/h$ runs through every size and $\\sin(1/h)$ swings between $-1$ and $1$ forever. It has no limit, so $f'(0)$ does not exist, even though the function is continuous at $0$.\n\nOne extra power of $x$ makes the difference, as the worked example below shows."
+        },
+        {
+          "type": "example",
+          "title": "A derivative that the rules cannot reach",
+          "problem": "Let $f(x) = x^2 \\sin(1/x)$ for $x \\neq 0$ and $f(0) = 0$. Show that $f$ is differentiable at $0$ and find $f'(0)$.",
+          "solution": "The rules of differentiation only apply where $f$ is given by a single formula, which excludes $0$. So we use the definition. For $h \\neq 0$,\n\n$$\\frac{f(h) - f(0)}{h} = \\frac{h^2 \\sin(1/h)}{h} = h \\sin(1/h).$$\n\nSince $|\\sin(1/h)| \\le 1$, we have $0 \\le |h \\sin(1/h)| \\le |h|$, and $|h| \\to 0$. By the squeeze theorem $h\\sin(1/h) \\to 0$. Therefore $f$ is differentiable at $0$ with $f'(0) = 0$. $\\blacksquare$"
+        },
+        {
+          "type": "check",
+          "question": "What is $f'(0)$ for $f(x) = x|x|$?",
+          "options": [
+            "$1$",
+            "It does not exist",
+            "$0$",
+            "$-1$"
+          ],
+          "correct": 2,
+          "explanation": "$\\frac{f(h)-f(0)}{h} = \\frac{h|h|}{h} = |h| \\to 0$. So $f'(0) = 0$, even though $|x|$ itself is not differentiable at $0$. The answers $1$ and $-1$ are the one-sided slopes of $|x|$, not of $x|x|$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "From first principles",
+              "back": "Finding $f'(c)$ straight from the **limit definition**, without differentiation rules.\n\n*Example:* $\\frac{(c+h)^2 - c^2}{h} = 2c + h \\to 2c$."
+            },
+            {
+              "front": "Stage 1 (algebra)",
+              "back": "For $h \\ne 0$, simplify the quotient until the $h$ in the denominator **cancels**.\n\n*Example:* $\\frac{2ch + h^2}{h} = 2c + h$."
+            },
+            {
+              "front": "Stage 2 (limit)",
+              "back": "Take the limit of the simplified quotient with limit laws, **squeeze** or continuity.\n\n*Example:* $h\\sin(1/h) \\to 0$ by squeeze."
+            },
+            {
+              "front": "Rationalising",
+              "back": "Multiply top and bottom by the **conjugate** to clear square roots, using $(a-b)(a+b) = a^2 - b^2$.\n\n*Example:* $(\\sqrt{c+h} - \\sqrt{c})(\\sqrt{c+h} + \\sqrt{c}) = h$."
+            },
+            {
+              "front": "Power rule (positive integers)",
+              "back": "$(x^n)' = n x^{n-1}$ for $n \\in \\mathbb{N}$, from factorising $x^n - c^n$.\n\n*Example:* $(x^4)'$ at $c = -1$ is $4(-1)^3 = -4$."
+            },
+            {
+              "front": "Standard trig limits",
+              "back": "With $h$ in **radians**: $\\frac{\\sin h}{h} \\to 1$ and $\\frac{1 - \\cos h}{h} \\to 0$.\n\n*Example:* they give $\\sin' = \\cos$ and $\\cos' = -\\sin$."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to find $f'(c)$ for $f(x) = \\dfrac{1}{x + 2}$, where $c \\ne -2$.",
+          "items": [
+            "Write the quotient $\\dfrac{1}{h}\\left(\\dfrac{1}{c+h+2} - \\dfrac{1}{c+2}\\right)$ for small $h \\ne 0$.",
+            "Use a common denominator: the bracket equals $\\dfrac{-h}{(c+h+2)(c+2)}$.",
+            "Cancel $h$: the quotient is $-\\dfrac{1}{(c+h+2)(c+2)}$.",
+            "Let $h \\to 0$: the denominator tends to $(c+2)^2 \\ne 0$.",
+            "So $f'(c) = -\\dfrac{1}{(c+2)^2}$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the derivative of $1/x^2$",
+          "problem": "Let $f(x) = \\dfrac{1}{x^2}$ for $x \\ne 0$, and fix $c \\ne 0$. Show from first principles that $f'(c) = -\\dfrac{2}{c^3}$.",
+          "solution": "**Stage 1.** For small $h \\ne 0$ (so that $c + h \\ne 0$), use a common denominator:\n\n$$\\frac{1}{(c+h)^2} - \\frac{1}{c^2} = \\frac{c^2 - (c+h)^2}{c^2 (c+h)^2} = \\frac{-2ch - h^2}{c^2(c+h)^2} = \\frac{-h(2c + h)}{c^2(c+h)^2}.$$\n\nDividing by $h$,\n\n$$\\frac{f(c+h) - f(c)}{h} = -\\frac{2c + h}{c^2 (c+h)^2}.$$\n\n**Stage 2.** As $h \\to 0$ the top tends to $2c$ and the bottom to $c^4 \\ne 0$, so by the limit laws\n\n$$f'(c) = -\\frac{2c}{c^4} = -\\frac{2}{c^3}. \\qquad \\blacksquare$$\n\n**Check your version:** did you expand $(c+h)^2 = c^2 + 2ch + h^2$ correctly? Did you factor out $h$ before cancelling? Did you note that the limit of the denominator is not $0$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Can I compute $f'(0)$ for a piecewise function by differentiating the formula for $x \\neq 0$ and letting $x \\to 0$?",
+              "a": "Not in general. For $f(x) = x^2\\sin(1/x)$ with $f(0)=0$, for $x \\neq 0$ we get $f'(x) = 2x\\sin(1/x) - \\cos(1/x)$, which has **no** limit as $x \\to 0$, yet $f'(0) = 0$ exists. (If $f$ is continuous at $0$ and $\\lim_{x\\to 0} f'(x)$ does exist, the shortcut is valid; this is proved with the Mean Value Theorem in lesson 6.9.)"
+            },
+            {
+              "q": "Why can I cancel $h$ in $\\dfrac{h(2c+h)}{h}$?",
+              "a": "Because the difference quotient is only considered for $h \\neq 0$. A limit as $h \\to 0$ never uses the value at $h = 0$."
+            },
+            {
+              "q": "Is it enough to show the quotient approaches $L$ along $h = 1/n$?",
+              "a": "No. Checking one sequence tells you at most that the limit, _if it exists_, equals $L$. For $\\sin(1/h)$, the sequence $h_n = \\frac{1}{n\\pi}$ gives $0$ every time, yet there is no limit. To prove existence you need all $h \\to 0$, or the sequential criterion for _every_ sequence $h_n \\to 0$ with $h_n \\neq 0$."
+            },
+            {
+              "q": "Should I use the $x \\to c$ form or the $h$ form?",
+              "a": "Either works. The $x \\to c$ form suits factorisations like $x^n - c^n$; the $h$ form suits expansions like $(c+h)^2$ and addition formulas like $\\sin(x+h)$."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- First principles means evaluating $\\lim_{h \\to 0} \\frac{f(c+h) - f(c)}{h}$ directly: **algebra** first (for $h \\ne 0$), then the **limit**.\n- Make a factor $h$ appear by expanding or factorising, using a common denominator, or rationalising with the conjugate.\n- From the definition: $(x^n)' = n x^{n-1}$, $(\\sqrt{x})' = \\frac{1}{2\\sqrt{x}}$ for $x > 0$, $\\sin' = \\cos$ and $\\cos' = -\\sin$ (radians).\n- For functions defined in pieces, use the definition at the join; the squeeze theorem often finishes it.\n- $x^2\\sin(1/x)$ is differentiable at $0$; $x\\sin(1/x)$ is not."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "For $f(x) = 1/x$ and $c \\neq 0$, which expression equals $\\dfrac{f(c+h)-f(c)}{h}$ for small $h \\neq 0$?",
+          "options": [
+            "$\\dfrac{1}{c(c+h)}$",
+            "$-\\dfrac{1}{c^2}$",
+            "$\\dfrac{-h}{c(c+h)}$",
+            "$-\\dfrac{1}{c(c+h)}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$\\frac{1}{h}\\left(\\frac{1}{c+h}-\\frac{1}{c}\\right) = \\frac{1}{h}\\cdot\\frac{c-(c+h)}{c(c+h)} = -\\frac{1}{c(c+h)}$. Its limit as $h \\to 0$ is $-1/c^2$, but it is not equal to $-1/c^2$ for $h \\neq 0$. $\\frac{-h}{c(c+h)}$ is the numerator before dividing by $h$, and the first option drops the minus sign."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Let $f(x) = x^2\\sin(1/x)$ for $x \\neq 0$ and $f(0) = 0$. Then $f$ is differentiable at $0$ with $f'(0) = 0$.",
+          "answer": [
+            true
+          ],
+          "explanation": "The difference quotient is $h\\sin(1/h)$, which is squeezed between $-|h|$ and $|h|$, so it tends to $0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f(x) = x\\sin(1/x)$ for $x \\neq 0$ and $f(0) = 0$. Which statements are true?",
+          "options": [
+            "$f$ is continuous at $0$",
+            "$f$ is differentiable at $0$",
+            "For $h \\neq 0$, the difference quotient at $0$ equals $\\sin(1/h)$",
+            "$f'(0) = 0$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$|f(x)| \\le |x|$, so $f(x) \\to 0 = f(0)$ and $f$ is continuous at $0$. The quotient is $\\frac{h\\sin(1/h)}{h} = \\sin(1/h)$, which oscillates between $-1$ and $1$ and has no limit. So $f'(0)$ does not exist."
+        },
+        {
+          "type": "short",
+          "prompt": "From first principles, compute $f'(2)$ for $f(x) = 3x^2 - 5x$.",
+          "answer": [
+            "7"
+          ],
+          "explanation": "$\\frac{f(2+h)-f(2)}{h} = \\frac{3(4h+h^2) - 5h}{h} = 12 + 3h - 5 \\to 7$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which limit is the essential analytic ingredient in the first-principles proof that $\\sin' = \\cos$?",
+          "options": [
+            "$\\displaystyle\\lim_{h\\to 0}\\cos h = 0$",
+            "$\\displaystyle\\lim_{h\\to 0}\\frac{\\sin h}{h} = 1$",
+            "$\\displaystyle\\lim_{h\\to 0}\\frac{\\cos h}{h} = 1$",
+            "$\\displaystyle\\lim_{h\\to 0}\\sin\\frac{1}{h} = 0$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "After the addition formula, the quotient is $-\\sin x\\cdot\\frac{1-\\cos h}{h} + \\cos x\\cdot\\frac{\\sin h}{h}$, and both pieces are controlled by $\\frac{\\sin h}{h}\\to 1$. The other \"limits\" are false: $\\cos h \\to 1$, $\\frac{\\cos h}{h}$ is unbounded, and $\\sin(1/h)$ has no limit."
+        },
+        {
+          "type": "single",
+          "prompt": "Using $x^n - c^n = (x-c)(x^{n-1} + x^{n-2}c + \\cdots + c^{n-1})$, what does $\\dfrac{x^n - c^n}{x - c}$ tend to as $x \\to c$?",
+          "options": [
+            "$c^{n-1}$",
+            "$n c^{n}$",
+            "$(n-1)c^{n-1}$",
+            "$n c^{n-1}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "After cancelling $x - c$, the bracket has $n$ terms $x^{n-1-k}c^k$ for $k = 0, \\dots, n-1$, each tending to $c^{n-1}$. The sum tends to $nc^{n-1}$. $c^{n-1}$ counts only one term, and $(n-1)c^{n-1}$ miscounts the terms."
+        },
+        {
+          "type": "short",
+          "prompt": "From first principles, compute $f'(4)$ for $f(x) = \\sqrt{x}$. Give a decimal or a fraction.",
+          "answer": [
+            "0.25",
+            "1/4",
+            ".25"
+          ],
+          "explanation": "After rationalising, the quotient is $\\frac{1}{\\sqrt{4+h} + 2} \\to \\frac{1}{4}$."
+        },
+        {
+          "type": "single",
+          "prompt": "To differentiate $\\sqrt{x}$ from first principles, what should you multiply the top and bottom of $\\dfrac{\\sqrt{c+h} - \\sqrt{c}}{h}$ by?",
+          "options": [
+            "$h$",
+            "$\\sqrt{c+h} - \\sqrt{c}$",
+            "$\\sqrt{c+h} + \\sqrt{c}$",
+            "$\\sqrt{h}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The conjugate $\\sqrt{c+h} + \\sqrt{c}$ turns the top into $(c+h) - c = h$. Multiplying by $\\sqrt{c+h} - \\sqrt{c}$ squares the difference and leaves cross terms with roots; $h$ and $\\sqrt{h}$ do not remove the roots."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$f(x) = \\sqrt{x}$, defined on $[0, \\infty)$, is differentiable at $0$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Only $h > 0$ is allowed, and the quotient $\\frac{\\sqrt{h}}{h} = \\frac{1}{\\sqrt{h}}$ tends to $+\\infty$, which is not a real number."
+        },
+        {
+          "type": "single",
+          "prompt": "From first principles, what is $\\cos'(x)$?",
+          "options": [
+            "$\\sin x$",
+            "$-\\sin x$",
+            "$\\cos x$",
+            "$-\\cos x$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "With $\\cos(x+h) = \\cos x\\cos h - \\sin x \\sin h$ the quotient is $-\\cos x \\cdot \\frac{1-\\cos h}{h} - \\sin x \\cdot \\frac{\\sin h}{h} \\to -\\sin x$."
+        },
+        {
+          "type": "short",
+          "prompt": "Using the power rule from first principles, what is the derivative of $x^4$ at $x = -1$?",
+          "answer": [
+            "-4",
+            "−4"
+          ],
+          "explanation": "$4 \\cdot (-1)^3 = -4$. A common slip is to write $(-1)^3 = 1$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "At $x = 0$, each function below takes the value $0$. Which are differentiable at $0$?",
+          "options": [
+            "$x|x|$",
+            "$x\\sin(1/x)$ for $x \\ne 0$",
+            "$x^2\\sin(1/x)$ for $x \\ne 0$",
+            "$|x|$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "For $x|x|$ the quotient is $|h| \\to 0$, and for $x^2\\sin(1/x)$ it is $h\\sin(1/h) \\to 0$ by squeeze. For $x\\sin(1/x)$ the quotient $\\sin(1/h)$ has no limit, and for $|x|$ the one-sided limits are $\\pm 1$."
+        }
+      ]
+    },
+    {
+      "slug": "6-3-differentiability-and-continuity",
+      "title": "Differentiability and continuity",
+      "summary": "Differentiable implies continuous, but continuity is far from enough.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "How the two ideas fit together",
+          "md": "**In this lesson you will learn to:**\n- prove that a function differentiable at $c$ is continuous at $c$\n- use the contrapositive: a discontinuity rules out a derivative\n- recognise the ways a continuous function can fail to be differentiable (corners, vertical tangents, cusps, oscillation)\n- tell \"differentiable\" apart from \"continuously differentiable\" ($C^1$)\n\n**You need:** the derivative (lessons 6.1–6.2), continuity at a point (lesson 5.6), the limit laws (lesson 5.4) and the contrapositive (lesson 1.10)."
+        },
+        {
+          "type": "text",
+          "md": "## Two levels of smoothness\n\nContinuity and differentiability both say a graph is well behaved near $c$, but they ask for different things.\n\n**Continuity** at $c$ (lesson 5.6) asks that $f(x) \\to f(c)$ as $x \\to c$, that is, $f(x) - f(c) \\to 0$. In pictures: no jump or gap.\n\n**Differentiability** at $c$ asks that $\\frac{f(x) - f(c)}{x - c}$ has a finite limit. For that, the top $f(x) - f(c)$ must shrink to $0$ **at least as fast as** the bottom $x - c$. In pictures: no jump, and no corner either. Zoom in on the graph near $c$ and it looks like a straight line.\n\nSo differentiability should be the stronger condition. Compare:\n- $f(x) = x^2$ at $0$: $f(x) - f(0) = x^2$ shrinks much faster than $x$. Continuous **and** differentiable.\n- $f(x) = |x|$ at $0$: $f(x) - f(0) = |x|$ shrinks to $0$, so $f$ is continuous. But $\\frac{|x|}{x} = \\pm 1$ never settles. Continuous, **not** differentiable: zoom in on the corner and it stays a corner.\n- $f(x) = \\sqrt{|x|}$ at $0$: $\\sqrt{|x|}$ shrinks to $0$, but **more slowly** than $x$ (at $x = 0.01$ it is $0.1$). The quotient is unbounded. Continuous, not differentiable."
+        },
+        {
+          "type": "check",
+          "question": "Which statement about $f(x) = |x|$ at $0$ is correct?",
+          "options": [
+            "It is neither continuous nor differentiable at $0$",
+            "It is continuous but not differentiable at $0$",
+            "It is differentiable but not continuous at $0$",
+            "It is both continuous and differentiable at $0$"
+          ],
+          "correct": 1,
+          "explanation": "$|x| \\to 0 = f(0)$, so $|x|$ is continuous at $0$. Its difference quotient is $1$ on the right and $-1$ on the left, so it has no derivative there. (Option 3 is impossible, as the next theorem shows.)"
+        },
+        {
+          "type": "text",
+          "md": "## Differentiable implies continuous\n\n**Theorem.** Let $f : I \\to \\mathbb{R}$ and $c \\in I$. If $f$ is differentiable at $c$, then $f$ is continuous at $c$.\n\n**The idea.** For $x \\ne c$ we can write the change in $f$ as\n\n$$f(x) - f(c) = \\underbrace{\\frac{f(x) - f(c)}{x - c}}_{\\to\\, f'(c)} \\cdot \\underbrace{(x - c)}_{\\to\\, 0}.$$\n\nThe first factor tends to a real number and the second tends to $0$, so the product tends to $f'(c) \\cdot 0 = 0$. That is continuity.\n\nThe proof below fills in the details. The key point is that $f'(c)$ is **finite**. If the quotient could blow up to $\\infty$, we would have \"$\\infty \\cdot 0$\", which tells us nothing. This is one reason the definition insists the limit is a real number.\n\n**The converse is false.** \"Continuous implies differentiable\" fails: $|x|$ at $0$ is a counterexample. A theorem and its converse are different statements (lesson 1.2)."
+        },
+        {
+          "type": "steps",
+          "title": "Proof that differentiable implies continuous",
+          "steps": [
+            {
+              "title": "State the goal",
+              "md": "Show $f(x) \\to f(c)$ as $x \\to c$, i.e. $f(x) - f(c) \\to 0$."
+            },
+            {
+              "title": "Factor",
+              "md": "For $x \\neq c$ write\n\n$$f(x) - f(c) = \\frac{f(x)-f(c)}{x-c}\\cdot(x - c).$$\n\nThis is true because $\\frac{x - c}{x - c} = 1$ when $x \\ne c$. We have multiplied by $1$ in a clever form."
+            },
+            {
+              "title": "Take limits",
+              "md": "As $x \\to c$ the first factor tends to $f'(c)$ (a real number) and the second to $0$. By the product law for limits,\n\n$$\\lim_{x \\to c}\\big(f(x) - f(c)\\big) = f'(c)\\cdot 0 = 0.$$"
+            },
+            {
+              "title": "Conclude",
+              "md": "Hence $\\lim_{x\\to c} f(x) = f(c)$, so $f$ is continuous at $c$. The product law needs the first limit to be **finite**; this is exactly where differentiability is used. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, where exactly is the hypothesis \"$f$ is differentiable at $c$\" used?",
+          "options": [
+            "To write $f(x) - f(c)$ as a product, which needs $f'(c)$ to exist",
+            "To know $x - c \\to 0$",
+            "To know the first factor has a finite limit, so the product law applies",
+            "It is not used; every function is continuous"
+          ],
+          "correct": 2,
+          "explanation": "The factorisation works for any $f$ whenever $x \\ne c$, and $x - c \\to 0$ is always true. Differentiability is what makes the first factor converge to a **real number**, so the product law gives $f'(c) \\cdot 0 = 0$. Many functions are not continuous, such as $\\operatorname{sgn}$ at $0$."
+        },
+        {
+          "type": "text",
+          "md": "## Using the contrapositive\n\nThe contrapositive of \"$P \\Rightarrow Q$\" is \"not $Q \\Rightarrow$ not $P$\", and it is logically equivalent (lesson 1.10). So the theorem also says:\n\n> If $f$ is **not continuous** at $c$, then $f$ is **not differentiable** at $c$.\n\nThis gives a quick test: find a discontinuity and you know immediately there is no derivative there.\n\n**Examples:**\n- The **sign function** $\\operatorname{sgn}(x)$ is $1$ for $x > 0$, $-1$ for $x < 0$ and $0$ at $0$. It jumps at $0$, so it is not differentiable at $0$. (Its quotient $\\frac{\\operatorname{sgn}(h)}{h} = \\frac{1}{|h|}$ blows up, confirming this.)\n- The **floor function** $\\lfloor x \\rfloor$, the greatest integer $\\le x$ (so $\\lfloor 2.7 \\rfloor = 2$ and $\\lfloor -0.5 \\rfloor = -1$), jumps at every integer, so it is not differentiable at any integer.\n\n**What you cannot conclude.** The converse and the inverse are both false:\n- \"Continuous at $c$ $\\Rightarrow$ differentiable at $c$\": false, by $|x|$.\n- \"Not differentiable at $c$ $\\Rightarrow$ not continuous at $c$\": false, again by $|x|$.\n\nA failed derivative tells you nothing about continuity. A failed continuity tells you everything about the derivative."
+        },
+        {
+          "type": "check",
+          "question": "You are told that $f$ is **not** differentiable at $3$. What can you conclude about continuity at $3$?",
+          "options": [
+            "$f$ is not continuous at $3$",
+            "$f$ is continuous at $3$",
+            "Nothing: $f$ may or may not be continuous at $3$",
+            "$f$ is not defined at $3$"
+          ],
+          "correct": 2,
+          "explanation": "$|x - 3|$ is continuous at $3$ but not differentiable there, while $\\operatorname{sgn}(x - 3)$ is neither. So both are possible. The first option is the inverse of the theorem, which is false; the theorem only lets you go from \"not continuous\" to \"not differentiable\"."
+        },
+        {
+          "type": "text",
+          "md": "## How a continuous function can fail to be differentiable\n\nThere are four common pictures. Each function below is continuous at $0$ with value $0$ there.\n\n**Corner: $|x|$.** The one-sided limits of the quotient both exist but differ ($1$ and $-1$).\n\n**Vertical tangent: $x^{1/3}$.** The quotient $h^{-2/3}$ tends to $+\\infty$ from both sides. The graph is smooth but stands straight up at $0$, and a vertical line has no real slope.\n\n**Cusp: $\\sqrt{|x|}$.** The quotient is $\\frac{\\sqrt{|h|}}{h}$, which tends to $+\\infty$ from the right and $-\\infty$ from the left. The graph comes to a sharp point with both sides vertical.\n\n**Oscillation: $x\\sin(1/x)$.** The quotient $\\sin(1/h)$ swings between $-1$ and $1$ for ever and has no limit (lesson 6.2). The graph wiggles infinitely often near $0$.\n\nIn every case continuity holds, yet the limit of the quotient is not a real number. It is worth checking that $x^2$, $x|x|$ and $x^2\\sin(1/x)$, by contrast, are all differentiable at $0$: an extra factor of $x$ is enough to tame each problem."
+        },
+        {
+          "type": "match",
+          "prompt": "Each function is continuous at $0$. Match it to the reason it is not differentiable there.",
+          "pairs": [
+            {
+              "left": "$|x|$",
+              "right": "Corner: one-sided limits $1$ and $-1$"
+            },
+            {
+              "left": "$x^{1/3}$",
+              "right": "Vertical tangent: quotient tends to $+\\infty$"
+            },
+            {
+              "left": "$\\sqrt{|x|}$",
+              "right": "Cusp: quotient tends to $+\\infty$ on one side and $-\\infty$ on the other"
+            },
+            {
+              "left": "$x\\sin(1/x)$, with value $0$ at $0$",
+              "right": "Oscillation: quotient $\\sin(1/h)$ has no limit"
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Continuous but not differentiable",
+          "problem": "Prove that $f(x) = |x|$ is continuous at $0$ but not differentiable at $0$.",
+          "solution": "**Continuity.** $\\big||x| - |0|\\big| = |x|$, so given $\\varepsilon > 0$ take $\\delta = \\varepsilon$: if $|x| < \\delta$ then $\\big||x| - 0\\big| < \\varepsilon$.\n\n**Not differentiable.** The difference quotient is $q(h) = \\frac{|h|}{h}$. Take the sequences $h_n = 1/n$ and $k_n = -1/n$, both tending to $0$ with nonzero terms. Then $q(h_n) = 1$ and $q(k_n) = -1$ for all $n$. If $\\lim_{h\\to 0} q(h) = L$ existed, the sequential criterion for limits of functions would force $q(h_n) \\to L$ and $q(k_n) \\to L$, i.e. $L = 1$ and $L = -1$, a contradiction. $\\blacksquare$\n\n(Using one-sided limits instead, lesson 5.3: they are $1$ and $-1$, and they differ.)"
+        },
+        {
+          "type": "text",
+          "md": "## Continuity is far from enough\n\nYou might hope that a continuous function fails to be differentiable only at a few isolated points, like the corner of $|x|$. It is much worse.\n\n**Continuous everywhere, differentiable nowhere.** In 1872 Weierstrass gave the function\n\n$$W(x) = \\sum_{n=0}^{\\infty} a^n \\cos(b^n \\pi x), \\qquad 0 < a < 1,\\ b \\text{ an odd integer},\\ ab > 1 + \\tfrac{3\\pi}{2}.$$\n\nThe $\\sum$ is an infinite series (Level 4): add up wiggles that get smaller in height ($a^n$) but faster ($b^n$). Each term is smooth, and the series converges to a continuous function, but the wiggles at every scale create corners at every point. $W$ is continuous on $\\mathbb{R}$ and differentiable at **no** point. We will not prove this; continuity of such sums is lesson 8.10.\n\n**Differentiable at one point only.** Differentiability at $c$ does not even give continuity near $c$. The function\n\n$$g(x) = \\begin{cases} x^2 & x \\in \\mathbb{Q}, \\\\ 0 & x \\notin \\mathbb{Q}, \\end{cases}$$\n\n($\\mathbb{Q}$ is the set of rational numbers) is differentiable at $0$ but discontinuous at every other point. The example below proves it, using density of $\\mathbb{Q}$ and of the irrationals (lesson 2.12)."
+        },
+        {
+          "type": "example",
+          "title": "Differentiable at exactly one point",
+          "problem": "Define $g(x) = x^2$ if $x \\in \\mathbb{Q}$ and $g(x) = 0$ if $x \\notin \\mathbb{Q}$. Show that $g$ is differentiable at $0$ and at no other point.",
+          "solution": "**At $0$.** For $h \\neq 0$, $|g(h)|$ is either $h^2$ or $0$, so $\\left|\\frac{g(h) - g(0)}{h}\\right| = \\frac{|g(h)|}{|h|} \\le \\frac{h^2}{|h|} = |h| \\to 0$. By the squeeze theorem, $g'(0) = 0$.\n\n**At $c \\neq 0$.** It suffices to show $g$ is not continuous at $c$. Choose rationals $q_n \\to c$ and irrationals $s_n \\to c$ (both are dense). Then $g(q_n) = q_n^2 \\to c^2 \\neq 0$ while $g(s_n) = 0$. The two sequences of values have different limits, so they cannot both tend to $g(c)$, and $g$ is discontinuous at $c$. By the contrapositive of the theorem, $g$ is not differentiable at $c$. $\\blacksquare$\n\nSo differentiability at a point does not even give continuity on a neighbourhood of that point."
+        },
+        {
+          "type": "check",
+          "question": "A classmate says: \"$g$ is differentiable at $0$, so it must be continuous on some small interval around $0$.\" What is wrong?",
+          "options": [
+            "Nothing; that is what the theorem says",
+            "The theorem gives continuity at the single point $0$ only; $g$ is discontinuous at every $c \\ne 0$",
+            "$g$ is not actually differentiable at $0$",
+            "$g$ is not continuous at $0$ either"
+          ],
+          "correct": 1,
+          "explanation": "Differentiable at $c$ implies continuous **at $c$**, nothing more. $g$ is continuous at $0$ (since $|g(x)| \\le x^2 \\to 0$) and differentiable there, but discontinuous at every other point."
+        },
+        {
+          "type": "text",
+          "md": "## Differentiable is not continuously differentiable\n\nEven when $f$ is differentiable at **every** point, the derivative function $f'$ need not be continuous.\n\n**Notation.** We write $f \\in C^1(I)$, read \"$f$ is $C$-one on $I$\" or \"**continuously differentiable**\", when $f$ is differentiable on $I$ **and** $f'$ is continuous on $I$. Similarly $C(I)$ or $C^0(I)$ is the set of continuous functions on $I$. Higher classes $C^n$ come in lesson 6.11.\n\n**Example: $x|x|$ is $C^1$.** For $x > 0$, $f(x) = x^2$ and $f'(x) = 2x$; for $x < 0$, $f(x) = -x^2$ and $f'(x) = -2x$; and $f'(0) = 0$ (lesson 6.2). Together, $f'(x) = 2|x|$, which is continuous.\n\n**Non-example: $x^2 \\sin(1/x)$** (with value $0$ at $0$). We know $f'(0) = 0$. For $x \\ne 0$, the rules of lesson 6.4 and the chain rule (lesson 6.5) give\n\n$$f'(x) = 2x\\sin(1/x) - \\cos(1/x).$$\n\nAs $x \\to 0$, the first term tends to $0$ but $\\cos(1/x)$ swings between $-1$ and $1$. So $f'(x)$ has **no limit** at $0$, and $f'$ is not continuous at $0$. This $f$ is differentiable on $\\mathbb{R}$ but **not** $C^1$.\n\nThe full picture is a chain of implications, none of which reverses:"
+        },
+        {
+          "type": "diagram",
+          "title": "The chain of implications (none reverses)",
+          "nodes": [
+            "$f \\in C^1$: $f'$ exists and is continuous",
+            "$f$ differentiable (counterexample to the converse: $x^2\\sin(1/x)$)",
+            "$f$ continuous (counterexample to the converse: $|x|$)",
+            "$f$ defined"
+          ]
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function (at $x = 0$, with value $0$ there) to its behaviour at $0$",
+          "pairs": [
+            {
+              "left": "$|x|$",
+              "right": "Continuous but not differentiable"
+            },
+            {
+              "left": "$x^2\\sin(1/x)$",
+              "right": "Differentiable, but $f'$ is not continuous at $0$"
+            },
+            {
+              "left": "$\\operatorname{sgn}(x)$",
+              "right": "Not continuous"
+            },
+            {
+              "left": "$x|x|$",
+              "right": "Differentiable with $f'$ continuous at $0$"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Differentiable implies continuous",
+              "back": "If $f'(c)$ exists then $f(x) \\to f(c)$, because $f(x) - f(c) = \\text{quotient} \\cdot (x - c) \\to f'(c) \\cdot 0$.\n\n*Example:* $x^2$ is continuous at every point."
+            },
+            {
+              "front": "Contrapositive of the theorem",
+              "back": "**Not continuous** at $c$ $\\Rightarrow$ not differentiable at $c$.\n\n*Example:* $\\lfloor x \\rfloor$ jumps at $1$, so it has no derivative at $1$."
+            },
+            {
+              "front": "Converse (false)",
+              "back": "\"Continuous $\\Rightarrow$ differentiable\" **fails**.\n\n*Example:* $|x|$ is continuous at $0$ but not differentiable there."
+            },
+            {
+              "front": "$C^1(I)$",
+              "back": "Functions differentiable on $I$ whose derivative $f'$ is **continuous** on $I$.\n\n*Example:* $x|x|$, with $f'(x) = 2|x|$. *Non-example:* $x^2\\sin(1/x)$."
+            },
+            {
+              "front": "Weierstrass function",
+              "back": "A function **continuous everywhere** and differentiable **nowhere**.\n\n*Example:* $\\sum a^n \\cos(b^n \\pi x)$ with $0 < a < 1$, $b$ odd, $ab > 1 + \\frac{3\\pi}{2}$."
+            },
+            {
+              "front": "Cusp",
+              "back": "A sharp point where the quotient tends to $+\\infty$ on one side and $-\\infty$ on the **other**.\n\n*Example:* $\\sqrt{|x|}$ at $0$."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: joining two pieces smoothly",
+          "problem": "Let $f(x) = x^2$ for $x \\le 1$ and $f(x) = ax + b$ for $x > 1$. Find the values of $a$ and $b$ that make $f$ differentiable at $1$.",
+          "solution": "**Continuity first.** Differentiable at $1$ forces continuous at $1$. The left piece gives $f(1) = 1$; the right piece tends to $a + b$. So we need $a + b = 1$.\n\n**Matching slopes.** With $a + b = 1$, for $h > 0$:\n\n$$\\frac{f(1+h) - f(1)}{h} = \\frac{a(1 + h) + b - 1}{h} = \\frac{ah}{h} = a.$$\n\nFor $h < 0$:\n\n$$\\frac{(1+h)^2 - 1}{h} = 2 + h \\to 2.$$\n\nThe one-sided limits are $a$ and $2$, so we need $a = 2$, and then $b = 1 - a = -1$.\n\nSo $f(x) = 2x - 1$ for $x > 1$: the tangent line to $x^2$ at $x = 1$. $\\blacksquare$\n\n**Check your version:** did you impose continuity before matching slopes? (Without $a + b = 1$ the right-hand quotient is $a + \\frac{a + b - 1}{h}$, which blows up.) Did you check both one-sided limits?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "If a graph has no breaks, is it differentiable apart from a few corners?",
+              "a": "No. The Weierstrass function has no breaks at all yet has no derivative at any point. Pictures of \"nice\" graphs mislead here: a graph drawn by hand is always smooth almost everywhere, but continuous functions in general need not be."
+            },
+            {
+              "q": "If $f'(x)$ exists for every $x$, is $f'$ continuous?",
+              "a": "Not necessarily. $x^2\\sin(1/x)$ (value $0$ at $0$) is differentiable everywhere, but $f'(x) = 2x\\sin(1/x) - \\cos(1/x)$ has no limit at $0$. That is why the class $C^1$ has its own name."
+            },
+            {
+              "q": "Why does the proof need $f'(c)$ to be finite?",
+              "a": "The product law for limits needs both limits to be real numbers. If the quotient tended to $\\infty$, the product would be the meaningless \"$\\infty \\cdot 0$\". Indeed $\\operatorname{sgn}$ at $0$ has quotient $\\frac{1}{|h|} \\to \\infty$ and is not continuous."
+            },
+            {
+              "q": "Can a function be differentiable at a point where it is discontinuous?",
+              "a": "Never. That is exactly the theorem. If your working suggests a derivative at a jump, recheck it: often the slopes of the two pieces match but their values do not, and then the difference quotient blows up."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- **Differentiable at $c$ implies continuous at $c$**, because $f(x) - f(c) = \\frac{f(x) - f(c)}{x - c}(x - c) \\to f'(c) \\cdot 0 = 0$.\n- Contrapositive: a discontinuity at $c$ rules out a derivative at $c$. The converse is false: $|x|$ is continuous but not differentiable at $0$.\n- Continuous functions can fail to be differentiable through corners, vertical tangents, cusps or oscillation, and even at every point (Weierstrass).\n- Differentiable at one point gives continuity at that point only, not nearby.\n- $C^1 \\Rightarrow$ differentiable $\\Rightarrow$ continuous, and none of these arrows reverses."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "Every continuous function $f : \\mathbb{R} \\to \\mathbb{R}$ is differentiable at at least one point.",
+          "answer": [
+            false
+          ],
+          "explanation": "The Weierstrass function is continuous on $\\mathbb{R}$ and differentiable nowhere."
+        },
+        {
+          "type": "single",
+          "prompt": "Which statement follows directly from \"differentiable at $c$ implies continuous at $c$\"?",
+          "options": [
+            "If $f$ is continuous at $c$, then $f$ is differentiable at $c$.",
+            "If $f$ is not differentiable at $c$, then $f$ is discontinuous at $c$.",
+            "If $f$ is discontinuous at $c$, then $f$ is not differentiable at $c$.",
+            "If $f'$ exists near $c$, then $f'$ is continuous at $c$."
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "This is the contrapositive, which is logically equivalent to the theorem. The first two options are the converse and the inverse, both false (consider $|x|$). The last is false by $x^2\\sin(1/x)$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which functions are continuous at $0$ but **not** differentiable at $0$?",
+          "options": [
+            "$|x|$",
+            "$x^2$",
+            "$x^{1/3}$",
+            "$\\operatorname{sgn}(x)$",
+            "$\\sqrt{|x|}$"
+          ],
+          "answer": [
+            0,
+            2,
+            4
+          ],
+          "explanation": "$|x|$ has one-sided quotients $\\pm 1$. For $x^{1/3}$ the quotient is $h^{-2/3} \\to +\\infty$, and for $\\sqrt{|x|}$ it is $\\pm|h|^{-1/2}$, unbounded; neither limit is a finite real number. $x^2$ is differentiable, and $\\operatorname{sgn}$ is not even continuous at $0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $g(x) = x^2$ for $x \\in \\mathbb{Q}$ and $g(x) = 0$ for $x \\notin \\mathbb{Q}$. At which points is $g$ differentiable?",
+          "options": [
+            "Nowhere",
+            "Only at $0$",
+            "At every rational point",
+            "Everywhere"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "At $0$ the quotient is bounded by $|h|$, so $g'(0) = 0$. At every $c \\neq 0$, $g$ is discontinuous, hence not differentiable."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable at $c$, then $f$ is continuous on some open interval containing $c$.",
+          "answer": [
+            false
+          ],
+          "explanation": "The function equal to $x^2$ on $\\mathbb{Q}$ and $0$ elsewhere is differentiable at $0$ but discontinuous at every other point."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f(x) = x^2\\sin(1/x)$ for $x \\neq 0$ and $f(0) = 0$. Which description is correct?",
+          "options": [
+            "$f$ is continuous on $\\mathbb{R}$ but not differentiable at $0$",
+            "$f$ is differentiable on $\\mathbb{R}$ and $f'$ is continuous on $\\mathbb{R}$",
+            "$f$ is differentiable on $\\mathbb{R}$, but $f'$ is not continuous at $0$",
+            "$f$ is not continuous at $0$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$f'(0) = 0$ by the squeeze theorem, while $f'(x) = 2x\\sin(1/x) - \\cos(1/x)$ for $x \\neq 0$ has no limit as $x \\to 0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable at $c$, then $f$ is continuous at $c$.",
+          "answer": [
+            true
+          ],
+          "explanation": "For $x \\ne c$, $f(x) - f(c) = \\frac{f(x) - f(c)}{x - c}(x - c) \\to f'(c) \\cdot 0 = 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "The floor function $\\lfloor x \\rfloor$ jumps from $0$ to $1$ at $x = 1$. What does this tell you about $\\lfloor x \\rfloor$ at $1$?",
+          "options": [
+            "It is differentiable at $1$ with derivative $0$",
+            "It is not differentiable at $1$, because it is not continuous there",
+            "It is differentiable at $1$ with derivative $1$",
+            "Nothing can be said without computing the quotient"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "A discontinuity rules out a derivative (the contrapositive of the theorem). The slope of each flat piece is $0$, but the jump makes the left-hand quotient $\\frac{0 - 1}{h} = -\\frac{1}{h} \\to +\\infty$ as $h \\to 0^-$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions belong to $C^1(\\mathbb{R})$?",
+          "options": [
+            "$x^2$",
+            "$x|x|$",
+            "$|x|$",
+            "$x^2\\sin(1/x)$ for $x \\ne 0$, with value $0$ at $0$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "$(x^2)' = 2x$ and $(x|x|)' = 2|x|$ are continuous. $|x|$ is not differentiable at $0$, and $x^2\\sin(1/x)$ is differentiable but its derivative is discontinuous at $0$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^2$ for $x \\le 1$ and $f(x) = ax + b$ for $x > 1$. For $f$ to be differentiable at $1$, what must $b$ be?",
+          "answer": [
+            "-1",
+            "−1",
+            "b=-1",
+            "b = -1"
+          ],
+          "explanation": "Matching slopes gives $a = 2$, and continuity gives $a + b = 1$, so $b = -1$."
+        },
+        {
+          "type": "single",
+          "prompt": "Why does $\\sqrt{|x|}$ fail to be differentiable at $0$?",
+          "options": [
+            "It is not continuous at $0$",
+            "Its difference quotient tends to $+\\infty$ from the right and $-\\infty$ from the left",
+            "Its one-sided quotients are $1$ and $-1$",
+            "It is not defined for negative $x$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The quotient $\\frac{\\sqrt{|h|}}{h}$ is $\\frac{1}{\\sqrt{h}}$ for $h > 0$ and $-\\frac{1}{\\sqrt{|h|}}$ for $h < 0$: a cusp. It is continuous at $0$; quotients $\\pm 1$ describe $|x|$; and $\\sqrt{|x|}$ is defined for all $x$."
+        }
+      ]
+    },
+    {
+      "slug": "6-4-algebra-of-derivatives",
+      "title": "Algebra of derivatives",
+      "summary": "Sum, product and quotient rules, proved from the definition.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Building new derivatives from old",
+          "md": "**In this lesson you will learn to:**\n- state and use the sum, constant multiple, product and quotient rules\n- prove each rule from the definition of the derivative\n- extend the power rule with induction and the quotient rule\n- know what the rules do **not** say\n\n**You need:** the derivative and first-principles computations (lessons 6.1–6.2), \"differentiable implies continuous\" (lesson 6.3), the limit laws (lesson 5.4) and induction (lesson 1.7)."
+        },
+        {
+          "type": "text",
+          "md": "## Sums and constant multiples\n\nComputing every derivative from first principles would be exhausting. The rules in this lesson let you differentiate anything built from simpler functions using $+$, $-$, $\\times$ and $\\div$, once you know the derivatives of the pieces.\n\nThroughout, $f, g : I \\to \\mathbb{R}$ are functions on an interval $I$, both differentiable at a point $c \\in I$, and $\\alpha$ (Greek \"alpha\") is a real constant. We write $f + g$ for the function $x \\mapsto f(x) + g(x)$, and $\\alpha f$ for $x \\mapsto \\alpha f(x)$.\n\n**Sum rule.** $f + g$ is differentiable at $c$ and $(f + g)'(c) = f'(c) + g'(c)$.\n\n**Constant multiple rule.** $\\alpha f$ is differentiable at $c$ and $(\\alpha f)'(c) = \\alpha f'(c)$.\n\n**Why they hold.** The difference quotient of $f + g$ splits:\n\n$$\\frac{(f+g)(x) - (f+g)(c)}{x - c} = \\frac{f(x) - f(c)}{x - c} + \\frac{g(x) - g(c)}{x - c},$$\n\nand by the sum law for limits it tends to $f'(c) + g'(c)$. The constant multiple rule is the same with a factor $\\alpha$ pulled out.\n\n**Examples:**\n- $(x^2 + 5x)' = 2x + 5$.\n- $(3x^4)' = 3 \\cdot 4x^3 = 12x^3$.\n- $(f - g)' = f' - g'$: take $\\alpha = -1$, then use the sum rule.\n- $(x^3 + 7)' = 3x^2 + 0$: the constant disappears because its derivative is $0$."
+        },
+        {
+          "type": "check",
+          "question": "Using the sum and constant multiple rules, what is the derivative of $4x^3 - 2x + 9$ at $x = 1$?",
+          "options": [
+            "$10$",
+            "$11$",
+            "$12$",
+            "$19$"
+          ],
+          "correct": 0,
+          "explanation": "The derivative is $12x^2 - 2$, which is $10$ at $x = 1$. $11$ is the value of the function at $1$; $12$ forgets the $-2x$ term; $19$ wrongly keeps the constant $9$ (its derivative is $0$)."
+        },
+        {
+          "type": "text",
+          "md": "## The product rule\n\nYou might guess $(fg)' = f'g'$. It is false: $x^2 = x \\cdot x$ has derivative $2x$, but $x' \\cdot x' = 1 \\cdot 1 = 1$.\n\nThe correct rule has two terms. Think of $f(x)g(x)$ as the area of a rectangle with sides $f(x)$ and $g(x)$. When $x$ changes a little, the area grows by a strip along one side ($\\Delta f \\cdot g$) plus a strip along the other ($f \\cdot \\Delta g$), plus a tiny corner that vanishes in the limit.\n\n**Product rule.** $fg$ is differentiable at $c$ and\n\n$$(fg)'(c) = f'(c)g(c) + f(c)g'(c).$$\n\nIn words: derivative of the first times the second, plus the first times derivative of the second.\n\n**Examples:**\n- $(x \\cdot x)' = 1 \\cdot x + x \\cdot 1 = 2x$. Correct.\n- $(x \\sin x)' = 1 \\cdot \\sin x + x \\cos x$, using $\\sin' = \\cos$ (lesson 6.2). At $x = 0$ this is $0$.\n- $(x^2 + 1)(x - 3)$ at $x = 3$: $f(3) = 10$, $f'(3) = 6$, $g(3) = 0$, $g'(3) = 1$, so the derivative is $6 \\cdot 0 + 10 \\cdot 1 = 10$. Notice a factor that is $0$ at $c$ still contributes through its derivative."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Classic pitfalls",
+          "md": "- The derivative of a product is **not** the product of the derivatives: $(x\\cdot x)' = 2x$, but $x'\\cdot x' = 1$.\n- The derivative of a quotient is **not** the quotient of the derivatives: $\\left(\\frac{x^2}{x}\\right)' = (x)' = 1$ for $x \\ne 0$, but $\\frac{(x^2)'}{x'} = 2x$.\n- In the quotient rule the order matters: the top is $f'g - fg'$, **not** $fg' - f'g$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of the product rule",
+          "steps": [
+            {
+              "title": "Add and subtract",
+              "md": "For $x \\neq c$, insert the term $f(c)g(x)$, subtracting and adding it so nothing changes:\n\n$$f(x)g(x) - f(c)g(c) = \\big(f(x) - f(c)\\big)g(x) + f(c)\\big(g(x) - g(c)\\big).$$\n\nThis splits the change in $fg$ into a change in $f$ and a change in $g$."
+            },
+            {
+              "title": "Divide by $x - c$",
+              "md": "$$\\frac{f(x)g(x)-f(c)g(c)}{x-c} = \\frac{f(x)-f(c)}{x-c}\\,g(x) + f(c)\\,\\frac{g(x)-g(c)}{x-c}.$$"
+            },
+            {
+              "title": "Use continuity of $g$",
+              "md": "Since $g$ is differentiable at $c$, it is continuous at $c$ (lesson 6.3), so $g(x) \\to g(c)$. This step is essential: without it we could not control the factor $g(x)$."
+            },
+            {
+              "title": "Take limits",
+              "md": "By the limit laws the right-hand side tends to $f'(c)g(c) + f(c)g'(c)$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the first step, why do we subtract and add $f(c)g(x)$ rather than leave $f(x)g(x) - f(c)g(c)$ as it is?",
+          "options": [
+            "Because $f(c)g(x)$ is always zero",
+            "To split the change into a part with $f(x) - f(c)$ and a part with $g(x) - g(c)$, so each matches a difference quotient we know",
+            "Because the product rule only holds when $f(c) = 0$",
+            "To make the expression positive"
+          ],
+          "correct": 1,
+          "explanation": "Adding and subtracting the same term changes nothing, but it lets us factor out $f(x) - f(c)$ and $g(x) - g(c)$, whose quotients tend to $f'(c)$ and $g'(c)$. $f(c)g(x)$ is not zero in general, and the rule holds for any $f(c)$."
+        },
+        {
+          "type": "text",
+          "md": "## The power rule by induction\n\nLesson 6.2 proved $(x^n)' = nx^{n-1}$ with a factorisation. The product rule gives a second proof, by induction on $n$ (lesson 1.7).\n\n**Statement.** For every $n \\in \\mathbb{N}$, $(x^n)' = n x^{n-1}$.\n\n**Base case $n = 1$.** $(x)' = 1 = 1 \\cdot x^0$. (Here $x^0 = 1$.)\n\n**Inductive step.** Assume $(x^k)' = k x^{k-1}$ for some $k \\ge 1$. Write $x^{k+1} = x \\cdot x^k$ and use the product rule:\n\n$$(x^{k+1})' = 1 \\cdot x^k + x \\cdot k x^{k-1} = x^k + k x^k = (k + 1)x^k.$$\n\nThat is the statement for $n = k + 1$. By induction it holds for every $n \\in \\mathbb{N}$. $\\blacksquare$\n\nWith the sum and constant multiple rules, this means **every polynomial** is differentiable on $\\mathbb{R}$, and you differentiate it term by term. For example,\n\n$$(2x^5 - x^3 + 4x)' = 10x^4 - 3x^2 + 4.$$\n\n**Edge case: $n = 0$.** $x^0 = 1$ is a constant, so its derivative is $0$, and the formula $0 \\cdot x^{-1}$ also gives $0$ (for $x \\ne 0$)."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of the induction proof that $(x^n)' = nx^{n-1}$ in order.",
+          "items": [
+            "Base case: $(x)' = 1 = 1 \\cdot x^0$, so the statement holds for $n = 1$.",
+            "Inductive hypothesis: assume $(x^k)' = kx^{k-1}$ for some $k \\ge 1$.",
+            "Write $x^{k+1} = x \\cdot x^k$.",
+            "Product rule: $(x^{k+1})' = 1 \\cdot x^k + x \\cdot kx^{k-1} = (k+1)x^k$.",
+            "So the statement holds for $k + 1$, and by induction for every $n \\in \\mathbb{N}$."
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Reciprocals and quotients\n\nTo divide, we need $g(c) \\ne 0$: otherwise $\\frac{f}{g}$ is not even defined at $c$.\n\n**Reciprocal rule.** If $g$ is differentiable at $c$ and $g(c) \\ne 0$, then $\\frac{1}{g}$ is differentiable at $c$ and\n\n$$\\left(\\frac{1}{g}\\right)'(c) = -\\frac{g'(c)}{g(c)^2}.$$\n\n**Quotient rule.** If also $f$ is differentiable at $c$, then $\\frac{f}{g}$ is defined on a neighbourhood of $c$ in $I$, is differentiable at $c$, and\n\n$$\\left(\\frac{f}{g}\\right)'(c) = \\frac{f'(c)g(c) - f(c)g'(c)}{g(c)^2}.$$\n\n\"Defined on a neighbourhood\" matters: a derivative is a limit, so $\\frac{f}{g}$ must make sense at points near $c$, not just at $c$. Continuity of $g$ at $c$ provides this, as the worked example shows.\n\n**Examples:**\n- $\\left(\\frac{1}{x}\\right)' = -\\frac{1}{x^2}$ for $x \\ne 0$, matching lesson 6.1.\n- **Negative powers.** $(x^{-n})' = \\left(\\frac{1}{x^n}\\right)' = -\\frac{nx^{n-1}}{x^{2n}} = -nx^{-n-1}$, so the power rule works for negative integers too (for $x \\ne 0$).\n- $\\tan x = \\frac{\\sin x}{\\cos x}$ where $\\cos x \\ne 0$: $(\\tan x)' = \\frac{\\cos x \\cos x - \\sin x(-\\sin x)}{\\cos^2 x} = \\frac{1}{\\cos^2 x}$, using $\\sin^2 x + \\cos^2 x = 1$.\n- **Edge case.** $\\frac{x}{x - 1}$ has no derivative at $x = 1$; the function is not even defined there."
+        },
+        {
+          "type": "example",
+          "title": "The reciprocal and quotient rules",
+          "problem": "Let $g$ be differentiable at $c$ with $g(c) \\neq 0$. Prove that $1/g$ is differentiable at $c$ with $(1/g)'(c) = -g'(c)/g(c)^2$, and deduce the quotient rule.",
+          "solution": "**$1/g$ is defined near $c$.** $g$ is continuous at $c$ and $|g(c)| > 0$, so there is $\\delta > 0$ with $|g(x) - g(c)| < |g(c)|/2$, hence $|g(x)| > |g(c)|/2 > 0$, for $x \\in I$ with $|x - c| < \\delta$.\n\n**The limit.** For such $x \\neq c$,\n\n$$\\frac{\\frac{1}{g(x)} - \\frac{1}{g(c)}}{x - c} = \\frac{g(c) - g(x)}{(x-c)\\,g(x)g(c)} = -\\frac{g(x)-g(c)}{x-c}\\cdot\\frac{1}{g(x)g(c)}.$$\n\nAs $x \\to c$ the first factor tends to $g'(c)$ and, by continuity of $g$ at $c$, the second tends to $1/g(c)^2$. So $(1/g)'(c) = -g'(c)/g(c)^2$.\n\n**Quotient rule.** Write $f/g = f\\cdot(1/g)$ and use the product rule:\n\n$$\\left(\\frac{f}{g}\\right)'(c) = \\frac{f'(c)}{g(c)} - \\frac{f(c)g'(c)}{g(c)^2} = \\frac{f'(c)g(c) - f(c)g'(c)}{g(c)^2}. \\qquad \\blacksquare$$"
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of the proof of the reciprocal rule in order",
+          "items": [
+            "Use continuity of $g$ at $c$ and $g(c) \\neq 0$ to get $g(x) \\neq 0$ for $x$ near $c$",
+            "Write the difference quotient of $1/g$ as $-\\dfrac{g(x)-g(c)}{x-c}\\cdot\\dfrac{1}{g(x)g(c)}$",
+            "Let $x \\to c$: the first factor tends to $g'(c)$",
+            "By continuity, the second factor tends to $1/g(c)^2$",
+            "Conclude $(1/g)'(c) = -g'(c)/g(c)^2$"
+          ]
+        },
+        {
+          "type": "check",
+          "question": "Using the quotient rule, what is the derivative of $\\dfrac{x}{x + 1}$ at $x = 0$?",
+          "options": [
+            "$0$",
+            "$1$",
+            "$-1$",
+            "$\\frac{1}{2}$"
+          ],
+          "correct": 1,
+          "explanation": "With $f = x$, $g = x + 1$: $\\frac{f'g - fg'}{g^2} = \\frac{1 \\cdot (x+1) - x \\cdot 1}{(x+1)^2} = \\frac{1}{(x+1)^2}$, which is $1$ at $x = 0$. $-1$ comes from reversing the top to $fg' - f'g$; $0$ is the value of the function, not its derivative."
+        },
+        {
+          "type": "text",
+          "md": "## What the rules do not say\n\nEach rule says: **if** $f$ and $g$ are differentiable at $c$, **then** so is the combination. The rules give sufficient conditions, not necessary ones.\n\n**A sum can be differentiable when its parts are not.** $f(x) = |x|$ and $g(x) = -|x|$ are not differentiable at $0$, but $f + g = 0$ is.\n\n**A product can be differentiable when a factor is not.** $x$ is differentiable and $|x|$ is not, yet $x|x|$ is differentiable at $0$ (lesson 6.2). And $|x| \\cdot |x| = x^2$ is differentiable even though neither factor is.\n\n**But one bad term in a sum spoils it.** If $f$ is differentiable at $c$ and $g$ is not, then $f + g$ is **not** differentiable at $c$. Proof by contradiction (lesson 1.9): if $f + g$ were differentiable, then $g = (f + g) - f$ would be differentiable by the sum rule, which it is not.\n\nThis trick does **not** work for products. To \"divide out\" $f$ you would need $f(c) \\ne 0$, and $x|x|$ shows the product can be differentiable when $f(c) = 0$."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is differentiable at $c$ and $g$ is not. What can you say about $f + g$ at $c$?",
+          "options": [
+            "It is differentiable",
+            "It is not differentiable",
+            "It may or may not be differentiable"
+          ],
+          "correct": 1,
+          "explanation": "If $f + g$ were differentiable at $c$, then $g = (f + g) - f$ would be differentiable by the sum rule, a contradiction. The \"may or may not\" answer is right when **both** $f$ and $g$ fail (for example $|x|$ and $-|x|$), but not here."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Sum rule",
+              "back": "$(f + g)'(c) = f'(c) + g'(c)$, from the **sum law** for limits.\n\n*Example:* $(x^2 + 5x)' = 2x + 5$."
+            },
+            {
+              "front": "Constant multiple rule",
+              "back": "$(\\alpha f)'(c) = \\alpha f'(c)$ for a real constant $\\alpha$.\n\n*Example:* $(3x^4)' = 12x^3$."
+            },
+            {
+              "front": "Product rule",
+              "back": "$(fg)' = f'g + fg'$. **Not** $f'g'$.\n\n*Example:* $(x\\sin x)' = \\sin x + x\\cos x$."
+            },
+            {
+              "front": "Reciprocal rule",
+              "back": "If $g(c) \\ne 0$: $\\left(\\frac{1}{g}\\right)'(c) = -\\frac{g'(c)}{g(c)^2}$.\n\n*Example:* $\\left(\\frac{1}{x}\\right)' = -\\frac{1}{x^2}$."
+            },
+            {
+              "front": "Quotient rule",
+              "back": "If $g(c) \\ne 0$: $\\left(\\frac{f}{g}\\right)' = \\frac{f'g - fg'}{g^2}$. The **order** on top matters.\n\n*Example:* $\\left(\\frac{x}{x+1}\\right)' = \\frac{1}{(x+1)^2}$."
+            },
+            {
+              "front": "Rules are sufficient, not necessary",
+              "back": "A combination can be differentiable even when a **part** is not.\n\n*Example:* $|x| + (-|x|) = 0$ is differentiable at $0$."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a quotient at a point",
+          "problem": "Let $F(x) = \\dfrac{x^2 + 1}{x - 2}$. Explain why $F$ is differentiable at $x = 3$ and find $F'(3)$.",
+          "solution": "Take $f(x) = x^2 + 1$ and $g(x) = x - 2$. Both are polynomials, so both are differentiable everywhere, with $f'(x) = 2x$ and $g'(x) = 1$. At $x = 3$, $g(3) = 1 \\ne 0$, so the quotient rule applies.\n\nThe values needed are $f(3) = 10$, $f'(3) = 6$, $g(3) = 1$ and $g'(3) = 1$. So\n\n$$F'(3) = \\frac{f'(3)g(3) - f(3)g'(3)}{g(3)^2} = \\frac{6 \\cdot 1 - 10 \\cdot 1}{1^2} = -4.$$\n\n**Check your version:** did you check $g(3) \\ne 0$ before using the quotient rule? Is the top $f'g - fg'$ in that order? Did you square $g(3)$ in the denominator?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why prove the rules at all? I already know them.",
+              "a": "Knowing a rule and knowing when it applies are different. The proofs show exactly what is needed: the product rule uses continuity of $g$, and the quotient rule needs $g(c) \\ne 0$ so that $\\frac{f}{g}$ is defined near $c$. Without the proofs, a case like $\\frac{x}{x-1}$ at $1$ is easy to get wrong."
+            },
+            {
+              "q": "Do I need $g'$ to be continuous for the product or quotient rule?",
+              "a": "No. Only differentiability of $f$ and $g$ at the single point $c$ is used. The continuity we need is continuity of $g$ itself at $c$, which comes free from differentiability (lesson 6.3)."
+            },
+            {
+              "q": "Can I use the quotient rule for $\\frac{1}{x}$, or must I use the reciprocal rule?",
+              "a": "Either. With $f = 1$, $f' = 0$, the quotient rule gives $\\frac{0 \\cdot x - 1 \\cdot 1}{x^2} = -\\frac{1}{x^2}$, the same as the reciprocal rule."
+            },
+            {
+              "q": "What about compositions like $\\sin(x^2)$?",
+              "a": "None of these rules covers composition. That needs the chain rule, lesson 6.5."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- If $f$ and $g$ are differentiable at $c$, so are $f + g$, $\\alpha f$ and $fg$, with $(fg)' = f'g + fg'$ (not $f'g'$).\n- If also $g(c) \\ne 0$, then $\\left(\\frac{f}{g}\\right)' = \\frac{f'g - fg'}{g^2}$; mind the order on top.\n- The product rule proof adds and subtracts $f(c)g(x)$ and uses continuity of $g$ at $c$.\n- Induction and the product rule give $(x^n)' = nx^{n-1}$; the quotient rule extends it to negative integers. Polynomials and rational functions are differentiable wherever they are defined.\n- The rules are sufficient, not necessary: $|x| + (-|x|)$ is differentiable. But differentiable plus non-differentiable is never differentiable."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "If neither $f$ nor $g$ is differentiable at $c$, then $f + g$ is not differentiable at $c$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = |x|$ and $g(x) = -|x|$ are not differentiable at $0$, but $f + g = 0$ is."
+        },
+        {
+          "type": "single",
+          "prompt": "Suppose $f(c) = 2$, $f'(c) = 3$, $g(c) = -1$, $g'(c) = 4$. What is $(fg)'(c)$?",
+          "options": [
+            "$12$",
+            "$5$",
+            "$-11$",
+            "$11$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$(fg)'(c) = f'(c)g(c) + f(c)g'(c) = 3(-1) + 2\\cdot 4 = 5$. $12 = f'(c)g'(c)$ is the classic wrong guess; $-11$ is the quotient rule's numerator; $11$ uses $g(c) = 1$."
+        },
+        {
+          "type": "single",
+          "prompt": "With the same data ($f(c) = 2$, $f'(c) = 3$, $g(c) = -1$, $g'(c) = 4$), what is $(f/g)'(c)$?",
+          "options": [
+            "$5$",
+            "$-5$",
+            "$-11$",
+            "$11$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\frac{f'(c)g(c) - f(c)g'(c)}{g(c)^2} = \\frac{3(-1) - 2\\cdot 4}{1} = -11$. $11$ reverses the order on top; $5$ is $(fg)'(c)$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "In the proof that $(1/g)'(c) = -g'(c)/g(c)^2$, which facts are used?",
+          "options": [
+            "$g(c) \\neq 0$",
+            "$g$ is continuous at $c$, so $g(x) \\neq 0$ for $x$ near $c$",
+            "$g'$ is continuous at $c$",
+            "$g$ is differentiable at $c$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The proof needs $g(c) \\neq 0$, differentiability at $c$ (for the factor tending to $g'(c)$), and continuity at $c$ (which follows from differentiability) to keep $g$ away from $0$ and to get $g(x)g(c) \\to g(c)^2$. Continuity of $g'$ is never used."
+        },
+        {
+          "type": "short",
+          "prompt": "Using the quotient rule, compute the derivative of $x^{-3} = 1/x^3$ at $x = 1$.",
+          "answer": [
+            "-3",
+            "−3"
+          ],
+          "explanation": "$(1/x^3)' = \\frac{0 \\cdot x^3 - 1 \\cdot 3x^2}{x^6} = -3x^{-4}$, which equals $-3$ at $x = 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable at $c$ and $g$ is not, then $f + g$ is not differentiable at $c$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Otherwise $g = (f + g) - f$ would be differentiable at $c$ by the sum rule."
+        },
+        {
+          "type": "single",
+          "prompt": "In the standard proof of the product rule, why must we know that $g(x) \\to g(c)$ as $x \\to c$?",
+          "options": [
+            "To ensure $g(c) \\neq 0$",
+            "To pass to the limit in the term $\\dfrac{f(x)-f(c)}{x-c}\\,g(x)$",
+            "Because the product rule only holds for continuous $f$",
+            "To show $f'(c)$ exists"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "After adding and subtracting $f(c)g(x)$, one term is $\\frac{f(x)-f(c)}{x-c}\\,g(x)$; its limit is $f'(c)g(c)$ only because $g$ is continuous at $c$, which follows from differentiability. $g(c) \\ne 0$ is needed only for quotients, and $f'(c)$ exists by hypothesis."
+        },
+        {
+          "type": "short",
+          "prompt": "Using the product rule, find the derivative of $(x^2 + 1)(x - 3)$ at $x = 3$.",
+          "answer": [
+            "10"
+          ],
+          "explanation": "$f'(3)g(3) + f(3)g'(3) = 6 \\cdot 0 + 10 \\cdot 1 = 10$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For differentiable $f$ and $g$, $(fg)' = f' g'$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Take $f = g = x$: $(x^2)' = 2x$, but $f'g' = 1$. The correct rule is $(fg)' = f'g + fg'$."
+        },
+        {
+          "type": "single",
+          "prompt": "Where $\\cos x \\ne 0$, what is the derivative of $\\tan x = \\dfrac{\\sin x}{\\cos x}$?",
+          "options": [
+            "$\\dfrac{1}{\\cos^2 x}$",
+            "$-\\dfrac{1}{\\cos^2 x}$",
+            "$\\dfrac{\\cos x}{-\\sin x}$",
+            "$\\dfrac{\\sin^2 x - \\cos^2 x}{\\cos^2 x}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$\\frac{\\cos x \\cdot \\cos x - \\sin x \\cdot (-\\sin x)}{\\cos^2 x} = \\frac{\\cos^2 x + \\sin^2 x}{\\cos^2 x} = \\frac{1}{\\cos^2 x}$. The third option divides the derivatives, and the others come from sign errors."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are differentiable at $0$?",
+          "options": [
+            "$x|x|$",
+            "$|x| + x^2$",
+            "$|x| \\cdot |x|$",
+            "$\\dfrac{1}{x - 1}$"
+          ],
+          "answer": [
+            0,
+            2,
+            3
+          ],
+          "explanation": "$x|x|$ has quotient $|h| \\to 0$, and $|x| \\cdot |x| = x^2$. $\\frac{1}{x-1}$ is a quotient with denominator $-1 \\ne 0$ at $0$. But $|x| + x^2$ is differentiable plus non-differentiable, so it is not differentiable at $0$."
+        },
+        {
+          "type": "short",
+          "prompt": "Using the quotient rule, find the derivative of $\\dfrac{x^2 + 1}{x - 2}$ at $x = 3$.",
+          "answer": [
+            "-4",
+            "−4"
+          ],
+          "explanation": "$\\frac{f'(3)g(3) - f(3)g'(3)}{g(3)^2} = \\frac{6 \\cdot 1 - 10 \\cdot 1}{1} = -4$."
+        }
+      ]
+    }
+  ]
+}

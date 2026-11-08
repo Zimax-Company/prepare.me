@@ -1,0 +1,1420 @@
+{
+  "concepts": [
+    {
+      "slug": "2-1-natural-integer-rational-and-irrational-numbers",
+      "title": "Natural, integer, rational and irrational numbers",
+      "summary": "From counting numbers to the gaps in $\\mathbb{Q}$: why $\\sqrt{2}$ is not a fraction.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Level 2: The Real Number System",
+          "md": "Understand the mathematical structure and fundamental properties of real numbers.\n\n**In this lesson you will learn to:**\n- describe the natural numbers $\\mathbb{N}$, the integers $\\mathbb{Z}$ and the rational numbers $\\mathbb{Q}$, and how they sit inside each other\n- write a rational number in lowest terms, and turn a repeating decimal into a fraction\n- say what an irrational number is, and prove that a number is irrational\n- predict what happens when you add or multiply rational and irrational numbers\n\n**You need:** set notation such as $x \\in A$ and $A \\subseteq B$ (lesson 1.4), even and odd integers (lesson 1.1) and proof by contradiction (lesson 1.9)."
+        },
+        {
+          "type": "text",
+          "md": "## Why there is more than one number system\n\nEach number system you know was invented to fix a problem with the one before it. Look at three simple equations:\n\n- $x + 7 = 5$. With only the counting numbers $1, 2, 3, \\dots$ there is no answer. We need negative numbers: $x = -2$.\n- $3x = 1$. With only whole numbers (positive, negative or zero) there is no answer. We need fractions: $x = \\frac{1}{3}$.\n- $x^2 = 2$. With only fractions there is **still** no answer. In lesson 1.9 you proved that no fraction squares to $2$. We need a bigger system again.\n\nSo each step adds the numbers that were missing:\n\n$$\\text{counting numbers} \\;\\to\\; \\text{integers} \\;\\to\\; \\text{fractions} \\;\\to\\; \\text{real numbers}.$$\n\nThe last step is the one real analysis cares most about. Fractions leave tiny **gaps** on the number line, at places like $\\sqrt{2}$. Limits, continuity and calculus all break down if those gaps are left open. This level explains exactly how the real numbers fill them.\n\nIn this lesson you meet the first three systems properly, and the numbers that fall into the gaps."
+        },
+        {
+          "type": "text",
+          "md": "## Natural numbers and integers\n\nThe **natural numbers** are the counting numbers:\n\n$$\\mathbb{N} = \\{1, 2, 3, \\dots\\}.$$\n\nIn this course $0 \\notin \\mathbb{N}$, read \"$0$ is not a natural number\". Some books include $0$; always check which convention a book uses.\n\nThe **integers** are the whole numbers, positive, negative and zero:\n\n$$\\mathbb{Z} = \\{\\dots, -3, -2, -1, 0, 1, 2, 3, \\dots\\}.$$\n\nEvery natural number is an integer, so $\\mathbb{N} \\subseteq \\mathbb{Z}$ (\"$\\mathbb{N}$ is a subset of $\\mathbb{Z}$\").\n\nA set is **closed** under an operation if doing the operation on members of the set always gives another member. This word explains why we need bigger systems.\n\n- $\\mathbb{N}$ is closed under addition: $3 + 5 = 8 \\in \\mathbb{N}$.\n- $\\mathbb{N}$ is **not** closed under subtraction: $3 - 5 = -2 \\notin \\mathbb{N}$. One failing case is enough (a counterexample, lesson 1.11).\n- $\\mathbb{Z}$ is closed under addition, subtraction and multiplication: $(-4) \\cdot 3 = -12 \\in \\mathbb{Z}$.\n- $\\mathbb{Z}$ is **not** closed under division: $1 \\div 3$ is not an integer.\n\n**Edge cases students get wrong:**\n- $0 \\in \\mathbb{Z}$, but $0 \\notin \\mathbb{N}$ (in this course).\n- $\\frac{8}{4}$ is an integer. It looks like a fraction, but it equals $2$. Membership depends on the number, not on how it is written."
+        },
+        {
+          "type": "check",
+          "question": "A classmate claims \"$\\mathbb{N}$ is closed under subtraction, because $9 - 4 = 5$ is a natural number.\" What is wrong with the argument?",
+          "options": [
+            "Nothing: one example that works is enough to prove closure",
+            "$5$ is not a natural number",
+            "Closure must hold for **every** pair; $4 - 9 = -5 \\notin \\mathbb{N}$ is a counterexample",
+            "Subtraction is never defined on $\\mathbb{N}$"
+          ],
+          "correct": 2,
+          "explanation": "\"Closed\" is an \"every\" claim, so one example cannot prove it, and one counterexample, such as $4 - 9 = -5$, disproves it. $5$ is a natural number, and subtraction is defined on natural numbers; the answer just may fall outside $\\mathbb{N}$."
+        },
+        {
+          "type": "text",
+          "md": "## Rational numbers\n\nA **rational number** is a number that can be written as a fraction of two integers, with a nonzero denominator:\n\n$$\\mathbb{Q} = \\left\\{ \\frac{p}{q} : p, q \\in \\mathbb{Z},\\ q \\neq 0 \\right\\}.$$\n\nRead this as \"the set of all $\\frac{p}{q}$ **such that** $p$ and $q$ are integers and $q$ is not zero\". The colon means \"such that\". The letter $\\mathbb{Q}$ comes from \"quotient\".\n\n**Examples:**\n- $\\frac{3}{4}$ and $-\\frac{5}{2}$ are rational.\n- $0.125 = \\frac{1}{8}$ is rational.\n- $-7 = \\frac{-7}{1}$ is rational. **Every integer is rational**, so $\\mathbb{Z} \\subseteq \\mathbb{Q}$.\n- $0 = \\frac{0}{5}$ is rational. Zero is allowed on top; only the bottom must be nonzero.\n\n**Why $q \\neq 0$?** Division by zero has no meaning (lesson 2.3 shows why), so $\\frac{3}{0}$ is not a number at all.\n\n**Lowest terms.** One rational number has many names: $\\frac{1}{2} = \\frac{2}{4} = \\frac{-3}{-6}$. To pick one standard name, cancel every common factor and make the denominator positive. The result $\\frac{p}{q}$ has $q \\geq 1$ and $\\gcd(p, q) = 1$. Here $\\gcd(p, q)$, the **greatest common divisor**, is the largest positive integer that divides both $p$ and $q$; $\\gcd = 1$ means they share no factor bigger than $1$.\n\n- $\\frac{6}{-4}$ in lowest terms is $\\frac{-3}{2}$.\n- $\\frac{12}{18}$ in lowest terms is $\\frac{2}{3}$, since $\\gcd(12, 18) = 6$.\n\nLowest terms is the key tool in irrationality proofs: it is the \"no common factor\" fact that the contradiction breaks."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each number to a way of writing it that shows it is rational, in lowest terms.",
+          "pairs": [
+            {
+              "left": "$-7$",
+              "right": "$\\frac{-7}{1}$"
+            },
+            {
+              "left": "$0$",
+              "right": "$\\frac{0}{1}$"
+            },
+            {
+              "left": "$0.125$",
+              "right": "$\\frac{1}{8}$"
+            },
+            {
+              "left": "$\\frac{6}{-4}$",
+              "right": "$\\frac{-3}{2}$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Rational numbers as decimals\n\nEvery rational number has a decimal expansion that either **stops** or **eventually repeats**:\n\n- $\\frac{1}{8} = 0.125$ stops.\n- $\\frac{1}{3} = 0.333\\ldots = 0.\\overline{3}$ repeats. The bar means the digits under it repeat for ever.\n- $\\frac{7}{30} = 0.2333\\ldots = 0.2\\overline{3}$ repeats after a short start.\n\nThe reverse is also true: every stopping or repeating decimal is rational. Here is the trick for turning a repeating decimal into a fraction. Let $x = 0.\\overline{45} = 0.454545\\ldots$ The block \"45\" has two digits, so multiply by $100$:\n\n$$100x = 45.4545\\ldots, \\qquad 100x - x = 45, \\qquad x = \\frac{45}{99} = \\frac{5}{11}.$$\n\nThe repeating tails cancel when you subtract.\n\n**An edge case:** $x = 0.\\overline{9}$. Then $10x - x = 9$, so $9x = 9$ and $x = 1$. So $0.999\\ldots$ and $1$ are the **same number**, written two ways.\n\n**A non-example:** $0.101001000100001\\ldots$, where each block of zeros is one longer than the last. It never stops, and it never settles into one repeating block, so it is **not** rational.\n\n**A common mistake:** \"infinitely many digits means irrational\". No: $\\frac{1}{3}$ has infinitely many digits and is rational. What matters is whether the digits eventually repeat."
+        },
+        {
+          "type": "check",
+          "question": "You write $x = 0.\\overline{27}$ and want to turn it into a fraction. Which calculation is correct?",
+          "options": [
+            "$10x - x = 27$, so $x = \\frac{27}{9} = 3$",
+            "$100x - x = 27$, so $x = \\frac{27}{99} = \\frac{3}{11}$",
+            "$x = \\frac{27}{100}$",
+            "It has infinitely many digits, so it is irrational"
+          ],
+          "correct": 1,
+          "explanation": "The repeating block \"27\" has two digits, so multiply by $100$: $100x = 27.2727\\ldots$ and the tails cancel, giving $99x = 27$. Multiplying by $10$ does not line the tails up. $\\frac{27}{100} = 0.27$ stops. And a repeating decimal is always rational."
+        },
+        {
+          "type": "text",
+          "md": "## Irrational numbers\n\nFor now, think of the **real numbers** $\\mathbb{R}$ as all the points on the number line, every number with a decimal expansion. Lesson 2.2 describes $\\mathbb{R}$ precisely.\n\nA real number that is **not** rational is called **irrational**. The set of irrational numbers is written $\\mathbb{R} \\setminus \\mathbb{Q}$, read \"$\\mathbb{R}$ minus $\\mathbb{Q}$\": everything in $\\mathbb{R}$ that is not in $\\mathbb{Q}$ (lesson 1.4). The four systems are nested:\n\n$$\\mathbb{N} \\subseteq \\mathbb{Z} \\subseteq \\mathbb{Q} \\subseteq \\mathbb{R}.$$\n\n**Examples:**\n- $\\sqrt{2}$ is irrational. You proved this in lesson 1.9; the order block below lets you rebuild that proof.\n- $\\sqrt{3}$, $\\sqrt{5}$ and $\\sqrt{6}$ are irrational. In fact, for a natural number $n$, $\\sqrt{n}$ is rational **only** when $n$ is a perfect square.\n- $\\pi$ is irrational. This is true but much harder to prove, so we will just use it.\n\n**Edge cases:**\n- $\\sqrt{9} = 3$ and $\\sqrt{\\tfrac{4}{9}} = \\tfrac{2}{3}$ are rational. A square root sign does not make a number irrational.\n- $\\frac{22}{7}$ is rational. It is a good approximation to $\\pi$, but it is not $\\pi$.\n\n**How irrationality proofs go.** \"Irrational\" means \"**not** rational\", a negative statement. So we use contradiction: assume the number equals $\\frac{p}{q}$ in lowest terms, and show that $p$ and $q$ share a factor after all. In the $\\sqrt{2}$ proof, the shared factor is $2$."
+        },
+        {
+          "type": "order",
+          "prompt": "Rebuild the proof from lesson 1.9 that $\\sqrt{2}$ is irrational. Put the steps in order.",
+          "items": [
+            "Suppose, for a contradiction, that $\\sqrt{2} = \\frac{p}{q}$ with $p, q \\in \\mathbb{Z}$, $q \\geq 1$ and $\\gcd(p, q) = 1$.",
+            "Squaring gives $2 = \\frac{p^2}{q^2}$, so $p^2 = 2q^2$. Hence $p^2$ is even, and so $p$ is even.",
+            "Write $p = 2m$ with $m \\in \\mathbb{Z}$. Then $4m^2 = 2q^2$, so $q^2 = 2m^2$ is even, and so $q$ is even.",
+            "Now $2$ divides both $p$ and $q$, contradicting $\\gcd(p, q) = 1$. So $\\sqrt{2}$ is irrational. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Arithmetic with rationals and irrationals\n\n**Rationals stay rational.** $\\mathbb{Q}$ is closed under addition, subtraction and multiplication, and under division by a nonzero number. You can see this from the fraction rules: for integers $a, b, c, d$ with $b, d \\neq 0$,\n\n$$\\frac{a}{b} + \\frac{c}{d} = \\frac{ad + bc}{bd}, \\qquad \\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}.$$\n\nThe tops and bottoms are again integers, and $bd \\neq 0$. Subtraction and division work the same way.\n\n**Rational with irrational.** If $r$ is rational and $x$ is irrational, then:\n\n- $r + x$ is irrational. *Example:* $3 + \\sqrt{2}$.\n- $rx$ is irrational, **provided $r \\neq 0$**. *Example:* $\\frac{5}{7}\\sqrt{2}$ and $\\sqrt{12} = 2\\sqrt{3}$.\n\n**Edge case:** $0 \\cdot \\sqrt{2} = 0$, which is rational. That is why the condition $r \\neq 0$ is there.\n\nThe proof idea is short. If $r + x$ were some rational $s$, then $x = s - r$ would be rational too, because $\\mathbb{Q}$ is closed under subtraction. That contradicts $x$ being irrational. The steps below write this out in full.\n\n**Irrational with irrational:** no rule at all. The answer can go either way, as the warning after the proof shows."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: rational plus irrational is irrational",
+          "steps": [
+            {
+              "title": "Set up the contradiction",
+              "md": "Let $r \\in \\mathbb{Q}$ and let $x$ be irrational. Suppose, for a contradiction, that $r + x$ is rational. Call it $s$, so $r + x = s$ with $s \\in \\mathbb{Q}$."
+            },
+            {
+              "title": "Solve for the irrational number",
+              "md": "Subtract $r$ from both sides: $x = s - r$.\n\nThis is the key move. We get $x$ on its own, because $x$ is the one number we know something definite about."
+            },
+            {
+              "title": "Use closure of the rationals",
+              "md": "$s$ and $r$ are both rational, and $\\mathbb{Q}$ is closed under subtraction: if $s = \\frac{a}{b}$ and $r = \\frac{c}{d}$ then $s - r = \\frac{ad - bc}{bd}$, a fraction of integers with $bd \\neq 0$. So $x = s - r$ is rational."
+            },
+            {
+              "title": "Reach the contradiction",
+              "md": "But $x$ is irrational. A number cannot be both, so our assumption was false, and $r + x$ is irrational. $\\blacksquare$\n\nThe product works the same way: if $rx = s$ with $r \\neq 0$, then $x = \\frac{s}{r}$ is rational. Dividing by $r$ is exactly where $r \\neq 0$ is needed."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we rearrange $r + x = s$ into $x = s - r$, rather than working with $r + x$ directly?",
+          "options": [
+            "Because subtraction is easier than addition",
+            "Because $x$ is the only number we know a fact about (it is irrational), so isolating it lets the closure of $\\mathbb{Q}$ produce a contradiction",
+            "Because $s - r$ is always irrational",
+            "Because it shows $r = 0$"
+          ],
+          "correct": 1,
+          "explanation": "We know $r$ and $s$ are rational and $x$ is irrational. Writing $x = s - r$ expresses $x$ using only rationals, so closure forces $x \\in \\mathbb{Q}$, contradicting what we know. $s - r$ is rational, not irrational, and nothing in the proof says $r = 0$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Irrationals are not closed under + and ×",
+          "md": "The sum or product of two irrational numbers can be rational:\n\n$$\\sqrt{2} + (-\\sqrt{2}) = 0, \\qquad \\sqrt{2} \\cdot \\sqrt{2} = 2, \\qquad \\sqrt{2} \\cdot \\sqrt{8} = \\sqrt{16} = 4.$$\n\nIt can also be irrational: $\\sqrt{2} + \\sqrt{2} = 2\\sqrt{2}$. So \"irrational op irrational\" has no guaranteed answer. Only \"rational op irrational\" does (with $r \\neq 0$ for products)."
+        },
+        {
+          "type": "check",
+          "question": "Which number is irrational?",
+          "options": [
+            "$0.\\overline{142857}$",
+            "$\\sqrt{49}/3$",
+            "$2 - \\sqrt{3}$",
+            "$\\frac{-8}{6}$"
+          ],
+          "correct": 2,
+          "explanation": "$2 - \\sqrt{3} = 2 + (-1)\\sqrt{3}$ is a rational plus an irrational, hence irrational. The repeating decimal equals $\\frac{1}{7}$, $\\sqrt{49}/3 = \\frac{7}{3}$, and $\\frac{-8}{6} = \\frac{-4}{3}$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Natural numbers $\\mathbb{N}$",
+              "back": "The **counting numbers** $\\{1, 2, 3, \\dots\\}$. In this course $0 \\notin \\mathbb{N}$.\n\n*Example:* $7 \\in \\mathbb{N}$, but $-7 \\notin \\mathbb{N}$ and $0 \\notin \\mathbb{N}$."
+            },
+            {
+              "front": "Integers $\\mathbb{Z}$",
+              "back": "All **whole numbers**: positive, negative and zero.\n\n*Example:* $-3, 0, \\frac{8}{4} \\in \\mathbb{Z}$, but $\\frac{1}{2} \\notin \\mathbb{Z}$."
+            },
+            {
+              "front": "Rational number",
+              "back": "A number equal to $\\frac{p}{q}$ with $p, q$ **integers** and $q \\neq 0$.\n\n*Example:* $-7 = \\frac{-7}{1}$ and $0.\\overline{3} = \\frac{1}{3}$."
+            },
+            {
+              "front": "Lowest terms",
+              "back": "The form $\\frac{p}{q}$ with $q \\geq 1$ and $\\gcd(p, q) = 1$: **no common factor** above $1$.\n\n*Example:* $\\frac{12}{18}$ in lowest terms is $\\frac{2}{3}$."
+            },
+            {
+              "front": "Irrational number",
+              "back": "A real number that is **not** rational. Its decimal never stops and never repeats.\n\n*Example:* $\\sqrt{2}$, $\\pi$, $3 + \\sqrt{2}$. *Non-example:* $\\sqrt{9} = 3$."
+            },
+            {
+              "front": "Closed under an operation",
+              "back": "Applying the operation to members of the set **always** gives a member.\n\n*Example:* $\\mathbb{Z}$ is closed under subtraction; $\\mathbb{N}$ is not, since $3 - 5 = -2$."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\sqrt{3}$ is irrational",
+          "problem": "Prove that $\\sqrt{3}$ is irrational. You may use this fact: **if $n^2$ is a multiple of $3$, then $n$ is a multiple of $3$.** (Reason: every integer is $3k$, $3k + 1$ or $3k + 2$, and $(3k+1)^2 = 3(3k^2 + 2k) + 1$ and $(3k+2)^2 = 3(3k^2 + 4k + 1) + 1$ both leave remainder $1$.)\n\nFollow the shape of the $\\sqrt{2}$ proof before opening the solution.",
+          "solution": "**Proof.** Suppose, for a contradiction, that $\\sqrt{3} = \\frac{p}{q}$ with $p, q \\in \\mathbb{Z}$, $q \\geq 1$ and $\\gcd(p, q) = 1$.\n\nSquaring, $3 = \\frac{p^2}{q^2}$, so $p^2 = 3q^2$. So $p^2$ is a multiple of $3$, and by the fact above, $p$ is a multiple of $3$: $p = 3m$ for some $m \\in \\mathbb{Z}$.\n\nSubstituting, $9m^2 = 3q^2$, so $q^2 = 3m^2$. So $q^2$ is a multiple of $3$, and therefore $q$ is a multiple of $3$.\n\nNow $3$ divides both $p$ and $q$, contradicting $\\gcd(p, q) = 1$. So $\\sqrt{3}$ is irrational. $\\blacksquare$\n\n**Check your version:** did you start with $\\frac{p}{q}$ in lowest terms? Did you use the fact about multiples of $3$ (not \"even\")? Did you say exactly which assumption is contradicted?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is $\\pi = \\frac{22}{7}$?",
+              "a": "No. $\\frac{22}{7} = 3.142857\\ldots$ is only an approximation; $\\pi = 3.141592\\ldots$ is irrational (proved by Lambert in 1761). They already differ in the third decimal place."
+            },
+            {
+              "q": "Is a decimal with infinitely many digits automatically irrational?",
+              "a": "No. $\\frac{1}{3} = 0.333\\ldots$ has infinitely many digits but is rational. Irrational numbers are those whose decimal expansions neither stop nor **eventually repeat**."
+            },
+            {
+              "q": "Is $\\sqrt{n}$ irrational for every natural number $n$?",
+              "a": "No. $\\sqrt{n}$ is rational exactly when $n$ is a perfect square ($\\sqrt{9} = 3$), and irrational otherwise ($\\sqrt{8}$, $\\sqrt{10}$)."
+            },
+            {
+              "q": "Why does the $\\sqrt{4}$ version of the proof fail?",
+              "a": "Try it: $p^2 = 4q^2$ gives $p = 2q$, which is no contradiction at all, since $\\frac{2}{1}$ is in lowest terms. The proof only works when the \"divides $n^2$ implies divides $n$\" step forces a common factor, which happens for $2$ and $3$ but not when $n$ is a perfect square."
+            },
+            {
+              "q": "Isn't $\\sqrt{2}$ \"just a number on my calculator\"?",
+              "a": "Your calculator shows $1.4142135\\ldots$ to a few digits, which is a rational approximation. No finite or repeating decimal squares to exactly $2$. That a real number $\\sqrt{2}$ exists at all is something we prove later, from the completeness property (lesson 2.10)."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $\\mathbb{N} = \\{1, 2, 3, \\dots\\}$ (no $0$ here), and $\\mathbb{N} \\subseteq \\mathbb{Z} \\subseteq \\mathbb{Q} \\subseteq \\mathbb{R}$.\n- A **rational** number is $\\frac{p}{q}$ with $p, q \\in \\mathbb{Z}$, $q \\neq 0$, and can always be put in **lowest terms**. Its decimal stops or eventually repeats.\n- An **irrational** number is a real number that is not rational, such as $\\sqrt{2}$, $\\sqrt{3}$ and $\\pi$. $\\sqrt{n}$ is rational only for perfect squares $n$.\n- Irrationality proofs use contradiction: assume lowest terms, then find a common factor.\n- Rational $+$ irrational is irrational; nonzero rational $\\times$ irrational is irrational. Irrational with irrational can go either way."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which of these numbers is irrational?",
+          "options": [
+            "$0.125$",
+            "$\\frac{22}{7}$",
+            "$\\sqrt{9}$",
+            "$\\sqrt{12}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$\\sqrt{12} = 2\\sqrt{3}$, a nonzero rational times an irrational, so it is irrational. $0.125 = \\frac{1}{8}$, $\\frac{22}{7}$ is a fraction, and $\\sqrt{9} = 3$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The sum of two irrational numbers is always irrational.",
+          "answer": [
+            false
+          ],
+          "explanation": "Counterexample: $\\sqrt{2}$ and $-\\sqrt{2}$ are irrational, but their sum is $0 \\in \\mathbb{Q}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following are rational numbers?",
+          "options": [
+            "$0.\\overline{45}$",
+            "$\\frac{\\sqrt{16}}{3}$",
+            "$\\pi$",
+            "$\\frac{1}{7}$",
+            "$\\frac{\\sqrt{2}}{2}$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "$0.\\overline{45} = \\frac{45}{99} = \\frac{5}{11}$, $\\frac{\\sqrt{16}}{3} = \\frac{4}{3}$ and $\\frac{1}{7}$ are rational. $\\pi$ is irrational, and $\\frac{\\sqrt{2}}{2}$ is a nonzero rational times $\\sqrt{2}$, hence irrational."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $r$ is a nonzero rational number and $x$ is irrational, then $rx$ is irrational.",
+          "answer": [
+            true
+          ],
+          "explanation": "If $rx = s \\in \\mathbb{Q}$, then $x = s/r \\in \\mathbb{Q}$, a contradiction. The hypothesis $r \\neq 0$ is essential, since $0 \\cdot x = 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof that $\\sqrt{2}$ is irrational, we write $\\sqrt{2} = p/q$ in lowest terms and derive $p^2 = 2q^2$. What is the next deduction?",
+          "options": [
+            "$q$ is odd",
+            "$p$ is even",
+            "$p = 2q$",
+            "$p$ and $q$ are both odd"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$p^2 = 2q^2$ is even, and the square of an odd number is odd, so $p$ must be even. Writing $p = 2m$ then forces $q$ to be even too, contradicting lowest terms. Nothing yet tells us about $q$, and $p = 2q$ would mean $p^2 = 4q^2$, not $2q^2$."
+        },
+        {
+          "type": "short",
+          "prompt": "How many integers $n$ with $1 \\leq n \\leq 20$ have $\\sqrt{n}$ rational?",
+          "answer": [
+            "4",
+            "four"
+          ],
+          "explanation": "$\\sqrt{n}$ is rational exactly when $n$ is a perfect square. The perfect squares in range are $1, 4, 9, 16$: four of them."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In this course, $0 \\in \\mathbb{N}$.",
+          "answer": [
+            false
+          ],
+          "explanation": "This course uses $\\mathbb{N} = \\{1, 2, 3, \\dots\\}$, so $0 \\notin \\mathbb{N}$. ($0$ is still an integer and a rational number.) Some books do include $0$, so always check the convention."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every integer is a rational number.",
+          "answer": [
+            true
+          ],
+          "explanation": "Any integer $n$ can be written as $\\frac{n}{1}$, a fraction of integers with nonzero denominator. So $\\mathbb{Z} \\subseteq \\mathbb{Q}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these numbers are integers, that is, elements of $\\mathbb{Z}$? Select all that apply.",
+          "options": [
+            "$-3$",
+            "$0$",
+            "$\\frac{8}{4}$",
+            "$\\frac{1}{2}$",
+            "$\\sqrt{16}$"
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            4
+          ],
+          "explanation": "$-3$ and $0$ are integers, $\\frac{8}{4} = 2$ and $\\sqrt{16} = 4$. Only $\\frac{1}{2}$ lies strictly between two integers. Membership depends on the value, not on how it is written."
+        },
+        {
+          "type": "short",
+          "prompt": "Write $\\frac{-6}{8}$ in lowest terms $\\frac{p}{q}$ with $q \\geq 1$. What is $q$?",
+          "answer": [
+            "4"
+          ],
+          "explanation": "$\\gcd(6, 8) = 2$, so $\\frac{-6}{8} = \\frac{-3}{4}$. The denominator is $q = 4$ and the sign sits on top."
+        },
+        {
+          "type": "short",
+          "prompt": "Write $0.\\overline{27}$ as a fraction in lowest terms. What is the denominator?",
+          "answer": [
+            "11"
+          ],
+          "explanation": "Let $x = 0.\\overline{27}$. Then $100x - x = 27$, so $x = \\frac{27}{99} = \\frac{3}{11}$. The denominator is $11$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which number equals $0.\\overline{9} = 0.999\\ldots$?",
+          "options": [
+            "A number just below $1$",
+            "$1$",
+            "$0.9$",
+            "It is not a real number"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Let $x = 0.\\overline{9}$. Then $10x - x = 9.\\overline{9} - 0.\\overline{9} = 9$, so $x = 1$. There is no real number \"just below $1$\" that is closer than every other; $0.\\overline{9}$ and $1$ are two names for the same number."
+        },
+        {
+          "type": "single",
+          "prompt": "Which example shows that the irrational numbers are **not** closed under multiplication?",
+          "options": [
+            "$\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}$",
+            "$\\sqrt{2} \\cdot \\sqrt{8} = 4$",
+            "$2 \\cdot \\sqrt{2} = 2\\sqrt{2}$",
+            "$\\pi \\cdot \\pi = \\pi^2$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\sqrt{2}$ and $\\sqrt{8}$ are both irrational, but their product $\\sqrt{16} = 4$ is rational. $\\sqrt{6}$ is irrational, so it fits closure; $2$ is rational, so the third option is not a product of two irrationals; and $\\pi^2$ is in fact irrational."
+        }
+      ]
+    },
+    {
+      "slug": "2-2-properties-of-real-numbers",
+      "title": "Properties of real numbers",
+      "summary": "$\\mathbb{R}$ is a complete ordered field: three families of rules that describe it.",
+      "est_minutes": 30,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "In this lesson",
+          "md": "**You will learn to:**\n- explain why analysis describes $\\mathbb{R}$ by a list of axioms\n- sort a property of real numbers into one of three families: **field**, **order** or **completeness**\n- say what a field, an ordered field and a complete ordered field are, with examples and non-examples\n- see why $\\mathbb{Q}$ has every property of $\\mathbb{R}$ except completeness\n\n**You need:** $\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{Q}$ and irrational numbers (lesson 2.1), and what an axiom is (lesson 1.1: a statement we accept without proof as a starting point)."
+        },
+        {
+          "type": "text",
+          "md": "## What exactly is a real number?\n\nIn lesson 2.1 we thought of $\\mathbb{R}$ as \"all the points on the number line\". That picture is useful, but you cannot prove anything from a picture. Try to prove $\\frac{1}{2} > 0$, or that $\\sqrt{2}$ exists, using only \"the number line\" and you will see the problem: what are you allowed to assume?\n\nAnalysis answers this by listing the properties of $\\mathbb{R}$ we are allowed to use, as **axioms**, and proving everything else from them. Real numbers can also be built from $\\mathbb{Q}$ (by methods called Dedekind cuts or Cauchy sequences), but for this course the list is all you need.\n\nThe axioms fall into three families:\n\n- **Field properties:** rules for $+$ and $\\times$, such as $a + b = b + a$. Lesson 2.3 lists them all.\n- **Order properties:** rules for $<$, such as \"if $a < b$ then $a + c < b + c$\". Lesson 2.4 lists them all.\n- **The completeness property:** a single rule that says the number line has no gaps. Lesson 2.10 is about it.\n\nIn one sentence:\n\n$$\\mathbb{R} \\text{ is a complete ordered field.}$$\n\nThis lesson explains what each word in that sentence means, so you can sort any rule into its family. The details come in the next lessons."
+        },
+        {
+          "type": "text",
+          "md": "## Family 1: field properties\n\nA **field** is a set with two operations, $+$ and $\\times$, where you can add, subtract, multiply and divide (except by $0$), and the usual rules of algebra hold. For example:\n\n- order does not matter: $a + b = b + a$ and $ab = ba$;\n- grouping does not matter: $(a + b) + c = a + (b + c)$;\n- there are special numbers $0$ and $1$ with $a + 0 = a$ and $a \\cdot 1 = a$;\n- every $a$ has a negative $-a$ with $a + (-a) = 0$;\n- every $a \\neq 0$ has a reciprocal $a^{-1} = \\frac{1}{a}$ with $a \\cdot a^{-1} = 1$;\n- you can expand brackets: $a(b + c) = ab + ac$.\n\n**Examples of fields:** $\\mathbb{R}$, and also $\\mathbb{Q}$. Lesson 2.1 showed that sums, differences, products and quotients of rationals are rational, so you never leave $\\mathbb{Q}$.\n\n**Non-examples:**\n- $\\mathbb{Z}$ is **not** a field. You can add, subtract and multiply, but $2$ has no reciprocal in $\\mathbb{Z}$: there is no integer $b$ with $2b = 1$.\n- $\\mathbb{N}$ is **not** a field. It has no $0$, and $3$ has no negative in $\\mathbb{N}$.\n\n**The edge case people forget:** division by $0$ is never allowed, even in a field. The reciprocal rule only applies to $a \\neq 0$. Lesson 2.3 proves that $0$ can never have a reciprocal."
+        },
+        {
+          "type": "check",
+          "question": "A student says \"$\\mathbb{Z}$ is a field, because adding, subtracting or multiplying two integers always gives an integer.\" Why is this wrong?",
+          "options": [
+            "Adding two integers can give a non-integer",
+            "A field also needs a reciprocal for every nonzero element, and $2$ has no reciprocal in $\\mathbb{Z}$",
+            "$\\mathbb{Z}$ has no $0$",
+            "Multiplication of integers is not commutative"
+          ],
+          "correct": 1,
+          "explanation": "$\\mathbb{Z}$ is closed under $+$, $-$ and $\\times$, and contains $0$, and $ab = ba$ holds. What fails is division: $\\frac{1}{2} \\notin \\mathbb{Z}$, so $2$ has no reciprocal in $\\mathbb{Z}$."
+        },
+        {
+          "type": "text",
+          "md": "## Family 2: order properties\n\nA field lets you calculate. To **compare** numbers you need an order: a relation $<$, read \"is less than\". We write $a > b$ for $b < a$, and $a \\leq b$ for \"$a < b$ or $a = b$\".\n\nThe order properties are rules like these, for all real $a, b, c$:\n\n- **Trichotomy:** exactly one of $a < b$, $a = b$, $a > b$ is true.\n- **Transitivity:** if $a < b$ and $b < c$, then $a < c$.\n- **Adding keeps order:** if $a < b$, then $a + c < b + c$.\n- **Multiplying by a positive keeps order:** if $a < b$ and $c > 0$, then $ac < bc$.\n\nA field with a relation $<$ obeying these rules is called an **ordered field**.\n\n**Examples:** $\\mathbb{R}$ and $\\mathbb{Q}$ with the usual $<$. *Edge case:* $-5 < -2$, because $-2$ is further right on the number line, even though $5 > 2$.\n\n**A non-example to keep in mind:** the complex numbers, which contain $i$ with $i^2 = -1$, form a field, but no order on them obeys these rules. Lesson 2.4 shows why.\n\n**The trap:** \"multiplying by a positive keeps order\" says nothing about negatives. From $2 < 3$, multiplying by $-1$ gives $-2 > -3$: the inequality **flips**. Lesson 2.4 proves this from the rules above."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each statement to the family of properties it belongs to",
+          "pairs": [
+            {
+              "left": "$a + (b + c) = (a + b) + c$",
+              "right": "Field (algebraic) property"
+            },
+            {
+              "left": "If $a < b$ and $b < c$ then $a < c$",
+              "right": "Order property"
+            },
+            {
+              "left": "Every nonempty set bounded above has a supremum",
+              "right": "Completeness property"
+            },
+            {
+              "left": "Each $a \\neq 0$ has some $a^{-1}$ with $a a^{-1} = 1$",
+              "right": "Field property (multiplicative inverses)"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Family 3: completeness\n\n$\\mathbb{Q}$ is an ordered field, just like $\\mathbb{R}$. So what is the difference? $\\mathbb{Q}$ has **gaps**.\n\nLook at the set of rationals whose square is less than $2$:\n\n$$A = \\{x \\in \\mathbb{Q} : x^2 < 2\\}.$$\n\nIt contains $1$, $1.4$, $1.41$, $1.414$, and so on, creeping up towards $\\sqrt{2}$. Two words help describe it:\n\n- An **upper bound** of a set is a number at least as big as every element. $2$ is an upper bound of $A$; so are $1.5$ and $1.42$.\n- A **least upper bound** is an upper bound that is smaller than every other upper bound: the best possible ceiling. It is also called the **supremum**. (Lessons 2.8 and 2.9 treat both ideas carefully.)\n\nIn $\\mathbb{R}$, the least upper bound of $A$ is $\\sqrt{2}$. But $\\sqrt{2}$ is not rational (lesson 2.1). Any rational upper bound, such as $1.415$, can be beaten by a slightly smaller rational upper bound, such as $1.4143$. So **inside $\\mathbb{Q}$, the set $A$ has no least upper bound**. There is a hole where $\\sqrt{2}$ should be.\n\nThe **completeness property** says this never happens in $\\mathbb{R}$:\n\n**Every nonempty set of real numbers that has an upper bound has a least upper bound in $\\mathbb{R}$.**\n\n**Edge case:** some subsets of $\\mathbb{Q}$ do have a rational least upper bound. $\\{x \\in \\mathbb{Q} : x < 1\\}$ has least upper bound $1$. Completeness fails because of sets like $A$, not every set.\n\n**Why \"nonempty\" and \"has an upper bound\"?** The empty set has no least upper bound, and nor does $\\mathbb{N}$, which has no upper bound at all (lesson 2.11)."
+        },
+        {
+          "type": "check",
+          "question": "Which statement explains why $\\mathbb{Q}$ is **not** complete?",
+          "options": [
+            "$\\mathbb{Q}$ has no upper bound",
+            "The set $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$ is bounded above but has no least upper bound in $\\mathbb{Q}$",
+            "The set $\\{x \\in \\mathbb{Q} : x < 1\\}$ has no least upper bound in $\\mathbb{Q}$",
+            "$\\mathbb{Q}$ is not closed under division"
+          ],
+          "correct": 1,
+          "explanation": "The only candidate for the least upper bound of $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$ is $\\sqrt{2}$, which is irrational. The set $\\{x \\in \\mathbb{Q} : x < 1\\}$ does have a rational least upper bound, namely $1$. Completeness is about sets that **are** bounded above, so \"$\\mathbb{Q}$ has no upper bound\" is beside the point. And $\\mathbb{Q}$ is closed under division by nonzero numbers."
+        },
+        {
+          "type": "diagram",
+          "title": "How the axioms build the real line",
+          "nodes": [
+            "Field axioms: arithmetic",
+            "Order axioms: inequalities",
+            "Ordered field (Q already qualifies)",
+            "Add completeness",
+            "Complete ordered field = R"
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Why these three families are enough\n\nTwo facts make the list of axioms worth learning.\n\n**They pin $\\mathbb{R}$ down.** It can be proved that any two complete ordered fields are \"the same up to renaming\": their elements can be matched one to one so that sums, products and order all match up. So \"a complete ordered field\" describes exactly one structure, and we call it $\\mathbb{R}$.\n\n**They separate what is special about $\\mathbb{R}$.** Everything that follows from the field and order axioms alone is also true in $\\mathbb{Q}$. For example, between any two different rationals there is another rational (their average). The things that are true in $\\mathbb{R}$ but false in $\\mathbb{Q}$ all depend on completeness:\n\n- $x^2 = 2$ has a solution (lesson 2.10);\n- every bounded increasing sequence has a limit (lesson 3.8);\n- a continuous function that goes from negative to positive must cross zero (lesson 5.9).\n\nSo when a proof in this course uses completeness, it is doing something $\\mathbb{Q}$ cannot. When it only uses field and order rules, the same argument works in $\\mathbb{Q}$.\n\nNext comes a first proof that uses only field and order properties."
+        },
+        {
+          "type": "steps",
+          "title": "A first proof from the properties: the midpoint lies between $a$ and $b$",
+          "steps": [
+            {
+              "title": "State the goal",
+              "md": "Let $a, b \\in \\mathbb{R}$ with $a < b$. We want to prove\n\n$$a < \\frac{a + b}{2} < b.$$\n\nWe may use only field and order properties."
+            },
+            {
+              "title": "Add a to both sides",
+              "md": "\"Adding keeps order\": add $a$ to both sides of $a < b$ to get $a + a < a + b$, that is, $2a < a + b$."
+            },
+            {
+              "title": "Add b to both sides",
+              "md": "Add $b$ to both sides of $a < b$ to get $a + b < b + b$, that is, $a + b < 2b$. Together:\n\n$$2a < a + b < 2b.$$\n\nWe start from the same inequality $a < b$ twice, adding a different number each time."
+            },
+            {
+              "title": "Multiply by one half",
+              "md": "\"Multiplying by a positive keeps order\", and $\\frac{1}{2} > 0$ (lesson 2.4 proves this from the axioms). Multiplying everything by $\\frac{1}{2}$ gives\n\n$$a < \\frac{a + b}{2} < b. \\qquad \\blacksquare$$\n\nNotice that we needed $\\frac{1}{2}$ to be **positive**. Multiplying by a negative number would flip the inequalities."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the last step we multiply $2a < a + b < 2b$ by $\\frac{1}{2}$. Why must we know that $\\frac{1}{2} > 0$?",
+          "options": [
+            "Because $\\frac{1}{2}$ is not an integer",
+            "Because the order rule only lets us multiply both sides by a **positive** number and keep the direction of $<$",
+            "Because $\\frac{1}{2}$ must be rational",
+            "We don't: multiplying by any number keeps an inequality"
+          ],
+          "correct": 1,
+          "explanation": "The rule is \"if $a < b$ and $c > 0$ then $ac < bc$\". Multiplying by a negative number reverses the inequality, and multiplying by $0$ turns it into $0 = 0$. Whether $\\frac{1}{2}$ is an integer or rational does not matter here."
+        },
+        {
+          "type": "order",
+          "prompt": "Put these steps in order to prove: **between any two different rationals there is another rational.**",
+          "items": [
+            "Let $r, s \\in \\mathbb{Q}$ with $r < s$.",
+            "By the midpoint result, $m = \\frac{r + s}{2}$ satisfies $r < m < s$.",
+            "$r + s$ is rational, and so is $\\frac{1}{2}$, so their product $m$ is rational, since $\\mathbb{Q}$ is closed under $+$ and $\\times$.",
+            "So $m$ is a rational number strictly between $r$ and $s$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Field",
+              "back": "A set with $+$ and $\\times$ where you can **add, subtract, multiply and divide** (not by $0$) with the usual algebra rules.\n\n*Example:* $\\mathbb{Q}$, $\\mathbb{R}$. *Non-example:* $\\mathbb{Z}$."
+            },
+            {
+              "front": "Ordered field",
+              "back": "A field with a relation $<$ obeying trichotomy, transitivity, and \"adding, or multiplying by a **positive**, keeps order\".\n\n*Example:* $\\mathbb{Q}$ with the usual $<$."
+            },
+            {
+              "front": "Upper bound",
+              "back": "A number **at least as big as every element** of a set.\n\n*Example:* $2$ and $1.5$ are upper bounds of $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$."
+            },
+            {
+              "front": "Least upper bound (supremum)",
+              "back": "An upper bound that is **smaller than every other** upper bound.\n\n*Example:* the least upper bound of $\\{x \\in \\mathbb{R} : x < 1\\}$ is $1$."
+            },
+            {
+              "front": "Completeness property",
+              "back": "Every **nonempty** set of reals that has an upper bound has a least upper bound in $\\mathbb{R}$.\n\n*Example:* $\\{x \\in \\mathbb{R} : x^2 < 2\\}$ has least upper bound $\\sqrt{2}$."
+            },
+            {
+              "front": "Complete ordered field",
+              "back": "An ordered field with the **completeness property**. Up to renaming, $\\mathbb{R}$ is the only one.\n\n*Non-example:* $\\mathbb{Q}$, which has gaps."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a point one third of the way from $a$ to $b$",
+          "problem": "Let $a < b$. Using only the field and order properties, prove that\n\n$$a < \\frac{2a + b}{3} < b.$$\n\nYou may use $2 > 0$ and $\\frac{1}{3} > 0$ (lesson 2.4 proves both). Follow the midpoint proof before opening the solution.",
+          "solution": "**Proof.** Start from $a < b$.\n\nAdd $2a$ to both sides: $a + 2a < b + 2a$, that is, $3a < 2a + b$.\n\nFor the other half we want $2a + b$ on the **left**. Multiply $a < b$ by $2$, which is positive, to get $2a < 2b$. Then add $b$ to both sides: $2a + b < 3b$.\n\nTogether, $3a < 2a + b < 3b$. Multiplying by $\\frac{1}{3} > 0$ keeps the order, so\n\n$$a < \\frac{2a + b}{3} < b. \\qquad \\blacksquare$$\n\n**Check your version:** did you name the rule used at each step (\"adding keeps order\", \"multiplying by a positive keeps order\")? Did you say why the number you multiplied by is positive?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Isn't $\\mathbb{R}$ just \"all infinite decimals\"?",
+              "a": "That is one way to picture it, but it is awkward to work with: adding two infinite decimals means carrying from infinitely far to the right, and $0.\\overline{9} = 1$ means some numbers have two decimal names. The axioms say what we need without these headaches."
+            },
+            {
+              "q": "Are $\\mathbb{Q}$ and $\\mathbb{R}$ the only ordered fields?",
+              "a": "No. For example, the numbers $a + b\\sqrt{2}$ with $a, b \\in \\mathbb{Q}$ form an ordered field strictly between $\\mathbb{Q}$ and $\\mathbb{R}$. But $\\mathbb{R}$ is the only **complete** ordered field."
+            },
+            {
+              "q": "Is there a smallest positive real number?",
+              "a": "No. If $x > 0$, then $0 < \\frac{x}{2} < x$ by the midpoint result with $a = 0$, $b = x$. So for every positive number there is a smaller one. In the same way, there is no \"next\" real number after a given one."
+            },
+            {
+              "q": "Is $\\infty$ a real number?",
+              "a": "No. It is not an element of $\\mathbb{R}$, and the field rules would break if it were ($\\infty + 1 = \\infty$ would force $1 = 0$). Later, \"$x_n \\to \\infty$\" is shorthand for a precise statement about real numbers (lesson 3.3)."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- In analysis, $\\mathbb{R}$ is described by axioms: **$\\mathbb{R}$ is a complete ordered field**.\n- **Field** properties are the rules of $+$ and $\\times$. $\\mathbb{Q}$ and $\\mathbb{R}$ are fields; $\\mathbb{Z}$ and $\\mathbb{N}$ are not.\n- **Order** properties are the rules of $<$: trichotomy, transitivity, and adding or multiplying by a positive keeps order.\n- **Completeness**: every nonempty set of reals with an upper bound has a least upper bound. $\\mathbb{Q}$ fails this at gaps like $\\sqrt{2}$.\n- Arguments using only field and order rules also work in $\\mathbb{Q}$; anything special to $\\mathbb{R}$ needs completeness."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which property distinguishes $\\mathbb{R}$ from $\\mathbb{Q}$?",
+          "options": [
+            "Commutativity of multiplication",
+            "The distributive law",
+            "The completeness property",
+            "Trichotomy of the order"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\mathbb{Q}$ is an ordered field, so it has all the algebraic and order properties, including commutativity, distributivity and trichotomy. It fails completeness: for example $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$ has no least upper bound in $\\mathbb{Q}$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\mathbb{Q}$, with the usual operations and order, is an ordered field.",
+          "answer": [
+            true
+          ],
+          "explanation": "Sums, products, negatives and (nonzero) reciprocals of rationals are rational, and the usual order on $\\mathbb{Q}$ satisfies all the order axioms."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these, with their usual operations, are ordered fields?",
+          "options": [
+            "$\\mathbb{Q}$",
+            "$\\mathbb{Z}$",
+            "$\\mathbb{R}$",
+            "$\\mathbb{N}$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$\\mathbb{Q}$ and $\\mathbb{R}$ are ordered fields. $\\mathbb{Z}$ is not a field ($2$ has no multiplicative inverse in $\\mathbb{Z}$), and $\\mathbb{N}$ lacks even additive inverses and $0$."
+        },
+        {
+          "type": "single",
+          "prompt": "For real numbers $a < b$, which number is guaranteed to lie strictly between $a$ and $b$?",
+          "options": [
+            "$\\frac{a + b}{2}$",
+            "$\\sqrt{ab}$",
+            "$a + 1$",
+            "$\\frac{b - a}{2}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The midpoint satisfies $a < \\frac{a+b}{2} < b$ for all $a < b$. $\\sqrt{ab}$ need not exist (e.g. $a = -1$, $b = 2$), $a + 1$ can exceed $b$ (e.g. $a = 0$, $b = \\frac{1}{2}$), and $\\frac{b-a}{2}$ need not exceed $a$ (e.g. $a = 5$, $b = 6$)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The set $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$ has a least upper bound that is itself a rational number.",
+          "answer": [
+            false
+          ],
+          "explanation": "Its least upper bound in $\\mathbb{R}$ is $\\sqrt{2}$, which is irrational. Within $\\mathbb{Q}$ the set has upper bounds but no least one; this is exactly the failure of completeness in $\\mathbb{Q}$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which statement is an **order** property rather than an algebraic one?",
+          "options": [
+            "$a(b + c) = ab + ac$",
+            "$a + 0 = a$",
+            "$ab = ba$",
+            "If $a < b$ and $c > 0$, then $ac < bc$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "The last statement concerns the relation $<$. The other three are field axioms about $+$ and $\\times$ only."
+        },
+        {
+          "type": "single",
+          "prompt": "Why is $\\mathbb{N}$, with the usual $+$ and $\\times$, not a field?",
+          "options": [
+            "Adding two natural numbers can give a number outside $\\mathbb{N}$",
+            "It has no $0$, and no element has a negative in $\\mathbb{N}$ (for example, there is no $-3$)",
+            "Multiplication in $\\mathbb{N}$ is not commutative",
+            "It is an infinite set"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "A field needs $0$ and a negative for every element. $\\mathbb{N} = \\{1, 2, 3, \\dots\\}$ has neither. $\\mathbb{N}$ is closed under addition, multiplication is commutative, and $\\mathbb{Q}$ and $\\mathbb{R}$ are infinite fields, so size is not the issue."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The set $\\{x \\in \\mathbb{Q} : x < 1\\}$ has a least upper bound in $\\mathbb{Q}$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Its least upper bound is $1$, which is rational. Every rational less than $1$ is beaten by a bigger one, so nothing below $1$ is an upper bound. $\\mathbb{Q}$ fails completeness only for sets like $\\{x \\in \\mathbb{Q} : x^2 < 2\\}$, not for every set."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these are **field** (algebraic) properties? Select all that apply.",
+          "options": [
+            "$ab = ba$",
+            "If $a < b$, then $a + c < b + c$",
+            "$a + 0 = a$",
+            "Each $a \\neq 0$ has a reciprocal $a^{-1}$ with $a \\cdot a^{-1} = 1$",
+            "Every nonempty set bounded above has a least upper bound"
+          ],
+          "answer": [
+            0,
+            2,
+            3
+          ],
+          "explanation": "Commutativity, the identity $0$ and reciprocals are about $+$ and $\\times$ only. The second option mentions $<$, so it is an order property, and the last is the completeness property."
+        },
+        {
+          "type": "short",
+          "prompt": "Using the midpoint $\\frac{a+b}{2}$, which number lies exactly halfway between $3$ and $8$? Give a decimal.",
+          "answer": [
+            "5.5",
+            "11/2"
+          ],
+          "explanation": "$\\frac{3 + 8}{2} = \\frac{11}{2} = 5.5$, and indeed $3 < 5.5 < 8$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "There is a smallest positive real number.",
+          "answer": [
+            false
+          ],
+          "explanation": "If $x > 0$ were the smallest, then $\\frac{x}{2}$ satisfies $0 < \\frac{x}{2} < x$ (the midpoint of $0$ and $x$), a smaller positive number. Contradiction."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the least upper bound of $\\{x \\in \\mathbb{R} : x^2 < 2\\}$ in $\\mathbb{R}$?",
+          "options": [
+            "$2$",
+            "$1.5$",
+            "$\\sqrt{2}$",
+            "It has none"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The set is the open interval from $-\\sqrt{2}$ to $\\sqrt{2}$, so $\\sqrt{2}$ is an upper bound and nothing smaller is. $2$ and $1.5$ are upper bounds but not the least ones. By completeness, a least upper bound must exist in $\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "slug": "2-3-field-axioms",
+      "title": "Field axioms",
+      "summary": "Nine rules for $+$ and $\\times$, and how familiar facts like $a \\cdot 0 = 0$ follow.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "In this lesson",
+          "md": "**You will learn to:**\n- state the nine field axioms and name each one\n- read the notation $-a$ and $a^{-1}$ correctly\n- decide whether a set with two operations is a field\n- prove familiar rules such as $a \\cdot 0 = 0$ and $(-1)a = -a$ from the axioms alone\n\n**You need:** the idea of a field from lesson 2.2 (a set where you can add, subtract, multiply and divide by nonzero numbers), and direct proofs (lesson 1.8)."
+        },
+        {
+          "type": "text",
+          "md": "## Why list the rules at all?\n\nYou have used rules like \"anything times zero is zero\" and \"minus times minus is plus\" for years. But why are they true? A teacher may have said so, or shown a pattern:\n\n$$3 \\cdot 2 = 6,\\quad 3 \\cdot 1 = 3,\\quad 3 \\cdot 0 = 0,\\quad 3 \\cdot (-1) = -3.$$\n\nA pattern is not a proof (lesson 1.1). In analysis we want to know exactly which basic rules we are assuming, and then **prove** everything else from them. That way, no hidden assumption can sneak into a proof.\n\nThe basic rules for $+$ and $\\times$ are called the **field axioms**. There are nine of them. Every algebra step you ever take with real numbers, such as expanding brackets, cancelling, or moving a term to the other side, is justified by them.\n\nIn this lesson you will meet the nine axioms in two groups (addition, then multiplication), and then use them to prove three facts you have always taken for granted:\n\n- $a \\cdot 0 = 0$;\n- $(-1) a = -a$;\n- if $ab = 0$, then $a = 0$ or $b = 0$.\n\nThe last one is what you use every time you solve $(x - 2)(x + 3) = 0$."
+        },
+        {
+          "type": "text",
+          "md": "## The addition axioms\n\nLet $F$ be a set with an addition $+$. For all $a, b, c \\in F$:\n\n- **(A1) Commutativity:** $a + b = b + a$. *Order does not matter.*\n- **(A2) Associativity:** $(a + b) + c = a + (b + c)$. *Grouping does not matter*, so we can write $a + b + c$ without brackets.\n- **(A3) Additive identity:** there is an element $0 \\in F$ with $a + 0 = a$. *Adding $0$ changes nothing.*\n- **(A4) Additive inverse:** for each $a$ there is an element, written $-a$, with $a + (-a) = 0$. *Every element can be cancelled.*\n\n**Reading $-a$ correctly.** $-a$ is the **name** of the element that adds to $a$ to give $0$. It is not \"a negative number\". For example:\n\n- if $a = 5$ then $-a = -5$;\n- if $a = -3$ then $-a = 3$, a positive number, because $-3 + 3 = 0$;\n- if $a = 0$ then $-a = 0$, because $0 + 0 = 0$.\n\n**Subtraction is defined, not assumed:** $a - b$ means $a + (-b)$. So $7 - 2 = 7 + (-2)$.\n\nA common slip is to think subtraction is commutative or associative too. It is not: $5 - 2 = 3$ but $2 - 5 = -3$. That is exactly why the axioms are stated for $+$, and subtraction is defined from it."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each equation to the axiom that justifies it.",
+          "pairs": [
+            {
+              "left": "$3 + (4 + 5) = (3 + 4) + 5$",
+              "right": "(A2) associativity of addition"
+            },
+            {
+              "left": "$x + 7 = 7 + x$",
+              "right": "(A1) commutativity of addition"
+            },
+            {
+              "left": "$-3 + 3 = 0$",
+              "right": "(A4) additive inverse"
+            },
+            {
+              "left": "$\\sqrt{2} + 0 = \\sqrt{2}$",
+              "right": "(A3) additive identity"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## The multiplication axioms and distributivity\n\nThe same four ideas hold for multiplication, plus one rule linking $+$ and $\\times$. For all $a, b, c \\in F$ (we write $ab$ for $a \\cdot b$):\n\n- **(M1) Commutativity:** $ab = ba$.\n- **(M2) Associativity:** $(ab)c = a(bc)$.\n- **(M3) Multiplicative identity:** there is an element $1 \\in F$, with $1 \\neq 0$, such that $a \\cdot 1 = a$.\n- **(M4) Multiplicative inverse:** for each $a \\neq 0$ there is an element, written $a^{-1}$, with $a \\cdot a^{-1} = 1$.\n- **(D) Distributivity:** $a(b + c) = ab + ac$. *You can expand brackets.*\n\nA **field** is a set with $+$ and $\\times$ satisfying all nine axioms.\n\n**Reading $a^{-1}$.** $a^{-1}$ (said \"$a$ inverse\") is the reciprocal $\\frac{1}{a}$. In $\\mathbb{R}$, $2^{-1} = \\frac{1}{2}$ and $\\left(\\frac{2}{3}\\right)^{-1} = \\frac{3}{2}$. Division is defined from it: $\\frac{a}{b}$ means $a b^{-1}$, for $b \\neq 0$.\n\n**Two conditions that matter:**\n- M4 says \"$a \\neq 0$\". Only nonzero elements need inverses. Later in this lesson you will see that $0$ **cannot** have one.\n- M3 says \"$1 \\neq 0$\". Without it the one-element set $\\{0\\}$, with $0 + 0 = 0$ and $0 \\cdot 0 = 0$, would pass every other axiom. We do not want that to count as a field.\n\n**Non-example:** in $\\mathbb{Z}$, the element $2$ has no inverse, since no integer $b$ has $2b = 1$. So $\\mathbb{Z}$ fails M4, and is not a field."
+        },
+        {
+          "type": "check",
+          "question": "Which field axiom fails in $\\mathbb{Z}$?",
+          "options": [
+            "(A4) additive inverses",
+            "(M4) multiplicative inverses",
+            "(D) distributivity",
+            "(M3) multiplicative identity"
+          ],
+          "correct": 1,
+          "explanation": "$2 \\in \\mathbb{Z}$ has no integer $b$ with $2b = 1$. The others hold: every integer $n$ has $-n \\in \\mathbb{Z}$, brackets expand as usual, and $1 \\in \\mathbb{Z}$ with $1 \\neq 0$."
+        },
+        {
+          "type": "text",
+          "md": "## Fields and non-fields\n\nTo decide whether something is a field, check all nine axioms. Usually one is clearly the problem.\n\n**Fields:**\n- $\\mathbb{Q}$ and $\\mathbb{R}$ with the usual $+$ and $\\times$.\n- A tiny field with just two elements, $\\{0, 1\\}$, using arithmetic **modulo 2**: do the usual sum or product, then keep only the remainder after dividing by $2$. So $1 + 1 = 0$ (since $2$ leaves remainder $0$), and $1 \\cdot 1 = 1$. Every axiom holds. Here $-1 = 1$, because $1 + 1 = 0$, and $1^{-1} = 1$.\n\nThat last example is an important edge case. In this field $1 + 1 = 0$, which is false in $\\mathbb{R}$. So \"$1 + 1 \\neq 0$\" **cannot** be proved from the field axioms alone. In $\\mathbb{R}$ it follows from the order axioms (lesson 2.4).\n\n**Non-fields:**\n- $\\mathbb{Z}$: fails M4 ($2$ has no inverse).\n- $\\mathbb{N}$: fails A3 (no $0$) and A4 ($3$ has no negative).\n- The even integers $\\{\\dots, -2, 0, 2, 4, \\dots\\}$: there is no $1$, so M3 fails.\n\nThe lesson from the edge case: when you prove something \"from the field axioms\", the proof must work in **every** field, including strange ones like $\\{0, 1\\}$. That is a good test of whether a step is really allowed."
+        },
+        {
+          "type": "check",
+          "question": "In the two-element field $\\{0, 1\\}$ with arithmetic modulo $2$, what is $-1$?",
+          "options": [
+            "$-1$, which is not in the set, so A4 fails",
+            "$0$",
+            "$1$",
+            "It has no additive inverse"
+          ],
+          "correct": 2,
+          "explanation": "$-1$ means the element that adds to $1$ to give $0$. In this field $1 + 1 = 0$, so $-1 = 1$. The symbol \"$-1$\" names an element of the field; it does not have to look negative. $0$ is wrong because $1 + 0 = 1$, not $0$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof from the axioms: $a \\cdot 0 = 0$",
+          "steps": [
+            {
+              "title": "Start from a fact about 0",
+              "md": "By (A3) with $a = 0$, we have $0 + 0 = 0$.\n\nStarting here is the clever move. The only thing the axioms tell us about $0$ is how it behaves under **addition**, so we must bring addition in."
+            },
+            {
+              "title": "Multiply by a and expand",
+              "md": "Multiply both sides by $a$, then use (D):\n\n$$a \\cdot 0 = a \\cdot (0 + 0) = a \\cdot 0 + a \\cdot 0.$$"
+            },
+            {
+              "title": "Cancel one copy",
+              "md": "Let $x = a \\cdot 0$, so $x = x + x$. By (A4), $-x$ exists. Add it to both sides:\n\n$$x + (-x) = (x + x) + (-x).$$\n\nThe left side is $0$ by (A4)."
+            },
+            {
+              "title": "Tidy the right side",
+              "md": "By (A2), $(x + x) + (-x) = x + (x + (-x))$. By (A4) this is $x + 0$, and by (A3) it is $x$.\n\nSo $0 = x$, that is, $a \\cdot 0 = 0$. $\\blacksquare$\n\nEvery equals sign has an axiom behind it. That is what \"prove from the axioms\" means."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we add $-(a \\cdot 0)$ to both sides, rather than just \"subtracting $a \\cdot 0$\"?",
+          "options": [
+            "Because subtraction is not allowed in a field",
+            "Because subtraction is defined as adding the inverse, so adding $-(a \\cdot 0)$ is what \"subtract\" means, and A4 guarantees this inverse exists",
+            "Because $a \\cdot 0$ might be negative",
+            "Because it is shorter"
+          ],
+          "correct": 1,
+          "explanation": "$x - y$ is defined as $x + (-y)$, so \"subtract\" really means \"add the inverse\". Writing it out shows which axiom (A4) supplies $-(a \\cdot 0)$. Subtraction is allowed; it is just not a separate axiom. The sign of $a \\cdot 0$ is irrelevant (and in fact it is $0$)."
+        },
+        {
+          "type": "text",
+          "md": "## Inverses are unique, and $(-1)a = -a$\n\nThe axioms say an inverse $-a$ **exists**. They do not say there is only one. We prove that.\n\n**Uniqueness of additive inverses.** Suppose $a + b = 0$ and $a + c = 0$. Then\n\n$$b = b + 0 = b + (a + c) = (b + a) + c = (a + b) + c = 0 + c = c,$$\n\nusing (A3), the second equation, (A2), (A1), the first equation, and (A1) with (A3). So $b = c$: **$a$ has only one additive inverse.**\n\nThis gives a powerful method. To show some expression **is** $-a$, you only need to show it adds to $a$ to give $0$.\n\n**Example: $(-1)a = -a$.** Check that $(-1)a$ adds to $a$ to give $0$:\n\n$$a + (-1)a = 1 \\cdot a + (-1)a = (1 + (-1))a = 0 \\cdot a = 0.$$\n\nThe steps use (M3) with (M1), then (D) with (M1), then (A4), then $a \\cdot 0 = 0$ (with M1). So $(-1)a$ is an additive inverse of $a$. By uniqueness it equals $-a$.\n\n**Edge case:** with $a = -1$ this gives $(-1)(-1) = -(-1)$. What is $-(-1)$? You will work that out in the \"Your turn\" below. The answer is the famous \"minus times minus is plus\".\n\nThe same argument shows multiplicative inverses are unique, so $a^{-1}$ is well defined."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Division by zero is not a rule you forgot",
+          "md": "(M4) only promises inverses for $a \\neq 0$. In fact $0$ can never have an inverse: if $0 \\cdot b = 1$ then, since $0 \\cdot b = 0$, we would get $0 = 1$, contradicting (M3).\n\nSo any \"proof\" that divides by an expression must first check that the expression is nonzero. The classic fake proof that $1 = 2$ starts with $a = b$, reaches $(a - b)(a + b) = (a - b)b$, and \"cancels\" $a - b$, which is $0$."
+        },
+        {
+          "type": "text",
+          "md": "## No zero divisors\n\nTo solve $(x - 2)(x + 3) = 0$, you say \"so $x - 2 = 0$ or $x + 3 = 0$\". That step uses this theorem.\n\n**Theorem.** In a field, if $ab = 0$ then $a = 0$ or $b = 0$.\n\nIn plain words: **the only way a product is zero is if one of the factors is zero.** A nonzero $a$ and $b$ with $ab = 0$ would be called **zero divisors**, and fields have none.\n\n**The proof idea.** To prove \"$P$ or $Q$\", it is enough to assume $P$ is false and show $Q$ must be true (lesson 1.2: $P \\lor Q$ is equivalent to $\\neg P \\Rightarrow Q$). So assume $a \\neq 0$. Then M4 gives us $a^{-1}$, and we can \"undo\" the $a$ in $ab = 0$. The order block below asks you to put the steps together.\n\n**Examples:**\n- If $3b = 0$, then $b = 0$, because $3 \\neq 0$.\n- If $x(x - 5) = 0$, then $x = 0$ or $x = 5$.\n\n**Non-example (outside fields):** in \"clock arithmetic modulo $6$\" (keep the remainder after dividing by $6$), $2 \\cdot 3 = 6$, which leaves remainder $0$. So $2 \\cdot 3 = 0$ there, though neither factor is $0$. Arithmetic modulo $6$ is not a field: $2$ has no inverse. The theorem really does depend on M4."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the proof of \"if $ab = 0$ then $a = 0$ or $b = 0$\" in order.",
+          "items": [
+            "Suppose $ab = 0$. If $a = 0$ we are done, so assume $a \\neq 0$.",
+            "Since $a \\neq 0$, (M4) gives an element $a^{-1}$ with $a^{-1} a = 1$.",
+            "Then $b = 1 \\cdot b = (a^{-1} a) b = a^{-1}(ab)$, using (M3) with (M1), then (M2).",
+            "So $b = a^{-1} \\cdot 0 = 0$, using $x \\cdot 0 = 0$. Hence $a = 0$ or $b = 0$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Commutativity",
+              "back": "**Order** does not matter: $a + b = b + a$ and $ab = ba$.\n\n*Example:* $2 + 9 = 9 + 2$. *Non-example:* $5 - 2 \\neq 2 - 5$."
+            },
+            {
+              "front": "Associativity",
+              "back": "**Grouping** does not matter: $(a + b) + c = a + (b + c)$ and $(ab)c = a(bc)$.\n\n*Example:* $(2 \\cdot 3) \\cdot 4 = 2 \\cdot (3 \\cdot 4)$."
+            },
+            {
+              "front": "Identity elements",
+              "back": "$0$ and $1$: adding $0$ or multiplying by $1$ **changes nothing**. A field needs $1 \\neq 0$.\n\n*Example:* $\\pi + 0 = \\pi$ and $\\pi \\cdot 1 = \\pi$."
+            },
+            {
+              "front": "Additive inverse $-a$",
+              "back": "The **unique** element with $a + (-a) = 0$. It need not be negative.\n\n*Example:* if $a = -3$ then $-a = 3$."
+            },
+            {
+              "front": "Multiplicative inverse $a^{-1}$",
+              "back": "For $a \\neq 0$, the **unique** element with $a \\cdot a^{-1} = 1$. $0$ has none.\n\n*Example:* $\\left(\\frac{2}{3}\\right)^{-1} = \\frac{3}{2}$."
+            },
+            {
+              "front": "Distributivity",
+              "back": "Multiplication **spreads over** addition: $a(b + c) = ab + ac$.\n\n*Example:* $3(x + 2) = 3x + 6$."
+            },
+            {
+              "front": "Field",
+              "back": "A set with $+$ and $\\times$ obeying all **nine** axioms A1–A4, M1–M4 and D.\n\n*Example:* $\\mathbb{Q}$, $\\mathbb{R}$, $\\{0, 1\\}$ mod 2. *Non-example:* $\\mathbb{Z}$."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $(-1)(-1) = 1$",
+          "problem": "Using the field axioms, the uniqueness of additive inverses and the result $(-1)a = -a$, prove that $(-1)(-1) = 1$.\n\nHint: first find $-(-1)$ by asking \"what adds to $-1$ to give $0$?\"",
+          "solution": "**Proof.** By $(-1)a = -a$ with $a = -1$,\n\n$$(-1)(-1) = -(-1).$$\n\nNow find $-(-1)$: it is the unique element that adds to $-1$ to give $0$. By (A1) and (A4),\n\n$$(-1) + 1 = 1 + (-1) = 0.$$\n\nSo $1$ is an additive inverse of $-1$. By uniqueness, $-(-1) = 1$. Therefore $(-1)(-1) = 1$. $\\blacksquare$\n\nThe same method shows $-(-a) = a$ for every $a$.\n\n**Check your version:** did you use uniqueness of inverses, rather than just \"two minuses cancel\"? Did you name the axiom behind $(-1) + 1 = 0$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why prove $a \\cdot 0 = 0$? Everyone knows it.",
+              "a": "Because it is not one of the nine axioms, so it needs a reason. Checking that the reason is just the axioms tells us it holds in **every** field, including $\\{0, 1\\}$ mod 2, not only in $\\mathbb{R}$."
+            },
+            {
+              "q": "Is $-a$ always negative?",
+              "a": "No. $-a$ is the additive inverse of $a$. If $a = -3$ then $-a = 3$. \"Negative\" is about order ($a < 0$), which is lesson 2.4."
+            },
+            {
+              "q": "Why does M3 say $1 \\neq 0$? Isn't it obvious?",
+              "a": "In $\\mathbb{R}$ it is, but the axioms must rule out the one-element set $\\{0\\}$, where $0$ would act as both identities. Without \"$1 \\neq 0$\", every axiom would hold there."
+            },
+            {
+              "q": "Can I cancel: if $ab = ac$, is $b = c$?",
+              "a": "Only if $a \\neq 0$. Then multiply both sides by $a^{-1}$. If $a = 0$, then $0 \\cdot 2 = 0 \\cdot 5$ but $2 \\neq 5$."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **field** satisfies nine axioms: commutativity, associativity, identity and inverse for $+$ (A1–A4) and for $\\times$ (M1–M4), plus distributivity (D).\n- $-a$ and $a^{-1}$ are **names** for inverses: $-a$ need not be negative, and only $a \\neq 0$ has an $a^{-1}$.\n- $\\mathbb{Q}$, $\\mathbb{R}$ and $\\{0, 1\\}$ mod 2 are fields; $\\mathbb{Z}$ and $\\mathbb{N}$ are not.\n- Familiar rules are **theorems**: $a \\cdot 0 = 0$, inverses are unique, $(-1)a = -a$, $(-1)(-1) = 1$.\n- In a field, $ab = 0$ forces $a = 0$ or $b = 0$; $0$ has no inverse, so never divide by something that might be $0$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which field axiom fails for the integers $\\mathbb{Z}$?",
+          "options": [
+            "Commutativity of addition",
+            "Existence of additive inverses",
+            "Existence of multiplicative inverses for nonzero elements",
+            "Distributivity"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "For example $3 \\in \\mathbb{Z}$ but $\\frac{1}{3} \\notin \\mathbb{Z}$. Every other field axiom holds in $\\mathbb{Z}$: addition is commutative, $-n \\in \\mathbb{Z}$ for every integer $n$, and brackets expand as usual."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In every field, $a \\cdot 0 = 0$ for all elements $a$.",
+          "answer": [
+            true
+          ],
+          "explanation": "From $a \\cdot 0 = a(0 + 0) = a \\cdot 0 + a \\cdot 0$, adding $-(a \\cdot 0)$ to both sides gives $a \\cdot 0 = 0$. The proof uses only the axioms, so it works in every field."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following, with the stated operations, are fields?",
+          "options": [
+            "$\\mathbb{Q}$ with usual $+$ and $\\times$",
+            "$\\mathbb{Z}$ with usual $+$ and $\\times$",
+            "$\\mathbb{R}$ with usual $+$ and $\\times$",
+            "$\\{0, 1\\}$ with addition and multiplication modulo $2$",
+            "$\\mathbb{N}$ with usual $+$ and $\\times$"
+          ],
+          "answer": [
+            0,
+            2,
+            3
+          ],
+          "explanation": "$\\mathbb{Q}$ and $\\mathbb{R}$ are fields. $\\{0, 1\\}$ mod $2$ is a field: $1 + 1 = 0$ gives $-1 = 1$, and $1^{-1} = 1$. $\\mathbb{Z}$ lacks multiplicative inverses and $\\mathbb{N}$ lacks additive inverses."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof of $a \\cdot 0 = 0$, the equality $a \\cdot (0 + 0) = a \\cdot 0 + a \\cdot 0$ is justified by which axiom?",
+          "options": [
+            "Additive identity",
+            "Distributive law",
+            "Associativity of multiplication",
+            "Multiplicative inverse"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "It is exactly $a(b + c) = ab + ac$ with $b = c = 0$. The additive identity is used earlier, to write $0 = 0 + 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $a, b$ be real numbers with $ab = 0$ and $a \\neq 0$. Which conclusion follows from the field axioms?",
+          "options": [
+            "$a = 1$",
+            "$b$ could be any real number",
+            "$b = 0$",
+            "$a = -b$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Multiply both sides of $ab = 0$ by $a^{-1}$ (which exists as $a \\neq 0$): $b = a^{-1} \\cdot 0 = 0$. Nothing forces $a = 1$, and $a = -b$ would mean $a = 0$, which is excluded."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The field axioms permit a field in which $1 = 0$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Axiom (M3) explicitly requires $1 \\neq 0$. Without it, the one-element set $\\{0\\}$ would satisfy all the other axioms, which is why this condition is included."
+        },
+        {
+          "type": "short",
+          "prompt": "In the field $\\{0, 1\\}$ with arithmetic modulo $2$, what is $1 + 1$?",
+          "answer": [
+            "0"
+          ],
+          "explanation": "$1 + 1 = 2$, which leaves remainder $0$ after dividing by $2$. So $1 + 1 = 0$ in this field, and $-1 = 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every real number $a$, the number $-a$ is negative.",
+          "answer": [
+            false
+          ],
+          "explanation": "$-a$ is the additive inverse of $a$, not \"a negative number\". If $a = -3$ then $-a = 3 > 0$, and if $a = 0$ then $-a = 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which axiom justifies $3 + (4 + 5) = (3 + 4) + 5$?",
+          "options": [
+            "(A1) commutativity of addition",
+            "(A2) associativity of addition",
+            "(A3) additive identity",
+            "(D) distributivity"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The numbers stay in the same order; only the grouping changes. That is associativity. Commutativity would swap the order, as in $3 + 4 = 4 + 3$."
+        },
+        {
+          "type": "single",
+          "prompt": "Why can $0$ never have a multiplicative inverse in a field?",
+          "options": [
+            "Because M4 forbids it",
+            "Because $0 \\cdot b = 0$ for every $b$, so $0 \\cdot b = 1$ would force $0 = 1$, contradicting M3",
+            "Because $0$ is not a number",
+            "Because $0$ is not positive"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "M4 is silent about $0$: it promises inverses for $a \\neq 0$ but does not forbid one for $0$. The real reason is the theorem $a \\cdot 0 = 0$ combined with $1 \\neq 0$. Positivity is an order idea and plays no part."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these statements hold in **every** field? Select all that apply.",
+          "options": [
+            "$(-1)a = -a$ for all $a$",
+            "$1 + 1 \\neq 0$",
+            "If $ab = 0$ then $a = 0$ or $b = 0$",
+            "$a - b = b - a$ for all $a, b$",
+            "Every element has a multiplicative inverse"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$(-1)a = -a$ and \"no zero divisors\" are proved from the axioms. $1 + 1 = 0$ in the field $\\{0, 1\\}$ mod 2. Subtraction is not commutative ($5 - 2 \\neq 2 - 5$ in $\\mathbb{R}$), and $0$ never has a multiplicative inverse."
+        },
+        {
+          "type": "short",
+          "prompt": "In $\\mathbb{R}$, what is the multiplicative inverse of $\\frac{4}{5}$? Give a decimal.",
+          "answer": [
+            "1.25",
+            "5/4"
+          ],
+          "explanation": "$\\left(\\frac{4}{5}\\right)^{-1} = \\frac{5}{4} = 1.25$, because $\\frac{4}{5} \\cdot \\frac{5}{4} = 1$."
+        }
+      ]
+    },
+    {
+      "slug": "2-4-order-properties",
+      "title": "Order properties",
+      "summary": "The axioms behind $<$: positivity, trichotomy, and why $1 > 0$ needs a proof.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "In this lesson",
+          "md": "**You will learn to:**\n- state the three order axioms, using the set $P$ of positive numbers\n- define $<$, $\\leq$ and $>$ from $P$, and check an inequality straight from the definition\n- prove the everyday rules for inequalities, including why multiplying by a negative flips them\n- prove that every nonzero square is positive, and so $1 > 0$\n\n**You need:** the field axioms and the facts $a \\cdot 0 = 0$, $(-1)a = -a$ and $(-1)(-1) = 1$ (lesson 2.3), and the idea of an ordered field (lesson 2.2)."
+        },
+        {
+          "type": "text",
+          "md": "## Why inequalities need rules\n\nAnalysis is full of inequalities. \"The terms get within $0.001$ of the limit\" or \"$f(x)$ stays below $5$\" are both statements about $<$. Most proofs in this course are chains of inequalities, so every step in the chain must be justified.\n\nSchool rules for inequalities are easy to misuse. Try this: \"if $x < 3$, then $\\frac{1}{x} > \\frac{1}{3}$\". It looks like the familiar rule that reciprocals flip inequalities. But take $x = -1$: then $x < 3$, yet $\\frac{1}{x} = -1$ is **not** bigger than $\\frac{1}{3}$. The rule needs both numbers to be positive, and you only see that if you know where the rule comes from.\n\nEven \"obvious\" facts need a reason. Is $1 > 0$? Of course. But the field axioms alone cannot prove it: they say nothing about $<$ at all. In lesson 2.3 you met the field $\\{0, 1\\}$ with $1 + 1 = 0$, where it makes no sense to call $1$ positive.\n\nSo we add a few **order axioms** to the field axioms, and prove every rule for inequalities from them. Surprisingly, three short axioms are enough."
+        },
+        {
+          "type": "text",
+          "md": "## The order axioms\n\nInstead of starting with $<$, we start with the set of **positive numbers**, called $P$. Think of $P$ as \"everything to the right of $0$ on the number line\". The axioms say how $P$ behaves:\n\n- **(O1)** If $a, b \\in P$, then $a + b \\in P$. *The sum of two positives is positive.*\n- **(O2)** If $a, b \\in P$, then $ab \\in P$. *The product of two positives is positive.*\n- **(O3) Trichotomy:** for every $a \\in \\mathbb{R}$, **exactly one** of these holds: $a \\in P$, or $a = 0$, or $-a \\in P$.\n\n\"Trichotomy\" means \"cutting into three\". Every real number is positive, zero, or the negative of a positive, and never two of these at once.\n\n**Examples:**\n- $a = 2$: $2 \\in P$. (In this lesson we prove that $1 \\in P$, and then $2 = 1 + 1 \\in P$ by O1.)\n- $a = -3$: $-3 \\notin P$, but $-a = 3 \\in P$. We say $-3$ is **negative**: a number $a$ is negative when $-a \\in P$.\n- $a = 0$: $0 \\notin P$ and $-0 = 0 \\notin P$. **Zero is neither positive nor negative.** This is the edge case students most often get wrong.\n\n**Non-example:** \"the product of two negatives is negative\" is not an axiom, and it is false. You will see shortly that it is positive."
+        },
+        {
+          "type": "check",
+          "question": "Using trichotomy (O3), which statement about $a = 0$ is correct?",
+          "options": [
+            "$0 \\in P$, because $0 \\geq 0$",
+            "$0$ is both positive and negative",
+            "$0 \\notin P$ and $-0 \\notin P$: zero is neither positive nor negative",
+            "Trichotomy does not apply to $0$"
+          ],
+          "correct": 2,
+          "explanation": "For $a = 0$, the middle option \"$a = 0$\" holds, so by \"exactly one\" neither $0 \\in P$ nor $-0 \\in P$. Trichotomy applies to every real number, $0$ included. \"$0 \\geq 0$\" is true but says nothing about $0 \\in P$."
+        },
+        {
+          "type": "text",
+          "md": "## Defining $<$ from the positive numbers\n\nNow we **define** the order. For real numbers $a$ and $b$:\n\n$$a < b \\iff b - a \\in P.$$\n\nRead: \"$a$ is less than $b$ exactly when $b - a$ is positive\". On the number line, $b$ is to the right of $a$. We also write:\n\n- $a > b$ to mean $b < a$;\n- $a \\leq b$ to mean $a < b$ **or** $a = b$ (and $a \\geq b$ for $b \\leq a$).\n\nNotice that $a > 0$ means $a - 0 \\in P$, that is, $a \\in P$. So \"$a > 0$\" and \"$a$ is positive\" say the same thing, and \"$a < 0$\" means $a$ is negative.\n\n**Checking inequalities from the definition:**\n- $3 < 5$, because $5 - 3 = 2 \\in P$.\n- $-5 < -2$, because $-2 - (-5) = 3 \\in P$. Students often say $-5 > -2$ because $5 > 2$; the definition settles it.\n- $a < a$ is **false**, because $a - a = 0 \\notin P$. But $a \\leq a$ is **true**, because $a = a$.\n\n**Trichotomy for $<$.** Apply O3 to $b - a$. Exactly one of $b - a \\in P$, $b - a = 0$, $-(b - a) = a - b \\in P$ holds. In words: **exactly one of $a < b$, $a = b$, $a > b$ is true.**\n\nA useful consequence: if $a \\leq b$ and $b \\leq a$, then $a = b$. (Otherwise we would have both $a < b$ and $b < a$, breaking trichotomy.) This is the standard way to prove two real numbers are equal."
+        },
+        {
+          "type": "check",
+          "question": "To show $-7 < -2$ straight from the definition, which number must you show is in $P$?",
+          "options": [
+            "$-7 - (-2) = -5$",
+            "$-2 - (-7) = 5$",
+            "$-7 + (-2) = -9$",
+            "$7 - 2 = 5$"
+          ],
+          "correct": 1,
+          "explanation": "$a < b$ means $b - a \\in P$: subtract the **smaller** side from the **bigger** side. Here $b = -2$ and $a = -7$, so we need $-2 - (-7) = 5 \\in P$. The first option subtracts the wrong way round. The last option happens to give $5$ too, but it is the difference of $7$ and $2$, not of $-2$ and $-7$."
+        },
+        {
+          "type": "text",
+          "md": "## The rules for inequalities\n\nHere are the everyday rules. For all real $a, b, c$:\n\n- **Transitivity:** if $a < b$ and $b < c$, then $a < c$.\n- **Adding:** if $a < b$, then $a + c < b + c$.\n- **Multiplying by a positive:** if $a < b$ and $c > 0$, then $ac < bc$.\n- **Multiplying by a negative:** if $a < b$ and $c < 0$, then $ac > bc$. *The inequality flips.*\n\nEach proof has the same shape: **turn the inequality into \"something $\\in P$\", rewrite, and use O1 or O2.**\n\n**Transitivity.** We know $b - a \\in P$ and $c - b \\in P$. Their sum is\n\n$$(c - b) + (b - a) = c - a,$$\n\nwhich is in $P$ by O1. So $a < c$. The subtle move is spotting that the two differences add up to the one we want.\n\n**Multiplying by a negative.** We know $b - a \\in P$, and $c < 0$ means $-c \\in P$. By O2,\n\n$$(b - a)(-c) = -bc + ac = ac - bc \\in P,$$\n\nusing the field rules from lesson 2.3. So $bc < ac$, that is, $ac > bc$.\n\n**Example:** from $2 < 3$, multiplying by $-1$ gives $-2 > -3$. Check: $-2 - (-3) = 1 \\in P$.\n\n**Edge case:** multiplying by $c = 0$ gives $0 = 0$. Neither rule applies, because $0$ is neither positive nor negative."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each rule to the key line in its proof.",
+          "pairs": [
+            {
+              "left": "If $a < b$ and $b < c$, then $a < c$",
+              "right": "$c - a = (c - b) + (b - a) \\in P$ by O1"
+            },
+            {
+              "left": "If $a < b$, then $a + c < b + c$",
+              "right": "$(b + c) - (a + c) = b - a \\in P$"
+            },
+            {
+              "left": "If $a < b$ and $c > 0$, then $ac < bc$",
+              "right": "$bc - ac = (b - a)c \\in P$ by O2"
+            },
+            {
+              "left": "If $a < b$ and $c < 0$, then $ac > bc$",
+              "right": "$ac - bc = (b - a)(-c) \\in P$ by O2"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Two classic slips with inequalities",
+          "md": "**Multiplying by a negative reverses the inequality:** from $2 < 3$ we get $-2 > -3$, not $-2 < -3$. The same goes for dividing by a negative.\n\n**You may add inequalities but not subtract them:** $a < b$ and $c < d$ give $a + c < b + d$, but **not** $a - c < b - d$. Example: $0 < 1$ and $0 < 5$, yet $0 - 0 < 1 - 5$ is false.\n\n(Adding works because $(b + d) - (a + c) = (b - a) + (d - c)$, a sum of two positives.)"
+        },
+        {
+          "type": "check",
+          "question": "A student solves $-2x < 6$ and writes \"so $x < -3$\". What went wrong?",
+          "options": [
+            "Nothing: dividing both sides by the same number keeps the inequality",
+            "Dividing by $-2$ means multiplying by the negative number $-\\frac{1}{2}$, which flips the inequality; the answer is $x > -3$",
+            "The answer should be $x < 3$",
+            "You cannot divide an inequality by anything"
+          ],
+          "correct": 1,
+          "explanation": "Multiplying $-2x < 6$ by $-\\frac{1}{2} < 0$ flips it: $x > -3$. Test: $x = 0$ gives $0 < 6$, true, and $0 > -3$ fits, while $0 < -3$ does not. Dividing by a **positive** number keeps the direction, so dividing is allowed; you just have to watch the sign."
+        },
+        {
+          "type": "text",
+          "md": "## Squares are positive, so $1 > 0$\n\nHere is a fact used all through analysis: **every nonzero square is positive**. In symbols, if $a \\neq 0$ then $a^2 > 0$. ($a^2$ means $a \\cdot a$.)\n\nIt explains why $x^2 \\geq 0$ for every real $x$, why $x^2 + 1$ is never zero, and why we can always take $\\sqrt{x^2 + y^2}$ later.\n\n**Examples:**\n- $a = 3$: $a^2 = 9 > 0$.\n- $a = -3$: $a^2 = 9 > 0$. A negative times a negative is positive.\n- **Edge case** $a = 0$: $a^2 = 0$, which is **not** positive. That is why the statement says $a \\neq 0$, and why the correct statement for all $a$ is $a^2 \\geq 0$, not $a^2 > 0$.\n\nThe proof splits into cases using trichotomy: since $a \\neq 0$, either $a$ is positive or $-a$ is positive. In each case, O2 does the work. The second case uses $(-1)(-1) = 1$, which you proved in lesson 2.3.\n\nOnce we have this, **$1 > 0$ is a one-line corollary**: $1 \\neq 0$ by axiom M3, and $1 = 1 \\cdot 1 = 1^2$, a nonzero square. So \"$1 > 0$\" is not an extra assumption; the axioms force it.\n\nFrom $1 > 0$ we get $2 = 1 + 1 > 0$ by O1, and then $\\frac{1}{2} > 0$ (from the \"Your turn\" below). These are the facts lesson 2.2 borrowed to prove the midpoint lies between $a$ and $b$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: if $a \\neq 0$ then $a^2 > 0$; hence $1 > 0$",
+          "steps": [
+            {
+              "title": "Split into cases with trichotomy",
+              "md": "Let $a \\neq 0$. By (O3), exactly one of $a \\in P$, $a = 0$, $-a \\in P$ holds. Since $a \\neq 0$, either $a \\in P$ or $-a \\in P$.\n\nWe need cases because the axioms only tell us about **products of positives**. We must find a positive number to feed into O2."
+            },
+            {
+              "title": "Case 1: a is positive",
+              "md": "If $a \\in P$, then $a^2 = a \\cdot a \\in P$ by (O2)."
+            },
+            {
+              "title": "Case 2: −a is positive",
+              "md": "If $-a \\in P$, then $(-a)(-a) \\in P$ by (O2). Using lesson 2.3,\n\n$$(-a)(-a) = \\big((-1)a\\big)\\big((-1)a\\big) = (-1)(-1)\\,a^2 = 1 \\cdot a^2 = a^2,$$\n\nusing $(-1)a = -a$, then commutativity and associativity (M1, M2), then $(-1)(-1) = 1$. So $a^2 \\in P$."
+            },
+            {
+              "title": "Conclude, and deduce 1 > 0",
+              "md": "In both cases $a^2 \\in P$, that is, $a^2 > 0$.\n\nNow take $a = 1$. By (M3), $1 \\neq 0$, so $1 = 1^2 > 0$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In Case 2 we know $-a \\in P$. Why can't we just apply O2 to $a$ and $a$?",
+          "options": [
+            "Because O2 only applies to numbers in $P$, and in this case $a \\notin P$",
+            "Because $a \\cdot a$ is not defined",
+            "Because O2 is about sums, not products",
+            "We can; Case 2 is unnecessary"
+          ],
+          "correct": 0,
+          "explanation": "O2 says \"if $a, b \\in P$ then $ab \\in P$\". In Case 2, $a$ is negative, so $a \\notin P$ by trichotomy, and O2 says nothing about $a \\cdot a$. We apply O2 to the positive number $-a$ instead, then show $(-a)(-a) = a^2$. O1 is the axiom about sums."
+        },
+        {
+          "type": "check",
+          "question": "Why can the complex numbers $\\mathbb{C}$ not be made into an ordered field?",
+          "options": [
+            "Because $\\mathbb{C}$ is not a field",
+            "Because $i^2 = -1$, but a nonzero square must be positive and $-1 < 0$",
+            "Because $\\mathbb{C}$ is uncountable",
+            "Because $|z|$ can be zero"
+          ],
+          "correct": 1,
+          "explanation": "In any ordered field $a^2 > 0$ for $a \\neq 0$. Since $i \\neq 0$, $-1 = i^2$ would be positive. But $1 = 1^2$ is positive too, so both $1$ and $-1$ would be in $P$, contradicting trichotomy. $\\mathbb{C}$ is a field, and $\\mathbb{R}$ is uncountable too (so size is not the issue); $|z| = 0$ is irrelevant."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of the proof that $0 < a < b$ implies $a^2 < b^2$ in order",
+          "items": [
+            "Assume $0 < a < b$; then $b > 0$ by transitivity.",
+            "Multiply $a < b$ by $a > 0$ to get $a^2 < ab$.",
+            "Multiply $a < b$ by $b > 0$ to get $ab < b^2$.",
+            "By transitivity, $a^2 < ab < b^2$ gives $a^2 < b^2$."
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Positive set $P$",
+              "back": "The positive reals. **Closed** under $+$ (O1) and $\\times$ (O2).\n\n*Example:* $2, \\frac{1}{2}, \\sqrt{2} \\in P$, but $0 \\notin P$ and $-3 \\notin P$."
+            },
+            {
+              "front": "Trichotomy",
+              "back": "For each $a$, **exactly one** of: $a \\in P$, $a = 0$, $-a \\in P$. So exactly one of $a < b$, $a = b$, $a > b$.\n\n*Example:* $0$ is neither positive nor negative."
+            },
+            {
+              "front": "$a < b$",
+              "back": "Defined to mean $b - a \\in P$: the **difference** bigger minus smaller is positive.\n\n*Example:* $-5 < -2$ because $-2 - (-5) = 3 \\in P$."
+            },
+            {
+              "front": "$a \\leq b$",
+              "back": "$a < b$ **or** $a = b$.\n\n*Example:* $4 \\leq 4$ is true, though $4 < 4$ is false."
+            },
+            {
+              "front": "Transitivity",
+              "back": "If $a < b$ and $b < c$, then $a < c$. Proof: **add** the two positive differences.\n\n*Example:* $1 < 2$ and $2 < \\pi$ give $1 < \\pi$."
+            },
+            {
+              "front": "Multiplying by a negative",
+              "back": "If $a < b$ and $c < 0$, then $ac > bc$: the inequality **flips**.\n\n*Example:* $2 < 3$ gives $-2 > -3$."
+            },
+            {
+              "front": "Nonzero squares",
+              "back": "If $a \\neq 0$ then $a^2 > 0$. For all $a$, $a^2 \\geq 0$. **Corollary:** $1 > 0$.\n\n*Edge case:* $0^2 = 0$ is not positive."
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: reciprocals reverse order",
+          "problem": "Prove that if $0 < a < b$, then $0 < \\frac{1}{b} < \\frac{1}{a}$.\n\nPlan: first show that $\\frac{1}{a}$ and $\\frac{1}{b}$ are positive. Then multiply $a < b$ by a well-chosen positive number. Try it before opening the solution.",
+          "solution": "**Step 1: $\\frac{1}{a} > 0$.** First, $\\frac{1}{a} \\neq 0$, since $a \\cdot \\frac{1}{a} = 1 \\neq 0$. Suppose, for a contradiction, that $\\frac{1}{a} < 0$, so $-\\frac{1}{a} \\in P$. Then by (O2), $a \\cdot \\left(-\\frac{1}{a}\\right) = -1 \\in P$. But $1 \\in P$ too, and trichotomy forbids both $1$ and $-1$ being in $P$. So $\\frac{1}{a} > 0$. In the same way $\\frac{1}{b} > 0$.\n\n**Step 2: a positive multiplier.** By (O2), $\\frac{1}{ab} = \\frac{1}{a} \\cdot \\frac{1}{b} > 0$.\n\n**Step 3: multiply.** Multiplying $a < b$ by the positive number $\\frac{1}{ab}$ keeps the order:\n\n$$\\frac{a}{ab} < \\frac{b}{ab}, \\quad \\text{that is,} \\quad \\frac{1}{b} < \\frac{1}{a}. \\qquad \\blacksquare$$\n\nWith $a = 2$, Step 1 shows $\\frac{1}{2} > 0$, the fact used in lesson 2.2.\n\n**Check your version:** did you prove $\\frac{1}{a} > 0$ rather than assume it? Did you say why the number you multiplied by is positive? Where did you use $a > 0$? (Without it the result fails: $-1 < 2$, but $\\frac{1}{2} < \\frac{1}{-1} = -1$ is false.)"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why define $<$ using a set $P$, instead of taking $<$ as the basic idea?",
+              "a": "Both approaches work and give the same rules. Starting from $P$ keeps the axioms short (three of them), and every proof becomes \"show some difference is in $P$\", which is easy to check."
+            },
+            {
+              "q": "Is $a^2 > 0$ true for every real $a$?",
+              "a": "No: $0^2 = 0$. The correct statements are \"$a^2 > 0$ for $a \\neq 0$\" and \"$a^2 \\geq 0$ for all $a$\". Mixing these up is a common source of wrong proofs."
+            },
+            {
+              "q": "If $a < b$, is $a^2 < b^2$?",
+              "a": "Only when $0 \\leq a$. For example $-3 < 1$ but $9 > 1$. The proof in the order block multiplies by $a$ and needs $a > 0$ to keep the direction."
+            },
+            {
+              "q": "Does $\\mathbb{Q}$ satisfy the order axioms too?",
+              "a": "Yes. Take $P$ to be the positive rationals; sums and products of positive rationals are positive rationals, and trichotomy holds. So every rule in this lesson is also true in $\\mathbb{Q}$. What $\\mathbb{Q}$ lacks is completeness (lesson 2.10)."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- The order on $\\mathbb{R}$ comes from a set $P$ of positive numbers: closed under $+$ (O1) and $\\times$ (O2), with **trichotomy** (O3). Zero is neither positive nor negative.\n- $a < b$ **means** $b - a \\in P$. Exactly one of $a < b$, $a = b$, $a > b$ holds; $a \\leq b$ and $b \\leq a$ give $a = b$.\n- Adding keeps order, multiplying by a positive keeps order, multiplying by a **negative flips** it. You can add inequalities but not subtract them.\n- Every nonzero square is positive, so $1 > 0$, $2 > 0$ and $\\frac{1}{2} > 0$ are theorems.\n- For $0 < a < b$: $a^2 < b^2$ and $\\frac{1}{b} < \\frac{1}{a}$, but both can fail without positivity."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "If $a < b$ and $c < 0$, which inequality must hold?",
+          "options": [
+            "$ac < bc$",
+            "$ac > bc$",
+            "$a + c > b + c$",
+            "$ac = bc$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Multiplying by a negative number reverses the inequality: $b - a > 0$ and $-c > 0$ give $(b - a)(-c) > 0$, i.e. $ac > bc$. Adding $c$ keeps the order, so $a + c < b + c$, not $>$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $a < b$ and $c < d$, then $a - c < b - d$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Counterexample: $a = 0, b = 1, c = 0, d = 5$ gives $0 < -4$, which is false. Inequalities can be added, not subtracted."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $0 < a < b$. Which of the following must be true?",
+          "options": [
+            "$a^2 < b^2$",
+            "$\\frac{1}{a} > \\frac{1}{b}$",
+            "$-a > -b$",
+            "$\\frac{a}{b} > 1$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "$a^2 < ab < b^2$; reciprocals of positives reverse order; multiplying by $-1$ reverses order. But $\\frac{a}{b} < 1$, since multiplying $a < b$ by $\\frac{1}{b} > 0$ gives $\\frac{a}{b} < 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The statement $1 > 0$ can be proved from the field and order axioms.",
+          "answer": [
+            true
+          ],
+          "explanation": "$1 \\neq 0$ by the field axioms, and every nonzero square is positive, so $1 = 1^2 > 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which property of the order on $\\mathbb{R}$ says that for any $a, b$, exactly one of $a < b$, $a = b$, $a > b$ holds?",
+          "options": [
+            "Transitivity",
+            "Trichotomy",
+            "Closure of positives under multiplication",
+            "The Archimedean property"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "This is trichotomy, which follows from axiom (O3) applied to $b - a$. Transitivity chains two inequalities together, and the Archimedean property (lesson 2.11) is about $\\mathbb{N}$ having no upper bound."
+        },
+        {
+          "type": "single",
+          "prompt": "Suppose $a \\leq b$ and $b \\leq a$. What can be concluded?",
+          "options": [
+            "$a < b$",
+            "Nothing in general",
+            "$a = b$",
+            "$a = -b$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "If $a \\neq b$, then $a \\leq b$ gives $a < b$ and $b \\leq a$ gives $b < a$, contradicting trichotomy. So $a = b$. This is the standard way to prove two reals are equal."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$0$ is a positive number, that is, $0 \\in P$.",
+          "answer": [
+            false
+          ],
+          "explanation": "By trichotomy, exactly one of $0 \\in P$, $0 = 0$, $-0 \\in P$ holds. The middle one is true, so $0 \\notin P$. Zero is neither positive nor negative."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every real number $a$, $a^2 > 0$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$a = 0$ is a counterexample: $0^2 = 0$, which is not positive. The correct statements are $a^2 > 0$ for $a \\neq 0$, and $a^2 \\geq 0$ for all $a$."
+        },
+        {
+          "type": "short",
+          "prompt": "By definition, $a < b$ means $b - a \\in P$. To check $-9 < -4$ from the definition, which number must be in $P$?",
+          "answer": [
+            "5"
+          ],
+          "explanation": "Here $a = -9$ and $b = -4$, so $b - a = -4 - (-9) = 5$, which is positive. So $-9 < -4$."
+        },
+        {
+          "type": "single",
+          "prompt": "You know $x > 0$ and $y > 0$. Which order axiom tells you directly that $xy > 0$?",
+          "options": [
+            "(O1) positives are closed under addition",
+            "(O2) positives are closed under multiplication",
+            "(O3) trichotomy",
+            "Transitivity"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$x > 0$ and $y > 0$ mean $x, y \\in P$, and O2 says the product of two members of $P$ is in $P$. O1 would give $x + y > 0$ instead."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $a < b$ be real numbers (with no other information). Which of these must be true? Select all that apply.",
+          "options": [
+            "$a + 5 < b + 5$",
+            "$-2a > -2b$",
+            "$a^2 < b^2$",
+            "$3a < 3b$",
+            "$a - 1 < b$"
+          ],
+          "answer": [
+            0,
+            1,
+            3,
+            4
+          ],
+          "explanation": "Adding keeps order, multiplying by $-2 < 0$ flips it, and multiplying by $3 > 0$ keeps it. $a - 1 < a < b$ by transitivity. But $a^2 < b^2$ can fail: $-3 < 1$ while $9 > 1$."
+        },
+        {
+          "type": "single",
+          "prompt": "Solve $-3x < 12$ for $x$.",
+          "options": [
+            "$x < -4$",
+            "$x > -4$",
+            "$x < 4$",
+            "$x > 4$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Multiply both sides by $-\\frac{1}{3}$, a negative number, so the inequality flips: $x > -4$. Check with $x = 0$: $0 < 12$ is true, and $0 > -4$."
+        }
+      ]
+    }
+  ]
+}

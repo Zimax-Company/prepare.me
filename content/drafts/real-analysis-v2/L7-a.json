@@ -1,0 +1,1400 @@
+{
+  "concepts": [
+    {
+      "slug": "7-1-introduction-to-integration",
+      "title": "Introduction to integration",
+      "summary": "From \"area under a curve\" to a precise limit of sums: why integration needs a definition.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Level 7: Riemann Integration",
+          "md": "Establish the theoretical foundation of integration and its relationship with differentiation.\n\n**In this lesson you will learn to:**\n- say why \"area under the curve\" and \"antiderivative\" are not definitions of the integral\n- read and use sigma notation with subinterval widths $\\Delta x_i$\n- compute a **Riemann sum** with left, right or midpoint tags\n- explain why this level uses upper and lower sums, and why $f$ must be bounded\n\n**You need:** sequences and limits (Level 3), suprema and infima (lesson 2.9), and the sum formula $1 + 2 + \\cdots + n = \\frac{n(n+1)}{2}$ from lesson 1.7."
+        },
+        {
+          "type": "text",
+          "md": "## Why define the integral?\n\nIn school you met $\\int_a^b f(x)\\,dx$ in two ways: as \"the area under the graph of $f$ between $a$ and $b$\", and as $F(b) - F(a)$, where $F$ is an **antiderivative** of $f$ (a function with $F' = f$). Both are useful. Neither is a definition.\n\n- **Area is not defined for curved regions.** We know the area of a rectangle (width times height) and of a triangle. But what does \"the area under $y = x^2$\" mean? We need a definition before we can calculate it.\n- **Many functions have no antiderivative you can write down.** $f(x) = e^{-x^2}$ is continuous and its graph clearly encloses some area, yet no formula built from the usual functions has derivative $e^{-x^2}$.\n\nSo analysis asks two sharper questions: **for which functions $f$ does the integral exist, and what exactly is it?**\n\nRiemann's idea is simple. Chop $[a,b]$ into small pieces. On each piece, pretend $f$ is constant, so the region becomes a rectangle. Add up the rectangle areas. Then make the pieces smaller and see whether the total settles down.\n\nThroughout this level, $[a,b]$ is a closed, bounded interval with $a < b$, and $f : [a,b] \\to \\mathbb{R}$ is a real-valued function on it."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The integral is not defined as F(b) − F(a)",
+          "md": "It is tempting to say \"$\\int_a^b f$ just means $F(b) - F(a)$\". That is a **theorem**, the Fundamental Theorem of Calculus (lesson 7.9), and it only holds under conditions.\n\nIf we used it as the definition, then $\\int_0^1 e^{-x^2}\\,dx$ would mean nothing, because we cannot write down $F$. Yet its value is a perfectly good number, about $0.7468$, and you can estimate it with rectangles. The definition must work without any antiderivative."
+        },
+        {
+          "type": "check",
+          "question": "A friend says: \"$\\int_0^1 e^{-x^2}\\,dx$ does not exist, because $e^{-x^2}$ has no antiderivative formula.\" What is wrong with this?",
+          "options": [
+            "Nothing: an integral exists only when an antiderivative formula exists",
+            "The integral is defined by sums of rectangle areas, not by antiderivatives, so it can exist without a formula for $F$",
+            "$e^{-x^2}$ is not defined on $[0,1]$",
+            "The integral exists, but it equals $0$"
+          ],
+          "correct": 1,
+          "explanation": "The integral will be defined using sums, so a formula for $F$ is never needed. $e^{-x^2}$ is defined (and continuous) on $[0,1]$, and the area under it is clearly positive, about $0.7468$, so it is not $0$."
+        },
+        {
+          "type": "text",
+          "md": "## Notation: cut points, widths and sigma\n\nTo build rectangles we cut $[a,b]$ at points\n\n$$a = x_0 < x_1 < x_2 < \\cdots < x_n = b.$$\n\nThis gives $n$ pieces, called **subintervals**: $[x_0, x_1], [x_1, x_2], \\dots, [x_{n-1}, x_n]$. The $i$-th one is $[x_{i-1}, x_i]$. Its **width** is written\n\n$$\\Delta x_i = x_i - x_{i-1}.$$\n\n$\\Delta$ (the Greek capital \"delta\") is read \"change in\", so $\\Delta x_i$ is \"the change in $x$ across the $i$-th piece\". The collection of cut points is called a **partition** and written $P$; lesson 7.2 studies partitions properly.\n\nTo add up $n$ terms we use **sigma notation** (lesson 1.7): $\\sum_{i=1}^{n} c_i$ means $c_1 + c_2 + \\cdots + c_n$.\n\n**Example.** Cut $[0, 3]$ at $0, 1, 1.5, 3$. Then $n = 3$ and\n\n$$\\Delta x_1 = 1,\\quad \\Delta x_2 = 0.5,\\quad \\Delta x_3 = 1.5.$$\n\nThe widths need **not** be equal. Notice that $\\sum_{i=1}^{3} \\Delta x_i = 1 + 0.5 + 1.5 = 3 = b - a$. This is always true: the pieces fill the interval exactly.\n\n**Equal pieces.** If we cut $[a,b]$ into $n$ equal pieces, every width is $\\frac{b-a}{n}$ and the cut points are $x_i = a + i\\cdot\\frac{b-a}{n}$. On $[0,1]$ this gives $x_i = \\frac{i}{n}$.\n\n**Edge case.** $n = 1$ is allowed: the only \"cut\" is $a = x_0 < x_1 = b$, one piece of width $b - a$."
+        },
+        {
+          "type": "check",
+          "question": "$[2, 5]$ is cut at $2, 2.5, 4, 5$. What are the widths $\\Delta x_1, \\Delta x_2, \\Delta x_3$?",
+          "options": [
+            "$2.5,\\ 4,\\ 5$",
+            "$1,\\ 1,\\ 1$",
+            "$0.5,\\ 1.5,\\ 1$",
+            "$0.5,\\ 1.5,\\ 1,\\ 0$"
+          ],
+          "correct": 2,
+          "explanation": "$\\Delta x_i = x_i - x_{i-1}$: $2.5 - 2 = 0.5$, $4 - 2.5 = 1.5$, $5 - 4 = 1$. They add up to $3 = 5 - 2$, as they must. The first option lists the cut points, not the widths; the second assumes equal pieces; four points give only three subintervals."
+        },
+        {
+          "type": "text",
+          "md": "## Riemann sums\n\nOn each subinterval we need one height for the rectangle. Choose any point $t_i$ in $[x_{i-1}, x_i]$, called a **tag**, and use the height $f(t_i)$.\n\n**Definition.** The **Riemann sum** of $f$ for the cut points $P$ and tags $t = (t_1, \\dots, t_n)$ is\n\n$$S(f,P,t) = \\sum_{i=1}^{n} f(t_i)\\,\\Delta x_i.$$\n\nIn words: on each piece, height times width; then add. If $f \\ge 0$, this is the total area of $n$ rectangles.\n\nCommon choices of tag are the **left endpoint** $t_i = x_{i-1}$, the **right endpoint** $t_i = x_i$, and the **midpoint** $t_i = \\frac{x_{i-1} + x_i}{2}$. But any point of the piece is allowed, endpoints included.\n\n**Example.** $f(x) = x^2$ on $[0,2]$, two equal pieces $[0,1]$ and $[1,2]$, each of width $1$.\n- Left tags $0, 1$: $S = 0^2 \\cdot 1 + 1^2 \\cdot 1 = 1$.\n- Right tags $1, 2$: $S = 1 + 4 = 5$.\n- Midpoint tags $\\frac12, \\frac32$: $S = \\frac14 + \\frac94 = \\frac52$.\n\nThe true area turns out to be $\\frac83 \\approx 2.67$. Different tags give different answers; the hope is that they all get close to one number when the pieces are small.\n\n**Edge case.** A tag may be an endpoint shared by two pieces: with cuts $0, 1, 2$, choosing $t_1 = 1$ and $t_2 = 1$ is fine, since $1 \\in [0,1]$ and $1 \\in [1,2]$."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x)=x^2$ on $[0,2]$ with $n=2$ equal subintervals and **left**-endpoint tags, the Riemann sum equals",
+          "options": [
+            "$0$",
+            "$1$",
+            "$5$",
+            "$\\frac{8}{3}$"
+          ],
+          "correct": 1,
+          "explanation": "The subintervals are $[0,1]$ and $[1,2]$, each of width $1$. Left tags are $0$ and $1$, so the sum is $0^2\\cdot 1+1^2\\cdot 1=1$. $0$ forgets the second piece; $5$ is the right-endpoint sum; $\\frac83$ is the true integral, which lies between the two sums."
+        },
+        {
+          "type": "text",
+          "md": "## Signed area\n\nWhen $f$ takes negative values, $f(t_i)\\,\\Delta x_i$ is negative: the width is positive but the height is negative. So a Riemann sum counts the region **below** the $x$-axis as negative area. We say the integral measures **signed area**.\n\n**Example.** $f(x) = x$ on $[-1, 1]$, cut at $-1, 0, 1$ (widths $1$ and $1$), with right tags $0$ and $1$:\n\n$$S = f(0)\\cdot 1 + f(1)\\cdot 1 = 0 + 1 = 1.$$\n\nWith left tags $-1$ and $0$:\n\n$$S = f(-1)\\cdot 1 + f(0)\\cdot 1 = -1 + 0 = -1.$$\n\nThe graph is a triangle of area $\\frac12$ below the axis on $[-1,0]$ and another of area $\\frac12$ above it on $[0,1]$. They cancel, and the integral will turn out to be $0$. The two sums $1$ and $-1$ sit on either side of it.\n\n**Edge case.** A Riemann sum can be negative, or zero, even though every width is positive. If $f(x) = -3$ on $[0,2]$, every Riemann sum is $-3 \\cdot 2 = -6$, whatever the cuts and tags.\n\nSo \"integral = area\" is only true when $f \\ge 0$. In this level the integral is defined first, and the area of a curved region is then *defined* to be the integral."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = -x$ on $[0,1]$, two equal pieces and right-endpoint tags, what is the Riemann sum?",
+          "options": [
+            "$\\frac34$",
+            "$-\\frac34$",
+            "$-\\frac14$",
+            "$-\\frac12$"
+          ],
+          "correct": 1,
+          "explanation": "Tags $\\frac12$ and $1$ give heights $-\\frac12$ and $-1$; each width is $\\frac12$. So $S = \\frac12\\left(-\\frac12 - 1\\right) = -\\frac34$. Dropping the signs gives $\\frac34$; $-\\frac14$ is the left-endpoint sum; $-\\frac12$ is the true integral, which the sum only approximates."
+        },
+        {
+          "type": "steps",
+          "title": "Worked example: Riemann sums for $f(x) = x$ on $[0,1]$",
+          "steps": [
+            {
+              "title": "Cut into equal pieces",
+              "md": "Use $n$ equal pieces, so $x_i = \\frac{i}{n}$ and $\\Delta x_i = \\frac1n$ for every $i$. We keep $n$ general, so the answer covers every $n$ at once."
+            },
+            {
+              "title": "Right-endpoint tags",
+              "md": "Take $t_i = x_i = \\frac{i}{n}$. Then\n\n$$S_n^{\\text{right}} = \\sum_{i=1}^{n} \\frac{i}{n}\\cdot\\frac1n = \\frac{1}{n^2}\\sum_{i=1}^{n} i = \\frac{1}{n^2}\\cdot\\frac{n(n+1)}{2} = \\frac{n+1}{2n}.$$\n\nThe factor $\\frac{1}{n^2}$ does not depend on $i$, so it comes outside the sum."
+            },
+            {
+              "title": "Left-endpoint tags",
+              "md": "Take $t_i = x_{i-1} = \\frac{i-1}{n}$. The terms are $0, 1, \\dots, n-1$, which add to $\\frac{(n-1)n}{2}$:\n\n$$S_n^{\\text{left}} = \\frac{1}{n^2}\\sum_{i=1}^{n}(i-1) = \\frac{n-1}{2n}.$$"
+            },
+            {
+              "title": "Trap every other choice",
+              "md": "$f(x) = x$ is increasing, so on each piece the left endpoint gives the smallest height and the right endpoint the largest. Any other tags give a sum between the two:\n\n$$\\frac{n-1}{2n} \\le S(f,P,t) \\le \\frac{n+1}{2n}.$$"
+            },
+            {
+              "title": "Let the pieces shrink",
+              "md": "Both bounds tend to $\\frac12$ as $n \\to \\infty$, and they differ by only $\\frac1n$. So every Riemann sum gets close to $\\frac12$, the area of the triangle under $y = x$. Lesson 7.5 turns this squeeze into a proof that $\\int_0^1 x\\,dx = \\frac12$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the worked example, why does every Riemann sum lie between the left-endpoint and right-endpoint sums?",
+          "options": [
+            "Because the pieces have equal width",
+            "Because $f$ is increasing, so on each piece $f(x_{i-1}) \\le f(t_i) \\le f(x_i)$",
+            "Because the left and right sums always trap every Riemann sum, for any function",
+            "Because $n$ is large"
+          ],
+          "correct": 1,
+          "explanation": "It is the monotonicity of $f$ that puts the smallest value at the left end and the largest at the right end of each piece. Equal widths are irrelevant to this. For a function that goes up and down, such as $x^2$ on $[-1,1]$, the smallest value on a piece can be in the middle, so the endpoint sums need not trap the others. Nothing here needs $n$ to be large."
+        },
+        {
+          "type": "text",
+          "md": "## Why this level uses upper and lower sums\n\nRiemann sums have a weakness: they depend on the tags, and there are infinitely many choices. To show that \"all Riemann sums get close to one number\", we would have to control every choice at once.\n\nThe way out, due to Darboux, is to use the **worst cases** directly. On each piece, replace $f(t_i)$ by the **supremum** of $f$ on that piece (the least upper bound, lesson 2.9) to get an **upper sum** $U(f,P)$, or by the **infimum** to get a **lower sum** $L(f,P)$. Every Riemann sum is trapped between them:\n\n$$L(f,P) \\le S(f,P,t) \\le U(f,P).$$\n\nYou will define these properly in lesson 7.3. The function will be called **integrable** (lesson 7.5) when upper and lower sums can be squeezed together.\n\n**Why $f$ must be bounded.** A function is **bounded** on $[a,b]$ if some number $K$ has $|f(x)| \\le K$ for all $x$ in $[a,b]$. If $f$ is unbounded, the supremum on some piece does not exist as a real number, and upper sums make no sense.\n\n**Non-example.** Let $f(x) = \\frac1x$ for $0 < x \\le 1$ and $f(0) = 0$. On the first piece $[0, x_1]$, we may pick a tag $t_1$ so close to $0$ that $f(t_1)\\,\\Delta x_1$ is as large as we like. So Riemann sums for the same cuts can be made huge, and they cannot settle down. From now on, **$f$ is always assumed bounded.** Unbounded integrands are handled as improper integrals in lesson 7.11."
+        },
+        {
+          "type": "check",
+          "question": "Why can't the Riemann sums of $f(x) = \\frac1x$ (with $f(0) = 0$) on $[0,1]$ settle down to one number?",
+          "options": [
+            "Because $f$ is not defined at $0$",
+            "Because $f$ is unbounded near $0$, so a tag close to $0$ makes one rectangle as tall as we like",
+            "Because $f$ is decreasing",
+            "Because $f$ is negative somewhere"
+          ],
+          "correct": 1,
+          "explanation": "$f$ is defined everywhere (we set $f(0) = 0$), so that is not the problem. Decreasing functions are fine: they are integrable (lesson 7.7). And $f \\ge 0$ here. The trouble is unboundedness: $f(t_1)\\,\\Delta x_1 = \\frac{\\Delta x_1}{t_1}$ grows without limit as $t_1 \\to 0$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Subinterval",
+              "back": "One of the pieces $[x_{i-1}, x_i]$ that the cut points $a = x_0 < \\cdots < x_n = b$ divide $[a,b]$ into.\n\n*Example:* cutting $[0,3]$ at $1$ gives $[0,1]$ and $[1,3]$."
+            },
+            {
+              "front": "Width $\\Delta x_i$",
+              "back": "The length $x_i - x_{i-1}$ of the $i$-th subinterval. The widths always **add up to** $b - a$.\n\n*Example:* cuts $0, 1, 1.5, 3$ give widths $1, 0.5, 1.5$."
+            },
+            {
+              "front": "Tag",
+              "back": "A chosen point $t_i$ **inside** the $i$-th subinterval, endpoints allowed. It sets the rectangle's height $f(t_i)$.\n\n*Example:* the midpoint $\\frac32$ is a tag for $[1,2]$."
+            },
+            {
+              "front": "Riemann sum",
+              "back": "$S(f,P,t) = \\sum f(t_i)\\,\\Delta x_i$: on each piece, **height times width**, then add.\n\n*Example:* $x^2$ on $[0,2]$, pieces $[0,1],[1,2]$, left tags: $0 + 1 = 1$."
+            },
+            {
+              "front": "Signed area",
+              "back": "Area above the axis counts as positive, area **below** as negative.\n\n*Example:* for $f(x) = x$ on $[-1,1]$ the two triangles cancel, giving $0$."
+            },
+            {
+              "front": "Bounded function",
+              "back": "$f$ is bounded on $[a,b]$ if some $K$ has $|f(x)| \\le K$ for **every** $x$ in $[a,b]$.\n\n*Example:* $\\sin x$ (take $K = 1$). *Non-example:* $\\frac1x$ on $(0,1]$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You estimate $\\int_1^3 f$ by cutting $[1,3]$ at $1, 2, 3$ and using $f(1.5)$ and $f(2.5)$ as heights. What have you computed?",
+          "options": [
+            "A Riemann sum with right-endpoint tags",
+            "A Riemann sum with midpoint tags",
+            "An upper sum",
+            "The integral itself"
+          ],
+          "correct": 1,
+          "explanation": "$1.5$ and $2.5$ are the midpoints of $[1,2]$ and $[2,3]$, so this is a midpoint Riemann sum. Right tags would be $2$ and $3$. An upper sum uses the supremum on each piece, which need not be at the midpoint. A Riemann sum only approximates the integral."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to compute the right-endpoint Riemann sum of $f(x) = 2x$ on $[0,1]$ with $n = 2$ equal pieces.",
+          "items": [
+            "Cut at $0, \\frac12, 1$, so both widths are $\\frac12$.",
+            "Right tags: $t_1 = \\frac12$ and $t_2 = 1$.",
+            "Heights: $f(\\frac12) = 1$ and $f(1) = 2$.",
+            "Add height times width: $1 \\cdot \\frac12 + 2 \\cdot \\frac12 = \\frac32$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: four rectangles under $y = x^2$",
+          "problem": "Let $f(x) = x^2$ on $[0,1]$. Cut $[0,1]$ into $n = 4$ equal pieces. Compute the Riemann sum with **right**-endpoint tags, then the one with **left**-endpoint tags. Which is bigger, and why? Try it before you open the solution.",
+          "solution": "The cut points are $0, \\frac14, \\frac12, \\frac34, 1$, and every width is $\\frac14$.\n\n**Right tags** $\\frac14, \\frac12, \\frac34, 1$:\n\n$$S^{\\text{right}} = \\frac14\\left(\\frac{1}{16} + \\frac{4}{16} + \\frac{9}{16} + \\frac{16}{16}\\right) = \\frac14 \\cdot \\frac{30}{16} = \\frac{15}{32} \\approx 0.469.$$\n\n**Left tags** $0, \\frac14, \\frac12, \\frac34$:\n\n$$S^{\\text{left}} = \\frac14\\left(0 + \\frac{1}{16} + \\frac{4}{16} + \\frac{9}{16}\\right) = \\frac14 \\cdot \\frac{14}{16} = \\frac{7}{32} \\approx 0.219.$$\n\nThe right sum is bigger because $x^2$ is increasing on $[0,1]$: the right end of each piece is the highest point. The true value, $\\frac13 \\approx 0.333$, lies between them.\n\n**Check your version:** did you use $4$ pieces (so $5$ cut points)? Did you multiply by the width $\\frac14$? Did the left sum include the term $f(0) = 0$?"
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Having an antiderivative is not the same as being integrable",
+          "md": "Let $F(x)=x^2\\sin(1/x^2)$ for $x\\neq 0$ and $F(0)=0$. Then $F$ is differentiable at every point of $[-1,1]$, but\n\n$$F'(x)=2x\\sin(1/x^2)-\\frac{2}{x}\\cos(1/x^2) \\quad (x \\ne 0)$$\n\nis unbounded near $0$. So $f = F'$ has an antiderivative, yet it is **not** Riemann integrable on $[-1,1]$, because the theory in this level needs $f$ bounded. Integrability is a property of $f$ itself, decided by the definition, not by whether an antiderivative exists."
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Isn't the integral just the area under the graph?",
+              "a": "Only when $f \\ge 0$. In general $\\int_a^b f$ is a **signed** area: parts of the graph below the axis count negatively. For $f(x) = x$ on $[-1,1]$ the integral is $0$, though the shaded region has total area $1$."
+            },
+            {
+              "q": "Isn't the integral defined as $F(b)-F(a)$?",
+              "a": "No. That is a theorem (the Fundamental Theorem of Calculus, lesson 7.9), and it needs hypotheses. The definition uses only sums and suprema/infima, so it applies to functions like $e^{-x^2}$ that have no antiderivative formula."
+            },
+            {
+              "q": "Why do we need a limit at all? Why not just use very small pieces?",
+              "a": "Any fixed set of pieces gives an approximation that depends on the tags: $x^2$ on $[0,1]$ with $4$ pieces gave $\\frac{7}{32}$ and $\\frac{15}{32}$. The exact value is the single number that all such sums approach as the pieces shrink."
+            },
+            {
+              "q": "Do the pieces have to be equal?",
+              "a": "No. Equal pieces make calculations easier, but the definition allows any cut points. This matters later: near a jump you might want very small pieces, and elsewhere large ones."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- \"Area under the curve\" and \"$F(b) - F(a)$\" are not definitions; the integral is built from **sums of rectangles**.\n- Cut $[a,b]$ at $a = x_0 < \\cdots < x_n = b$; the widths $\\Delta x_i = x_i - x_{i-1}$ add up to $b - a$.\n- A **Riemann sum** is $\\sum f(t_i)\\,\\Delta x_i$, with a tag $t_i$ in each piece. Different tags give different sums.\n- Riemann sums measure **signed** area: regions below the axis count negatively.\n- This level uses **upper and lower sums** (lesson 7.3), which trap every Riemann sum, and always assumes $f$ is **bounded**."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "For $f(x)=x^2$ on $[0,1]$ with $n=2$ equal subintervals and right-endpoint tags, the Riemann sum is",
+          "options": [
+            "$\\frac{1}{8}$",
+            "$\\frac{5}{8}$",
+            "$\\frac{3}{8}$",
+            "$\\frac{1}{3}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Tags $\\frac12$ and $1$, widths $\\frac12$: $\\frac12\\left(\\frac14+1\\right)=\\frac58$. $\\frac18$ is the left-endpoint sum; $\\frac13$ is the integral itself, not this sum."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In the Riemann (Darboux) theory of this level, the integrand $f$ on $[a,b]$ is assumed to be bounded.",
+          "answer": [
+            true
+          ],
+          "explanation": "Upper and lower sums use $\\sup$ and $\\inf$ of $f$ on each subinterval, and these must be finite. Unbounded integrands are treated as improper integrals (lesson 7.11)."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following are needed to form a Riemann sum $S(f,P,t)$ of $f$ on $[a,b]$?",
+          "options": [
+            "A partition $a=x_0<x_1<\\cdots<x_n=b$",
+            "Tags $t_i\\in[x_{i-1},x_i]$",
+            "An antiderivative of $f$",
+            "The values $f(t_i)$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "$S(f,P,t)=\\sum f(t_i)\\,\\Delta x_i$ needs cut points, tags and the values of $f$ at the tags. No antiderivative is involved."
+        },
+        {
+          "type": "short",
+          "prompt": "Compute the right-endpoint Riemann sum of $f(x)=2x$ on $[0,1]$ with $n=2$ equal subintervals.",
+          "answer": [
+            "3/2",
+            "1.5",
+            "1 1/2"
+          ],
+          "explanation": "Tags $\\frac12$ and $1$ give values $1$ and $2$; each width is $\\frac12$, so the sum is $\\frac12(1+2)=\\frac32$."
+        },
+        {
+          "prompt": "For $f(x)=x$ on $[0,1]$ with $n$ equal subintervals and left-endpoint tags, the Riemann sum equals",
+          "options": [
+            "$\\frac{n+1}{2n}$",
+            "$\\frac{1}{2}$",
+            "$\\frac{n-1}{2n}$",
+            "$\\frac{n-1}{n}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\frac{1}{n^2}\\sum_{i=1}^n (i-1)=\\frac{1}{n^2}\\cdot\\frac{(n-1)n}{2}=\\frac{n-1}{2n}$. $\\frac{n+1}{2n}$ is the right-endpoint sum, and $\\frac12$ is the limit, not the sum for a fixed $n$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every function that has an antiderivative on $[a,b]$ is Riemann integrable on $[a,b]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$F(x)=x^2\\sin(1/x^2)$, $F(0)=0$, is differentiable on $[-1,1]$, but $F'$ is unbounded near $0$, so $F'$ is not Riemann integrable there."
+        },
+        {
+          "type": "short",
+          "prompt": "Compute the midpoint Riemann sum of $f(x) = x^2$ on $[0,2]$ with $n = 2$ equal subintervals.",
+          "answer": [
+            "5/2",
+            "2.5",
+            "2 1/2"
+          ],
+          "explanation": "The pieces are $[0,1]$ and $[1,2]$ with midpoints $\\frac12$ and $\\frac32$. The sum is $\\left(\\frac14 + \\frac94\\right)\\cdot 1 = \\frac{10}{4} = \\frac52$."
+        },
+        {
+          "prompt": "$[1,4]$ is cut at $1, 1.5, 3, 4$. What is $\\sum_{i=1}^{3}\\Delta x_i$?",
+          "options": [
+            "$3$",
+            "$9.5$",
+            "$4$",
+            "$1$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The widths are $0.5$, $1.5$ and $1$, which add to $3 = 4 - 1$. The widths always add up to $b - a$. $9.5$ adds the cut points instead of the widths."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A Riemann sum of $f$ on $[a,b]$ can be negative.",
+          "answer": [
+            true
+          ],
+          "explanation": "Widths are positive, but heights $f(t_i)$ can be negative. For $f(x) = -3$ on $[0,2]$ every Riemann sum is $-6$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these points are allowed as a tag for the subinterval $[1, 2]$? Select all that apply.",
+          "options": [
+            "$\\frac12$",
+            "$1$",
+            "$\\sqrt{2}$",
+            "$\\frac52$"
+          ],
+          "answer": [
+            1,
+            2
+          ],
+          "explanation": "A tag can be any point of $[1,2]$, endpoints included: $1$ and $\\sqrt2 \\approx 1.414$ qualify. $\\frac12$ and $\\frac52$ lie outside the subinterval."
+        },
+        {
+          "prompt": "For $f(x) = -x$ on $[0,1]$ with $n = 2$ equal subintervals and right-endpoint tags, the Riemann sum is",
+          "options": [
+            "$\\frac34$",
+            "$-\\frac14$",
+            "$-\\frac34$",
+            "$-\\frac12$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Heights $-\\frac12$ and $-1$, widths $\\frac12$: $\\frac12\\left(-\\frac12 - 1\\right) = -\\frac34$. $\\frac34$ loses the sign; $-\\frac14$ is the left-endpoint sum; $-\\frac12$ is the integral."
+        },
+        {
+          "prompt": "Why does this level work with upper and lower sums rather than only with Riemann sums?",
+          "options": [
+            "Riemann sums are always wrong",
+            "Upper and lower sums do not depend on a choice of tags, and they trap every Riemann sum for the same cuts",
+            "Upper and lower sums do not need $f$ to be bounded",
+            "Upper and lower sums use antiderivatives"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Riemann sums are fine approximations, but each depends on the tags. Upper and lower sums use the supremum and infimum on each piece, so no choice is involved, and $L(f,P) \\le S(f,P,t) \\le U(f,P)$. They need $f$ bounded (otherwise the supremum is not a real number), and no antiderivative is used."
+        }
+      ]
+    },
+    {
+      "slug": "7-2-partitions-of-intervals",
+      "title": "Partitions of intervals",
+      "summary": "The scaffolding of the integral: partitions, mesh and refinements.",
+      "est_minutes": 30,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Partitions: the scaffolding of the integral",
+          "md": "**In this lesson you will learn to:**\n- say exactly what a **partition** of $[a,b]$ is, and spot sets that are not partitions\n- compute the **mesh** $\\|P\\|$ of a partition\n- decide whether one partition is a **refinement** of another\n- build the **common refinement** $P \\cup Q$ of two partitions, and prove that refining never increases the mesh\n\n**You need:** cut points and widths $\\Delta x_i$ from lesson 7.1, and the set symbols $\\in$, $\\subseteq$, $\\cup$, $\\cap$ from lesson 1.4. Reminder: $P \\subseteq Q$ means every element of $P$ is also in $Q$."
+        },
+        {
+          "type": "text",
+          "md": "## Why we need precise language for cuts\n\nIn lesson 7.1 we cut $[a,b]$ into pieces and added up rectangles. Soon we will want to say things like \"cut more finely and the estimate improves\" and \"compare the estimate from my cuts with the estimate from yours\".\n\nSuppose you cut $[0,1]$ at $\\frac12$ and a friend cuts it at $\\frac13$. Whose cuts are finer? Neither: you each have a piece the other doesn't. To compare the two estimates, we will need a third set of cuts that is finer than **both**.\n\nTo say any of this precisely we need three words:\n- **partition**: a set of cut points;\n- **mesh**: how coarse the cuts are (the longest piece);\n- **refinement**: cuts that keep all the old ones and maybe add more.\n\nEach one is short to define, but each has a trap, so we take them one at a time."
+        },
+        {
+          "type": "text",
+          "md": "## Partitions\n\n**Definition.** A **partition** of $[a,b]$ is a finite set $P=\\{x_0,x_1,\\dots,x_n\\}$ of points with\n\n$$a=x_0<x_1<\\cdots<x_n=b.$$\n\nIn words: finitely many points of $[a,b]$, including **both** endpoints $a$ and $b$, listed in increasing order. A partition with $n + 1$ points has $n$ **subintervals** $I_i=[x_{i-1},x_i]$, with widths $\\Delta x_i=x_i-x_{i-1}$ that add up to $b-a$.\n\n**Examples** (on $[0,1]$):\n- $\\{0, 0.2, 0.5, 0.9, 1\\}$: five points, four subintervals.\n- $\\{0, 1\\}$: the **trivial partition**, with one subinterval, $[0,1]$ itself. Students often forget this counts; it does.\n- $\\{0, \\frac1n, \\frac2n, \\dots, 1\\}$: the **uniform partition** $P_n$, with $n$ equal pieces.\n\n**Non-examples** (on $[0,1]$):\n- $\\{0.2, 1\\}$: missing the left endpoint $0$, so the pieces don't cover $[0, 0.2]$.\n- $\\{0, 0.5, 1.5\\}$: contains a point outside $[0,1]$ and misses $1$.\n- $\\{0\\} \\cup \\{\\frac1n : n \\in \\mathbb{N}\\}$, that is, $0$ together with $1, \\frac12, \\frac13, \\dots$: infinitely many points. A partition must be **finite**, so that its sums have finitely many terms.\n\nBecause a partition is a **set**, repeating a point changes nothing: $\\{0, 0.5, 0.5, 1\\}$ is the same set as $\\{0, 0.5, 1\\}$. And we always list the points in increasing order and label them $x_0 < x_1 < \\cdots$."
+        },
+        {
+          "type": "check",
+          "question": "Which of these is a partition of $[0, 2]$?",
+          "options": [
+            "$\\{0.5, 1, 2\\}$",
+            "$\\{0, 2\\}$",
+            "$\\{0, 1, 3\\}$",
+            "$\\{0, 1, \\tfrac32, \\tfrac74, \\tfrac{15}{8}, \\dots\\} \\cup \\{2\\}$, with infinitely many points"
+          ],
+          "correct": 1,
+          "explanation": "$\\{0, 2\\}$ is the trivial partition: finite, contains both endpoints. The first misses $0$. The third contains $3 \\notin [0,2]$ and misses $2$. The last is infinite, and a partition must be finite."
+        },
+        {
+          "type": "text",
+          "md": "## Mesh\n\nHow coarse is a partition? Many short pieces and one long piece is still coarse where the long piece is. So we measure the **longest** piece.\n\n**Definition.** The **mesh** (or **norm**) of $P$ is\n\n$$\\|P\\|=\\max_{1\\le i\\le n}\\Delta x_i .$$\n\nThe double bars $\\|P\\|$ are read \"the mesh of $P$\", and $\\max_{1 \\le i \\le n}$ means \"the largest value as $i$ runs from $1$ to $n$\".\n\n**Examples.**\n- $P = \\{0, 0.2, 0.5, 0.9, 1\\}$: widths $0.2, 0.3, 0.4, 0.1$, so $\\|P\\| = 0.4$.\n- The uniform partition $P_n$ of $[a,b]$ has $x_i = a + i\\,\\frac{b-a}{n}$ and every width equal to $\\frac{b-a}{n}$, so $\\|P_n\\| = \\frac{b-a}{n}$. On $[2,5]$ with $n = 6$: $\\|P_6\\| = \\frac36 = \\frac12$.\n- The trivial partition $\\{a, b\\}$ has mesh $b - a$, the largest possible.\n\n**Edge case students get wrong.** The mesh is the **maximum** width, not the average. For $\\{0, 0.2, 0.5, 0.9, 1\\}$ the average width is $\\frac14 = 0.25$, but the mesh is $0.4$.\n\n**Why it matters.** A small mesh guarantees that **every** piece is short. \"Mesh tends to $0$\" will be the precise meaning of \"the pieces shrink\"."
+        },
+        {
+          "type": "check",
+          "question": "What is the mesh of the partition $\\{0, 0.1, 0.7, 1\\}$ of $[0,1]$?",
+          "options": [
+            "$0.1$",
+            "$0.6$",
+            "$\\frac13$",
+            "$0.7$"
+          ],
+          "correct": 1,
+          "explanation": "The widths are $0.1$, $0.6$ and $0.3$; the largest is $0.6$. $0.1$ is the smallest width, $\\frac13$ is the average, and $0.7$ is a point of the partition, not a width."
+        },
+        {
+          "type": "text",
+          "md": "## Refinements\n\n**Definition.** A partition $Q$ of $[a,b]$ is a **refinement** of $P$ if $P\\subseteq Q$. In words: $Q$ keeps **every** point of $P$ and possibly adds more. Each old piece is then cut into one or more new pieces.\n\n**Examples** (with $P = \\{0, \\frac12, 1\\}$):\n- $Q = \\{0, \\frac14, \\frac12, 1\\}$ refines $P$: it keeps $0, \\frac12, 1$ and adds $\\frac14$.\n- $Q = \\{0, \\frac12, \\frac34, 1\\}$ refines $P$ as well.\n- $P$ refines itself, since $P \\subseteq P$. Adding no points is allowed. This edge case is easy to forget.\n- The uniform partition $P_4$ refines $P_2$, because $\\{0, \\frac12, 1\\} \\subseteq \\{0, \\frac14, \\frac12, \\frac34, 1\\}$. In general $P_{2n}$ refines $P_n$.\n\n**Non-examples:**\n- $\\{0, \\frac13, \\frac23, 1\\}$ does **not** refine $P$: it is missing $\\frac12$.\n- $\\{0, 1\\}$ does not refine $P$: it has fewer points, so it misses $\\frac12$. (It is the other way round: $P$ refines $\\{0, 1\\}$.)\n- $P_3$ does not refine $P_2$, and $P_2$ does not refine $P_3$.\n\n**Test.** To check whether $Q$ refines $P$, run through the points of $P$ one by one and look for each in $Q$. One missing point is enough to say no."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Finer mesh does not mean refinement",
+          "md": "\"Refinement\" is about **set containment**, not about mesh. On $[0,1]$, $Q=\\{0,\\tfrac13,\\tfrac23,1\\}$ has smaller mesh than $P=\\{0,\\tfrac12,1\\}$ ($\\frac13 < \\frac12$), yet $Q$ is **not** a refinement of $P$, because $\\frac12\\notin Q$.\n\nOne direction does hold: a refinement always has mesh $\\le$ the original (proved below). The converse fails, as this example shows."
+        },
+        {
+          "type": "check",
+          "question": "Which of the following is a refinement of $P=\\{0,\\tfrac14,1\\}$ on $[0,1]$?",
+          "options": [
+            "$\\{0,\\tfrac12,1\\}$",
+            "$\\{0,\\tfrac15,\\tfrac25,\\tfrac35,\\tfrac45,1\\}$",
+            "$\\{0,\\tfrac18,\\tfrac14,\\tfrac34,1\\}$",
+            "$\\{\\tfrac14,1\\}$"
+          ],
+          "correct": 2,
+          "explanation": "A refinement must contain every point of $P$: $0$, $\\frac14$ and $1$. Only $\\{0,\\tfrac18,\\tfrac14,\\tfrac34,1\\}$ does. The first and second miss $\\frac14$, even though the second has a smaller mesh. The last is not even a partition of $[0,1]$, since it omits $0$."
+        },
+        {
+          "type": "text",
+          "md": "## The common refinement\n\nBack to the opening problem: you cut at $\\frac12$, your friend at $\\frac13$. To compare, use **all** the cuts at once.\n\n**Definition.** For partitions $P$ and $Q$ of $[a,b]$, the **common refinement** is $P \\cup Q$, the set of points that are in $P$ or in $Q$ (or both).\n\n**Why it works.** $P \\cup Q$ is finite (it has at most as many points as $P$ and $Q$ together), it lies in $[a,b]$, and it contains $a$ and $b$. So it is a partition. It contains all of $P$ and all of $Q$, so it refines **both**.\n\n**Examples** (on $[0,1]$):\n- $P = \\{0, \\frac12, 1\\}$, $Q = \\{0, \\frac13, 1\\}$: $P \\cup Q = \\{0, \\frac13, \\frac12, 1\\}$. Its widths are $\\frac13, \\frac16, \\frac12$, so $\\|P \\cup Q\\| = \\frac12$. Note that this is **not** smaller than $\\|P\\| = \\frac12$: refining can leave the mesh unchanged.\n- If $Q$ already refines $P$, then $P \\cup Q = Q$.\n\n**Non-example.** $P \\cap Q$ (points in both) is a partition here, $\\{0, 1\\}$, but it is contained in $P$ and $Q$ rather than containing them. It is **coarser** than both, so it refines neither (unless $P = Q$).\n\nThis one fact, that any two partitions have a common refinement, is what lets lesson 7.3 compare estimates built from unrelated partitions."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each term to its meaning.",
+          "pairs": [
+            {
+              "left": "Partition of $[a,b]$",
+              "right": "A finite set $\\{x_0,\\dots,x_n\\}$ with $a=x_0<\\cdots<x_n=b$"
+            },
+            {
+              "left": "Mesh",
+              "right": "$\\max_i (x_i-x_{i-1})$, the longest subinterval"
+            },
+            {
+              "left": "Refinement of $P$",
+              "right": "A partition $Q$ with $P\\subseteq Q$"
+            },
+            {
+              "left": "Common refinement of $P$ and $Q$",
+              "right": "$P\\cup Q$"
+            },
+            {
+              "left": "Uniform partition",
+              "right": "$x_i=a+i\\,\\frac{b-a}{n}$"
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "title": "Proof: a refinement never has a larger mesh",
+          "steps": [
+            {
+              "title": "State the claim",
+              "md": "Let $P$ and $Q$ be partitions of $[a,b]$ with $P \\subseteq Q$. We show $\\|Q\\| \\le \\|P\\|$. Write the points of $Q$ as $y_0 < y_1 < \\cdots < y_m$ and those of $P$ as $x_0 < \\cdots < x_n$."
+            },
+            {
+              "title": "Take any piece of Q",
+              "md": "Let $[y_{j-1}, y_j]$ be any subinterval of $Q$. We will show it is no longer than $\\|P\\|$. Working with an arbitrary piece means the argument covers every piece at once."
+            },
+            {
+              "title": "It sits inside one piece of P",
+              "md": "$y_{j-1}$ and $y_j$ are **consecutive** points of $Q$, so no point of $Q$ lies strictly between them. Every point of $P$ is a point of $Q$, so no point of $P$ lies strictly between them either. Hence $[y_{j-1}, y_j]$ fits inside a single subinterval $[x_{i-1}, x_i]$ of $P$.\n\nThis is the step where $P \\subseteq Q$ is used."
+            },
+            {
+              "title": "Compare lengths",
+              "md": "A subinterval inside another is no longer:\n\n$$y_j - y_{j-1} \\le x_i - x_{i-1} \\le \\|P\\|.$$"
+            },
+            {
+              "title": "Take the maximum",
+              "md": "Every subinterval of $Q$ has length at most $\\|P\\|$, so the longest one does too: $\\|Q\\| \\le \\|P\\|$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, where is the hypothesis $P \\subseteq Q$ used?",
+          "options": [
+            "To show that $Q$ has more points than $P$",
+            "To show that no point of $P$ lies strictly between two consecutive points of $Q$",
+            "To show that the widths of $Q$ add up to $b - a$",
+            "It is not needed; any partition with more points has smaller mesh"
+          ],
+          "correct": 1,
+          "explanation": "Because every point of $P$ is in $Q$, a gap between consecutive points of $Q$ contains no point of $P$, so it lies inside one piece of $P$. Having more points is not enough: $\\{0, 0.1, 0.2, 1\\}$ has more points than $\\{0, \\frac12, 1\\}$ but a larger mesh, $0.8$. Widths add to $b - a$ for every partition, refinement or not."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Partition",
+              "back": "A **finite** set of points $a = x_0 < x_1 < \\cdots < x_n = b$, including both endpoints.\n\n*Example:* $\\{0, 0.3, 1\\}$ is a partition of $[0,1]$; $\\{0.3, 1\\}$ is not."
+            },
+            {
+              "front": "Mesh $\\|P\\|$",
+              "back": "The length of the **longest** subinterval of $P$.\n\n*Example:* $\\{0, 0.2, 0.5, 0.9, 1\\}$ has widths $0.2, 0.3, 0.4, 0.1$, so mesh $0.4$."
+            },
+            {
+              "front": "Uniform partition",
+              "back": "$n$ equal pieces: $x_i = a + i\\,\\frac{b-a}{n}$, mesh $\\frac{b-a}{n}$.\n\n*Example:* $P_4$ of $[0,1]$ is $\\{0, \\frac14, \\frac12, \\frac34, 1\\}$."
+            },
+            {
+              "front": "Refinement",
+              "back": "$Q$ refines $P$ when $P \\subseteq Q$: $Q$ **keeps every point** of $P$.\n\n*Example:* $\\{0, \\frac14, \\frac12, 1\\}$ refines $\\{0, \\frac12, 1\\}$."
+            },
+            {
+              "front": "Common refinement",
+              "back": "$P \\cup Q$, all the points of both. It is a partition that refines **both** $P$ and $Q$.\n\n*Example:* $\\{0, \\frac12, 1\\} \\cup \\{0, \\frac13, 1\\} = \\{0, \\frac13, \\frac12, 1\\}$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "Ada uses $P = \\{0, \\frac25, 1\\}$ and Ben uses $Q = \\{0, \\frac35, 1\\}$ to estimate an integral on $[0,1]$. They want one partition that refines both, with as few points as possible. Which should they use?",
+          "options": [
+            "$\\{0, 1\\}$",
+            "$\\{0, \\frac25, \\frac35, 1\\}$",
+            "The uniform partition $P_5$",
+            "Whichever of $P$ and $Q$ has smaller mesh"
+          ],
+          "correct": 1,
+          "explanation": "$P \\cup Q = \\{0, \\frac25, \\frac35, 1\\}$ contains both partitions, and any common refinement must contain all four of these points, so it is the smallest. $\\{0,1\\} = P \\cap Q$ refines neither. $P_5$ also refines both but has two extra points. $P$ and $Q$ have the same mesh, $\\frac35$, and neither refines the other."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to show that $P \\cup Q$ is a partition of $[a,b]$ that refines both $P$ and $Q$.",
+          "items": [
+            "$P$ and $Q$ are finite, so $P \\cup Q$ is finite.",
+            "Every point of $P$ and of $Q$ lies in $[a,b]$, so every point of $P \\cup Q$ does.",
+            "$a$ and $b$ are in $P$, so they are in $P \\cup Q$. Hence $P \\cup Q$ is a partition.",
+            "$P \\subseteq P \\cup Q$ and $Q \\subseteq P \\cup Q$, so $P \\cup Q$ refines both. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: compare two partitions",
+          "problem": "On $[0,1]$ let $P = \\{0, \\frac14, 1\\}$ and $Q = \\{0, \\frac12, \\frac34, 1\\}$.\n\n(a) Find $\\|P\\|$ and $\\|Q\\|$.\n(b) Does either refine the other?\n(c) Find $R = P \\cup Q$ and $\\|R\\|$, and check that $\\|R\\|$ is no bigger than either mesh.\n\nTry it before you open the solution.",
+          "solution": "**(a)** $P$ has widths $\\frac14, \\frac34$, so $\\|P\\| = \\frac34$. $Q$ has widths $\\frac12, \\frac14, \\frac14$, so $\\|Q\\| = \\frac12$.\n\n**(b)** No. $Q$ does not contain $\\frac14$, so $Q$ does not refine $P$, even though $\\|Q\\| < \\|P\\|$. $P$ does not contain $\\frac12$, so $P$ does not refine $Q$.\n\n**(c)** $R = \\{0, \\frac14, \\frac12, \\frac34, 1\\}$, the uniform partition $P_4$. All widths are $\\frac14$, so $\\|R\\| = \\frac14$. Indeed $\\frac14 \\le \\frac34$ and $\\frac14 \\le \\frac12$, as the proof above guarantees, since $R$ refines both.\n\n**Check your version:** did you use the **largest** width for each mesh? In (b), did you name a specific missing point rather than comparing meshes? In (c), did you list the points of $R$ in increasing order?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why must a partition be finite?",
+              "a": "Because we add up one term per subinterval. With finitely many pieces, $\\sum f(t_i)\\,\\Delta x_i$ is an ordinary finite sum. An infinite set of cut points would give an infinite series (Level 4), with convergence problems we want to avoid at this stage."
+            },
+            {
+              "q": "Why must both endpoints be in the partition?",
+              "a": "So that the pieces cover all of $[a,b]$. Without $a$, the part of $[a,b]$ before the first cut point would be left out, and the widths would no longer add up to $b - a$."
+            },
+            {
+              "q": "Is a partition with more points always a refinement?",
+              "a": "No. $\\{0, \\frac13, \\frac23, 1\\}$ has more points than $\\{0, \\frac12, 1\\}$ but does not contain $\\frac12$. Refinement means **containing** the old points, not having more of them."
+            },
+            {
+              "q": "Why use the longest piece for the mesh rather than the average?",
+              "a": "Because we want every piece to be short. $\\{0, 0.01, 0.02, \\dots, 0.5, 1\\}$ has a tiny average width, but the piece $[0.5, 1]$ is long, and a rectangle on it can be a poor approximation. Only the maximum controls all the pieces."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **partition** of $[a,b]$ is a finite set $a = x_0 < x_1 < \\cdots < x_n = b$; both endpoints must be in it. $n + 1$ points give $n$ subintervals.\n- The **mesh** $\\|P\\|$ is the **longest** width, not the average. The uniform partition $P_n$ has mesh $\\frac{b-a}{n}$.\n- $Q$ is a **refinement** of $P$ when $P \\subseteq Q$. Smaller mesh does **not** imply refinement.\n- Any two partitions have a **common refinement** $P \\cup Q$; $P \\cap Q$ refines neither.\n- Refining never increases the mesh: if $P \\subseteq Q$ then $\\|Q\\| \\le \\|P\\|$."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is the mesh of the partition $\\{0,\\,0.2,\\,0.5,\\,0.9,\\,1\\}$ of $[0,1]$?",
+          "options": [
+            "$0.1$",
+            "$0.3$",
+            "$0.25$",
+            "$0.4$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "The subinterval lengths are $0.2, 0.3, 0.4, 0.1$; the largest is $0.4$. $0.25$ is the average length, not the mesh, and $0.1$ is the smallest."
+        },
+        {
+          "type": "short",
+          "prompt": "A partition $P=\\{x_0,x_1,\\dots,x_6\\}$ of $[a,b]$ has how many subintervals?",
+          "answer": [
+            "6",
+            "six"
+          ],
+          "explanation": "Seven points $x_0,\\dots,x_6$ give six subintervals $[x_{i-1},x_i]$, $i=1,\\dots,6$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $\\|Q\\|<\\|P\\|$, then $Q$ is a refinement of $P$.",
+          "answer": [
+            false
+          ],
+          "explanation": "On $[0,1]$, $Q=\\{0,\\tfrac13,\\tfrac23,1\\}$ has mesh $\\frac13<\\frac12=\\|\\{0,\\tfrac12,1\\}\\|$, but $Q$ does not contain $\\frac12$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following are refinements of $P=\\{0,\\tfrac12,1\\}$ on $[0,1]$?",
+          "options": [
+            "$\\{0,\\tfrac14,\\tfrac12,1\\}$",
+            "$\\{0,\\tfrac13,\\tfrac23,1\\}$",
+            "$\\{0,\\tfrac12,\\tfrac34,1\\}$",
+            "$\\{0,1\\}$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "A refinement must contain $0$, $\\frac12$ and $1$. The second option misses $\\frac12$; the last has fewer points than $P$ and misses $\\frac12$."
+        },
+        {
+          "prompt": "Given partitions $P$ and $Q$ of $[a,b]$, which set is guaranteed to be a partition refining both?",
+          "options": [
+            "$P\\cap Q$",
+            "$P\\cup Q$",
+            "whichever of $P$, $Q$ has the smaller mesh",
+            "the uniform partition with $|P|+|Q|$ points"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$P\\cup Q$ is finite, contains $a$ and $b$, and contains both $P$ and $Q$. $P\\cap Q$ is contained in both, so it refines neither in general. Smaller mesh does not mean refinement, and a uniform partition need not contain the points of $P$ or $Q$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $Q$ is a refinement of $P$, then $\\|Q\\|\\le\\|P\\|$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Each subinterval of $Q$ lies inside some subinterval of $P$, so it is no longer than $\\|P\\|$."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the mesh of the uniform partition of $[2, 5]$ into $6$ equal subintervals?",
+          "answer": [
+            "1/2",
+            "0.5",
+            ".5"
+          ],
+          "explanation": "Each piece has width $\\frac{5 - 2}{6} = \\frac12$, so the mesh is $\\frac12$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\{0, 1\\}$ is a partition of $[0,1]$.",
+          "answer": [
+            true
+          ],
+          "explanation": "It is finite and contains both endpoints, with $0 < 1$. It is the trivial partition, with a single subinterval $[0,1]$."
+        },
+        {
+          "prompt": "Which of these is **not** a partition of $[1, 3]$?",
+          "options": [
+            "$\\{1, 3\\}$",
+            "$\\{1, 1.5, 2, 3\\}$",
+            "$\\{1, 2, 4\\}$",
+            "$\\{1, \\sqrt{2}, 3\\}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\{1, 2, 4\\}$ contains $4 \\notin [1,3]$ and is missing the endpoint $3$. The others are finite, lie in $[1,3]$, and contain both $1$ and $3$; $\\sqrt2 \\approx 1.414$ is a valid cut point."
+        },
+        {
+          "type": "multiple",
+          "prompt": "On $[0,1]$ let $P = \\{0, \\frac13, 1\\}$ and $Q = \\{0, \\frac12, 1\\}$. Which statements are true? Select all that apply.",
+          "options": [
+            "$P \\cup Q = \\{0, \\frac13, \\frac12, 1\\}$",
+            "$\\|P \\cup Q\\| = \\frac12$",
+            "$P \\cup Q$ refines $P$",
+            "$Q$ refines $P$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "$P \\cup Q$ has widths $\\frac13, \\frac16, \\frac12$, so its mesh is $\\frac12$, and it contains every point of $P$. But $Q$ does not contain $\\frac13$, so $Q$ does not refine $P$."
+        },
+        {
+          "type": "short",
+          "prompt": "On $[0,1]$, how many subintervals does $P_2 \\cup P_3$ have, where $P_n$ is the uniform partition into $n$ pieces?",
+          "answer": [
+            "4",
+            "four"
+          ],
+          "explanation": "$P_2 = \\{0, \\frac12, 1\\}$ and $P_3 = \\{0, \\frac13, \\frac23, 1\\}$, so $P_2 \\cup P_3 = \\{0, \\frac13, \\frac12, \\frac23, 1\\}$: five points, four subintervals."
+        },
+        {
+          "prompt": "On $[0,1]$, the uniform partition $P_4$ is a refinement of which of these?",
+          "options": [
+            "$P_2$",
+            "$P_3$",
+            "$P_5$",
+            "$P_8$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$P_2 = \\{0, \\frac12, 1\\} \\subseteq P_4 = \\{0, \\frac14, \\frac12, \\frac34, 1\\}$. $P_3$ contains $\\frac13 \\notin P_4$, and $P_5$ contains $\\frac15 \\notin P_4$. $P_8$ is a refinement **of** $P_4$, not the other way round."
+        }
+      ]
+    },
+    {
+      "slug": "7-3-upper-and-lower-sums",
+      "title": "Upper and lower sums",
+      "summary": "Trapping the area between $L(f,P)$ and $U(f,P)$, and why refining helps.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Upper and lower sums",
+          "md": "**In this lesson you will learn to:**\n- find $M_i$ and $m_i$, the supremum and infimum of $f$ on each subinterval\n- compute the **upper sum** $U(f,P)$ and **lower sum** $L(f,P)$\n- use the shortcut for increasing and decreasing functions, and know when it fails\n- prove the **refinement lemma**: refining lowers upper sums and raises lower sums\n- show that **every** lower sum is at most **every** upper sum\n\n**You need:** partitions, mesh and refinements (lesson 7.2), Riemann sums (lesson 7.1), and supremum and infimum (lesson 2.9). Throughout, $f : [a,b] \\to \\mathbb{R}$ is **bounded**."
+        },
+        {
+          "type": "text",
+          "md": "## Guaranteed over- and under-estimates\n\nA Riemann sum uses one height $f(t_i)$ per piece, and the answer depends on which tags you choose. You never know whether you have over- or under-estimated.\n\nDarboux's fix: on each piece, use the **highest** height $f$ reaches there, and separately the **lowest**. The first choice gives rectangles that cover the whole region under the graph, a guaranteed **over**-estimate. The second gives rectangles that fit inside it, a guaranteed **under**-estimate. The true value, whatever it is, is trapped between them.\n\nThere is one catch. On a piece, $f$ may never actually reach a highest value. For example, $f(x) = x$ on $[0,1)$ gets as close to $1$ as you like but never equals $1$. So instead of \"the largest value\" we use the **supremum**, which always exists for a bounded set (by completeness, lesson 2.10).\n\nReminder from lesson 2.9: the **supremum** $\\sup A$ of a set $A$ is its least upper bound, the smallest number that is $\\ge$ every element of $A$. The **infimum** $\\inf A$ is its greatest lower bound. Neither has to belong to $A$: $\\sup\\,[0,1) = 1$."
+        },
+        {
+          "type": "text",
+          "md": "## The heights $M_i$ and $m_i$\n\n**Definition.** Let $P=\\{x_0,\\dots,x_n\\}$ be a partition of $[a,b]$. On the $i$-th subinterval set\n\n$$M_i=\\sup_{x\\in[x_{i-1},x_i]} f(x),\\qquad m_i=\\inf_{x\\in[x_{i-1},x_i]} f(x).$$\n\n$\\sup_{x\\in[x_{i-1},x_i]} f(x)$ is read \"the supremum of $f(x)$ as $x$ runs over $[x_{i-1},x_i]$\": the least upper bound of all the values $f$ takes on that piece. Both numbers exist because $f$ is bounded. Always $m_i \\le M_i$.\n\n**Examples** with $f(x) = x^2$:\n- On $[\\frac12, 1]$: $f$ goes from $\\frac14$ up to $1$, so $M = 1$ and $m = \\frac14$.\n- On $[-1, 2]$: $M = f(2) = 4$, and $m = f(0) = 0$. The smallest value is **inside** the piece, not at an endpoint. Comparing $f(-1) = 1$ and $f(2) = 4$ alone would wrongly give $m = 1$.\n- On $[-1, 1]$: $M = 1$ (at both ends) and $m = 0$ (at $0$).\n\n**A constant function.** If $f(x) = 3$ everywhere, then $M_i = m_i = 3$ on every piece.\n\nThe safe method: picture or sketch $f$ on the whole piece, including the inside, before reading off the top and bottom."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = x^2$ on the subinterval $[-1, 2]$, what are $M$ and $m$?",
+          "options": [
+            "$M = 4$, $m = 1$",
+            "$M = 4$, $m = 0$",
+            "$M = 2$, $m = -1$",
+            "$M = 1$, $m = 0$"
+          ],
+          "correct": 1,
+          "explanation": "$x^2$ reaches $4$ at $x = 2$ and its lowest value $0$ at $x = 0$, inside the piece. $m = 1$ only looks at the endpoints. $2$ and $-1$ are values of $x$, not of $f(x)$. $M = 1$ ignores $f(2) = 4$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Supremum, not maximum",
+          "md": "$M_i$ is a supremum, which need not be a value of $f$. Let $f(x)=x$ for $0 \\le x < 1$ and $f(1)=0$. On $[\\tfrac12,1]$ the values of $f$ are $[\\frac12, 1)$ together with $0$, so the supremum is $1$, but $f$ never equals $1$.\n\nDo not write $M_i=f(\\text{some point})$ unless you know the supremum is attained, for instance because $f$ is continuous on that piece (Extreme Value Theorem, lesson 5.10) or monotone there."
+        },
+        {
+          "type": "text",
+          "md": "## Upper and lower sums\n\n**Definition.** The **upper** and **lower Darboux sums** of $f$ for $P$ are\n\n$$U(f,P)=\\sum_{i=1}^{n} M_i\\,\\Delta x_i,\\qquad L(f,P)=\\sum_{i=1}^{n} m_i\\,\\Delta x_i .$$\n\nThey look like Riemann sums, with the highest height $M_i$ or the lowest height $m_i$ in place of $f(t_i)$.\n\n**Example.** $f(x) = x^2$ on $[0,1]$, $P = \\{0, \\frac12, 1\\}$. On $[0, \\frac12]$: $M_1 = \\frac14$, $m_1 = 0$. On $[\\frac12, 1]$: $M_2 = 1$, $m_2 = \\frac14$. Both widths are $\\frac12$:\n\n$$U = \\tfrac12\\cdot\\tfrac14 + \\tfrac12\\cdot 1 = \\tfrac58,\\qquad L = \\tfrac12\\cdot 0 + \\tfrac12\\cdot\\tfrac14 = \\tfrac18.$$\n\nThe true value $\\frac13$ lies between.\n\n**Edge case.** $f(x) = x^2$ on $[-1,1]$ with the trivial partition $\\{-1, 1\\}$: $M = 1$, $m = 0$, width $2$, so $U = 2$ and $L = 0$. A common slip is $L = 2$, from using the endpoint value $f(-1) = 1$.\n\n**Two sandwiches.** Since $m_i \\le f(t_i) \\le M_i$ for any tag, every Riemann sum is trapped:\n\n$$L(f,P) \\le S(f,P,t) \\le U(f,P).$$\n\nAnd if $m\\le f(x)\\le M$ for all $x$ in $[a,b]$, then $m\\le m_i\\le M_i\\le M$, and adding up (the widths total $b-a$) gives\n\n$$m(b-a)\\le L(f,P)\\le U(f,P)\\le M(b-a).$$"
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = x$ on $[0,2]$ and $P = \\{0, 1, 2\\}$, what are $U(f,P)$ and $L(f,P)$?",
+          "options": [
+            "$U = 3$, $L = 1$",
+            "$U = 2$, $L = 0$",
+            "$U = 3$, $L = 2$",
+            "$U = 4$, $L = 0$"
+          ],
+          "correct": 0,
+          "explanation": "On $[0,1]$: $M_1 = 1$, $m_1 = 0$. On $[1,2]$: $M_2 = 2$, $m_2 = 1$. Widths are $1$, so $U = 1 + 2 = 3$ and $L = 0 + 1 = 1$. $U = 4$, $L = 0$ is what the trivial partition $\\{0,2\\}$ gives; the other options mix up the heights."
+        },
+        {
+          "type": "text",
+          "md": "## A shortcut for monotone functions\n\nFinding a supremum can be hard. For monotone functions (lesson 3.7 for sequences; the same words apply to functions) it is easy.\n\n- If $f$ is **increasing** on $[a,b]$, each piece's highest value is at its right end and lowest at its left end: $M_i = f(x_i)$ and $m_i = f(x_{i-1})$. Both are attained.\n- If $f$ is **decreasing**, it is the other way round: $M_i = f(x_{i-1})$ and $m_i = f(x_i)$.\n\nSo for monotone $f$, the upper and lower sums are just endpoint Riemann sums. For $f(x) = x^2$ on $[0,1]$ (increasing there), $U$ is the right-endpoint sum and $L$ the left-endpoint sum.\n\n**Non-example: $f$ not monotone.** $x^2$ on $[-1,1]$ is neither increasing nor decreasing, so endpoints can mislead, as you saw.\n\n**The extreme non-example.** The **Dirichlet function** (lesson 5.6) is $D(x) = 1$ if $x$ is rational and $D(x) = 0$ if $x$ is irrational. By density (lesson 2.12), every subinterval of positive length contains both rationals and irrationals. So on **every** piece $M_i = 1$ and $m_i = 0$, and for **every** partition of $[0,1]$:\n\n$$U(D,P) = 1, \\qquad L(D,P) = 0.$$\n\nNo amount of cutting brings these together. Lesson 7.4 shows what this means."
+        },
+        {
+          "type": "check",
+          "question": "Let $g(x) = 1 - x$ on $[0,1]$ and $P = \\{0, \\frac12, 1\\}$. What is $U(g,P)$?",
+          "options": [
+            "$\\frac14$",
+            "$\\frac12$",
+            "$\\frac34$",
+            "$1$"
+          ],
+          "correct": 2,
+          "explanation": "$g$ is decreasing, so $M_i$ is the **left**-endpoint value: $M_1 = g(0) = 1$, $M_2 = g(\\frac12) = \\frac12$. Then $U = \\frac12\\left(1 + \\frac12\\right) = \\frac34$. Using right endpoints gives $L = \\frac14$ instead. $\\frac12$ is the true area, and $1$ is $U$ for the trivial partition."
+        },
+        {
+          "type": "text",
+          "md": "## Refining helps: the refinement lemma\n\nWhat happens to the estimates when we cut more finely?\n\n**Example.** $f(x) = x$ on $[0,1]$.\n- $P = \\{0, 1\\}$: $U = 1$, $L = 0$. A gap of $1$.\n- Add the point $\\frac12$, so $Q = \\{0, \\frac12, 1\\}$: $U = \\frac12\\cdot\\frac12 + \\frac12\\cdot 1 = \\frac34$ and $L = \\frac12\\cdot 0 + \\frac12\\cdot\\frac12 = \\frac14$. The gap has shrunk to $\\frac12$.\n\nThis is no accident. On a smaller piece, the top of $f$ can only be lower (or the same), and the bottom only higher (or the same).\n\n**Lemma (refinement lemma).** If $Q$ is a refinement of $P$, then\n\n$$L(f,P)\\le L(f,Q)\\le U(f,Q)\\le U(f,P).$$\n\nIn words: refining can only **raise** lower sums and **lower** upper sums. The estimates never get worse.\n\n**Edge case.** \"Never worse\" includes \"no better\". For a constant function, or for the Dirichlet function, refining changes nothing at all. The lemma says $\\le$, not $<$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of the refinement lemma",
+          "steps": [
+            {
+              "title": "Reduce to one extra point",
+              "md": "$Q$ is obtained from $P$ by adding finitely many points one at a time. If adding **one** point never increases $U$ or decreases $L$, then neither does adding several (induction, lesson 1.7). So take $Q=P\\cup\\{y\\}$ with $x_{k-1}<y<x_k$."
+            },
+            {
+              "title": "Only one term changes",
+              "md": "Every subinterval except $[x_{k-1},x_k]$ appears in both $P$ and $Q$, so those terms of $U$ are identical. In $U(f,P)$ the term $M_k(x_k-x_{k-1})$ is replaced in $U(f,Q)$ by\n\n$$M'(y-x_{k-1})+M''(x_k-y),$$\n\nwhere $M'=\\sup_{[x_{k-1},y]}f$ and $M''=\\sup_{[y,x_k]}f$."
+            },
+            {
+              "title": "Compare suprema",
+              "md": "A supremum over a smaller set is no larger: $[x_{k-1}, y]$ is part of $[x_{k-1}, x_k]$, so $M_k$ is an upper bound for $f$ there, and the **least** upper bound $M'$ is at most $M_k$. So $M'\\le M_k$, and likewise $M''\\le M_k$. Hence\n\n$$M'(y-x_{k-1})+M''(x_k-y)\\le M_k(y-x_{k-1})+M_k(x_k-y)=M_k(x_k-x_{k-1}),$$\n\nso $U(f,Q)\\le U(f,P)$."
+            },
+            {
+              "title": "Lower sums",
+              "md": "Symmetrically, an infimum over a smaller set is no smaller, so $m',m''\\ge m_k$ and $L(f,Q)\\ge L(f,P)$."
+            },
+            {
+              "title": "Middle inequality",
+              "md": "$L(f,Q)\\le U(f,Q)$ because $m_i\\le M_i$ on every subinterval of $Q$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why is $M' \\le M_k$?",
+          "options": [
+            "Because $M'$ is computed on a shorter piece, so $f$ is smaller there",
+            "Because $M_k$ is an upper bound for $f$ on $[x_{k-1}, y]$, and $M'$ is the least such upper bound",
+            "Because $f$ is increasing",
+            "Because $y$ is the midpoint of $[x_{k-1}, x_k]$"
+          ],
+          "correct": 1,
+          "explanation": "Every value of $f$ on $[x_{k-1}, y]$ is also a value on $[x_{k-1}, x_k]$, so it is $\\le M_k$. That makes $M_k$ an upper bound on the smaller piece, and the supremum $M'$ is the least upper bound. \"$f$ is smaller there\" is not the reason: $M'$ can equal $M_k$. No monotonicity is assumed, and $y$ can be any point strictly between $x_{k-1}$ and $x_k$."
+        },
+        {
+          "type": "text",
+          "md": "## Every lower sum is below every upper sum\n\nThe refinement lemma compares a partition with its own refinement. But what about two unrelated partitions? Is $L(f,P_1) \\le U(f,P_2)$ even when $P_1$ and $P_2$ have nothing to do with each other?\n\nIt is not obvious. $P_1$ might be very fine and $P_2$ very coarse, or the other way round. The trick is the **common refinement** from lesson 7.2.\n\n**Corollary.** For **any** two partitions $P_1,P_2$ of $[a,b]$,\n\n$$L(f,P_1)\\le U(f,P_2).$$\n\n**Idea of the proof.** Let $Q = P_1 \\cup P_2$. Refining $P_1$ to $Q$ can only raise the lower sum, and refining $P_2$ to $Q$ can only lower the upper sum. On $Q$ itself, lower $\\le$ upper. Chain these together.\n\n**Example.** $f(x) = x$ on $[0,1]$, $P_1 = \\{0, \\frac12, 1\\}$, $P_2 = \\{0, \\frac13, 1\\}$. Then $L(f,P_1) = \\frac14$, and $U(f,P_2) = \\frac13\\cdot\\frac13 + \\frac23\\cdot 1 = \\frac{7}{9}$. Indeed $\\frac14 \\le \\frac79$.\n\n**Why it matters.** It means all the under-estimates sit on one side and all the over-estimates on the other, with no overlap. That is exactly what lets lesson 7.4 define a \"best\" under-estimate and a \"best\" over-estimate."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the proof that $L(f,P_1)\\le U(f,P_2)$ for any partitions $P_1,P_2$ in order.",
+          "items": [
+            "Let $Q=P_1\\cup P_2$, the common refinement.",
+            "$Q$ refines $P_1$, so $L(f,P_1)\\le L(f,Q)$ by the refinement lemma.",
+            "On every subinterval $m_i\\le M_i$, so $L(f,Q)\\le U(f,Q)$.",
+            "$Q$ refines $P_2$, so $U(f,Q)\\le U(f,P_2)$ by the refinement lemma.",
+            "Chain the inequalities: $L(f,P_1)\\le U(f,P_2)$."
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "$M_i$ and $m_i$",
+              "back": "The **supremum** and **infimum** of $f$ on the $i$-th subinterval $[x_{i-1}, x_i]$.\n\n*Example:* $x^2$ on $[-1,2]$: $M = 4$, $m = 0$."
+            },
+            {
+              "front": "Upper sum $U(f,P)$",
+              "back": "$\\sum M_i\\,\\Delta x_i$: rectangles reaching the **top** of $f$ on each piece. An over-estimate.\n\n*Example:* $x^2$ on $[0,1]$, $P = \\{0,\\frac12,1\\}$: $U = \\frac58$."
+            },
+            {
+              "front": "Lower sum $L(f,P)$",
+              "back": "$\\sum m_i\\,\\Delta x_i$: rectangles reaching the **bottom** of $f$ on each piece. An under-estimate.\n\n*Example:* $x^2$ on $[0,1]$, $P = \\{0,\\frac12,1\\}$: $L = \\frac18$."
+            },
+            {
+              "front": "Monotone shortcut",
+              "back": "Increasing $f$: $M_i = f(x_i)$, $m_i = f(x_{i-1})$. **Decreasing** $f$: swap them.\n\n*Example:* $1 - x$ on $[0, \\frac12]$: $M = 1$, $m = \\frac12$."
+            },
+            {
+              "front": "Refinement lemma",
+              "back": "If $P \\subseteq Q$: $L(f,P)\\le L(f,Q)\\le U(f,Q)\\le U(f,P)$. Refining **never makes** the estimates worse.\n\n*Example:* $x$ on $[0,1]$: adding $\\frac12$ moves $U$ from $1$ to $\\frac34$."
+            },
+            {
+              "front": "Dirichlet function",
+              "back": "$D = 1$ on rationals, $0$ on irrationals. Every piece has $M_i = 1$, $m_i = 0$.\n\n*Example:* on $[0,1]$, $U(D,P) = 1$ and $L(D,P) = 0$ for **every** $P$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A classmate computes $L(f, P_1) = 2.4$ and $U(f, P_2) = 2.1$ for the same bounded $f$ on $[a,b]$, using two different partitions. What should you conclude?",
+          "options": [
+            "Nothing is wrong; different partitions can give any values",
+            "There is an arithmetic mistake, because every lower sum is at most every upper sum",
+            "$P_2$ must be a refinement of $P_1$",
+            "$f$ is not integrable"
+          ],
+          "correct": 1,
+          "explanation": "The corollary says $L(f,P_1) \\le U(f,P_2)$ for **any** two partitions, so $2.4 > 2.1$ is impossible. Refinement would not help: the inequality holds whether or not one refines the other. Integrability (lesson 7.5) has nothing to do with it; the inequality holds for every bounded function."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: upper and lower sums for $x^2$ on $[0,1]$",
+          "problem": "Let $f(x)=x^2$ on $[0,1]$ and let $P_n$ be the uniform partition $x_i=i/n$. Compute $U(f,P_n)$ and $L(f,P_n)$, and show $U(f,P_n)-L(f,P_n)=\\frac1n$.",
+          "solution": "$f$ is increasing on $[0,1]$, so on $[x_{i-1},x_i]$ the supremum is at the right end and the infimum at the left end:\n\n$$M_i=\\left(\\tfrac{i}{n}\\right)^2,\\qquad m_i=\\left(\\tfrac{i-1}{n}\\right)^2,\\qquad \\Delta x_i=\\tfrac1n.$$\n\nUsing $\\sum_{i=1}^{n}i^2=\\frac{n(n+1)(2n+1)}{6}$ (proved by induction in lesson 1.7),\n\n$$U(f,P_n)=\\frac{1}{n^3}\\sum_{i=1}^{n}i^2=\\frac{(n+1)(2n+1)}{6n^2},$$\n\n$$L(f,P_n)=\\frac{1}{n^3}\\sum_{i=1}^{n}(i-1)^2=\\frac{1}{n^3}\\cdot\\frac{(n-1)n(2n-1)}{6}=\\frac{(n-1)(2n-1)}{6n^2}.$$\n\nThe difference **telescopes**: in $\\sum\\big(i^2-(i-1)^2\\big)$ each square cancels with the next, leaving $n^2 - 0^2$. So\n\n$$U-L=\\frac{1}{n^3}\\sum_{i=1}^n\\big(i^2-(i-1)^2\\big)=\\frac{n^2}{n^3}=\\frac1n.$$\n\nBoth sums tend to $\\frac13$ as $n \\to \\infty$. $\\blacksquare$"
+        },
+        {
+          "type": "example",
+          "title": "Your turn: upper and lower sums for $x$ on $[0,1]$",
+          "problem": "Let $f(x) = x$ on $[0,1]$ with the uniform partition $P_n$. Find $U(f,P_n)$ and $L(f,P_n)$ in terms of $n$, and find $U - L$. Then check your formulas with $n = 2$. Try it before you open the solution.",
+          "solution": "$f$ is increasing, so $M_i = \\frac{i}{n}$, $m_i = \\frac{i-1}{n}$, and every width is $\\frac1n$.\n\n$$U(f,P_n) = \\frac{1}{n^2}\\sum_{i=1}^n i = \\frac{1}{n^2}\\cdot\\frac{n(n+1)}{2} = \\frac{n+1}{2n},$$\n\n$$L(f,P_n) = \\frac{1}{n^2}\\sum_{i=1}^n (i-1) = \\frac{1}{n^2}\\cdot\\frac{(n-1)n}{2} = \\frac{n-1}{2n}.$$\n\nSo $U - L = \\frac{2}{2n} = \\frac1n$.\n\n**Check with $n = 2$:** $U = \\frac34$ and $L = \\frac14$, matching the direct calculation for $\\{0, \\frac12, 1\\}$ earlier.\n\n**Check your version:** did you say **why** $M_i$ is the right-endpoint value (because $f$ is increasing)? Did you start the lower sum's terms at $0$, not $1$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is the upper sum just the right-endpoint Riemann sum?",
+              "a": "Only for increasing functions. For $x^2$ on $[-1,1]$ with $P = \\{-1, 0, 1\\}$, the right-endpoint sum is $0 + 1 = 1$, but $U = 1 + 1 = 2$, because on $[-1,0]$ the highest value is at the **left** end."
+            },
+            {
+              "q": "Can the upper sum be negative?",
+              "a": "Yes, if $f$ is negative. For $f(x) = -1$ on $[0,3]$, every $M_i = -1$, so $U = -3$. \"Upper\" means \"the larger of the two estimates\", not \"positive\"."
+            },
+            {
+              "q": "Does refining always make the gap $U - L$ smaller?",
+              "a": "It never makes it bigger, but it may leave it the same. For the Dirichlet function the gap is $1$ for every partition. For $f(x) = x$, it shrinks every time a new point is added."
+            },
+            {
+              "q": "Why not just use the maximum of $f$ on each piece?",
+              "a": "Because a maximum may not exist. For $f(x) = x$ on $[0,1)$ with $f(1) = 0$, there is no largest value on $[\\frac12, 1]$, but the supremum $1$ exists. The supremum always exists for bounded $f$, so the definition always makes sense."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- On each piece, $M_i$ and $m_i$ are the **supremum** and **infimum** of $f$. They need not be values of $f$, and they need not be at endpoints.\n- $U(f,P) = \\sum M_i\\,\\Delta x_i$ over-estimates and $L(f,P) = \\sum m_i\\,\\Delta x_i$ under-estimates: $L \\le S(f,P,t) \\le U$ for every Riemann sum.\n- For increasing $f$, $M_i = f(x_i)$ and $m_i = f(x_{i-1})$; for decreasing $f$, swap them.\n- **Refinement lemma:** if $P \\subseteq Q$ then $L(f,P) \\le L(f,Q) \\le U(f,Q) \\le U(f,P)$.\n- Via the common refinement, **every** lower sum is at most **every** upper sum."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "For $f(x)=x^2$ on $[0,1]$ and $P=\\{0,\\tfrac12,1\\}$, what is $U(f,P)-L(f,P)$?",
+          "options": [
+            "$\\frac14$",
+            "$\\frac58$",
+            "$\\frac12$",
+            "$\\frac18$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$U=\\frac12\\cdot\\frac14+\\frac12\\cdot 1=\\frac58$ and $L=\\frac12\\cdot 0+\\frac12\\cdot\\frac14=\\frac18$, so $U-L=\\frac12$. $\\frac58$ and $\\frac18$ are $U$ and $L$ themselves."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x)=3$ for all $x\\in[1,4]$. What is $L(f,P)$ for any partition $P$ of $[1,4]$?",
+          "answer": [
+            "9"
+          ],
+          "explanation": "Every $m_i=3$, so $L(f,P)=3\\sum\\Delta x_i=3(4-1)=9$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Adding a point to a partition can never increase the upper sum.",
+          "answer": [
+            true
+          ],
+          "explanation": "By the refinement lemma, $U(f,Q)\\le U(f,P)$ whenever $Q\\supseteq P$: suprema over smaller subintervals are no larger."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f$ be bounded on $[a,b]$ and let $Q$ be a refinement of $P$. Which statements always hold?",
+          "options": [
+            "$L(f,P)\\le L(f,Q)$",
+            "$U(f,Q)\\le U(f,P)$",
+            "$L(f,Q)\\le U(f,P)$",
+            "$U(f,P)=U(f,Q)$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The first three follow from the refinement lemma. Equality of upper sums fails in general: for $f(x)=x$ on $[0,1]$, adding $\\frac12$ to $\\{0,1\\}$ lowers $U$ from $1$ to $\\frac34$."
+        },
+        {
+          "prompt": "Let $f$ be the Dirichlet function on $[0,1]$: $f(x)=1$ for rational $x$ and $f(x)=0$ for irrational $x$. For every partition $P$,",
+          "options": [
+            "$U(f,P)=1$ and $L(f,P)=0$",
+            "$U(f,P)=L(f,P)=\\frac12$",
+            "$U(f,P)=1$ and $L(f,P)$ depends on $P$",
+            "$U(f,P)\\to 0$ as $\\|P\\|\\to 0$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Every subinterval of positive length contains both rationals and irrationals (density, lesson 2.12), so $M_i=1$ and $m_i=0$ for all $i$. Hence $U=1$ and $L=0$ for every $P$."
+        },
+        {
+          "prompt": "If $f$ is decreasing on $[a,b]$, then on the subinterval $[x_{i-1},x_i]$ we have",
+          "options": [
+            "$M_i=f(x_i)$, $m_i=f(x_{i-1})$",
+            "$M_i=f(x_{i-1})$, $m_i=f(x_i)$",
+            "$M_i=f\\big(\\tfrac{x_{i-1}+x_i}{2}\\big)$",
+            "$M_i$ need not exist"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "A decreasing function is largest at the left endpoint and smallest at the right endpoint of each subinterval, and these values are attained. The first option is the rule for increasing functions. $M_i$ always exists because $f$ is bounded."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = x$ on $[0, 2]$ and $P = \\{0, 1, 2\\}$, what is $U(f,P)$?",
+          "answer": [
+            "3"
+          ],
+          "explanation": "$f$ is increasing, so $M_1 = 1$ and $M_2 = 2$. Both widths are $1$, so $U = 1 + 2 = 3$."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = x^2$ on $[-1, 1]$ and the trivial partition $P = \\{-1, 1\\}$, what is $L(f,P)$?",
+          "answer": [
+            "0"
+          ],
+          "explanation": "The infimum of $x^2$ on $[-1,1]$ is $0$, reached at $x = 0$, inside the piece. So $L = 0 \\cdot 2 = 0$. Using the endpoint value $f(-1) = 1$ would wrongly give $2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every bounded $f$ on $[a,b]$ and every partition $P$, $L(f,P) \\le U(f,P)$.",
+          "answer": [
+            true
+          ],
+          "explanation": "On each subinterval $m_i \\le M_i$ (an infimum is at most the supremum of the same set). Multiply by $\\Delta x_i > 0$ and add."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f(x) = x$ on $[0,1]$ and $P = \\{0, \\frac12, 1\\}$. Which statements are true? Select all that apply.",
+          "options": [
+            "$U(f,P) = \\frac34$",
+            "$L(f,P) = \\frac12$",
+            "$U(f,P) - L(f,P) = \\frac12$",
+            "$U(f,P) = 1$",
+            "$L(f,P) = 0$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$U = \\frac12\\cdot\\frac12 + \\frac12\\cdot 1 = \\frac34$ and $L = \\frac12 \\cdot 0 + \\frac12\\cdot\\frac12 = \\frac14$, so $U - L = \\frac12$. $U = 1$ and $L = 0$ are the values for the trivial partition $\\{0,1\\}$; $\\frac12$ is the true area, not $L$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For bounded $f$, $M_i$ always equals $f(x)$ for some $x$ in $[x_{i-1}, x_i]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$M_i$ is a supremum and need not be attained. For $f(x) = x$ on $[0,1)$ with $f(1) = 0$, the supremum on $[\\frac12, 1]$ is $1$, but no point has $f(x) = 1$."
+        },
+        {
+          "prompt": "$P_1$ and $P_2$ are two partitions of $[a,b]$ and neither refines the other. What can you say about $L(f,P_1)$ and $U(f,P_2)$ for bounded $f$?",
+          "options": [
+            "Nothing: they cannot be compared",
+            "$L(f,P_1) \\le U(f,P_2)$ always",
+            "$L(f,P_1) = U(f,P_2)$",
+            "$L(f,P_1) \\ge U(f,P_2)$ when $P_1$ has more points"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Pass through the common refinement $Q = P_1 \\cup P_2$: $L(f,P_1) \\le L(f,Q) \\le U(f,Q) \\le U(f,P_2)$. This works whether or not either partition refines the other, and whatever the number of points. Equality fails in general, e.g. for the Dirichlet function."
+        }
+      ]
+    },
+    {
+      "slug": "7-4-upper-and-lower-integrals",
+      "title": "Upper and lower integrals",
+      "summary": "The best possible over- and under-estimates: $\\inf_P U(f,P)$ and $\\sup_P L(f,P)$.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Upper and lower integrals",
+          "md": "**In this lesson you will learn to:**\n- define the **upper integral** $\\overline{\\int_a^b} f$ and the **lower integral** $\\underline{\\int_a^b} f$, and read the notation\n- explain why they always exist for bounded $f$\n- prove that the lower integral is at most the upper integral\n- compute both for simple functions, including one where they differ\n\n**You need:** upper and lower sums, the refinement lemma and its corollary $L(f,P_1) \\le U(f,P_2)$ (lesson 7.3), and supremum, infimum and completeness (lessons 2.9 and 2.10). Throughout, $f : [a,b] \\to \\mathbb{R}$ is **bounded**."
+        },
+        {
+          "type": "text",
+          "md": "## The best estimates\n\nEvery upper sum $U(f,P)$ is an over-estimate and every lower sum $L(f,P)$ is an under-estimate. Different partitions give different estimates, and refining improves them (lesson 7.3). So a natural question is: **what is the best possible over-estimate, and the best possible under-estimate?**\n\nThe best over-estimate is the **smallest** upper sum. But there may be no smallest one. For $f(x) = x$ on $[0,1]$, the uniform partitions give $U(f,P_n) = \\frac{n+1}{2n}$, that is $1, \\frac34, \\frac46, \\frac58, \\dots$, always getting smaller and never reaching $\\frac12$.\n\nYou have met this situation before: $(0,1)$ has no smallest element, yet it has a greatest lower bound, $0$. The fix is the same. Instead of \"the smallest upper sum\" we take the **infimum** of all upper sums, the greatest number that is $\\le$ every upper sum. Likewise the best under-estimate is the **supremum** of all lower sums.\n\nReminder (lesson 2.9): the infimum need not belong to the set. $\\inf\\{1, \\frac12, \\frac13, \\dots\\} = 0$, though $0$ is not in the set."
+        },
+        {
+          "type": "text",
+          "md": "## Definition and notation\n\n**Definition.** For bounded $f:[a,b]\\to\\mathbb{R}$, the **upper** and **lower integrals** are\n\n$$\\overline{\\int_a^b} f=\\inf_{P}\\,U(f,P),\\qquad \\underline{\\int_a^b} f=\\sup_{P}\\,L(f,P),$$\n\nwhere $P$ ranges over **all** partitions of $[a,b]$.\n\n**Reading the notation.**\n- $\\overline{\\int_a^b} f$, with a bar on top, is read \"the upper integral of $f$ from $a$ to $b$\". The bar on top matches \"upper\".\n- $\\underline{\\int_a^b} f$, with a bar underneath, is \"the lower integral\".\n- $\\inf_P U(f,P)$ means \"the infimum of the set $\\{U(f,P) : P \\text{ a partition of } [a,b]\\}$\", the set of all upper sums.\n\n**Examples.**\n- **Constant.** If $f(x) = c$ for all $x$, every upper and every lower sum equals $c(b-a)$. A set with one element has that element as its infimum and supremum, so both integrals equal $c(b-a)$. For $f = 5$ on $[2,6]$, both are $20$.\n- **Negative constant.** $f = -1$ on $[0,3]$: both integrals are $-3$. Upper and lower integrals measure signed area, like Riemann sums.\n- **Dirichlet function** $D$ on $[0,1]$ ($1$ on rationals, $0$ on irrationals): every upper sum is $1$ and every lower sum is $0$ (lesson 7.3). So $\\overline{\\int_0^1} D = 1$ and $\\underline{\\int_0^1} D = 0$. They can **differ**.\n\n**Edge case.** The upper integral is an infimum over partitions, not a limit as $n \\to \\infty$ of one family. Every partition counts, not just uniform ones."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = 4$ on $[1, 3]$. What are $\\overline{\\int_1^3} f$ and $\\underline{\\int_1^3} f$?",
+          "options": [
+            "$4$ and $4$",
+            "$8$ and $8$",
+            "$8$ and $0$",
+            "$12$ and $4$"
+          ],
+          "correct": 1,
+          "explanation": "Every upper sum and every lower sum equals $4 \\cdot (3 - 1) = 8$, so the infimum and supremum are both $8$. $4$ forgets the width $2$. A lower integral of $0$ would need some $m_i < 4$, but $f$ is $4$ everywhere. $12$ uses $3$ instead of $3 - 1$ as the length."
+        },
+        {
+          "type": "text",
+          "md": "## Why they always exist\n\nAn infimum exists only for a set that is nonempty and **bounded below**. Why is the set of upper sums bounded below?\n\nBy the corollary in lesson 7.3, $L(f,P_0) \\le U(f,P)$ for **any** two partitions. Fix one partition $P_0$, for example the trivial one $\\{a, b\\}$. Then the single number $L(f,P_0)$ is $\\le$ every upper sum. So the set of upper sums is bounded below.\n\nThe set is nonempty (the trivial partition gives one upper sum). By **completeness** (lesson 2.10, in its form for infima), the infimum exists. So $\\overline{\\int_a^b} f$ is a real number.\n\nSimilarly, any upper sum is an upper bound for the set of lower sums, so $\\underline{\\int_a^b} f$ exists.\n\n**Simpler bounds.** If $m \\le f(x) \\le M$ on $[a,b]$, then every sum lies in $[m(b-a), M(b-a)]$ (lesson 7.3). So these numbers also bound the sets.\n\n**Non-example.** For unbounded $f$, such as $\\frac1x$ with $f(0) = 0$ on $[0,1]$, the supremum on the first piece is not a real number. Upper sums are not even defined, so neither is the upper integral. This is why boundedness is assumed throughout."
+        },
+        {
+          "type": "check",
+          "question": "Which fact guarantees that the set of all upper sums $\\{U(f,P)\\}$ is bounded below?",
+          "options": [
+            "Every upper sum is positive",
+            "Any one lower sum $L(f,P_0)$ is at most every upper sum",
+            "Refining a partition lowers the upper sum",
+            "The upper sums of the uniform partitions converge"
+          ],
+          "correct": 1,
+          "explanation": "$L(f,P_0) \\le U(f,P)$ for every $P$ makes $L(f,P_0)$ a lower bound. Upper sums can be negative (take $f = -1$). Refining lowers upper sums, which makes them smaller, not bounded. Convergence along one family says nothing about all the other partitions."
+        },
+        {
+          "type": "text",
+          "md": "## The lower integral never exceeds the upper integral\n\n**Theorem.** For every bounded $f$ on $[a,b]$ with $m\\le f\\le M$,\n\n$$m(b-a)\\le\\underline{\\int_a^b} f\\le\\overline{\\int_a^b} f\\le M(b-a).$$\n\n**In plain words.** The best under-estimate is still no bigger than the best over-estimate. This sounds obvious, but it needs care: we are comparing a supremum with an infimum, and neither need be one of the sums.\n\n**Examples.**\n- For a constant $c$, all four numbers in the middle are equal, and the outer ones too: $c(b-a)$.\n- For the Dirichlet function on $[0,1]$ with $m = 0$, $M = 1$: $0 \\le 0 \\le 1 \\le 1$. The middle inequality is **strict**.\n- For $f(x) = x$ on $[0,2]$ with $m = 0$, $M = 2$: you will see below that both integrals are $2$, so $0 \\le 2 \\le 2 \\le 4$.\n\nWhen the middle two are equal, $f$ will be called **Riemann integrable** (lesson 7.5), and the common value is the integral."
+        },
+        {
+          "type": "steps",
+          "title": "Proof that the lower integral is at most the upper integral",
+          "steps": [
+            {
+              "title": "Start from the corollary",
+              "md": "For any partitions $P_1,P_2$: $L(f,P_1)\\le U(f,P_2)$ (lesson 7.3)."
+            },
+            {
+              "title": "Fix $P_2$, vary $P_1$",
+              "md": "Keep $P_2$ fixed. Then $U(f,P_2)$ is an upper bound for the set of **all** lower sums $\\{L(f,P_1)\\}$. The supremum is the **least** upper bound, so\n\n$$\\underline{\\int_a^b} f\\le U(f,P_2).$$"
+            },
+            {
+              "title": "Now vary $P_2$",
+              "md": "$P_2$ was arbitrary, so $\\underline{\\int_a^b} f$ is $\\le$ every upper sum: it is a lower bound for $\\{U(f,P_2)\\}$. The infimum is the **greatest** lower bound, so\n\n$$\\underline{\\int_a^b} f\\le\\overline{\\int_a^b} f.$$\n\nThe order matters: first take the supremum over one partition, then the infimum over the other."
+            },
+            {
+              "title": "Outer bounds",
+              "md": "$m(b-a)\\le L(f,P)\\le\\underline{\\int_a^b} f$ for any $P$, since a supremum is $\\ge$ each element. Similarly $\\overline{\\int_a^b} f\\le U(f,P)\\le M(b-a)$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In step 2 of the proof, why does $\\underline{\\int_a^b} f \\le U(f,P_2)$ follow?",
+          "options": [
+            "Because $U(f,P_2)$ is one of the lower sums",
+            "Because $U(f,P_2)$ is an upper bound for every lower sum, and $\\underline{\\int_a^b} f$ is the least upper bound",
+            "Because $P_2$ refines $P_1$",
+            "Because the upper integral is attained at $P_2$"
+          ],
+          "correct": 1,
+          "explanation": "A supremum is at most every upper bound of the set, and $U(f,P_2)$ is such an upper bound. It is not a lower sum. No refinement relation between $P_1$ and $P_2$ is needed. The upper integral need not be attained at any partition."
+        },
+        {
+          "type": "text",
+          "md": "## Computing upper and lower integrals\n\nYou cannot check every partition. Instead, use two easy facts:\n\n- The upper integral is $\\le$ **every** upper sum. So any single family of partitions gives an upper bound: if $U(f,P_n) \\to A$, then $\\overline{\\int_a^b} f \\le A$.\n- The lower integral is $\\ge$ **every** lower sum. So if $L(f,P_n) \\to A$ too, then $\\underline{\\int_a^b} f \\ge A$.\n\nCombined with lower $\\le$ upper, this squeezes both to $A$.\n\n**Example.** $f(x) = x$ on $[0,2]$ with uniform partitions, $x_i = \\frac{2i}{n}$, widths $\\frac2n$. Since $f$ is increasing,\n\n$$U(f,P_n) = \\frac{4}{n^2}\\sum_{i=1}^n i = \\frac{2(n+1)}{n} = 2 + \\frac2n,\\qquad L(f,P_n) = 2 - \\frac2n.$$\n\nSo $\\overline{\\int_0^2} f \\le 2$ and $\\underline{\\int_0^2} f \\ge 2$, giving $2 \\le \\underline{\\int} \\le \\overline{\\int} \\le 2$. Both equal $2$, the area of the triangle.\n\n**Edge case: the infimum need not be attained.** For $f(x) = x$ on $[0,1]$ the upper integral is $\\frac12$, but **no** partition has $U(f,P) = \\frac12$: every partition has a piece where $M_i > m_i$, which pushes $U$ above $\\frac12$. The best over-estimate is approached, never reached.\n\n**Non-example of the squeeze.** For the Dirichlet function, $U(D,P_n) = 1$ and $L(D,P_n) = 0$ for every $n$. The bounds do not meet, so they pin nothing down beyond $\\overline{\\int} = 1$, $\\underline{\\int} = 0$."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: computing upper and lower integrals",
+          "problem": "(a) Find the upper and lower integrals of the Dirichlet function $D$ on $[0,1]$ ($D=1$ on rationals, $0$ on irrationals).\n\n(b) Show that for $f(x)=x^2$ on $[0,1]$ both the upper and the lower integral equal $\\frac13$.",
+          "solution": "**(a)** Every subinterval of positive length contains rationals and irrationals, so $U(D,P)=1$ and $L(D,P)=0$ for every $P$. The set of upper sums is $\\{1\\}$ and the set of lower sums is $\\{0\\}$. Hence\n\n$$\\overline{\\int_0^1} D=1,\\qquad \\underline{\\int_0^1} D=0.$$\n\n**(b)** From lesson 7.3, with the uniform partition $P_n$,\n\n$$U(f,P_n)=\\frac{(n+1)(2n+1)}{6n^2},\\qquad L(f,P_n)=\\frac{(n-1)(2n-1)}{6n^2}.$$\n\nBoth tend to $\\frac{2}{6} = \\frac13$ as $n\\to\\infty$. Since the upper integral is an infimum over all partitions, $\\overline{\\int_0^1} f\\le U(f,P_n)$ for every $n$; letting $n\\to\\infty$ gives $\\overline{\\int_0^1} f\\le\\frac13$. Likewise $\\underline{\\int_0^1} f\\ge L(f,P_n)$ for every $n$, so $\\underline{\\int_0^1} f\\ge\\frac13$. Combined with $\\underline{\\int}\\le\\overline{\\int}$,\n\n$$\\frac13\\le\\underline{\\int_0^1} f\\le\\overline{\\int_0^1} f\\le\\frac13,$$\n\nso both equal $\\frac13$. $\\blacksquare$"
+        },
+        {
+          "type": "check",
+          "question": "You know $U(f,P_n) = 3 + \\frac1n$ for the uniform partitions $P_n$ of $[a,b]$, and nothing else. What can you conclude?",
+          "options": [
+            "$\\overline{\\int_a^b} f = 3$",
+            "$\\overline{\\int_a^b} f \\le 3$",
+            "$\\overline{\\int_a^b} f \\ge 3$",
+            "$\\underline{\\int_a^b} f = 3$"
+          ],
+          "correct": 1,
+          "explanation": "The upper integral is $\\le$ every upper sum, so $\\overline{\\int} \\le 3 + \\frac1n$ for all $n$, hence $\\overline{\\int} \\le 3$. Other partitions might give even smaller upper sums, so you cannot claim equality. And without information about lower sums, you know nothing about $\\underline{\\int}$ except that it is $\\le \\overline{\\int}$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Upper integral $\\overline{\\int_a^b} f$",
+              "back": "$\\inf_P U(f,P)$: the greatest number $\\le$ **every** upper sum. The best over-estimate.\n\n*Example:* for $f = 5$ on $[2,6]$ it is $20$."
+            },
+            {
+              "front": "Lower integral $\\underline{\\int_a^b} f$",
+              "back": "$\\sup_P L(f,P)$: the least number $\\ge$ **every** lower sum. The best under-estimate.\n\n*Example:* for $f(x) = x$ on $[0,2]$ it is $2$."
+            },
+            {
+              "front": "Why they exist",
+              "back": "Any lower sum bounds every upper sum from below (and vice versa), so **completeness** gives the infimum and supremum.\n\n*Example:* $L(f,\\{a,b\\}) = m(b-a)$ is below every $U(f,P)$."
+            },
+            {
+              "front": "Key inequality",
+              "back": "$\\underline{\\int_a^b} f\\le\\overline{\\int_a^b} f$ for every bounded $f$. Equality is **not** guaranteed.\n\n*Example:* Dirichlet function on $[0,1]$: $0 < 1$."
+            },
+            {
+              "front": "Not always attained",
+              "back": "The upper integral need not equal any single upper sum.\n\n*Example:* $f(x) = x$ on $[0,1]$: $\\overline{\\int} = \\frac12$, but every $U(f,P) > \\frac12$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "For a bounded $f$ on $[0,1]$ you find $\\underline{\\int_0^1} f = 0.3$ and $\\overline{\\int_0^1} f = 0.3$. A friend then claims some partition has $L(f,P) = 0.35$. Is that possible?",
+          "options": [
+            "Yes, lower sums can be anything",
+            "No: every lower sum is $\\le$ the lower integral, which is $0.3$",
+            "Yes, if $P$ is fine enough",
+            "Only if $f$ is not integrable"
+          ],
+          "correct": 1,
+          "explanation": "The lower integral is the supremum of all lower sums, so every lower sum is $\\le 0.3$. Making $P$ finer raises $L$, but never above the supremum. Integrability is irrelevant: the bound holds for every bounded function."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to show that $\\overline{\\int_0^1} x\\,dx = \\underline{\\int_0^1} x\\,dx = \\frac12$.",
+          "items": [
+            "With uniform partitions, $U(f,P_n) = \\frac{n+1}{2n}$ and $L(f,P_n) = \\frac{n-1}{2n}$.",
+            "The upper integral is $\\le$ every upper sum, so $\\overline{\\int_0^1} x\\,dx \\le \\frac{n+1}{2n}$ for all $n$, hence $\\le \\frac12$.",
+            "The lower integral is $\\ge$ every lower sum, so $\\underline{\\int_0^1} x\\,dx \\ge \\frac{n-1}{2n}$ for all $n$, hence $\\ge \\frac12$.",
+            "Since $\\underline{\\int} \\le \\overline{\\int}$, we get $\\frac12 \\le \\underline{\\int_0^1} x\\,dx \\le \\overline{\\int_0^1} x\\,dx \\le \\frac12$, so both equal $\\frac12$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: upper and lower integrals of $2x + 1$",
+          "problem": "Let $f(x) = 2x + 1$ on $[0,1]$. Using uniform partitions $P_n$, find $U(f,P_n)$ and $L(f,P_n)$, and deduce the upper and lower integrals. Try it before you open the solution.",
+          "solution": "$f$ is increasing, so $M_i = f\\left(\\frac{i}{n}\\right) = \\frac{2i}{n} + 1$ and $m_i = f\\left(\\frac{i-1}{n}\\right) = \\frac{2(i-1)}{n} + 1$, with widths $\\frac1n$.\n\n$$U(f,P_n) = \\frac1n\\sum_{i=1}^n\\left(\\frac{2i}{n} + 1\\right) = \\frac{2}{n^2}\\cdot\\frac{n(n+1)}{2} + 1 = 2 + \\frac1n,$$\n\n$$L(f,P_n) = \\frac1n\\sum_{i=1}^n\\left(\\frac{2(i-1)}{n} + 1\\right) = \\frac{2}{n^2}\\cdot\\frac{(n-1)n}{2} + 1 = 2 - \\frac1n.$$\n\nSo $\\overline{\\int_0^1} f \\le 2 + \\frac1n$ for every $n$, giving $\\overline{\\int_0^1} f \\le 2$, and $\\underline{\\int_0^1} f \\ge 2 - \\frac1n$ for every $n$, giving $\\underline{\\int_0^1} f \\ge 2$. Since lower $\\le$ upper, both equal $2$. (The region is a trapezium with parallel sides $1$ and $3$ and width $1$, area $2$.)\n\n**Check your version:** did you add the \"$+1$\" $n$ times (giving $+1$ after multiplying by $\\frac1n$)? Did you use **both** inequalities and lower $\\le$ upper to conclude equality, rather than just taking a limit of $U(f,P_n)$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is the upper integral the smallest upper sum?",
+              "a": "Not necessarily: it is an infimum and may not be attained. For $f(x)=x$ on $[0,1]$, every partition has $U(f,P)>\\frac12$ (some subinterval has $M_i>m_i$), yet $\\overline{\\int_0^1}f=\\frac12$."
+            },
+            {
+              "q": "To compute an upper integral, must I examine every partition?",
+              "a": "For an upper **bound**, one well-chosen family suffices, since $\\overline{\\int}\\le U(f,P)$ for every $P$. Matching it with a lower bound from lower sums, as in the worked example, pins the value down."
+            },
+            {
+              "q": "Can the upper and lower integrals differ?",
+              "a": "Yes, as the Dirichlet function shows: $1$ and $0$ on $[0,1]$. Whether they coincide is exactly the question of integrability (lesson 7.5)."
+            },
+            {
+              "q": "Why isn't the upper integral just $\\lim_{n\\to\\infty} U(f,P_n)$ for uniform partitions?",
+              "a": "Because it is defined using **all** partitions. For the functions in this level the uniform limit does turn out to give the right value, but proving that needs work (lessons 7.5 and 7.6). The definition must not depend on one particular family."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- The **upper integral** $\\overline{\\int_a^b} f = \\inf_P U(f,P)$ is the best over-estimate; the **lower integral** $\\underline{\\int_a^b} f = \\sup_P L(f,P)$ is the best under-estimate.\n- Both exist for every bounded $f$, because any lower sum bounds every upper sum and completeness supplies the infimum and supremum.\n- Always $m(b-a)\\le\\underline{\\int_a^b} f\\le\\overline{\\int_a^b} f\\le M(b-a)$, but the middle two can differ (Dirichlet: $0$ and $1$).\n- To compute: one family of upper sums bounds $\\overline{\\int}$ from above, one family of lower sums bounds $\\underline{\\int}$ from below; if they meet, both are pinned down.\n- The infimum need not be attained by any single partition."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "For the Dirichlet function $D$ on $[0,1]$, the pair $\\left(\\overline{\\int_0^1} D,\\ \\underline{\\int_0^1} D\\right)$ equals",
+          "options": [
+            "$(0,0)$",
+            "$(1,1)$",
+            "$(\\tfrac12,\\tfrac12)$",
+            "$(1,0)$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$U(D,P)=1$ and $L(D,P)=0$ for every $P$, since rationals and irrationals are dense. Averaging to $\\frac12$ is not how either integral is defined."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every bounded function $f$ on $[a,b]$, $\\underline{\\int_a^b} f\\le\\overline{\\int_a^b} f$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Every lower sum is at most every upper sum; take the supremum over lower sums and then the infimum over upper sums."
+        },
+        {
+          "prompt": "Let $g(x)=1$ for rational $x$ and $g(x)=-1$ for irrational $x$, on $[0,2]$. Then the upper and lower integrals of $g$ are",
+          "options": [
+            "$2$ and $-2$",
+            "$1$ and $-1$",
+            "$0$ and $0$",
+            "$2$ and $0$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Each subinterval has $M_i=1$ and $m_i=-1$, so $U=1\\cdot 2=2$ and $L=-1\\cdot 2=-2$ for every partition. $1$ and $-1$ forget the length $2$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f$ be bounded on $[a,b]$ with $m\\le f\\le M$. Which statements are always true?",
+          "options": [
+            "$m(b-a)\\le\\underline{\\int_a^b} f$",
+            "$\\overline{\\int_a^b} f\\le M(b-a)$",
+            "$\\overline{\\int_a^b} f=U(f,P)$ for some partition $P$",
+            "$L(f,P)\\le\\overline{\\int_a^b} f$ for every partition $P$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The infimum defining the upper integral need not be attained (e.g. $f(x)=x$ on $[0,1]$). The others follow from $L(f,P_1)\\le U(f,P_2)$ and the bounds $m\\le f\\le M$."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the upper integral $\\overline{\\int_0^2} x\\,dx$?",
+          "answer": [
+            "2"
+          ],
+          "explanation": "With uniform partitions, $U(f,P_n)=2+\\frac{2}{n}$ and $L(f,P_n)=2-\\frac2n$, so both upper and lower integrals equal $2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For $f(x)=x$ on $[0,1]$, there is a partition $P$ with $U(f,P)=\\overline{\\int_0^1} f$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$\\overline{\\int_0^1} f=\\frac12$, but writing $x_i\\,\\Delta x_i=\\frac12(x_i^2-x_{i-1}^2)+\\frac12(\\Delta x_i)^2$ and telescoping gives $U(f,P)=\\frac12+\\frac12\\sum(\\Delta x_i)^2>\\frac12$ for every $P$. The infimum is not attained."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = 5$ for all $x \\in [2, 6]$. What is $\\overline{\\int_2^6} f$?",
+          "answer": [
+            "20"
+          ],
+          "explanation": "Every upper sum equals $5 \\cdot (6 - 2) = 20$, so the infimum is $20$."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the lower integral $\\underline{\\int_1^3} x\\,dx$?",
+          "answer": [
+            "4"
+          ],
+          "explanation": "With uniform partitions of $[1,3]$, $L(f,P_n) = 4 - \\frac2n$ and $U(f,P_n) = 4 + \\frac2n$, so both integrals equal $4$. Geometrically, it is a trapezium with parallel sides $1$ and $3$ and width $2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $\\overline{\\int_a^b} f=\\underline{\\int_a^b} f$, then every upper sum equals every lower sum.",
+          "answer": [
+            false
+          ],
+          "explanation": "For $f(x) = x$ on $[0,1]$ both integrals are $\\frac12$, yet $U(f,\\{0,1\\}) = 1$ and $L(f,\\{0,1\\}) = 0$. Equal integrals mean the sums can be squeezed **towards** each other, not that they are equal."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f$ be bounded on $[a,b]$ with $m \\le f \\le M$. Which of these are lower bounds for the set of all upper sums $\\{U(f,P)\\}$? Select all that apply.",
+          "options": [
+            "$L(f,P_0)$, for any fixed partition $P_0$",
+            "$\\underline{\\int_a^b} f$",
+            "$m(b-a)$",
+            "$\\overline{\\int_a^b} f$",
+            "$M(b-a)$"
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "explanation": "Every lower sum is below every upper sum, and so are the lower integral and $m(b-a)$. The upper integral is the **greatest** lower bound, so it is a lower bound too. $M(b-a)$ is at least every upper sum, so it is an upper bound, not a lower one (unless $f$ is constant)."
+        },
+        {
+          "prompt": "Let $h(x) = x$ for rational $x$ and $h(x) = 0$ for irrational $x$, on $[0,1]$. What are $\\overline{\\int_0^1} h$ and $\\underline{\\int_0^1} h$?",
+          "options": [
+            "$\\frac12$ and $\\frac12$",
+            "$1$ and $0$",
+            "$\\frac12$ and $0$",
+            "$0$ and $0$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "On each piece $[x_{i-1}, x_i]$, rationals close to $x_i$ give $M_i = x_i$, and irrationals give $m_i = 0$. So $L(h,P) = 0$ always, and $U(h,P) = \\sum x_i\\,\\Delta x_i$, which is $U$ for the function $x$; its infimum is $\\frac12$. So the integrals are $\\frac12$ and $0$."
+        },
+        {
+          "prompt": "You compute $U(f,P_n) = 3 + \\frac1n$ for every uniform partition $P_n$ of $[a,b]$. What does this tell you?",
+          "options": [
+            "$\\overline{\\int_a^b} f = 3$",
+            "$\\overline{\\int_a^b} f \\le 3$",
+            "$\\underline{\\int_a^b} f = 3$",
+            "$\\overline{\\int_a^b} f \\ge 3$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The upper integral is $\\le$ every upper sum, so it is $\\le 3 + \\frac1n$ for all $n$, hence $\\le 3$. Other partitions might do better, so equality is not guaranteed, and upper sums alone say nothing exact about the lower integral."
+        }
+      ]
+    }
+  ]
+}

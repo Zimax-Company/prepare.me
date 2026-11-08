@@ -1,0 +1,1123 @@
+{
+  "concepts": [
+    {
+      "slug": "5-11-uniform-continuity",
+      "title": "Uniform continuity",
+      "summary": "One $\\delta$ for the whole domain: continuity that does not degrade from point to point.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "One delta for every point",
+          "md": "Ordinary continuity lets you pick a different $\\delta$ at each point. Uniform continuity asks for one $\\delta$ that works everywhere at once.\n\n**In this lesson you will learn to:**\n- explain why the $\\delta$ in a continuity proof can depend on the point\n- state the definition of **uniform continuity** and see how it differs from continuity\n- prove a function is uniformly continuous, often with a **Lipschitz** bound\n- prove a function is **not** uniformly continuous, using two sequences that get close while their values do not\n\n**You need:** the $\\varepsilon$-$\\delta$ definition of continuity (lesson 5.6), how to negate statements with $\\forall$ and $\\exists$ (lesson 1.3), convergent sequences (lesson 3.4), Cauchy sequences (lesson 3.11) and the triangle inequality (lesson 2.5)."
+        },
+        {
+          "type": "text",
+          "md": "## The delta depends on where you stand\n\nRecall (lesson 5.6) that $f$ is continuous at $c$ if for every $\\varepsilon > 0$ there is a $\\delta > 0$ such that $|x - c| < \\delta$ implies $|f(x) - f(c)| < \\varepsilon$. Here $\\delta$ is chosen **after** $c$, so it is allowed to depend on $c$.\n\nLook at $f(x) = x^2$. Factorising,\n\n$$|x^2 - c^2| = |x - c|\\,|x + c|.$$\n\nNear $c$, the factor $|x + c|$ is about $2|c|$. So the output moves about $2|c|$ times as far as the input. To keep $|x^2 - c^2| < 1$ (that is, $\\varepsilon = 1$):\n\n- at $c = 1$, the graph has slope about $2$, so $\\delta$ around $\\frac13$ is enough;\n- at $c = 100$, the slope is about $200$, so you need $\\delta$ around $\\frac{1}{201}$.\n\nThe further right you go, the steeper the graph, and the smaller $\\delta$ must be. Each single point still has a $\\delta$, so $x^2$ is continuous everywhere. But there is **no single $\\delta$** that serves all points at once: whatever $\\delta$ you pick, far enough out the graph is too steep for it.\n\nFor many theorems (integration in lesson 7.6 is the big one) we need that single $\\delta$. This lesson names the property."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "A delta that fails far away",
+          "md": "Suppose you try $\\delta = 0.01$ for $x^2$ with $\\varepsilon = 1$ on all of $\\mathbb{R}$. Near $0$ it works. Now take $x = 150.005$ and $y = 150$. They are only $0.005$ apart, which is less than $\\delta$. But\n\n$$x^2 - y^2 = (x - y)(x + y) = 0.005 \\times 300.005 \\approx 1.5 > 1.$$\n\nPush further, to $x = 200.005$ and $y = 200$, and the gap is about $2$. **Continuous at every point** does not mean **one $\\delta$ for every point**."
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = x^2$ and $\\varepsilon = 1$, someone claims $\\delta = 0.01$ works at every point of $\\mathbb{R}$. Which pair of points, closer than $0.01$, breaks the claim?",
+          "options": [
+            "$x = 0.005$, $y = 0$",
+            "$x = 1.005$, $y = 1$",
+            "$x = 500.005$, $y = 500$",
+            "No pair breaks it, because $x^2$ is continuous"
+          ],
+          "correct": 2,
+          "explanation": "$x^2 - y^2 = (x - y)(x + y) = 0.005 \\times 1000.005 \\approx 5 > 1$. Near $0$ and $1$ the graph is gentle: the differences are about $0.000025$ and $0.01$. Continuity only gives a $\\delta$ for each point separately, not one $\\delta$ for all points."
+        },
+        {
+          "type": "text",
+          "md": "## The definition\n\nIn plain words: $f$ is **uniformly continuous** on a set $A$ if, for each target accuracy $\\varepsilon$, there is one distance $\\delta$ such that **any two points** of $A$ closer than $\\delta$ have values closer than $\\varepsilon$. The same $\\delta$ works anywhere in $A$.\n\n**Definition.** Let $f : A \\to \\mathbb{R}$ (a function with domain $A \\subseteq \\mathbb{R}$). Then $f$ is **uniformly continuous on $A$** if\n\n$$\\forall \\varepsilon > 0 \\ \\exists \\delta > 0 \\ \\forall x, y \\in A : \\ |x - y| < \\delta \\implies |f(x) - f(y)| < \\varepsilon.$$\n\nRead \"$\\forall x, y \\in A$\" as \"for all $x$ and $y$ in $A$\".\n\nCompare **continuity on $A$** (lesson 5.7):\n\n$$\\forall c \\in A \\ \\forall \\varepsilon > 0 \\ \\exists \\delta > 0 \\ \\forall x \\in A : \\ |x - c| < \\delta \\implies |f(x) - f(c)| < \\varepsilon.$$\n\nThe ingredients are the same. What changes is the **order of the quantifiers** (lesson 1.3 showed that order matters). In continuity, the point $c$ comes first, so $\\delta$ may depend on $\\varepsilon$ **and** $c$. In uniform continuity, $\\delta$ is chosen before any points are named, so it may depend on $\\varepsilon$ **only**.\n\nTwo consequences:\n- Uniformly continuous on $A$ implies continuous on $A$: put $y = c$.\n- Uniform continuity is a property of $f$ **on a set**. Asking whether $f$ is \"uniformly continuous at $c$\" makes no sense."
+        },
+        {
+          "type": "text",
+          "md": "## Examples: finding one delta\n\nTo prove uniform continuity, bound $|f(x) - f(y)|$ by something that depends only on $|x - y|$.\n\n- **$f(x) = 3x + 1$ on $\\mathbb{R}$.** $|f(x) - f(y)| = 3|x - y|$. Take $\\delta = \\varepsilon/3$: if $|x - y| < \\delta$ then $|f(x) - f(y)| < 3 \\cdot \\frac{\\varepsilon}{3} = \\varepsilon$.\n- **$f(x) = x$ on $\\mathbb{R}$.** Take $\\delta = \\varepsilon$. This function is **unbounded**, yet uniformly continuous. Many students expect unbounded functions to fail; they need not.\n- **A constant $f(x) = 5$.** $|f(x) - f(y)| = 0 < \\varepsilon$ always, so **any** $\\delta > 0$ works, for example $\\delta = 1$.\n- **$f(x) = x^2$ on $[0, 1]$.** Here $|x + y| \\le 2$, so $|x^2 - y^2| = |x - y|\\,|x + y| \\le 2|x - y|$. Take $\\delta = \\varepsilon/2$.\n\nThe last example is the same function that failed on $\\mathbb{R}$. On $[0, 1]$ the graph never gets steeper than slope $2$, so one $\\delta$ is enough. **The domain matters.**"
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function to a $\\delta$ that proves it is uniformly continuous.",
+          "pairs": [
+            {
+              "left": "$3x + 1$ on $\\mathbb{R}$",
+              "right": "$\\delta = \\varepsilon/3$"
+            },
+            {
+              "left": "$x^2$ on $[0, 1]$",
+              "right": "$\\delta = \\varepsilon/2$"
+            },
+            {
+              "left": "$x$ on $\\mathbb{R}$",
+              "right": "$\\delta = \\varepsilon$"
+            },
+            {
+              "left": "$5$ (constant) on $\\mathbb{R}$",
+              "right": "$\\delta = 1$, or any $\\delta > 0$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In a proof, you choose $\\delta = \\frac{\\varepsilon}{2|c| + 1}$, where $c$ is the point you are working at. What have you proved (assuming the algebra is right)?",
+          "options": [
+            "Uniform continuity, because $\\delta$ is a formula",
+            "Continuity at each $c$, but not uniform continuity",
+            "Neither, because $\\delta$ must not depend on $\\varepsilon$",
+            "Uniform continuity, because $\\delta > 0$ for every $c$"
+          ],
+          "correct": 1,
+          "explanation": "Your $\\delta$ depends on $c$, which is allowed for continuity at $c$ and forbidden for uniform continuity. Being a formula, or being positive at each $c$, is not the point: as $|c|$ grows this $\\delta$ shrinks towards $0$, so no single value works for all $c$. And $\\delta$ is always allowed to depend on $\\varepsilon$."
+        },
+        {
+          "type": "text",
+          "md": "## Proving a function is not uniformly continuous\n\nNegate the definition, flipping each quantifier (lesson 1.3). $f$ is **not** uniformly continuous on $A$ when\n\n$$\\exists \\varepsilon_0 > 0 \\ \\forall \\delta > 0 \\ \\exists x, y \\in A : \\ |x - y| < \\delta \\ \\text{ and } \\ |f(x) - f(y)| \\ge \\varepsilon_0.$$\n\nIn words: there is one bad accuracy $\\varepsilon_0$ such that, however small $\\delta$ is, some pair of points closer than $\\delta$ has values at least $\\varepsilon_0$ apart.\n\nIt is easier to use this with sequences. Try $\\delta = 1, \\frac12, \\frac13, \\dots$ in turn; for each $\\delta = \\frac1n$ you get a bad pair $x_n, y_n$. This gives:\n\n**Sequential criterion.** $f$ is not uniformly continuous on $A$ if and only if there are $\\varepsilon_0 > 0$ and sequences $(x_n), (y_n)$ in $A$ with\n\n$$|x_n - y_n| \\to 0 \\quad \\text{but} \\quad |f(x_n) - f(y_n)| \\ge \\varepsilon_0 \\text{ for all } n.$$\n\n**Example: $x^2$ on $\\mathbb{R}$.** Go where the graph is steep: far out. Let $x_n = n + \\frac1n$ and $y_n = n$. Then $|x_n - y_n| = \\frac1n \\to 0$, but\n\n$$x_n^2 - y_n^2 = \\left(n + \\tfrac1n\\right)^2 - n^2 = 2 + \\tfrac{1}{n^2} \\ge 2.$$\n\nSo $\\varepsilon_0 = 1$ (or $2$) works. **Edge case:** the pair $x_n = \\frac1n$, $y_n = 0$ also has $|x_n - y_n| \\to 0$, but $x_n^2 - y_n^2 = \\frac{1}{n^2} \\to 0$. Pairs near a gentle part of the graph prove nothing; you must go where the steepness blows up."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: $1/x$ is not uniformly continuous on $(0, 1)$",
+          "steps": [
+            {
+              "title": "Find where the graph is steep",
+              "md": "$g(x) = \\frac1x$ is continuous on $(0, 1)$, but its graph shoots up as $x \\to 0^+$. So look for bad pairs near $0$, the endpoint missing from the domain."
+            },
+            {
+              "title": "Choose paired sequences",
+              "md": "Let $x_n = \\frac{1}{n+1}$ and $y_n = \\frac{1}{n+2}$ for $n \\ge 1$. Both lie in $(0, 1)$. We pick reciprocals of integers so that $g$ of them is easy: $g(x_n) = n + 1$ and $g(y_n) = n + 2$."
+            },
+            {
+              "title": "Show the points get close",
+              "md": "$$|x_n - y_n| = \\frac{1}{n+1} - \\frac{1}{n+2} = \\frac{1}{(n+1)(n+2)} \\to 0.$$"
+            },
+            {
+              "title": "Show the values stay apart",
+              "md": "$$|g(x_n) - g(y_n)| = |(n+1) - (n+2)| = 1 \\quad \\text{for every } n.$$\n\nSo $\\varepsilon_0 = 1$ works."
+            },
+            {
+              "title": "Conclude",
+              "md": "Given any $\\delta > 0$, choose $n$ so large that $|x_n - y_n| < \\delta$. That pair has values $1$ apart, so this $\\delta$ fails for $\\varepsilon = 1$. No $\\delta$ works, and $g$ is not uniformly continuous on $(0, 1)$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why are the bad pairs taken close to $0$ rather than close to $\\frac12$?",
+          "options": [
+            "Because $0$ is in the domain $(0, 1)$",
+            "Because near $\\frac12$ the graph of $1/x$ has bounded steepness, so close points there have close values",
+            "Because $1/x$ is not continuous at $\\frac12$",
+            "It does not matter; pairs near $\\frac12$ work just as well"
+          ],
+          "correct": 1,
+          "explanation": "On, say, $[\\frac14, 1)$ we have $|\\frac1x - \\frac1y| = \\frac{|x - y|}{xy} \\le 16|x - y|$, so pairs there with $|x_n - y_n| \\to 0$ have values getting close. The trouble is only near $0$, which is **not** in $(0, 1)$. And $1/x$ is continuous at $\\frac12$."
+        },
+        {
+          "type": "text",
+          "md": "## Lipschitz functions\n\nMost uniform continuity proofs use the same trick as $3x + 1$: show the output changes at most a fixed multiple of the input change.\n\n**Definition.** $f : A \\to \\mathbb{R}$ is **Lipschitz** on $A$ with constant $K > 0$ if\n\n$$|f(x) - f(y)| \\le K|x - y| \\quad \\text{for all } x, y \\in A.$$\n\nIn words: every chord of the graph has slope between $-K$ and $K$.\n\n**Lipschitz implies uniformly continuous.** Given $\\varepsilon > 0$, take $\\delta = \\varepsilon/K$. If $|x - y| < \\delta$ then $|f(x) - f(y)| \\le K|x - y| < K \\cdot \\frac{\\varepsilon}{K} = \\varepsilon$.\n\n**Examples:**\n- $|x|$ on $\\mathbb{R}$, with $K = 1$, by the reverse triangle inequality $\\big||x| - |y|\\big| \\le |x - y|$ (lesson 2.5).\n- $\\frac1x$ on $[1, \\infty)$, with $K = 1$: $\\left|\\frac1x - \\frac1y\\right| = \\frac{|x - y|}{xy} \\le |x - y|$ since $xy \\ge 1$.\n- $\\sin x$ on $\\mathbb{R}$, with $K = 1$: $|\\sin x - \\sin y| \\le |x - y|$. (We prove this with the Mean Value Theorem in lesson 6.9; take it on trust for now.)\n\n**Non-example.** Lipschitz is enough, but not necessary. $\\sqrt{x}$ on $[0, \\infty)$ is not Lipschitz: the chord from $0$ to $x$ has slope $\\frac{\\sqrt x}{x} = \\frac{1}{\\sqrt x}$, which is unbounded as $x \\to 0^+$. Yet, as you will prove next, $\\sqrt{x}$ is uniformly continuous there."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\sqrt{x}$ is uniformly continuous on $[0, \\infty)$",
+          "problem": "(a) Show that for $x, y \\ge 0$, $|\\sqrt{x} - \\sqrt{y}| \\le \\sqrt{|x - y|}$. Hint: assume $x \\ge y$ and compare $(\\sqrt x - \\sqrt y)^2$ with $(\\sqrt x - \\sqrt y)(\\sqrt x + \\sqrt y)$.\n\n(b) Use (a) to find a $\\delta$ in terms of $\\varepsilon$, and prove $\\sqrt{x}$ is uniformly continuous on $[0, \\infty)$.",
+          "solution": "**(a)** By symmetry, assume $x \\ge y \\ge 0$. Then $0 \\le \\sqrt{x} - \\sqrt{y} \\le \\sqrt{x} + \\sqrt{y}$, so\n\n$$(\\sqrt{x} - \\sqrt{y})^2 \\le (\\sqrt{x} - \\sqrt{y})(\\sqrt{x} + \\sqrt{y}) = x - y.$$\n\nBoth sides are nonnegative, so taking square roots gives $\\sqrt{x} - \\sqrt{y} \\le \\sqrt{x - y}$, which is the claim.\n\n**(b)** Let $\\varepsilon > 0$ and put $\\delta = \\varepsilon^2$. If $x, y \\ge 0$ and $|x - y| < \\delta$, then by (a)\n\n$$|\\sqrt{x} - \\sqrt{y}| \\le \\sqrt{|x - y|} < \\sqrt{\\delta} = \\varepsilon. \\ \\blacksquare$$\n\n**Check your version:** does your $\\delta$ depend only on $\\varepsilon$ (not on $x$ or $y$)? Did you justify taking square roots (both sides nonnegative)? Note that $\\delta = \\varepsilon^2$ is smaller than $\\varepsilon$ when $\\varepsilon < 1$: that is the price of the steep start of the graph."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is Lipschitz on $\\mathbb{R}$ with constant $K = 4$. You are given $\\varepsilon = 0.2$. Which $\\delta$ does the Lipschitz argument give?",
+          "options": [
+            "$\\delta = 0.8$",
+            "$\\delta = 0.05$",
+            "$\\delta = 0.2$",
+            "$\\delta = 0.04$"
+          ],
+          "correct": 1,
+          "explanation": "$\\delta = \\varepsilon / K = 0.2 / 4 = 0.05$. Then $|x - y| < 0.05$ gives $|f(x) - f(y)| \\le 4|x - y| < 0.2$. $0.8 = K\\varepsilon$ is the wrong way round, $0.2$ ignores $K$, and $0.04 = \\varepsilon^2$ is the $\\sqrt{x}$ recipe."
+        },
+        {
+          "type": "text",
+          "md": "## Cauchy sequences, and what boundedness has to do with it\n\nRecall (lesson 3.11) that $(x_n)$ is **Cauchy** if its terms eventually crowd together: for every $\\varepsilon > 0$ there is $N$ with $|x_n - x_m| < \\varepsilon$ for all $n, m \\ge N$.\n\n**Uniformly continuous functions map Cauchy sequences to Cauchy sequences.** Let $(x_n)$ be Cauchy in $A$ and $\\varepsilon > 0$. Take the $\\delta$ from uniform continuity. Because $(x_n)$ is Cauchy, there is $N$ with $|x_n - x_m| < \\delta$ for $n, m \\ge N$. Then $|f(x_n) - f(x_m)| < \\varepsilon$ for $n, m \\ge N$. So $(f(x_n))$ is Cauchy.\n\nMerely continuous functions can fail this. On $(0, 1)$, the sequence $x_n = \\frac1{n+1}$ is Cauchy (it converges to $0$), but $\\frac{1}{x_n} = n + 1$ is not. This gives a second way to show $1/x$ is not uniformly continuous on $(0, 1)$, and lesson 5.12 uses it again.\n\n**What about boundedness?** It is tempting to think unbounded functions fail uniform continuity and bounded ones pass. Both guesses are wrong:\n- $f(x) = x$ is unbounded but uniformly continuous on $\\mathbb{R}$;\n- $\\sin(1/x)$ is bounded (between $-1$ and $1$) but not uniformly continuous on $(0, 1)$: it swings from $1$ to $-1$ faster and faster as $x \\to 0^+$.\n\nWhat matters is whether the **steepness** stays under control across the whole domain."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Continuity on A",
+              "back": "For each point $c$ and each $\\varepsilon$ there is a $\\delta$. The $\\delta$ may depend on **both** $c$ and $\\varepsilon$.\n\n*Example:* $x^2$ on $\\mathbb{R}$, with $\\delta$ shrinking as $|c|$ grows."
+            },
+            {
+              "front": "Uniform continuity on A",
+              "back": "For each $\\varepsilon$, **one** $\\delta$ works for every pair $x, y \\in A$ with $|x - y| < \\delta$.\n\n*Example:* $3x + 1$ on $\\mathbb{R}$, with $\\delta = \\varepsilon/3$."
+            },
+            {
+              "front": "Disproving uniform continuity",
+              "back": "Find $\\varepsilon_0 > 0$ and sequences with $|x_n - y_n| \\to 0$ but $|f(x_n) - f(y_n)| \\ge \\varepsilon_0$ for all $n$.\n\n*Example:* $x_n = n + \\frac1n$, $y_n = n$ for $x^2$."
+            },
+            {
+              "front": "Lipschitz function",
+              "back": "$|f(x) - f(y)| \\le K|x - y|$ for all $x, y$: chord slopes are **bounded**. Implies uniform continuity with $\\delta = \\varepsilon/K$.\n\n*Example:* $|x|$, with $K = 1$."
+            },
+            {
+              "front": "Uniform but not Lipschitz",
+              "back": "Lipschitz is sufficient, **not necessary**, for uniform continuity.\n\n*Example:* $\\sqrt{x}$ on $[0, \\infty)$, with $\\delta = \\varepsilon^2$; chord slopes $\\frac{1}{\\sqrt x}$ are unbounded."
+            },
+            {
+              "front": "Cauchy sequences",
+              "back": "A uniformly continuous function maps Cauchy sequences to **Cauchy** sequences.\n\n*Example:* $1/x$ fails on $(0, 1)$: $\\frac{1}{n+1}$ is Cauchy, $n + 1$ is not."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A function $f$ on $(0, 1)$ is bounded and continuous at every point. A classmate concludes it must be uniformly continuous. What is the best reply?",
+          "options": [
+            "Correct: bounded and continuous implies uniformly continuous",
+            "Wrong: $\\sin(1/x)$ is bounded and continuous on $(0, 1)$ but oscillates ever faster near $0$, so it is not uniformly continuous",
+            "Wrong: no function on $(0, 1)$ can be uniformly continuous",
+            "Correct, provided $f$ is also unbounded"
+          ],
+          "correct": 1,
+          "explanation": "Boundedness does not control steepness. $\\sin(1/x)$ takes the values $1$ and $-1$ at points that get ever closer together near $0$. Plenty of functions on $(0, 1)$ are uniformly continuous, such as $x^2$, and the last option contradicts itself."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove that $x^2$ is **not** uniformly continuous on $\\mathbb{R}$.",
+          "items": [
+            "The graph gets steeper as $x \\to \\infty$, so look for bad pairs far out.",
+            "Let $x_n = n + \\frac1n$ and $y_n = n$.",
+            "Then $|x_n - y_n| = \\frac1n \\to 0$.",
+            "But $x_n^2 - y_n^2 = 2 + \\frac{1}{n^2} \\ge 2$ for every $n$.",
+            "So with $\\varepsilon_0 = 1$, every $\\delta > 0$ fails for some pair, and $x^2$ is not uniformly continuous on $\\mathbb{R}$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Can a function be \"uniformly continuous at a point\"?",
+              "a": "No. Uniform continuity compares **pairs** of points across a whole set, so it only makes sense on a set. At a single point, the right notion is plain continuity."
+            },
+            {
+              "q": "If $f$ is uniformly continuous on $A$, is it uniformly continuous on every smaller set $B \\subseteq A$?",
+              "a": "Yes. The same $\\delta$ works, because pairs in $B$ are also pairs in $A$. The reverse fails: $x^2$ is uniformly continuous on $[0, 1]$ but not on $\\mathbb{R}$."
+            },
+            {
+              "q": "My $\\delta$ involves $\\varepsilon$. Is that allowed?",
+              "a": "Yes, always. $\\delta = \\varepsilon/3$ or $\\delta = \\varepsilon^2$ are fine. What is forbidden is $\\delta$ depending on the points, as in $\\delta = \\frac{\\varepsilon}{2|c| + 1}$."
+            },
+            {
+              "q": "Is every differentiable function Lipschitz?",
+              "a": "No. $x^2$ is differentiable on $\\mathbb{R}$ but its chord slopes $x + y$ are unbounded, so it is not Lipschitz (or even uniformly continuous) there. Lesson 6.9 shows a differentiable function **is** Lipschitz when its derivative is bounded."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- In continuity, $\\delta$ may depend on the point $c$. In **uniform continuity**, one $\\delta$ (depending on $\\varepsilon$ only) works for all pairs $x, y$ in the set.\n- Uniformly continuous implies continuous, not conversely: $x^2$ on $\\mathbb{R}$ and $1/x$ on $(0, 1)$ are continuous but not uniformly continuous.\n- To disprove it, find $|x_n - y_n| \\to 0$ with $|f(x_n) - f(y_n)| \\ge \\varepsilon_0$, placed where the graph gets steep.\n- **Lipschitz** ($|f(x) - f(y)| \\le K|x - y|$) gives uniform continuity with $\\delta = \\varepsilon/K$, but $\\sqrt{x}$ shows it is not necessary.\n- Boundedness is beside the point; uniformly continuous functions map Cauchy sequences to Cauchy sequences."
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple",
+          "prompt": "Which functions are uniformly continuous on the given domain?",
+          "options": [
+            "$x^2$ on $[0, 1]$",
+            "$x^2$ on $\\mathbb{R}$",
+            "$\\sin x$ on $\\mathbb{R}$",
+            "$1/x$ on $(0, 1)$",
+            "$\\sqrt{x}$ on $[0, \\infty)$"
+          ],
+          "answer": [
+            0,
+            2,
+            4
+          ],
+          "explanation": "$x^2$ on $[0,1]$ is Lipschitz with $K = 2$; $\\sin$ is Lipschitz with $K = 1$; $\\sqrt{x}$ satisfies $|\\sqrt x - \\sqrt y| \\leq \\sqrt{|x-y|}$. The pairs $n + \\frac1n, n$ and $\\frac{1}{n+1}, \\frac{1}{n+2}$ show $x^2$ on $\\mathbb{R}$ and $1/x$ on $(0, 1)$ are not."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every uniformly continuous function $f : \\mathbb{R} \\to \\mathbb{R}$ is bounded.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = x$ is uniformly continuous ($\\delta = \\varepsilon$) and unbounded."
+        },
+        {
+          "type": "single",
+          "prompt": "Which statement says that $f$ is **not** uniformly continuous on $A$?",
+          "options": [
+            "$\\exists \\varepsilon > 0 \\ \\forall \\delta > 0 \\ \\exists x, y \\in A : |x - y| < \\delta$ and $|f(x) - f(y)| \\geq \\varepsilon$",
+            "$\\forall \\varepsilon > 0 \\ \\exists \\delta > 0 \\ \\exists x, y \\in A : |x - y| < \\delta$ and $|f(x) - f(y)| \\geq \\varepsilon$",
+            "$\\exists c \\in A$ such that $f$ is discontinuous at $c$",
+            "$\\forall \\delta > 0 \\ \\exists x, y \\in A : |x - y| \\geq \\delta$ and $|f(x) - f(y)| < \\varepsilon$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Negate $\\forall\\varepsilon\\,\\exists\\delta\\,\\forall x,y\\,(P \\implies Q)$ to get $\\exists\\varepsilon\\,\\forall\\delta\\,\\exists x,y\\,(P \\wedge \\neg Q)$. The second option keeps the quantifiers unflipped. Discontinuity somewhere is sufficient for failure but not equivalent to it ($x^2$ on $\\mathbb{R}$ is continuous everywhere yet not uniformly continuous). The last option negates the wrong parts."
+        },
+        {
+          "type": "single",
+          "prompt": "Which property do uniformly continuous functions have that merely continuous ones may lack?",
+          "options": [
+            "They are differentiable.",
+            "They are monotone.",
+            "They map Cauchy sequences to Cauchy sequences.",
+            "They are bounded."
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "If $(x_n)$ is Cauchy and $\\delta$ is chosen for $\\varepsilon$, then eventually $|x_n - x_m| < \\delta$, so $|f(x_n) - f(x_m)| < \\varepsilon$. The continuous $1/x$ on $(0, 1)$ maps the Cauchy sequence $\\frac{1}{n+1}$ to $n + 1$, which is not Cauchy. Uniformly continuous functions need not be differentiable, monotone or bounded ($|x|$, $\\sin x$, $x$)."
+        },
+        {
+          "type": "short",
+          "prompt": "In the proof that $\\sqrt{x}$ is uniformly continuous on $[0, \\infty)$ one takes $\\delta = \\varepsilon^2$. What is $\\delta$ when $\\varepsilon = 0.1$?",
+          "answer": [
+            "0.01",
+            "1/100",
+            ".01"
+          ],
+          "explanation": "$\\delta = (0.1)^2 = 0.01$. Then $|x - y| < 0.01$ gives $|\\sqrt{x} - \\sqrt{y}| \\leq \\sqrt{|x-y|} < 0.1$."
+        },
+        {
+          "type": "single",
+          "prompt": "On which of these domains is $f(x) = 1/x$ uniformly continuous?",
+          "options": [
+            "$(0, 1)$",
+            "$(0, \\infty)$",
+            "$\\mathbb{R}\\setminus\\{0\\}$",
+            "$[1, \\infty)$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "On $[1, \\infty)$, $|1/x - 1/y| = \\frac{|x-y|}{xy} \\leq |x - y|$, so $f$ is Lipschitz. Each of the other domains contains $(0,1)$, where the pairs $\\frac{1}{n+1}, \\frac{1}{n+2}$ break uniform continuity."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is uniformly continuous on $A$, then $f$ is continuous at every point of $A$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Fix $c \\in A$ and put $y = c$ in the definition: the same $\\delta$ gives $|x - c| < \\delta \\implies |f(x) - f(c)| < \\varepsilon$. The converse is false, as $x^2$ on $\\mathbb{R}$ shows."
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = x^2$ with $\\varepsilon = 1$, what happens to the largest $\\delta$ that works at the point $c$ as $c$ grows?",
+          "options": [
+            "It stays the same",
+            "It grows without bound",
+            "It shrinks towards $0$",
+            "It is always exactly $\\frac12$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Near $c$ the graph has slope about $2c$, so $\\delta$ must be about $\\frac{1}{2c}$, which tends to $0$. That is exactly why no single $\\delta$ works on all of $\\mathbb{R}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which pairs of sequences prove that $x^2$ is not uniformly continuous on $\\mathbb{R}$? Select all that apply.",
+          "options": [
+            "$x_n = n + \\frac1n$, $y_n = n$",
+            "$x_n = \\frac1n$, $y_n = 0$",
+            "$x_n = n + 1$, $y_n = n$",
+            "$x_n = n + \\frac{1}{\\sqrt n}$, $y_n = n$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "We need $|x_n - y_n| \\to 0$ **and** $|x_n^2 - y_n^2| \\ge \\varepsilon_0$. The first gives a difference $2 + \\frac{1}{n^2}$; the last gives $2\\sqrt n + \\frac1n$. The second pair is close but its values differ by $\\frac{1}{n^2} \\to 0$. The third pair stays distance $1$ apart, so it does not get close."
+        },
+        {
+          "type": "short",
+          "prompt": "$f(x) = 5x - 2$ is Lipschitz with $K = 5$. Using $\\delta = \\varepsilon/K$, what is $\\delta$ when $\\varepsilon = 1$?",
+          "answer": [
+            "0.2",
+            "1/5",
+            ".2"
+          ],
+          "explanation": "$\\delta = 1/5 = 0.2$. Then $|x - y| < 0.2$ gives $|f(x) - f(y)| = 5|x - y| < 1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\sqrt{x}$ is Lipschitz on $[0, \\infty)$.",
+          "answer": [
+            false
+          ],
+          "explanation": "The chord from $0$ to $x$ has slope $\\frac{1}{\\sqrt x}$, which is unbounded as $x \\to 0^+$, so no constant $K$ works. $\\sqrt x$ is still uniformly continuous, with $\\delta = \\varepsilon^2$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which function is Lipschitz on $\\mathbb{R}$ with constant $K = 1$?",
+          "options": [
+            "$x^2$",
+            "$|x|$",
+            "$2x$",
+            "$\\frac{1}{1 + x}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\big||x| - |y|\\big| \\le |x - y|$ by the reverse triangle inequality. $x^2$ has unbounded chord slopes; $2x$ is Lipschitz but needs $K = 2$; $\\frac{1}{1+x}$ is not even defined at $x = -1$."
+        }
+      ]
+    },
+    {
+      "slug": "5-12-heine-cantor-theorem",
+      "title": "Heine-Cantor theorem",
+      "summary": "On a compact set, continuity is automatically uniform.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "When continuity comes for free as uniform continuity",
+          "md": "In lesson 5.11, proving uniform continuity meant finding one $\\delta$ by hand. This lesson gives a theorem that does the work for you on the right kind of domain.\n\n**In this lesson you will learn to:**\n- recognise **compact** subsets of $\\mathbb{R}$ (closed and bounded)\n- state the **Heine-Cantor theorem**: a continuous function on a compact set is uniformly continuous\n- follow its proof by contradiction, and say where each hypothesis is used\n- decide uniform continuity on an open interval $(a, b)$ by checking two one-sided limits\n\n**You need:** uniform continuity and the sequential criterion for its failure (lesson 5.11), subsequences (lesson 3.9), the Bolzano-Weierstrass theorem (lesson 3.10), the sequential criterion for continuity (lesson 5.6), one-sided limits (lesson 5.3) and proof by contradiction (lesson 1.9)."
+        },
+        {
+          "type": "text",
+          "md": "## Two ways to escape\n\nLook back at the two functions in lesson 5.11 that were continuous but not uniformly continuous. In both, the bad pairs of points ran off somewhere:\n\n- for $x^2$ on $\\mathbb{R}$, the bad pairs $n + \\frac1n$ and $n$ ran off to **infinity**, where the graph gets ever steeper;\n- for $1/x$ on $(0, 1)$, the bad pairs $\\frac{1}{n+1}$ and $\\frac{1}{n+2}$ crowded towards $0$, a point **missing** from the domain, where the function is not defined.\n\nEvery continuous function behaves well near each point **of its domain**. Trouble can only come from \"places\" the domain reaches towards but does not contain: infinity, or a missing endpoint.\n\nSo what if the domain has no such places? If it is **bounded**, there is no running off to infinity. If it contains every point its sequences converge to, there are no missing endpoints. Such domains are called **compact**, and on them every continuous function turns out to be uniformly continuous. That is the Heine-Cantor theorem."
+        },
+        {
+          "type": "text",
+          "md": "## Compact sets\n\nLesson 5.10 used the word **compact** for a subset of $\\mathbb{R}$ that is **closed and bounded**. Here is what the two words mean.\n\n- **Bounded** (lesson 2.7): $K \\subseteq [-M, M]$ for some number $M$.\n- **Closed**: whenever a sequence of points of $K$ converges, its limit is also in $K$. In short, $K$ keeps its limits. (Lesson 8.2 gives the full theory of closed sets; this sequence form is all we need.)\n\n**Compact:**\n- $[a, b]$, for any real $a \\le b$. This is the case you will use most.\n- Any finite set, such as $\\{1, 2, 3\\}$: a convergent sequence in it is eventually constant, so its limit is in the set.\n- $\\{0\\} \\cup \\{\\frac1n : n \\in \\mathbb{N}\\}$. The only point its sequences can pile up at is $0$, and $0$ is included.\n\n**Not compact:**\n- $(0, 1]$ is bounded but not closed: $\\frac1n \\to 0$, and $0 \\notin (0, 1]$.\n- $[0, \\infty)$ is closed but not bounded.\n- $\\mathbb{Q} \\cap [0, 1]$ (the rationals between $0$ and $1$) is bounded but not closed: rationals can converge to the irrational $\\frac{1}{\\sqrt 2}$, which is missing.\n\nWhy compactness helps: by Bolzano-Weierstrass (lesson 3.10), every sequence in a bounded set has a convergent subsequence; if the set is also closed, the limit stays **inside** it. So every sequence in a compact $K$ has a subsequence converging to a point of $K$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each set to the right description.",
+          "pairs": [
+            {
+              "left": "$[-2, 5]$",
+              "right": "Compact"
+            },
+            {
+              "left": "$(0, 1]$",
+              "right": "Bounded but not closed: it misses the limit $0$"
+            },
+            {
+              "left": "$[0, \\infty)$",
+              "right": "Closed but not bounded"
+            },
+            {
+              "left": "$\\{0\\} \\cup \\{\\frac1n : n \\in \\mathbb{N}\\}$",
+              "right": "Compact: it contains its only limit point $0$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## The theorem\n\n**Theorem (Heine-Cantor).** Let $K \\subseteq \\mathbb{R}$ be compact (closed and bounded) and let $f : K \\to \\mathbb{R}$ be continuous. Then $f$ is uniformly continuous on $K$. In particular, every continuous function on a closed interval $[a, b]$ is uniformly continuous.\n\nIn plain words: on a compact set, the $\\delta$s you get point by point never shrink to nothing, so one $\\delta$ serves everywhere. You do not need to find it; the theorem guarantees it exists.\n\n**Examples:**\n- $x^2$ on $[-100, 100]$ is uniformly continuous. Here you can also find $\\delta$ directly: $|x + y| \\le 200$, so $|x^2 - y^2| \\le 200|x - y|$ and $\\delta = \\frac{\\varepsilon}{200}$ works. The theorem tells you this without any algebra.\n- $\\sin(1/x)$ on $[\\frac{1}{100}, 1]$ is uniformly continuous, even though it wiggles a lot. On this domain the wiggles have a fastest speed.\n- $\\sqrt{x}$ on $[0, 4]$ is uniformly continuous, matching what you proved by hand in lesson 5.11.\n\n**Edge case.** The theorem only speaks about compact sets. When the domain is not compact, it says **nothing**, either way. $x$ on $\\mathbb{R}$ is uniformly continuous, and $x^2$ on $\\mathbb{R}$ is not; both domains are non-compact. For non-compact domains you must argue directly, as in lesson 5.11."
+        },
+        {
+          "type": "check",
+          "question": "Is $f(x) = x^2$ uniformly continuous on $[-100, 100]$?",
+          "options": [
+            "No, because $x^2$ is not uniformly continuous on $\\mathbb{R}$.",
+            "Yes, by Heine-Cantor.",
+            "Only on $[0, 100]$.",
+            "It depends on $\\varepsilon$."
+          ],
+          "correct": 1,
+          "explanation": "$[-100, 100]$ is compact and $x^2$ is continuous, so Heine-Cantor applies. Explicitly, $|x^2 - y^2| = |x + y||x - y| \\leq 200|x - y|$, so $\\delta = \\varepsilon/200$ works. Failing on $\\mathbb{R}$ says nothing about a smaller domain, and uniform continuity is a yes-or-no property of $f$ on a set, not something that depends on $\\varepsilon$."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is continuous on $(0, 1]$. What does the Heine-Cantor theorem tell you about whether $f$ is uniformly continuous there?",
+          "options": [
+            "$f$ is uniformly continuous, because $(0, 1]$ is bounded",
+            "$f$ is not uniformly continuous, because $(0, 1]$ is not compact",
+            "Nothing: the theorem needs a compact domain, and without one $f$ may or may not be uniformly continuous",
+            "$f$ is uniformly continuous on $(0, 1)$ but not at $1$"
+          ],
+          "correct": 2,
+          "explanation": "$(0, 1]$ is bounded but not closed, so the theorem does not apply. Then anything can happen: $x^2$ is uniformly continuous on $(0, 1]$, while $1/x$ is not. Bounded alone is not enough, and uniform continuity is not a property \"at a point\"."
+        },
+        {
+          "type": "text",
+          "md": "## The idea of the proof\n\nWe argue by contradiction (lesson 1.9): suppose $f$ is continuous on compact $K$ but **not** uniformly continuous, and derive something impossible.\n\n1. **Failure gives bad pairs.** By the sequential criterion (lesson 5.11), there are pairs $x_n, y_n$ in $K$ that get closer and closer, while their values stay at least $\\varepsilon_0$ apart.\n2. **Boundedness squeezes them together.** The $x_n$ cannot run off to infinity, so by Bolzano-Weierstrass some of them (a subsequence) converge to a point $x$. Their partners $y_n$ are right next to them, so they converge to $x$ too.\n3. **Closedness keeps the meeting point in $K$.** Because $K$ is closed, $x \\in K$, so $f$ is continuous at $x$.\n4. **Continuity at $x$ pulls the values together.** Both $f(x_n)$ and $f(y_n)$ must approach $f(x)$, so they get close to each other. That contradicts \"at least $\\varepsilon_0$ apart\".\n\nNotice how this matches the two escape routes. Boundedness blocks running off to infinity (step 2), and closedness blocks running off to a missing point (step 3). Next comes the proof in full."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of the Heine-Cantor theorem",
+          "steps": [
+            {
+              "title": "Assume the opposite",
+              "md": "Suppose $f$ is continuous on compact $K$ but not uniformly continuous. By the sequential criterion there is $\\varepsilon_0 > 0$ such that for every $n$ there are $x_n, y_n \\in K$ with\n\n$$|x_n - y_n| < \\frac1n \\quad\\text{and}\\quad |f(x_n) - f(y_n)| \\geq \\varepsilon_0.$$\n\n(The $\\frac1n$ comes from trying $\\delta = \\frac1n$ for each $n$.)"
+            },
+            {
+              "title": "Extract a convergent subsequence",
+              "md": "$K$ is bounded, so $(x_n)$ is bounded, and by Bolzano-Weierstrass some subsequence $(x_{n_k})$ converges, say to $x$. Since $K$ is closed, $x \\in K$.\n\nWe cannot expect the whole sequence $(x_n)$ to converge; a subsequence is all Bolzano-Weierstrass gives, and all we need."
+            },
+            {
+              "title": "The partners converge to the same point",
+              "md": "By the triangle inequality (lesson 2.5),\n\n$$|y_{n_k} - x| \\leq |y_{n_k} - x_{n_k}| + |x_{n_k} - x| < \\frac{1}{n_k} + |x_{n_k} - x| \\to 0,$$\n\nso $y_{n_k} \\to x$ as well. We use the **same** indices $n_k$ for the $y$s, so each $y_{n_k}$ stays paired with its $x_{n_k}$."
+            },
+            {
+              "title": "Apply continuity at x",
+              "md": "$f$ is continuous at $x$ (because $x \\in K$). By the sequential criterion for continuity (lesson 5.6), $f(x_{n_k}) \\to f(x)$ and $f(y_{n_k}) \\to f(x)$. Hence $|f(x_{n_k}) - f(y_{n_k})| \\to 0$."
+            },
+            {
+              "title": "Reach the contradiction",
+              "md": "This contradicts $|f(x_{n_k}) - f(y_{n_k})| \\geq \\varepsilon_0 > 0$ for all $k$. So $f$ is uniformly continuous on $K$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "Run the proof on $1/x$ with domain $(0, 1]$. Which step breaks down?",
+          "options": [
+            "Step 1: there are no bad pairs",
+            "Step 2: the subsequence converges to $0$, which is not in $(0, 1]$, so continuity at the limit is unavailable",
+            "Step 3: the triangle inequality fails",
+            "Nothing breaks; $1/x$ is uniformly continuous on $(0, 1]$"
+          ],
+          "correct": 1,
+          "explanation": "The bad pairs $\\frac{1}{n+1}, \\frac{1}{n+2}$ from lesson 5.11 exist, and they converge to $0$. But $0 \\notin (0, 1]$: the domain is not closed, so step 2's \"$x \\in K$\" fails and $f$ is not even defined at the meeting point. The triangle inequality always holds, and $1/x$ really is not uniformly continuous there."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the key moves of the Heine-Cantor proof in order.",
+          "items": [
+            "Assume uniform continuity fails for some $\\varepsilon_0$.",
+            "Choose $x_n, y_n \\in K$ with $|x_n - y_n| < 1/n$ and $|f(x_n) - f(y_n)| \\geq \\varepsilon_0$.",
+            "By Bolzano-Weierstrass, $x_{n_k} \\to x$, and $x \\in K$ since $K$ is closed.",
+            "Deduce $y_{n_k} \\to x$ too.",
+            "Continuity at $x$ gives $f(x_{n_k}) - f(y_{n_k}) \\to 0$, a contradiction."
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Compactness, not just boundedness",
+          "md": "A bounded domain alone is not enough: $\\sin(1/x)$ is continuous on the bounded set $(0, 1)$ and not uniformly continuous. In the proof, closedness is what guarantees the meeting point $x$ belongs to $K$, where $f$ is continuous. Without it the pairs can converge to a point outside the domain, like $0 \\notin (0,1)$.\n\nAnd the theorem is one-way. A function can be uniformly continuous on a non-compact set ($\\sqrt{x}$ on $[0, \\infty)$); Heine-Cantor just will not tell you so."
+        },
+        {
+          "type": "text",
+          "md": "## Open intervals: a test with two limits\n\nHeine-Cantor needs a closed interval. Can it still help on an open interval $(a, b)$, with $a < b$ real? Yes. The only trouble spots are the two missing endpoints, so check how $f$ behaves as you approach them.\n\n**Corollary.** Let $f : (a, b) \\to \\mathbb{R}$ be continuous. Then $f$ is uniformly continuous on $(a, b)$ **if and only if** both one-sided limits (lesson 5.3)\n\n$$\\lim_{x \\to a^+} f(x) \\quad\\text{and}\\quad \\lim_{x \\to b^-} f(x)$$\n\nexist as real numbers.\n\n**Why \"if\":** fill in the endpoints. Define $F(a)$ and $F(b)$ to be the two limits and $F = f$ on $(a, b)$. Then $F$ is continuous on the compact $[a, b]$, hence uniformly continuous by Heine-Cantor. The same $\\delta$ works for $f$, since pairs in $(a, b)$ are pairs in $[a, b]$.\n\n**Why \"only if\":** uniformly continuous functions map Cauchy sequences to Cauchy sequences (lesson 5.11). Any sequence $x_n \\to a^+$ is Cauchy, so $f(x_n)$ is Cauchy, hence converges (lesson 3.12). One can check all these limits agree, so $\\lim_{x \\to a^+} f(x)$ exists.\n\n**Examples on $(0, 1)$:**\n- $x^2$: limits $0$ and $1$ exist. Uniformly continuous.\n- $1/x$: as $x \\to 0^+$, $1/x \\to \\infty$, which is not a real number. Not uniformly continuous.\n- $\\sin(1/x)$: as $x \\to 0^+$ it keeps swinging between $-1$ and $1$, so the limit does not exist. Not uniformly continuous, even though it is **bounded**."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: two functions on $(0, 1)$",
+          "problem": "Decide whether each function is uniformly continuous on $(0, 1)$, and justify your answer: (a) $f(x) = x\\sin(1/x)$; (b) $g(x) = \\sin(1/x)$. Hint for (b): use the Cauchy-sequence property, with points where $1/x$ is an odd multiple of $\\frac{\\pi}{2}$.",
+          "solution": "Both are continuous on $(0, 1)$ as products and compositions of continuous functions.\n\n**(a)** $\\lim_{x\\to 0^+} x\\sin(1/x) = 0$ by the squeeze theorem (lesson 5.4), since $|x\\sin(1/x)| \\leq |x|$. And $\\lim_{x\\to 1^-} x\\sin(1/x) = \\sin 1$ by continuity at $1$. Define $F(0) = 0$, $F(1) = \\sin 1$ and $F = f$ on $(0, 1)$. Then $F$ is continuous on the compact interval $[0, 1]$, so uniformly continuous by Heine-Cantor. Restricting to $(0, 1)$, $f$ is uniformly continuous. Yes.\n\n**(b)** Suppose $g$ were uniformly continuous. Then $g$ would map Cauchy sequences to Cauchy sequences. Let $x_n = \\frac{2}{(2n+1)\\pi}$ for $n \\geq 1$. These lie in $(0, 1)$ and converge to $0$, so $(x_n)$ is Cauchy. But\n\n$$g(x_n) = \\sin\\!\\left(\\frac{(2n+1)\\pi}{2}\\right) = (-1)^n,$$\n\nwhich alternates $-1, 1, -1, \\dots$ and is not Cauchy. So $g$ is not uniformly continuous on $(0, 1)$. No. $\\blacksquare$\n\n**Check your version:** in (a), did you find **both** one-sided limits, not just the one at $0$? In (b), did you avoid the false shortcut \"$g$ is bounded, so it is uniformly continuous\"?"
+        },
+        {
+          "type": "check",
+          "question": "Let $h(x) = \\frac{x^2 - 1}{x - 1}$ on $(0, 1)$. Is $h$ uniformly continuous there?",
+          "options": [
+            "No, because the formula has a $0/0$ problem at $x = 1$",
+            "Yes: $h(x) = x + 1$ on $(0, 1)$, so the limits at $0^+$ and $1^-$ are $1$ and $2$, both real",
+            "No, because $(0, 1)$ is not compact",
+            "Yes, but only because $h$ is bounded"
+          ],
+          "correct": 1,
+          "explanation": "For $x \\ne 1$, $h(x) = \\frac{(x - 1)(x + 1)}{x - 1} = x + 1$. Both one-sided limits exist, so the corollary gives uniform continuity. The $0/0$ issue at $1$ is exactly what a one-sided limit handles. A non-compact domain only means Heine-Cantor does not apply directly. Boundedness is not the reason: $\\sin(1/x)$ is bounded and fails."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Compact subset of R",
+              "back": "A set that is **closed and bounded**. Every sequence in it has a subsequence converging to a point of the set.\n\n*Example:* $[a, b]$. *Non-example:* $(0, 1]$."
+            },
+            {
+              "front": "Closed set (sequence form)",
+              "back": "A set that **keeps its limits**: if points of $K$ converge, the limit is in $K$.\n\n*Example:* $[0, 1]$. *Non-example:* $\\mathbb{Q} \\cap [0, 1]$, missing $\\frac{1}{\\sqrt 2}$."
+            },
+            {
+              "front": "Heine-Cantor theorem",
+              "back": "A continuous function on a **compact** set is uniformly continuous.\n\n*Example:* $x^2$ on $[-100, 100]$, with $\\delta = \\frac{\\varepsilon}{200}$."
+            },
+            {
+              "front": "Where compactness is used",
+              "back": "**Bounded** gives a convergent subsequence (Bolzano-Weierstrass). **Closed** keeps its limit in $K$, where $f$ is continuous.\n\n*Example:* on $(0, 1]$ the limit $0$ escapes."
+            },
+            {
+              "front": "Open-interval test",
+              "back": "Continuous $f$ on $(a, b)$ is uniformly continuous **iff** $\\lim_{x\\to a^+} f$ and $\\lim_{x \\to b^-} f$ exist in $\\mathbb{R}$.\n\n*Example:* $x\\sin(1/x)$ passes; $\\sin(1/x)$ fails."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You must show $f(x) = \\frac{1}{1 + x^2}$ is uniformly continuous on $[-3, 3]$. A friend starts hunting for an explicit $\\delta$. What is the quickest correct argument?",
+          "options": [
+            "$f$ is bounded by $1$, so it is uniformly continuous",
+            "$f$ is continuous (a quotient with nonzero denominator) and $[-3, 3]$ is compact, so Heine-Cantor applies",
+            "$f$ is uniformly continuous on $\\mathbb{R}$, so it is uniformly continuous on any set; nothing to check",
+            "Check the one-sided limits at $-3$ and $3$"
+          ],
+          "correct": 1,
+          "explanation": "Continuous plus compact domain is exactly the Heine-Cantor setting. Boundedness never implies uniform continuity. The third option assumes a fact you have not proved (it happens to be true, but it is not the quick route). The limit test is for **open** intervals; on $[-3, 3]$ the endpoints are already in the domain."
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Does Heine-Cantor tell me what $\\delta$ to use?",
+              "a": "No. It proves a suitable $\\delta$ exists, by contradiction, without producing a formula. When you need an explicit $\\delta$ (say $\\frac{\\varepsilon}{200}$ for $x^2$ on $[-100, 100]$), you still have to find it by hand."
+            },
+            {
+              "q": "Why is the result needed later?",
+              "a": "Lesson 7.6 uses it to prove every continuous function on $[a, b]$ is integrable: one $\\delta$ for all of $[a, b]$ lets you make every small piece of the graph nearly flat at once."
+            },
+            {
+              "q": "Is $\\mathbb{R}$ compact? It is closed.",
+              "a": "$\\mathbb{R}$ is closed (it contains every limit), but it is not bounded, so it is not compact. That is why $x^2$ can fail on $\\mathbb{R}$."
+            },
+            {
+              "q": "What is compactness in general?",
+              "a": "Lesson 8.4 defines compactness for metric spaces using open covers and subsequences. In $\\mathbb{R}$ it comes down to closed and bounded, which is all you need here."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A subset of $\\mathbb{R}$ is **compact** when it is closed (keeps its limits) and bounded. $[a, b]$ is the main example; $(0, 1]$ and $[0, \\infty)$ are not compact.\n- **Heine-Cantor:** a continuous function on a compact set is uniformly continuous.\n- The proof is by contradiction: bad pairs, Bolzano-Weierstrass (bounded), limit in $K$ (closed), continuity there.\n- Bounded is not enough, and the theorem says nothing on non-compact sets.\n- On $(a, b)$: continuous $f$ is uniformly continuous exactly when both one-sided endpoint limits exist in $\\mathbb{R}$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "$f(x) = x^2$ is uniformly continuous on $[-100, 100]$.",
+          "answer": [
+            true
+          ],
+          "explanation": "It is continuous on a compact interval, so Heine-Cantor applies. Explicitly, $|x^2 - y^2| \\leq 200|x-y|$ there."
+        },
+        {
+          "type": "single",
+          "prompt": "Which hypothesis of the Heine-Cantor theorem fails for $f(x) = 1/x$ on $(0, 1]$?",
+          "options": [
+            "$f$ is not continuous.",
+            "The domain is not bounded.",
+            "The domain is not closed.",
+            "$f$ is not monotone."
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$(0, 1]$ is bounded but not closed: $\\frac1n \\to 0$ and $0$ is outside it. $1/x$ is continuous there, and monotonicity is irrelevant. Indeed $1/x$ is not uniformly continuous on $(0, 1]$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these subsets of $\\mathbb{R}$ are compact?",
+          "options": [
+            "$[0, 1]$",
+            "$\\{0\\} \\cup \\{1/n : n \\in \\mathbb{N}\\}$",
+            "$\\mathbb{Q} \\cap [0, 1]$",
+            "$[0, \\infty)$",
+            "$\\{1, 2, 3\\}$"
+          ],
+          "answer": [
+            0,
+            1,
+            4
+          ],
+          "explanation": "Compact means closed and bounded. The set $\\{0\\}\\cup\\{1/n\\}$ contains its only limit point $0$. $\\mathbb{Q}\\cap[0,1]$ is not closed (it misses irrational limits such as $1/\\sqrt2$), and $[0, \\infty)$ is unbounded. Finite sets are compact."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof of Heine-Cantor, after finding $x_{n_k} \\to x \\in K$, why does $y_{n_k} \\to x$?",
+          "options": [
+            "Because $f$ is continuous at $x$.",
+            "Because $|y_{n_k} - x| \\leq |y_{n_k} - x_{n_k}| + |x_{n_k} - x|$ and both terms tend to $0$.",
+            "Because $K$ is closed.",
+            "Because every sequence in $K$ converges."
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The partners were chosen with $|x_n - y_n| < 1/n$, so the triangle inequality gives $y_{n_k} \\to x$. This step uses no property of $f$ or of $K$; and not every sequence in a compact set converges, only some subsequence does."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $a < b$ be real and $f : (a, b) \\to \\mathbb{R}$ continuous. Then $f$ is uniformly continuous on $(a,b)$ if and only if",
+          "options": [
+            "$f$ is bounded on $(a, b)$.",
+            "$f$ is monotone on $(a, b)$.",
+            "$f$ is differentiable on $(a, b)$.",
+            "$\\lim_{x\\to a^+} f(x)$ and $\\lim_{x\\to b^-} f(x)$ both exist in $\\mathbb{R}$."
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "If the one-sided limits exist, $f$ extends continuously to $[a,b]$ and Heine-Cantor applies; conversely uniform continuity forces the limits to exist. Boundedness is not enough ($\\sin(1/x)$ on $(0,1)$); monotone fails ($1/x$ is monotone on $(0, 1)$ but not uniformly continuous); and differentiability is neither necessary nor sufficient ($|x - \\tfrac12|$ is uniformly continuous on $(0,1)$ but not differentiable at $\\tfrac12$, while the differentiable $1/x$ is not uniformly continuous)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$g(x) = \\sin(1/x)$ is uniformly continuous on $(0, 1)$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$\\lim_{x \\to 0^+} \\sin(1/x)$ does not exist, so by the corollary $g$ is not uniformly continuous. Concretely, $x_n = \\frac{2}{(2n+1)\\pi}$ is Cauchy but $g(x_n) = (-1)^n$ is not."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every continuous function on a bounded interval is uniformly continuous.",
+          "answer": [
+            false
+          ],
+          "explanation": "The interval must also be closed. $1/x$ is continuous on the bounded interval $(0, 1)$ but not uniformly continuous there."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof of Heine-Cantor, which hypothesis lets us apply the Bolzano-Weierstrass theorem to $(x_n)$?",
+          "options": [
+            "$K$ is bounded",
+            "$K$ is closed",
+            "$f$ is continuous",
+            "$|x_n - y_n| < \\frac1n$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Bolzano-Weierstrass needs a bounded sequence, and $(x_n)$ is bounded because $K$ is. Closedness is used next, to put the limit in $K$. Continuity is used at the end, and $|x_n - y_n| < \\frac1n$ is used to make the partners converge."
+        },
+        {
+          "type": "short",
+          "prompt": "For $x^2$ on $[-100, 100]$, the bound $|x^2 - y^2| \\le 200|x - y|$ suggests $\\delta = \\varepsilon/200$. What is $\\delta$ when $\\varepsilon = 1$?",
+          "answer": [
+            "0.005",
+            "1/200",
+            ".005"
+          ],
+          "explanation": "$\\delta = 1/200 = 0.005$. Then $|x - y| < 0.005$ gives $|x^2 - y^2| < 200 \\times 0.005 = 1$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are uniformly continuous on $(0, 1)$? Select all that apply.",
+          "options": [
+            "$x\\sin(1/x)$",
+            "$1/x$",
+            "$\\sin(1/x)$",
+            "$x^2$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "Check the one-sided limits at $0^+$ and $1^-$. $x\\sin(1/x)$ has limits $0$ and $\\sin 1$; $x^2$ has $0$ and $1$. For $1/x$ the limit at $0^+$ is infinite, and for $\\sin(1/x)$ it does not exist."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The Heine-Cantor theorem shows that $f(x) = x$ is uniformly continuous on $\\mathbb{R}$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = x$ is uniformly continuous on $\\mathbb{R}$ (take $\\delta = \\varepsilon$), but not because of Heine-Cantor: $\\mathbb{R}$ is unbounded, so not compact, and the theorem does not apply."
+        },
+        {
+          "type": "single",
+          "prompt": "Suppose you try to run the Heine-Cantor proof for $f(x) = x^2$ on $\\mathbb{R}$. What goes wrong?",
+          "options": [
+            "The bad pairs $n + \\frac1n$, $n$ are unbounded, so Bolzano-Weierstrass gives no convergent subsequence",
+            "$x^2$ is not continuous",
+            "The limit of the subsequence lies outside $\\mathbb{R}$, so closedness fails",
+            "The triangle inequality fails for large numbers"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$\\mathbb{R}$ is closed but unbounded. The bad pairs run off to infinity, so no subsequence converges and the proof stalls at step 2. $x^2$ is continuous and the triangle inequality always holds."
+        }
+      ]
+    },
+    {
+      "slug": "5-13-continuous-functions-on-compact-intervals",
+      "title": "Continuous functions on compact intervals",
+      "summary": "On $[a,b]$ a continuous function is bounded, attains its extremes and maps onto $[m, M]$.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "The whole picture on [a, b]",
+          "md": "This lesson brings the big theorems of Level 5 together into one statement about a continuous function on a closed interval $[a, b]$, and adds one new result about inverse functions.\n\n**In this lesson you will learn to:**\n- find the **image** $f([a, b])$ of a continuous function, and show it is always a closed interval $[m, M]$\n- say which theorem gives each property, and which hypothesis each needs\n- show that a continuous **injective** function on an interval is **strictly monotone**\n- explain why inverse functions such as $\\sqrt{x}$ and $\\ln x$ are continuous\n\n**You need:** the Intermediate Value Theorem (lesson 5.9), the Extreme Value Theorem (lesson 5.10), the Heine-Cantor theorem (lesson 5.12), images and injective functions (lesson 1.6), and interval notation (lesson 2.6)."
+        },
+        {
+          "type": "text",
+          "md": "## What does f do to an interval?\n\nRecall from lesson 1.6 that the **image** of a set $A$ under $f$ is the set of all values $f$ takes on $A$:\n\n$$f(A) = \\{ f(x) : x \\in A \\}.$$\n\nSo $f([a, b])$ is the set of all outputs as $x$ runs over $[a, b]$. Finding it answers the question \"which values does $f$ actually take?\", which comes up whenever you solve equations or look for the largest and smallest values.\n\n**Example.** Take $f(x) = x^2$ on $[-1, 2]$. As $x$ goes from $-1$ to $0$, $x^2$ falls from $1$ to $0$. As $x$ goes from $0$ to $2$, it rises from $0$ to $4$. Every value from $0$ to $4$ is reached, and nothing else, so\n\n$$f([-1, 2]) = [0, 4].$$\n\nNotice the smallest value $0$ is taken **inside** the interval, at $x = 0$, not at an endpoint. The endpoint values are $f(-1) = 1$ and $f(2) = 4$.\n\n**Example.** $\\sin$ on $[0, \\pi]$ starts at $0$, rises to $1$ at $\\frac{\\pi}{2}$, and falls back to $0$. Its image is $[0, 1]$.\n\nIn both examples the image is a closed interval running from the smallest value to the largest. The theorem in this lesson says that this always happens."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The image is not [f(a), f(b)]",
+          "md": "A common slip is to compute only $f(a)$ and $f(b)$. For $x^2$ on $[-1, 2]$ that gives $1$ and $4$, suggesting the image $[1, 4]$. But $f(0) = 0$ is also a value. The image runs from the **minimum** to the **maximum** of $f$, wherever they occur. Endpoints are candidates, not the answer."
+        },
+        {
+          "type": "check",
+          "question": "What is the image of $[0, \\pi]$ under $\\sin$?",
+          "options": [
+            "$[-1, 1]$",
+            "$(0, 1)$",
+            "$[0, 1]$",
+            "$[0, \\pi]$"
+          ],
+          "correct": 2,
+          "explanation": "On $[0, \\pi]$, $\\sin$ has minimum $0$ (at $0$ and $\\pi$) and maximum $1$ (at $\\pi/2$). The image of a compact interval is $[m, M] = [0, 1]$. $\\sin$ only reaches $-1$ at $\\frac{3\\pi}{2}$, outside the interval; the endpoints $0$ and $1$ are attained, so the image is closed; and $[0, \\pi]$ is the domain, not the image."
+        },
+        {
+          "type": "text",
+          "md": "## The summary theorem\n\n**Theorem.** Let $f : [a, b] \\to \\mathbb{R}$ be continuous. Then:\n\n1. **(EVT, lesson 5.10)** $f$ is bounded and attains a minimum value $m$ and a maximum value $M$.\n2. **(IVT, lesson 5.9)** $f$ takes every value between $m$ and $M$. Together with part 1,\n$$f([a, b]) = [m, M].$$\n3. **(Heine-Cantor, lesson 5.12)** $f$ is uniformly continuous on $[a, b]$.\n\nIn one sentence: **a continuous function maps a closed bounded interval onto a closed bounded interval**, and does so uniformly continuously.\n\n**Where each property comes from:**\n- $[a, b]$ is **closed and bounded** (compact). This gives Bolzano-Weierstrass with limits staying in $[a, b]$, which drives both the EVT and Heine-Cantor.\n- $[a, b]$ is an **interval**, with no gaps. Together with the completeness of $\\mathbb{R}$ (lesson 2.10), this drives the IVT, so the image has no gaps either.\n\n**Edge case.** If $f$ is constant, say $f(x) = 3$, then $m = M = 3$ and the image is $[3, 3] = \\{3\\}$, a single point. That still counts as a closed interval (one of length $0$).\n\n**Recipe for finding $[m, M]$** when you can see the shape of $f$: find where $f$ is smallest and largest, checking both the endpoints and any turning point inside. Completing the square is often enough. Lesson 6.9 gives a systematic method using derivatives."
+        },
+        {
+          "type": "text",
+          "md": "## Worked examples\n\n**$f(x) = x^2 - 2x$ on $[0, 3]$.** Complete the square: $f(x) = (x - 1)^2 - 1$. The square is smallest, $0$, at $x = 1$, so $m = f(1) = -1$. The square is largest where $x$ is furthest from $1$; on $[0, 3]$ that is $x = 3$, giving $M = f(3) = 3$. (Check the other endpoint: $f(0) = 0 < 3$.) So $f([0, 3]) = [-1, 3]$.\n\n**$g(x) = x^3$ on $[-1, 2]$.** $x^3$ is increasing, so the minimum is at the left end and the maximum at the right end: $g([-1, 2]) = [-1, 8]$. For an increasing function the endpoints **are** the answer.\n\n**$h(x) = -x$ on $[a, b]$.** Decreasing, so the largest value is at the left: $h([a, b]) = [-b, -a]$. Watch the order: $-b \\le -a$.\n\n**$k(x) = 5$ on $[0, 1]$.** Constant, so $k([0, 1]) = [5, 5] = \\{5\\}$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each continuous function and interval to its image.",
+          "pairs": [
+            {
+              "left": "$x^2$ on $[-1, 2]$",
+              "right": "$[0, 4]$"
+            },
+            {
+              "left": "$x^3$ on $[-1, 2]$",
+              "right": "$[-1, 8]$"
+            },
+            {
+              "left": "$x^2 - 2x$ on $[0, 3]$",
+              "right": "$[-1, 3]$"
+            },
+            {
+              "left": "$-x$ on $[1, 4]$",
+              "right": "$[-4, -1]$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Why the image is exactly [m, M]\n\nThe proof combines the EVT and the IVT, and it uses one piece of notation. If $J \\subseteq [a, b]$, the **restriction** $f|_J$ is the same function, but only allowed inputs from $J$. If $f$ is continuous on $[a, b]$, then $f|_J$ is continuous on $J$.\n\nTo show two sets are equal, show each is a subset of the other (lesson 1.4). One inclusion is easy: every value lies between the minimum and the maximum. The other needs the IVT, and the trick is choosing **which interval** to apply it on. The IVT needs the target value to lie between the function's values at the two ends of an interval. The ends of $[a, b]$ may not have the values $m$ and $M$ (think of $x^2$ on $[-1, 2]$, where neither end gives $0$). So instead we use the interval between the two points **where $m$ and $M$ are attained**."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: $f([a, b]) = [m, M]$",
+          "steps": [
+            {
+              "title": "Use the EVT",
+              "md": "By the EVT there are $p, q \\in [a, b]$ with $f(p) = m$ and $f(q) = M$, and $m \\leq f(x) \\leq M$ for every $x \\in [a, b]$."
+            },
+            {
+              "title": "Show $f([a, b]) \\subseteq [m, M]$",
+              "md": "Every value $f(x)$ satisfies $m \\le f(x) \\le M$, so lies in $[m, M]$."
+            },
+            {
+              "title": "Set up the other inclusion",
+              "md": "Let $k \\in [m, M]$. We need some $c \\in [a, b]$ with $f(c) = k$. If $p = q$ then $m = M$, so $k = f(p)$ and we are done."
+            },
+            {
+              "title": "Apply the IVT between p and q",
+              "md": "Otherwise let $J$ be the closed interval with endpoints $p$ and $q$ (either $[p, q]$ or $[q, p]$). Then $J \\subseteq [a, b]$, $f|_J$ is continuous, and its values at the ends of $J$ are $m$ and $M$. Since $k$ lies between them, the IVT gives $c \\in J$ with $f(c) = k$.\n\nThe subtle move: we do **not** use the endpoints $a, b$, whose values might not straddle $k$."
+            },
+            {
+              "title": "Conclude",
+              "md": "Both inclusions hold, so $f([a,b]) = [m, M]$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why is the IVT applied on the interval between $p$ and $q$ rather than on $[a, b]$ itself?",
+          "options": [
+            "Because the IVT only works on short intervals",
+            "Because $f(a)$ and $f(b)$ need not be $m$ and $M$, so a value $k$ between $m$ and $M$ might not lie between $f(a)$ and $f(b)$",
+            "Because $f$ might not be continuous at $a$ and $b$",
+            "Because $p$ and $q$ are always the endpoints $a$ and $b$"
+          ],
+          "correct": 1,
+          "explanation": "For $x^2$ on $[-1, 2]$, $f(-1) = 1$ and $f(2) = 4$, so the IVT on $[-1, 2]$ only promises values between $1$ and $4$, missing $[0, 1)$. Between $p = 0$ and $q = 2$ the end values are exactly $m = 0$ and $M = 4$. The IVT works on any interval, $f$ is continuous on all of $[a, b]$, and $p, q$ can be interior points."
+        },
+        {
+          "type": "text",
+          "md": "## Every hypothesis matters\n\nChange the domain or drop continuity, and the picture breaks.\n\n- **Open interval:** the image is still an interval (by the IVT), but it can be open, closed, half-open or unbounded. $x^2$ maps $(-1, 1)$ onto $[0, 1)$: $0$ is attained at $x = 0$, but $1$ is never reached. $\\sin$ maps the open interval $(0, 2\\pi)$ onto the closed interval $[-1, 1]$. And $1/x$ maps $(0, 1)$ onto $(1, \\infty)$, which is unbounded.\n- **Not continuous:** the image can have gaps. Let $f(x) = 0$ for $x \\in [0, 1)$ and $f(1) = 1$. The image is $\\{0, 1\\}$, with nothing in between.\n- **Not an interval:** on $[0, 1] \\cup [2, 3]$, the function $f(x) = x$ has image $[0, 1] \\cup [2, 3]$, which has a gap. Closed and bounded is not enough for the IVT part; you need an interval.\n\nSo the clean statement $f([a, b]) = [m, M]$ uses all three ingredients: continuity, closed and bounded, and no gaps in the domain."
+        },
+        {
+          "type": "check",
+          "question": "What is the image of the open interval $(-1, 1)$ under $f(x) = x^2$?",
+          "options": [
+            "$(0, 1)$",
+            "$[0, 1]$",
+            "$[0, 1)$",
+            "$(-1, 1)$"
+          ],
+          "correct": 2,
+          "explanation": "$0 = f(0)$ is attained because $0 \\in (-1, 1)$. Values just below $1$ are attained near $\\pm 1$, but $1$ itself would need $x = \\pm 1$, which are excluded. So the image is $[0, 1)$: an interval, but not closed. Squares are never negative, so $(-1, 1)$ is wrong."
+        },
+        {
+          "type": "text",
+          "md": "## Injective functions are monotone\n\nA function $f$ on an interval $I$ is **strictly increasing** if $x < y$ implies $f(x) < f(y)$, and **strictly decreasing** if $x < y$ implies $f(x) > f(y)$. It is **strictly monotone** if it is one or the other. (Lesson 3.7 used the same words for sequences.)\n\nA strictly monotone function is always **injective** (lesson 1.6: different inputs give different outputs). For continuous functions on an interval, the converse holds too.\n\n**Theorem.** If $f$ is continuous and injective on an interval $I$, then $f$ is strictly monotone on $I$. Moreover $f(I)$ is an interval, and the inverse function $f^{-1} : f(I) \\to I$ is continuous.\n\nIn plain words: a continuous graph that never takes the same value twice cannot turn around. If it went up and then came down, it would cross some height twice.\n\n**Examples:**\n- $x^3$ is continuous and injective on $\\mathbb{R}$, and indeed strictly increasing.\n- $x^2$ is injective on $[0, \\infty)$ (strictly increasing there) but not on $[-1, 1]$, since $f(-1) = f(1)$.\n- **Inverses:** $\\sqrt[n]{x}$, $\\ln x$ and $\\arcsin x$ are continuous because they invert the strictly monotone continuous functions $x^n$ (on $[0, \\infty)$), $e^x$ and $\\sin x$ (on $[-\\frac{\\pi}{2}, \\frac{\\pi}{2}]$).\n\n**Non-example: continuity is needed.** On $[0, 2]$ let $f(x) = x$ for $0 \\le x < 1$ and $f(x) = 3 - x$ for $1 \\le x \\le 2$. The first piece takes values in $[0, 1)$ and the second in $[1, 2]$, so no value repeats: $f$ is injective. But $f(0) = 0 < f(1) = 2 > f(2) = 1$, so it is not monotone. The jump at $1$ is what allows this."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: a continuous injection on an interval is strictly monotone",
+          "steps": [
+            {
+              "title": "Reduce to three points",
+              "md": "It is enough to show: for any $x < y < z$ in $I$, the value $f(y)$ lies strictly between $f(x)$ and $f(z)$. (Comparing every pair of points with one fixed pair, this \"no turning back\" property forces the same direction everywhere.)"
+            },
+            {
+              "title": "Suppose not",
+              "md": "Injectivity makes $f(x), f(y), f(z)$ three different numbers. Suppose, say, $f(y) > \\max\\{f(x), f(z)\\}$: the middle value is a peak. (The case $f(y) < \\min\\{f(x), f(z)\\}$, a valley, is the same with inequalities reversed.)"
+            },
+            {
+              "title": "Pick a value hit twice",
+              "md": "Choose a height $k$ with $\\max\\{f(x), f(z)\\} < k < f(y)$. By the IVT on $[x, y]$ there is $s \\in (x, y)$ with $f(s) = k$, and by the IVT on $[y, z]$ there is $t \\in (y, z)$ with $f(t) = k$.\n\nWe choose $k$ strictly between, so that it lies between the end values on **both** intervals."
+            },
+            {
+              "title": "Reach the contradiction",
+              "md": "Then $s < y < t$, so $s \\neq t$, yet $f(s) = f(t)$. This contradicts injectivity. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, $f(x) = 1$, $f(y) = 5$ and $f(z) = 3$. Which height $k$ is the right choice for step 3?",
+          "options": [
+            "$k = 2$",
+            "$k = 4$",
+            "$k = 5$",
+            "$k = 0$"
+          ],
+          "correct": 1,
+          "explanation": "We need $\\max\\{1, 3\\} < k < 5$, so $k = 4$ works: it lies between $1$ and $5$ (giving $s$ in $(x, y)$) and between $3$ and $5$ (giving $t$ in $(y, z)$). $k = 2$ is not between $3$ and $5$, so there may be no $t$. $k = 5$ is only hit at $y$ itself, and $k = 0$ is below every value."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Image of a set",
+              "back": "$f(A) = \\{f(x) : x \\in A\\}$: **all values** $f$ takes on $A$.\n\n*Example:* $x^2$ maps $[-1, 2]$ to $[0, 4]$."
+            },
+            {
+              "front": "Image of [a, b]",
+              "back": "For continuous $f$, $f([a,b]) = [m, M]$, from **minimum** to **maximum**, not from $f(a)$ to $f(b)$.\n\n*Example:* $\\sin([0, \\pi]) = [0, 1]$."
+            },
+            {
+              "front": "Continuous f on [a, b]",
+              "back": "**Bounded**, attains $m$ and $M$ (EVT), hits everything between (IVT), uniformly continuous (Heine-Cantor).\n\n*Example:* $x^2 - 2x$ on $[0, 3]$, with image $[-1, 3]$."
+            },
+            {
+              "front": "Image of an open interval",
+              "back": "Still an interval, but **any kind**: open, closed, half-open or unbounded.\n\n*Example:* $x^2$ maps $(-1, 1)$ to $[0, 1)$."
+            },
+            {
+              "front": "Strictly monotone",
+              "back": "Strictly increasing ($x < y \\Rightarrow f(x) < f(y)$) or strictly **decreasing** ($x < y \\Rightarrow f(x) > f(y)$).\n\n*Example:* $x^3$ on $\\mathbb{R}$."
+            },
+            {
+              "front": "Continuous injection",
+              "back": "On an interval, continuous and injective implies **strictly monotone**, with continuous inverse.\n\n*Example:* $e^x$, so $\\ln x$ is continuous."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to find the image of $f(x) = x^2 - 4x + 5$ on $[0, 5]$.",
+          "items": [
+            "$f$ is continuous on the closed interval $[0, 5]$, so its image is $[m, M]$.",
+            "Complete the square: $f(x) = (x - 2)^2 + 1$.",
+            "The square is smallest at $x = 2$, so $m = f(2) = 1$.",
+            "Check the endpoints for the maximum: $f(0) = 5$ and $f(5) = 10$, so $M = 10$.",
+            "Hence $f([0, 5]) = [1, 10]$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: an image, and a test for injectivity",
+          "problem": "Let $f(x) = 4 - (x - 1)^2$ on $[-1, 2]$.\n\n(a) Find $f([-1, 2])$.\n\n(b) Is $f$ injective on $[-1, 2]$? Explain how your answer fits with the theorem on continuous injections.",
+          "solution": "**(a)** $f$ is continuous on a closed interval, so the image is $[m, M]$. The square $(x - 1)^2$ is smallest, $0$, at $x = 1$, so $M = f(1) = 4$. The square is largest where $x$ is furthest from $1$; on $[-1, 2]$ that is $x = -1$, giving $m = f(-1) = 4 - 4 = 0$. (The other endpoint gives $f(2) = 3$.) So\n\n$$f([-1, 2]) = [0, 4].$$\n\n**(b)** No. $f(0) = 4 - 1 = 3$ and $f(2) = 3$, so two different inputs give the same output. This fits the theorem: $f$ rises from $0$ to $4$ on $[-1, 1]$ and then falls to $3$, so it is not monotone, and a continuous function on an interval that is not monotone cannot be injective.\n\n**Check your version:** in (a), did you notice that the maximum is at the interior point $x = 1$ and compare **both** endpoints for the minimum? In (b), did you give two specific inputs with equal outputs?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is the continuous image of an open interval an open interval?",
+              "a": "Not necessarily. It is an interval (IVT), but it can be closed or half-open: $\\sin$ maps $(0, 2\\pi)$ onto $[-1, 1]$, and $x^2$ maps $(-1, 1)$ onto $[0, 1)$."
+            },
+            {
+              "q": "Why is compactness so central?",
+              "a": "Compactness turns local information (continuity at each point, with its own $\\delta$) into global information (one bound, one $\\delta$, an attained maximum). Every proof in this level that goes from \"at each point\" to \"on the whole set\" uses Bolzano-Weierstrass, which needs closed and bounded."
+            },
+            {
+              "q": "If $f([a, b]) = [m, M]$, must $f(a) = m$ or $f(b) = M$?",
+              "a": "No. For $4 - (x - 1)^2$ on $[-1, 2]$ the maximum $4$ is at $x = 1$, inside the interval. The endpoints are only two of the candidates."
+            },
+            {
+              "q": "Does a continuous function on an interval have to be monotone?",
+              "a": "No: $x^2$ on $[-1, 1]$ is continuous and not monotone. The theorem says continuous **and injective** gives monotone."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- The **image** $f(A) = \\{f(x) : x \\in A\\}$ is the set of values $f$ takes on $A$.\n- If $f$ is continuous on $[a, b]$, it is bounded, attains $m$ and $M$ (EVT), takes every value between (IVT), and is uniformly continuous (Heine-Cantor).\n- So $f([a, b]) = [m, M]$, running from the minimum to the maximum, which need not be at the endpoints.\n- On open intervals or with discontinuities, the image can be open, unbounded or have gaps.\n- A continuous injective function on an interval is **strictly monotone**, and its inverse is continuous."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "What is $f([-1, 2])$ for $f(x) = x^2$?",
+          "options": [
+            "$[1, 4]$",
+            "$[0, 4]$",
+            "$[-1, 4]$",
+            "$(0, 4]$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The minimum on $[-1, 2]$ is $0$ (at $x = 0$) and the maximum is $4$ (at $x = 2$). The image of a compact interval under a continuous function is $[m, M] = [0, 4]$. $[1, 4]$ uses only the endpoint values, squares are never negative, and $0$ is attained."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The image of an open interval under a continuous function is always an open interval.",
+          "answer": [
+            false
+          ],
+          "explanation": "It is always an interval, but $\\sin$ maps $(0, 2\\pi)$ onto the closed interval $[-1, 1]$, and a constant function maps any interval to a single point."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f : [a, b] \\to \\mathbb{R}$ be continuous. Which statements must hold?",
+          "options": [
+            "$f$ is bounded.",
+            "$f$ attains a maximum and a minimum.",
+            "$f$ is uniformly continuous.",
+            "$f$ is differentiable at some point of $(a, b)$.",
+            "$f$ is monotone."
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The first two are the EVT and the third is Heine-Cantor. Continuity does not imply differentiability anywhere (there are continuous nowhere-differentiable functions, such as Weierstrass's), and $x^2$ on $[-1, 1]$ is not monotone."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f$ be continuous and injective on an interval $I$. What can be concluded?",
+          "options": [
+            "$f$ is strictly monotone on $I$.",
+            "$f$ is differentiable on $I$.",
+            "$f$ is bounded on $I$.",
+            "$f$ is constant on $I$."
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "If monotonicity failed, some $x < y < z$ would have $f(y)$ outside the range between $f(x)$ and $f(z)$, and the IVT would produce two points with the same value. Boundedness fails for $1/x$ on $(0, 1)$, $x^{1/3}$ is injective but not differentiable at $0$, and a constant function is not injective."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^2 - 2x$ on $[0, 3]$, so that $f([0,3]) = [m, M]$. What is $m$?",
+          "answer": [
+            "-1",
+            "−1",
+            "minus one",
+            "negative one"
+          ],
+          "explanation": "$f(x) = (x - 1)^2 - 1$, which is smallest at $x = 1$ with value $-1$. (The maximum is $f(3) = 3$, so the image is $[-1, 3]$.)"
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f : [0, 1] \\to \\mathbb{R}$ be continuous with $f(0) = 2$ and $f(1) = -1$, and with maximum value $5$. Which statement is guaranteed?",
+          "options": [
+            "$f([0,1]) = [-1, 2]$",
+            "$f([0,1]) = [-1, 5]$",
+            "$f([0,1])$ contains $[-1, 5]$.",
+            "$f$ attains the value $6$."
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The image is an interval $[m, M]$ with $M = 5$ and $m \\leq -1$ (since $-1$ is a value), so it contains $[-1, 5]$. Its minimum could be below $-1$, so equality with $[-1, 5]$ is not guaranteed; $[-1, 2]$ omits $5$; and $6 > M$ is never attained."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^2 - 4x + 5$ on $[0, 5]$, so that $f([0, 5]) = [m, M]$. What is $M$?",
+          "answer": [
+            "10"
+          ],
+          "explanation": "$f(x) = (x - 2)^2 + 1$. The square is largest where $x$ is furthest from $2$, at $x = 5$: $f(5) = 10$. (Compare $f(0) = 5$.) The image is $[1, 10]$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is continuous on $[a, b]$, then $f([a, b])$ is the closed interval with endpoints $f(a)$ and $f(b)$.",
+          "answer": [
+            false
+          ],
+          "explanation": "The image runs from the minimum to the maximum, which may be inside the interval. For $x^2$ on $[-1, 2]$, $f(-1) = 1$ and $f(2) = 4$, but the image is $[0, 4]$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the image of $[-1, 2]$ under $g(x) = x^3$?",
+          "options": [
+            "$[-1, 8]$",
+            "$[0, 8]$",
+            "$[-1, 2]$",
+            "$[1, 8]$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$x^3$ is increasing, so $m = g(-1) = -1$ and $M = g(2) = 8$. Unlike $x^2$, cubes of negative numbers are negative, so the image does not start at $0$ or $1$; $[-1, 2]$ is the domain."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these sets could be the image of a continuous function on $[0, 1]$? Select all that apply.",
+          "options": [
+            "$[0, 1]$",
+            "$\\{3\\}$",
+            "$(0, 1)$",
+            "$[0, 1] \\cup [2, 3]$",
+            "$[0, \\infty)$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "The image must be a closed bounded interval $[m, M]$, possibly a single point ($m = M$, as for a constant function). $(0, 1)$ is not closed (the max and min must be attained), $[0, 1] \\cup [2, 3]$ has a gap (the IVT forbids it), and $[0, \\infty)$ is unbounded (the EVT forbids it)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A continuous function on $[0, 1]$ can be injective without being strictly monotone.",
+          "answer": [
+            false
+          ],
+          "explanation": "On an interval, continuous and injective forces strictly monotone: a turn would make some height be crossed twice, by the IVT. Without continuity it can happen, as with $x$ on $[0, 1)$ and $3 - x$ on $[1, 2]$."
+        },
+        {
+          "type": "single",
+          "prompt": "On $[0, 2]$ let $f(x) = x$ for $0 \\le x < 1$ and $f(x) = 3 - x$ for $1 \\le x \\le 2$. What does this example show?",
+          "options": [
+            "Continuous injective functions need not be monotone",
+            "Without continuity, an injective function on an interval need not be monotone",
+            "Every injective function is continuous",
+            "$f$ is not injective"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The pieces take values in $[0, 1)$ and $[1, 2]$, so no value repeats and $f$ is injective. But $f(0) = 0$, $f(1) = 2$, $f(2) = 1$, so it is not monotone. $f$ jumps at $1$, so this does not contradict the theorem, which needs continuity."
+        }
+      ]
+    }
+  ]
+}

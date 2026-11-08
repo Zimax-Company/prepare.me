@@ -1,0 +1,1186 @@
+{
+  "concepts": [
+    {
+      "slug": "1-6-functions-injective-surjective-and-bijective",
+      "title": "Functions: injective, surjective and bijective",
+      "summary": "One-to-one, onto, and invertible: the three properties every analyst checks.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Functions: what you will learn",
+          "md": "A function takes each input to exactly one output. Analysts constantly ask three questions about a function: does it lose information, does it reach every target, and can it be undone?\n\n**In this lesson you will learn to:**\n- read the notation $f : A \\to B$ and name the domain, codomain and image\n- decide whether a function is **injective**, **surjective** or **bijective**, and prove it\n- find an inverse function, and know when one exists\n- compose two functions\n\n**You need:** sets, $\\in$, intervals and the Cartesian product $A \\times B$ (lesson 1.4); \"for all\" $\\forall$ and \"there exists\" $\\exists$ (lesson 1.3); implication $\\Rightarrow$ and the contrapositive (lesson 1.2)."
+        },
+        {
+          "type": "text",
+          "md": "## What a function is\n\nAlmost everything in analysis is a function: a sequence, a limit process, a derivative. So we need a precise idea of what one is.\n\n**Plain words.** A function is a rule that takes each allowed input and gives back **exactly one** output. Think of a vending machine: every button you can press gives one definite item.\n\n**Notation.**\n- $f : A \\to B$ is read \"$f$ is a function from $A$ to $B$\".\n- $A$ is the **domain**: the set of allowed inputs.\n- $B$ is the **codomain**: the set where outputs are allowed to land.\n- $f(a)$ is the output for the input $a$.\n- $x \\mapsto x^2$ is read \"$x$ maps to $x^2$\". It describes the rule without naming the function.\n\n**Formal definition.** A function $f : A \\to B$ is a subset of $A \\times B$ (the set of pairs $(a, b)$, lesson 1.4) that contains **exactly one** pair $(a, b)$ for each $a \\in A$. We then write $f(a) = b$.\n\n**Examples:**\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 2x + 1$. Each real $x$ gives one real output.\n- $g : \\{1, 2, 3\\} \\to \\{p, q\\}$ with $g(1) = p$, $g(2) = p$, $g(3) = q$. Two inputs may share an output; that is allowed.\n\n**Non-examples:**\n- \"Send $x$ to a number whose square is $x$\", from $[0, \\infty)$ to $\\mathbb{R}$. The input $4$ has two candidates, $2$ and $-2$. Not exactly one output, so not a function.\n- $h : \\mathbb{R} \\to \\mathbb{R}$, $h(x) = \\frac{1}{x}$. The input $0$ has **no** output. It becomes a function if we shrink the domain to $\\mathbb{R} \\setminus \\{0\\}$."
+        },
+        {
+          "type": "check",
+          "question": "Which of these is a function from $\\mathbb{R}$ to $\\mathbb{R}$?",
+          "options": [
+            "$x \\mapsto \\sqrt{x}$",
+            "$x \\mapsto \\frac{1}{x - 1}$",
+            "$x \\mapsto 5$ for every $x$",
+            "$x \\mapsto$ \"either $x$ or $-x$\""
+          ],
+          "correct": 2,
+          "explanation": "The constant rule gives every real input exactly one output, $5$, so it is a function (outputs may repeat). $\\sqrt{x}$ has no real output when $x < 0$; $\\frac{1}{x-1}$ has no output at $x = 1$; \"either $x$ or $-x$\" gives two outputs for $x = 3$."
+        },
+        {
+          "type": "text",
+          "md": "## Codomain and image\n\nThe codomain says where outputs **may** land. The **image** (or **range**) is where they **actually** land:\n\n$$f(A) = \\{f(a) : a \\in A\\} \\subseteq B.$$\n\nRead $f(A)$ as \"the set of all outputs $f(a)$ as $a$ runs through $A$\".\n\n**Examples:**\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$. The codomain is $\\mathbb{R}$, but the image is $[0, \\infty) = \\{x \\in \\mathbb{R} : x \\ge 0\\}$, because squares are never negative and every $y \\ge 0$ equals $(\\sqrt{y})^2$. (The symbol $\\infty$ is not a number; $[0, \\infty)$ just means \"from $0$ upwards, with no end\".)\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 2x + 1$. Here the image is all of $\\mathbb{R}$.\n- **Edge case:** a constant function $f(x) = 5$ on $\\mathbb{R}$ has image $\\{5\\}$, a set with one element, even though its domain is infinite.\n\n**The codomain is part of the function.** The rule $x \\mapsto x^2$ as a map $\\mathbb{R} \\to \\mathbb{R}$ is a **different function** from $x \\mapsto x^2$ as a map $\\mathbb{R} \\to [0, \\infty)$. Same rule, same outputs, but the second has no \"unused\" targets. You will see in a moment that this changes the answer to \"is it surjective?\". So whenever you meet a function, always ask: what are the domain and codomain?"
+        },
+        {
+          "type": "check",
+          "question": "Let $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2 + 1$. What is the image of $f$?",
+          "options": [
+            "$\\mathbb{R}$",
+            "$[0, \\infty)$",
+            "$[1, \\infty)$",
+            "$(1, \\infty)$"
+          ],
+          "correct": 2,
+          "explanation": "$x^2 \\ge 0$, so $x^2 + 1 \\ge 1$, and every $y \\ge 1$ is hit by $x = \\sqrt{y - 1}$. The value $1$ itself is hit at $x = 0$, so the interval is closed at $1$: the image is $[1, \\infty)$, not $(1, \\infty)$. Outputs below $1$ never occur, so it is not $\\mathbb{R}$ or $[0, \\infty)$."
+        },
+        {
+          "type": "text",
+          "md": "## Injective: no two inputs share an output\n\n**Why it matters.** If two inputs give the same output, you cannot tell from the output which input you started with. Information is lost, and the function cannot be undone.\n\n**Plain words.** $f$ is **injective** (or **one-to-one**) if different inputs always give different outputs.\n\n**Formal definition.** $f : A \\to B$ is injective if\n\n$$\\forall a_1, a_2 \\in A:\\ f(a_1) = f(a_2) \\Rightarrow a_1 = a_2.$$\n\nIn words: if two outputs are equal, the inputs were equal. This is the contrapositive (lesson 1.2) of \"$a_1 \\ne a_2 \\Rightarrow f(a_1) \\ne f(a_2)$\", so the two say the same thing. The first form is easier to use in proofs, because you start from an equation.\n\n**Examples:**\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 3x - 5$ is injective. If $3x_1 - 5 = 3x_2 - 5$, add $5$ and divide by $3$: $x_1 = x_2$.\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$ is **not** injective: $f(-2) = 4 = f(2)$ but $-2 \\ne 2$. One such pair is enough to show a function is not injective.\n- **Edge case:** $f : [0, \\infty) \\to \\mathbb{R}$, $f(x) = x^2$ **is** injective. If $x_1^2 = x_2^2$ then $x_1 = \\pm x_2$, and since both are $\\ge 0$, $x_1 = x_2$. Shrinking the domain removed the clashing pair.\n\n**Picture test.** For $f : \\mathbb{R} \\to \\mathbb{R}$, $f$ is injective exactly when every horizontal line meets the graph at most once. Useful for guessing; the proof still uses the definition."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Proving the wrong direction",
+          "md": "\"If $a_1 = a_2$ then $f(a_1) = f(a_2)$\" is true of **every** function: one input has only one output. Proving it shows nothing about injectivity.\n\nInjectivity is the other direction: **start** from $f(a_1) = f(a_2)$ and **end** at $a_1 = a_2$."
+        },
+        {
+          "type": "check",
+          "question": "To show that $f : \\mathbb{Z} \\to \\mathbb{Z}$, $f(n) = n^2 - n$ is **not** injective, which is enough?",
+          "options": [
+            "Show that $f(2) = 2$ and $f(3) = 6$ are different",
+            "Show that $f(0) = 0 = f(1)$",
+            "Show that $f(n) = f(n)$ for every $n$",
+            "Show that $f$ never takes the value $1$"
+          ],
+          "correct": 1,
+          "explanation": "One pair of different inputs with the same output breaks injectivity: $0 \\ne 1$ but $f(0) = f(1) = 0$. Two different outputs prove nothing about other pairs; $f(n) = f(n)$ holds for any function; and missing the value $1$ is about surjectivity, not injectivity."
+        },
+        {
+          "type": "text",
+          "md": "## Surjective: every target is hit\n\n**Why it matters.** When we solve an equation $f(x) = b$, we want to know whether a solution exists for every $b$. That is exactly surjectivity.\n\n**Plain words.** $f : A \\to B$ is **surjective** (or **onto**) if every element of the codomain is the output of at least one input. Equivalently, the image equals the codomain: $f(A) = B$.\n\n**Formal definition.**\n\n$$\\forall b \\in B\\ \\exists a \\in A:\\ f(a) = b.$$\n\nThe order of quantifiers matters (lesson 1.3): the input $a$ is allowed to depend on the target $b$.\n\n**Examples:**\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 3x - 5$ is surjective. Given any $y$, the input $x = \\frac{y + 5}{3}$ works: $3 \\cdot \\frac{y+5}{3} - 5 = y$.\n- $f : \\mathbb{Z} \\to \\mathbb{Z}$, $f(n) = 2n$ is **not** surjective. The target $1$ is never hit, because $2n = 1$ has no integer solution. One missed target is enough.\n- $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = e^x$ is **not** surjective: $e^x > 0$ always, so $-1$ is never hit.\n- **Edge case:** $x \\mapsto x^2$ is not surjective as a map $\\mathbb{R} \\to \\mathbb{R}$ (nothing hits $-1$), but it **is** surjective as a map $\\mathbb{R} \\to [0, \\infty)$, since each $y \\ge 0$ equals $(\\sqrt{y})^2$. Same rule, different codomain, different answer.\n\n**Watch the domain too.** $f : \\mathbb{Z} \\to \\mathbb{Z}$, $f(n) = 3n - 5$ looks like the real version, but the formula $\\frac{y + 5}{3}$ is often not an integer. For $y = 0$ it gives $\\frac{5}{3} \\notin \\mathbb{Z}$, so $0$ is missed and this $f$ is not surjective."
+        },
+        {
+          "type": "check",
+          "question": "A student writes: \"To show $f(x) = 3x - 5$ is onto, I solved $3x - 5 = y$ and got $x = \\frac{y+5}{3}$, so it is onto.\" For which domain and codomain is this argument **not** enough?",
+          "options": [
+            "$f : \\mathbb{R} \\to \\mathbb{R}$",
+            "$f : \\mathbb{Q} \\to \\mathbb{Q}$",
+            "$f : \\mathbb{Z} \\to \\mathbb{Z}$",
+            "It is enough in every case"
+          ],
+          "correct": 2,
+          "explanation": "The candidate input must lie in the domain. For real or rational $y$, $\\frac{y+5}{3}$ is real or rational, so it works. For integer $y = 0$ it is $\\frac{5}{3}$, not an integer, so on $\\mathbb{Z}$ the target $0$ is missed and $f$ is not surjective."
+        },
+        {
+          "type": "text",
+          "md": "## Bijective functions and inverses\n\n**Plain words.** $f$ is **bijective** (a **bijection**) if it is both injective and surjective. Every target is hit (surjective) **exactly once** (injective). Inputs and outputs are paired off perfectly.\n\n**Why it matters: inverses.** If each $b \\in B$ comes from exactly one $a \\in A$, we can run the function backwards. The **inverse function** $f^{-1} : B \\to A$ sends $b$ to that unique $a$.\n\n**Theorem.** $f : A \\to B$ has an inverse $f^{-1} : B \\to A$ satisfying\n\n$$f^{-1}(f(a)) = a \\ \\text{ for all } a \\in A \\quad\\text{and}\\quad f(f^{-1}(b)) = b \\ \\text{ for all } b \\in B$$\n\nif and only if $f$ is bijective.\n\n**Examples:**\n- $f(x) = 3x - 5$ on $\\mathbb{R}$ is bijective with $f^{-1}(y) = \\frac{y + 5}{3}$. Check: $f^{-1}(f(2)) = f^{-1}(1) = \\frac{6}{3} = 2$.\n- $f(x) = x^3$ on $\\mathbb{R}$ is bijective with $f^{-1}(y) = \\sqrt[3]{y}$.\n- **Finite sets:** $f : \\{1, 2, 3\\} \\to \\{1, 2, 3\\}$ with $f(1) = 2$, $f(2) = 3$, $f(3) = 1$ is a bijection; $f^{-1}$ undoes it: $f^{-1}(2) = 1$, $f^{-1}(3) = 2$, $f^{-1}(1) = 3$.\n\n**Non-example:** $x \\mapsto x^2$ from $\\mathbb{R}$ to $[0, \\infty)$ is surjective but not injective. Which input should $f^{-1}(4)$ be, $2$ or $-2$? There is no single answer, so no inverse. Restricting the domain to $[0, \\infty)$ fixes this and gives $f^{-1}(y) = \\sqrt{y}$.\n\n**Notation trap.** $f^{-1}$ means the inverse function, **not** $\\frac{1}{f}$. For $f(x) = 3x - 5$, $f^{-1}(1) = 2$, while $\\frac{1}{f(1)} = -\\frac{1}{2}$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function to its properties.",
+          "pairs": [
+            {
+              "left": "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^3$",
+              "right": "Bijective"
+            },
+            {
+              "left": "$f : \\mathbb{N} \\to \\mathbb{N}$, $f(n) = n + 1$",
+              "right": "Injective but not surjective"
+            },
+            {
+              "left": "$f : \\mathbb{R} \\to [0, \\infty)$, $f(x) = x^2$",
+              "right": "Surjective but not injective"
+            },
+            {
+              "left": "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$",
+              "right": "Neither injective nor surjective"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Composition\n\n**Why it matters.** Complicated functions are built by doing simple ones in turn. $x \\mapsto (x + 1)^2$ is \"add $1$, then square\".\n\n**Definition.** If $f : A \\to B$ and $g : B \\to C$, the **composition** $g \\circ f : A \\to C$ is\n\n$$(g \\circ f)(a) = g(f(a)).$$\n\nRead $g \\circ f$ as \"$g$ after $f$\". Notice the order: $f$ is written on the right but acts **first**. The codomain of $f$ must fit inside the domain of $g$, so that $g$ can accept every output of $f$.\n\n**Examples.** Let $f(x) = x + 1$ and $g(x) = x^2$ on $\\mathbb{R}$.\n- $(g \\circ f)(x) = g(x + 1) = (x + 1)^2$, so $(g \\circ f)(2) = 9$.\n- $(f \\circ g)(x) = f(x^2) = x^2 + 1$, so $(f \\circ g)(2) = 5$.\n- **Edge case:** $g \\circ f \\ne f \\circ g$ in general. Order matters.\n\n**Composition keeps the properties.**\n- If $f$ and $g$ are injective, so is $g \\circ f$. (You will rebuild this proof below.)\n- If $f$ and $g$ are surjective, so is $g \\circ f$.\n- So a composition of bijections is a bijection, and $(g \\circ f)^{-1} = f^{-1} \\circ g^{-1}$: to undo \"put on socks, then shoes\", take off the shoes first."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = 2x$ and $g(x) = x - 3$ on $\\mathbb{R}$. What is $(g \\circ f)(5)$?",
+          "options": [
+            "$4$",
+            "$7$",
+            "$10$",
+            "$2$"
+          ],
+          "correct": 1,
+          "explanation": "$g \\circ f$ means apply $f$ first: $f(5) = 10$, then $g(10) = 7$. The answer $4$ comes from doing $g$ first ($g(5) = 2$, then $f(2) = 4$), which is $(f \\circ g)(5)$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Function $f : A \\to B$",
+              "back": "A rule giving each input in $A$ **exactly one** output in $B$.\n\n*Example:* $f(x) = 2x + 1$ on $\\mathbb{R}$. *Non-example:* $\\frac{1}{x}$ on $\\mathbb{R}$ (no output at $0$)."
+            },
+            {
+              "front": "Domain and codomain",
+              "back": "The **domain** is the set of allowed inputs; the **codomain** is where outputs may land.\n\n*Example:* for $f : \\mathbb{R} \\to [0, \\infty)$, domain $\\mathbb{R}$, codomain $[0, \\infty)$."
+            },
+            {
+              "front": "Image",
+              "back": "The set of outputs **actually** reached: $f(A) = \\{f(a) : a \\in A\\}$.\n\n*Example:* $x^2$ on $\\mathbb{R}$ has image $[0, \\infty)$."
+            },
+            {
+              "front": "Injective (one-to-one)",
+              "back": "$f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$: different inputs give **different** outputs.\n\n*Example:* $3x - 5$ on $\\mathbb{R}$. *Non-example:* $x^2$ on $\\mathbb{R}$."
+            },
+            {
+              "front": "Surjective (onto)",
+              "back": "Every $b$ in the codomain is $f(a)$ for **some** $a$; image = codomain.\n\n*Example:* $x^2$ from $\\mathbb{R}$ to $[0, \\infty)$. *Non-example:* $2n$ on $\\mathbb{Z}$."
+            },
+            {
+              "front": "Bijective",
+              "back": "Both injective and surjective: every target hit **exactly once**.\n\n*Example:* $x^3$ on $\\mathbb{R}$."
+            },
+            {
+              "front": "Inverse function $f^{-1}$",
+              "back": "The function that **undoes** $f$; it exists exactly when $f$ is bijective. Not the same as $\\frac{1}{f}$.\n\n*Example:* $3x - 5$ has inverse $\\frac{y + 5}{3}$."
+            },
+            {
+              "front": "Composition $g \\circ f$",
+              "back": "\"$g$ after $f$\": $(g \\circ f)(a) = g(f(a))$. $f$ acts **first**.\n\n*Example:* $f(x) = x + 1$, $g(x) = x^2$ give $(g \\circ f)(x) = (x + 1)^2$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A school gives every student a locker. No two students share a locker, but some lockers are left empty. Viewed as a function from students to lockers, the assignment is…",
+          "options": [
+            "Injective but not surjective",
+            "Surjective but not injective",
+            "Bijective",
+            "Not a function"
+          ],
+          "correct": 0,
+          "explanation": "Each student gets exactly one locker, so it is a function. No shared lockers means different students give different lockers: injective. Empty lockers are targets never hit: not surjective, so not bijective."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: $f(x) = 3x - 5$ is a bijection on $\\mathbb{R}$",
+          "steps": [
+            {
+              "title": "Injective: start from equal outputs",
+              "md": "Let $x_1, x_2 \\in \\mathbb{R}$ with $f(x_1) = f(x_2)$, that is, $3x_1 - 5 = 3x_2 - 5$. We start from the outputs, **not** from $x_1 = x_2$; that would be the wrong direction."
+            },
+            {
+              "title": "Injective: reach equal inputs",
+              "md": "Adding $5$ gives $3x_1 = 3x_2$, and dividing by $3$ (allowed, since $3 \\ne 0$) gives $x_1 = x_2$. So $f$ is injective."
+            },
+            {
+              "title": "Surjective: find a candidate (scratch work)",
+              "md": "Let $y \\in \\mathbb{R}$ be arbitrary. We want $x$ with $3x - 5 = y$. Solving gives the candidate $x = \\frac{y + 5}{3}$. This is scratch work: it tells us what to try."
+            },
+            {
+              "title": "Surjective: verify the candidate",
+              "md": "$\\frac{y + 5}{3}$ is a real number, so it lies in the domain. And\n\n$$f\\left(\\frac{y + 5}{3}\\right) = 3 \\cdot \\frac{y + 5}{3} - 5 = y.$$\n\nSo every $y$ is hit, and $f$ is surjective."
+            },
+            {
+              "title": "Conclude and name the inverse",
+              "md": "$f$ is injective and surjective, so it is bijective, with inverse $f^{-1}(y) = \\frac{y + 5}{3}$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the surjectivity part, why do we check that $\\frac{y + 5}{3}$ is a real number before plugging it in?",
+          "options": [
+            "Because every proof must contain a fraction",
+            "Because the input we produce must belong to the domain; otherwise it does not count",
+            "Because it shows $f$ is injective",
+            "It is not needed; solving the equation is the whole proof"
+          ],
+          "correct": 1,
+          "explanation": "Surjectivity asks for an input **in the domain** $A$. On $\\mathbb{Z}$, the same algebra produces $\\frac{5}{3}$ for $y = 0$, which is not allowed, and $f$ fails to be onto. Solving alone is scratch work; the check is what proves the claim. It says nothing about injectivity."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of this proof in order: **if $f : A \\to B$ and $g : B \\to C$ are injective, then $g \\circ f$ is injective.**",
+          "items": [
+            "Let $a_1, a_2 \\in A$ with $(g \\circ f)(a_1) = (g \\circ f)(a_2)$.",
+            "By the definition of composition, $g(f(a_1)) = g(f(a_2))$.",
+            "Since $g$ is injective, $f(a_1) = f(a_2)$.",
+            "Since $f$ is injective, $a_1 = a_2$.",
+            "So $g \\circ f$ is injective. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: prove a function is a bijection",
+          "problem": "Let $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 7 - 2x$. Prove that $f$ is bijective and find $f^{-1}$. Follow the worked proof: injective first, then surjective (candidate, then check).",
+          "solution": "**Injective.** Let $x_1, x_2 \\in \\mathbb{R}$ with $f(x_1) = f(x_2)$. Then $7 - 2x_1 = 7 - 2x_2$, so $-2x_1 = -2x_2$, and dividing by $-2$ gives $x_1 = x_2$.\n\n**Surjective.** Let $y \\in \\mathbb{R}$. Scratch work: $7 - 2x = y$ gives $x = \\frac{7 - y}{2}$. This is a real number, and\n\n$$f\\left(\\frac{7 - y}{2}\\right) = 7 - 2 \\cdot \\frac{7 - y}{2} = 7 - (7 - y) = y.$$\n\nSo $f$ is bijective, with $f^{-1}(y) = \\frac{7 - y}{2}$. $\\blacksquare$\n\n**Check your version:** did injectivity start from $f(x_1) = f(x_2)$, not from $x_1 = x_2$? Did you say why your candidate is in the domain? Did you verify $f(\\text{candidate}) = y$ rather than stopping after solving? Quick test: $f(1) = 5$ and $f^{-1}(5) = 1$."
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is the image the same as the codomain?",
+              "a": "Not in general. The image $f(A)$ is what is actually hit; the codomain $B$ is where outputs are allowed to land. For $x^2$ on $\\mathbb{R} \\to \\mathbb{R}$ the image is $[0, \\infty)$, smaller than $\\mathbb{R}$. They coincide exactly when $f$ is surjective."
+            },
+            {
+              "q": "Does every function have an inverse?",
+              "a": "Only bijections have an inverse function. An injective $f$ can be inverted on its image, giving $f^{-1} : f(A) \\to A$. That is why $\\sqrt{\\ }$ is defined as the inverse of $x^2$ on $[0, \\infty)$ only."
+            },
+            {
+              "q": "For finite sets, how are injective and surjective related?",
+              "a": "If $A$ is finite and $f : A \\to A$, then $f$ is injective if and only if it is surjective. This fails for infinite sets: $n \\mapsto n + 1$ on $\\mathbb{N}$ is injective but not surjective, since nothing maps to $1$."
+            },
+            {
+              "q": "Can a function from a 3-element set to a 2-element set be injective?",
+              "a": "No. Three inputs must share two outputs, so two inputs land on the same output. In general, if $A$ has more elements than $B$, no $f : A \\to B$ is injective (the **pigeonhole principle**)."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **function** $f : A \\to B$ gives each input exactly one output. The domain and codomain are part of the function.\n- **Injective:** $f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$. Disprove it with one pair of different inputs sharing an output.\n- **Surjective:** every $b \\in B$ equals $f(a)$ for some $a \\in A$. Prove it by finding a candidate and **checking** it lies in the domain and maps to $b$.\n- **Bijective** = injective + surjective, exactly the functions with an inverse $f^{-1}$ (which is not $\\frac{1}{f}$).\n- $(g \\circ f)(a) = g(f(a))$: $f$ acts first. Compositions of injections (surjections, bijections) are injections (surjections, bijections)."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Let $f : \\mathbb{Z} \\to \\mathbb{Z}$, $f(n) = 2n$. Which is true?",
+          "options": [
+            "$f$ is bijective",
+            "$f$ is injective but not surjective",
+            "$f$ is surjective but not injective",
+            "$f$ is neither injective nor surjective"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$2m = 2n$ forces $m = n$, so $f$ is injective. No integer maps to $1$, since $2n = 1$ has no integer solution, so $f$ is not surjective (and so not bijective)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Let $f : A \\to B$ and $g : B \\to C$. If $g \\circ f$ is surjective, then $g$ is surjective.",
+          "answer": [
+            true
+          ],
+          "explanation": "For any $c \\in C$ there is $a \\in A$ with $g(f(a)) = c$, so $b = f(a) \\in B$ satisfies $g(b) = c$. Every target of $g$ is hit."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Let $f : A \\to B$ and $g : B \\to C$. If $g \\circ f$ is injective, then $g$ is injective.",
+          "answer": [
+            false
+          ],
+          "explanation": "Take $A = \\{1\\}$, $B = \\{1, 2\\}$, $C = \\{1\\}$, $f(1) = 1$ and $g$ constant. Then $g \\circ f$ is injective (its domain has one element) but $g(1) = g(2)$. What does follow is that $f$ is injective."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are bijections? Select all that apply.",
+          "options": [
+            "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^3$",
+            "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = e^x$",
+            "$f : (0, \\infty) \\to (0, \\infty)$, $f(x) = 1/x$",
+            "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$",
+            "$f : \\mathbb{Z} \\to \\mathbb{Z}$, $f(n) = n + 3$"
+          ],
+          "answer": [
+            0,
+            2,
+            4
+          ],
+          "explanation": "$x^3$ has inverse $\\sqrt[3]{x}$, $\\frac{1}{x}$ is its own inverse on $(0, \\infty)$, and $n \\mapsto n - 3$ inverts $n + 3$. $e^x$ never takes values $\\le 0$, so it is not onto $\\mathbb{R}$; $x^2$ is neither injective nor surjective on $\\mathbb{R}$."
+        },
+        {
+          "type": "short",
+          "prompt": "How many bijections are there from $\\{1, 2, 3\\}$ to itself?",
+          "answer": [
+            "6",
+            "six"
+          ],
+          "explanation": "There are $3$ choices for $f(1)$, then $2$ for $f(2)$ (it must differ from $f(1)$), then $1$ for $f(3)$: $3 \\cdot 2 \\cdot 1 = 6$."
+        },
+        {
+          "type": "single",
+          "prompt": "To prove that $f : A \\to B$ is injective, you must show that…",
+          "options": [
+            "for all $a_1, a_2 \\in A$, $a_1 = a_2$ implies $f(a_1) = f(a_2)$",
+            "for every $b \\in B$ there is $a \\in A$ with $f(a) = b$",
+            "for all $a_1, a_2 \\in A$, $f(a_1) = f(a_2)$ implies $a_1 = a_2$",
+            "there exist $a_1 \\neq a_2$ with $f(a_1) \\neq f(a_2)$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "This is the definition of injectivity. The first statement holds for every function, the second is surjectivity, and the last only talks about one pair, which is far too weak."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f : [0, \\infty) \\to \\mathbb{R}$, $f(x) = x^2$. Which is true?",
+          "options": [
+            "$f$ is bijective",
+            "$f$ is surjective but not injective",
+            "$f$ is neither injective nor surjective",
+            "$f$ is injective but not surjective"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "On $[0, \\infty)$, $x_1^2 = x_2^2$ forces $x_1 = x_2$ since both are nonnegative, so $f$ is injective. Negative numbers in the codomain $\\mathbb{R}$ are never hit, so it is not surjective."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The rule $f(x) = \\frac{1}{x}$ defines a function $f : \\mathbb{R} \\to \\mathbb{R}$.",
+          "answer": [
+            false
+          ],
+          "explanation": "A function must give an output for **every** element of the domain. $\\frac{1}{0}$ is undefined, so $0$ has no output. The rule does define a function on $\\mathbb{R} \\setminus \\{0\\}$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the image of $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2 + 1$?",
+          "options": [
+            "$\\mathbb{R}$",
+            "$[1, \\infty)$",
+            "$(1, \\infty)$",
+            "$[0, \\infty)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$x^2 \\ge 0$ gives $f(x) \\ge 1$, and each $y \\ge 1$ is hit by $x = \\sqrt{y - 1}$. $1$ is included because $f(0) = 1$, so the image is $[1, \\infty)$, not $(1, \\infty)$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = 2x + 3$ and $g(x) = x^2$ on $\\mathbb{R}$. Compute $(g \\circ f)(1)$.",
+          "answer": [
+            "25",
+            "twenty-five",
+            "twenty five"
+          ],
+          "explanation": "$f$ acts first: $f(1) = 5$, then $g(5) = 25$. (Doing $g$ first gives $(f \\circ g)(1) = 2 \\cdot 1 + 3 = 5$, a different number.)"
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 3x - 5$. What is $f^{-1}(7)$?",
+          "answer": [
+            "4",
+            "four"
+          ],
+          "explanation": "$f^{-1}(7)$ is the input with $3x - 5 = 7$, so $x = 4$. Check: $f(4) = 7$. Note this is not $\\frac{1}{f(7)} = \\frac{1}{16}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are injective? Select all that apply.",
+          "options": [
+            "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$",
+            "$f : \\mathbb{N} \\to \\mathbb{N}$, $f(n) = n + 1$",
+            "$f : \\{1, 2, 3\\} \\to \\{1, 2\\}$, any rule",
+            "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 5$",
+            "$f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = 7 - 2x$"
+          ],
+          "answer": [
+            1,
+            4
+          ],
+          "explanation": "$n + 1$ and $7 - 2x$ are injective: equal outputs force equal inputs. $x^2$ has $f(-2) = f(2)$; a constant function sends every input to $5$; and three inputs into two outputs must share one (pigeonhole)."
+        }
+      ]
+    },
+    {
+      "slug": "1-7-mathematical-induction",
+      "title": "Mathematical induction",
+      "summary": "Prove infinitely many statements with one base case and one inductive step.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Mathematical induction: what you will learn",
+          "md": "Induction lets you prove a statement for **every** positive integer with just two finite arguments.\n\n**In this lesson you will learn to:**\n- read statements $P(n)$ and the summation symbol $\\sum$\n- state the principle of induction: base case plus inductive step\n- write a complete induction proof, including one that starts after $n = 1$\n- spot the two classic ways an induction proof breaks\n- use **strong induction** when one previous case is not enough\n\n**You need:** $\\mathbb{N} = \\{1, 2, 3, \\dots\\}$ (lesson 1.4), implication $P \\Rightarrow Q$ (lesson 1.2), predicates and $\\forall$ (lesson 1.3), and the even/odd definitions (lesson 1.1)."
+        },
+        {
+          "type": "text",
+          "md": "## Infinitely many cases, one proof\n\nAdd up the first few positive integers:\n\n$$1 = 1,\\quad 1 + 2 = 3,\\quad 1 + 2 + 3 = 6,\\quad 1 + 2 + 3 + 4 = 10.$$\n\nThe answers match $\\frac{n(n+1)}{2}$: $\\frac{1 \\cdot 2}{2} = 1$, $\\frac{2 \\cdot 3}{2} = 3$, $\\frac{3 \\cdot 4}{2} = 6$, $\\frac{4 \\cdot 5}{2} = 10$. But you know from lesson 1.1 that checking cases proves nothing: $n^2 + n + 41$ passed forty tests and then failed.\n\nInduction solves this with an idea you already know from **dominoes**. Stand infinitely many dominoes in a row. You can be sure they all fall if:\n\n1. the **first** domino falls, and\n2. **whenever** a domino falls, it knocks over the **next** one.\n\nYou never watch domino number one million fall. You know it falls because the chain reaches it. Induction is exactly this argument, with statements in place of dominoes."
+        },
+        {
+          "type": "text",
+          "md": "## Statements indexed by $n$, and the $\\sum$ symbol\n\n**$P(n)$ notation.** We write $P(n)$ for a statement that depends on a positive integer $n$ (a predicate, lesson 1.3). For each value of $n$ it becomes a proposition: true or false.\n\n$P(n)$ is a **statement**, not a number. Never write \"$P(n) = \\frac{n(n+1)}{2}$\".\n\n**Summation notation.**\n\n$$\\sum_{i=1}^{n} i \\quad\\text{is read \"the sum of } i \\text{ for } i \\text{ from } 1 \\text{ to } n\\text{\"}, \\quad\\text{and means}\\quad 1 + 2 + \\dots + n.$$\n\nThe letter $i$ is a counter: it takes each value $1, 2, \\dots, n$ in turn, and we add the terms. For example $\\sum_{i=1}^{3} i^2 = 1 + 4 + 9 = 14$.\n\n**Example.** Let $P(n)$ be the statement $\\displaystyle\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$.\n- $P(3)$ says \"$1 + 2 + 3 = \\frac{3 \\cdot 4}{2}$\", which is true ($6 = 6$).\n- $P(k + 1)$ says \"$1 + 2 + \\dots + (k+1) = \\frac{(k+1)(k+2)}{2}$\". To get it, replace **every** $n$ by $k + 1$.\n\n**Edge case students get wrong.** $P(k + 1)$ is **not** $P(k) + 1$. Writing \"$\\frac{k(k+1)}{2} + 1$\" adds $1$ to the answer instead of moving to the next case. Substitute $k + 1$ for $n$ everywhere, including inside brackets."
+        },
+        {
+          "type": "check",
+          "question": "Let $P(n)$ be the statement \"$2^n \\ge n + 1$\". What is $P(k + 1)$?",
+          "options": [
+            "$2^k + 1 \\ge k + 2$",
+            "$2^{k+1} \\ge k + 2$",
+            "$2^{k+1} \\ge k + 1$",
+            "$2^k \\ge k + 1$, plus $1$"
+          ],
+          "correct": 1,
+          "explanation": "Replace every $n$ by $k + 1$: $2^{k+1} \\ge (k + 1) + 1 = k + 2$. The first adds $1$ to the power instead of the exponent; the third forgets to update the right-hand side; the last is not a statement at all."
+        },
+        {
+          "type": "text",
+          "md": "## The principle of induction\n\n**Principle of Mathematical Induction.** Let $P(n)$ be a statement for each $n \\in \\mathbb{N}$. If\n\n1. (**base case**) $P(1)$ is true, and\n2. (**inductive step**) for every $k \\in \\mathbb{N}$, $P(k) \\Rightarrow P(k + 1)$,\n\nthen $P(n)$ is true for every $n \\in \\mathbb{N}$. In symbols:\n\n$$\\Big(P(1) \\land \\forall k \\in \\mathbb{N}\\ \\big(P(k) \\Rightarrow P(k+1)\\big)\\Big) \\Rightarrow \\forall n \\in \\mathbb{N}\\ P(n).$$\n\n**Why it works.** $P(1)$ is true. The step with $k = 1$ gives $P(1) \\Rightarrow P(2)$, so $P(2)$ is true. With $k = 2$, $P(3)$ is true. The chain reaches every $n$ after finitely many links.\n\n**The inductive hypothesis.** In the inductive step you write \"assume $P(k)$\" for an arbitrary $k$. That assumption is the **inductive hypothesis**. It is not circular: you are not claiming $P(k)$ is true for every $k$. You are proving the **implication** \"if $P(k)$, then $P(k+1)$\". Recall from lesson 1.2 that to prove $P \\Rightarrow Q$ you assume $P$ and derive $Q$.\n\n**What the step really needs.** You must use $P(k)$ to reach $P(k + 1)$. Usually you find $P(k)$ hiding inside $P(k+1)$: the sum up to $k + 1$ is the sum up to $k$, plus one more term."
+        },
+        {
+          "type": "check",
+          "question": "You are writing the inductive step of a proof of $P(n)$ for all $n \\in \\mathbb{N}$. What may you assume?",
+          "options": [
+            "$P(n)$ for every $n$",
+            "$P(k)$ for one arbitrary $k \\in \\mathbb{N}$",
+            "$P(k + 1)$",
+            "Nothing: you must check $P(k)$ numerically first"
+          ],
+          "correct": 1,
+          "explanation": "The inductive step proves $P(k) \\Rightarrow P(k+1)$, so you assume $P(k)$ for an arbitrary $k$. Assuming $P(n)$ for every $n$ assumes the whole result; assuming $P(k+1)$ assumes what this step must prove; and numerical checks cannot cover an arbitrary $k$."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: $1 + 2 + \\dots + n = \\frac{n(n+1)}{2}$",
+          "steps": [
+            {
+              "title": "State $P(n)$",
+              "md": "Let $P(n)$ be the statement $\\displaystyle\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$. We prove it for all $n \\in \\mathbb{N}$."
+            },
+            {
+              "title": "Base case",
+              "md": "For $n = 1$ the left side is $1$ and the right side is $\\frac{1 \\cdot 2}{2} = 1$. So $P(1)$ holds. Compute **both** sides separately; do not just say \"clearly\"."
+            },
+            {
+              "title": "Inductive hypothesis",
+              "md": "Let $k \\in \\mathbb{N}$ be arbitrary and assume $P(k)$: $\\displaystyle\\sum_{i=1}^{k} i = \\frac{k(k+1)}{2}$."
+            },
+            {
+              "title": "Inductive step: find $P(k)$ inside $P(k+1)$",
+              "md": "Split off the last term, then use the hypothesis:\n\n$$\\sum_{i=1}^{k+1} i = \\left(\\sum_{i=1}^{k} i\\right) + (k+1) = \\frac{k(k+1)}{2} + (k+1).$$\n\nNow take out the common factor $(k + 1)$:\n\n$$\\frac{k(k+1)}{2} + \\frac{2(k+1)}{2} = \\frac{(k+1)(k+2)}{2},$$\n\nwhich is exactly $P(k+1)$. The key move is the split: it makes the left side of $P(k)$ appear so we can replace it."
+            },
+            {
+              "title": "Conclude",
+              "md": "$P(1)$ holds and $P(k) \\Rightarrow P(k+1)$ for every $k \\in \\mathbb{N}$, so by induction $P(n)$ holds for all $n \\in \\mathbb{N}$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the inductive step above, why do we write $\\sum_{i=1}^{k+1} i$ as $\\left(\\sum_{i=1}^{k} i\\right) + (k + 1)$?",
+          "options": [
+            "Because it is the only way to add numbers",
+            "To make the left side of $P(k)$ appear, so the inductive hypothesis can replace it",
+            "To check the base case again",
+            "Because $P(k+1)$ is $P(k)$ plus $1$"
+          ],
+          "correct": 1,
+          "explanation": "The step must **use** $P(k)$, and $P(k)$ is about $\\sum_{i=1}^{k} i$. Splitting off the last term exposes that sum, which we then replace by $\\frac{k(k+1)}{2}$. It has nothing to do with the base case, and $P(k+1)$ is not \"$P(k)$ plus $1$\"."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Both halves are essential",
+          "md": "- **A missing base case.** \"If $k^2 + k$ is odd, then $(k+1)^2 + (k+1) = (k^2 + k) + 2(k + 1)$ is odd\" is a valid inductive step (odd plus even is odd). Yet $n^2 + n = n(n+1)$ is **always even**. The base case fails ($1^2 + 1 = 2$ is even), so the first domino never falls and nothing follows.\n- **An inductive step with a gap.** The famous \"all horses are the same colour\" argument takes a group of $k + 1$ horses, removes one horse to get a group of $k$ (all the same colour by hypothesis), then removes a different horse to get another group of $k$, and uses a horse in **both** groups to link the colours. For $k = 1$ the two groups are single horses with nothing in common, so $P(1) \\Rightarrow P(2)$ fails and the chain breaks at the first link."
+        },
+        {
+          "type": "check",
+          "question": "A student proves \"$P(k) \\Rightarrow P(k+1)$ for every $k \\ge 1$\" correctly, but never checks any base case. What has been proved?",
+          "options": [
+            "$P(n)$ for every $n \\ge 1$",
+            "$P(n)$ for every $n \\ge 2$",
+            "Only that **if** some $P(m)$ is true, then so are all later ones; possibly no $P(n)$ is true at all",
+            "That $P(n)$ is false for every $n$"
+          ],
+          "correct": 2,
+          "explanation": "Without a first domino, the chain may never start. The odd/even example above has a valid step but every $P(n)$ is false. It does not prove the statement false either; it simply proves nothing about any particular $n$."
+        },
+        {
+          "type": "text",
+          "md": "## Starting somewhere other than 1\n\nSome statements are false for small $n$ and true from some point on. Then you start the induction later.\n\n**Induction from $n_0$.** To prove $P(n)$ for every integer $n \\ge n_0$:\n1. prove $P(n_0)$, and\n2. prove $P(k) \\Rightarrow P(k+1)$ for every integer $k \\ge n_0$.\n\nThe same domino argument works, starting at domino $n_0$.\n\n**Example: $2^n > n^2$.** Compare the two sides:\n\n$$\\begin{aligned} n = 1&: 2 > 1 \\ \\checkmark & n = 2&: 4 = 4 \\ \\times & n = 3&: 8 < 9 \\ \\times \\\\ n = 4&: 16 = 16 \\ \\times & n = 5&: 32 > 25 \\ \\checkmark & n = 6&: 64 > 36 \\ \\checkmark \\end{aligned}$$\n\nIt fails at $n = 2, 3, 4$, so the claim to prove is \"for all $n \\ge 5$\". The edge case: it is true at $n = 1$, but you cannot start there, because the chain breaks at $n = 2$.\n\n**In the step you may use $k \\ge n_0$.** Since $k$ ranges only over $k \\ge 5$, any fact like \"$k \\ge 5$ so $(k - 1)^2 \\ge 16$\" is fair to use. Often the step only works because $k$ is large enough, and that is exactly why the base case has to sit at $n_0$ and not earlier."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: $2^n > n^2$ for every integer $n \\ge 5$",
+          "steps": [
+            {
+              "title": "Base case at $n_0 = 5$",
+              "md": "$2^5 = 32 > 25 = 5^2$, so $P(5)$ holds."
+            },
+            {
+              "title": "Inductive hypothesis",
+              "md": "Let $k \\ge 5$ be an integer and assume $2^k > k^2$."
+            },
+            {
+              "title": "Use the hypothesis",
+              "md": "$2^{k+1} = 2 \\cdot 2^k > 2k^2$. We want $(k+1)^2$ on the right, so it remains to show $2k^2 \\ge (k+1)^2$."
+            },
+            {
+              "title": "Use $k ge 5$",
+              "md": "$2k^2 \\ge (k+1)^2$ means $2k^2 \\ge k^2 + 2k + 1$, that is, $k^2 - 2k - 1 \\ge 0$, that is, $(k-1)^2 \\ge 2$. Since $k \\ge 5$, $(k-1)^2 \\ge 16 \\ge 2$. This is where the assumption $k \\ge 5$ is used."
+            },
+            {
+              "title": "Chain and conclude",
+              "md": "$$2^{k+1} > 2k^2 \\ge (k+1)^2,$$\n\nwhich is $P(k+1)$. By induction, $2^n > n^2$ for all $n \\ge 5$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the step \"$(k-1)^2 \\ge 2$\", the proof uses $k \\ge 5$. Which is true?",
+          "options": [
+            "It also holds for $k = 1$, so the base case could be $n = 1$",
+            "It fails for $k = 1$ ($(k-1)^2 = 0$), which is one reason the induction cannot start at $n = 1$",
+            "It is not needed; $(k-1)^2 \\ge 2$ for every integer $k$",
+            "It shows the base case is wrong"
+          ],
+          "correct": 1,
+          "explanation": "For $k = 1$, $(k-1)^2 = 0 < 2$, so the step $P(1) \\Rightarrow P(2)$ is not proved, and indeed $P(2)$ is false ($4 = 4$). The step needs $k$ large enough, so the base case must be at $n = 5$, where $P(5)$ is true and every later step works."
+        },
+        {
+          "type": "text",
+          "md": "## Strong induction\n\n**Why it is needed.** Sometimes $P(k + 1)$ depends not on $P(k)$ but on some earlier case. To show $12 = 3 \\cdot 4$ is a product of primes, you need facts about $3$ and $4$, not about $11$.\n\n(A **prime** is an integer $p \\ge 2$ whose only positive divisors are $1$ and $p$: $2, 3, 5, 7, 11, \\dots$)\n\n**Strong induction.** If $P(1)$ holds and, for every $k \\in \\mathbb{N}$,\n\n$$P(1), P(2), \\dots, P(k) \\text{ all true} \\ \\Rightarrow\\ P(k + 1),$$\n\nthen $P(n)$ holds for all $n \\in \\mathbb{N}$. The only change: you may assume **all** earlier cases, not just the last one. As before it may start at any $n_0$.\n\n**Domino picture.** Each domino is knocked over by the whole row behind it, not just its neighbour. If all the earlier ones have fallen, the next one falls.\n\n**Is it really stronger?** No. Strong induction, ordinary induction and the **well-ordering principle** (\"every nonempty subset of $\\mathbb{N}$ has a least element\") can each be proved from the others. Strong induction is a convenience, not a new axiom.\n\n**When to choose it.** Use strong induction when breaking up $k + 1$ produces smaller numbers that are not necessarily $k$: factors, halves, or sums of earlier terms."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: every integer $n \\ge 2$ is a product of primes",
+          "problem": "Prove that every integer $n \\ge 2$ is a prime or a product of primes.",
+          "solution": "We use strong induction on $n \\ge 2$.\n\n**Base case.** $2$ is prime.\n\n**Inductive step.** Let $k \\ge 2$ and assume every integer $m$ with $2 \\le m \\le k$ is a prime or a product of primes. Consider $k + 1$.\n\n- If $k + 1$ is prime, we are done.\n- Otherwise $k + 1 = ab$ with integers $2 \\le a, b \\le k$. By the strong inductive hypothesis, $a$ and $b$ are each a prime or a product of primes, so $k + 1 = ab$ is a product of primes.\n\nBy strong induction the claim holds for all $n \\ge 2$. $\\blacksquare$\n\n**Why ordinary induction is not enough:** knowing the result for $k$ alone tells us nothing about the factors $a$ and $b$ of $k + 1$. For $k + 1 = 12$, ordinary induction would hand us $11$, but we need $3$ and $4$."
+        },
+        {
+          "type": "check",
+          "question": "Which claim is the most natural fit for **strong** induction rather than ordinary induction?",
+          "options": [
+            "$1 + 3 + \\dots + (2n - 1) = n^2$",
+            "$2^n > n^2$ for $n \\ge 5$",
+            "Every amount of at least $12$ pence can be paid with $4$p and $5$p coins",
+            "$3$ divides $4^n - 1$"
+          ],
+          "correct": 2,
+          "explanation": "To pay $k + 1$ pence, use one $4$p coin and pay $k - 3$ pence: you need the case $k - 3$, not $k$. That calls for strong induction (with base cases $12, 13, 14, 15$). The other three each follow from the case just before."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "$P(n)$",
+              "back": "A **statement** depending on $n$; each value of $n$ gives a true-or-false proposition.\n\n*Example:* $P(n)$: \"$2^n > n^2$\". $P(5)$ is true, $P(3)$ is false."
+            },
+            {
+              "front": "Summation $\\sum_{i=1}^{n} a_i$",
+              "back": "The **sum** $a_1 + a_2 + \\dots + a_n$; the counter $i$ runs from $1$ to $n$.\n\n*Example:* $\\sum_{i=1}^{3} i^2 = 1 + 4 + 9 = 14$."
+            },
+            {
+              "front": "Base case",
+              "back": "Proving the **first** statement $P(n_0)$ directly: the first domino.\n\n*Example:* $1 = \\frac{1 \\cdot 2}{2}$ for the sum formula."
+            },
+            {
+              "front": "Inductive hypothesis",
+              "back": "The **assumption** \"$P(k)$ is true\" for one arbitrary $k$, made inside the inductive step.\n\n*Example:* assume $\\sum_{i=1}^{k} i = \\frac{k(k+1)}{2}$."
+            },
+            {
+              "front": "Inductive step",
+              "back": "Proving $P(k) \\Rightarrow P(k+1)$ for **every** $k \\ge n_0$: each domino knocks over the next.\n\n*Example:* add $k + 1$ to both sides of $P(k)$ and simplify."
+            },
+            {
+              "front": "Strong induction",
+              "back": "Induction where the step may assume **all** of $P(n_0), \\dots, P(k)$ to prove $P(k+1)$.\n\n*Example:* every $n \\ge 2$ is a product of primes."
+            },
+            {
+              "front": "Well-ordering principle",
+              "back": "Every **nonempty** subset of $\\mathbb{N}$ has a least element. Equivalent to induction.\n\n*Example:* the set of even numbers in $\\mathbb{N}$ has least element $2$."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the parts of an induction proof in order.",
+          "items": [
+            "State the statement $P(n)$ and the range of $n$ it is claimed for",
+            "Verify the base case $P(n_0)$",
+            "Let $k \\ge n_0$ be arbitrary and assume $P(k)$ (the inductive hypothesis)",
+            "Use the inductive hypothesis to prove $P(k+1)$",
+            "Conclude by the principle of induction that $P(n)$ holds for all $n \\ge n_0$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a divisibility proof by induction",
+          "problem": "Prove that $3$ divides $4^n - 1$ for every $n \\in \\mathbb{N}$. (\"$3$ divides $m$\", written $3 \\mid m$, means $m = 3j$ for some integer $j$; lesson 1.8 looks at this in detail.) Hint: write $4^{k+1} - 1$ in terms of $4^k - 1$.",
+          "solution": "Let $P(n)$ be \"$3 \\mid 4^n - 1$\".\n\n**Base case.** $4^1 - 1 = 3 = 3 \\cdot 1$, so $P(1)$ holds.\n\n**Inductive step.** Let $k \\in \\mathbb{N}$ and assume $P(k)$: $4^k - 1 = 3j$ for some integer $j$. Then\n\n$$4^{k+1} - 1 = 4 \\cdot 4^k - 1 = 4(4^k - 1) + 4 - 1 = 4(3j) + 3 = 3(4j + 1).$$\n\nSince $4j + 1$ is an integer, $3 \\mid 4^{k+1} - 1$, which is $P(k+1)$.\n\nBy induction, $3 \\mid 4^n - 1$ for all $n \\in \\mathbb{N}$. $\\blacksquare$\n\n**Check your version:** did you check the base case by computing it? Did you write $P(k)$ as an equation ($4^k - 1 = 3j$) before using it? Did your step actually **use** that equation? Did you end with \"by induction\"?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Isn't assuming $P(k)$ the same as assuming what we want to prove?",
+              "a": "No. We want \"$P(n)$ for **every** $n$\". The step assumes $P(k)$ for **one** $k$ and proves only the implication $P(k) \\Rightarrow P(k+1)$. The truth of any particular $P(n)$ comes from the base case travelling along the chain of implications."
+            },
+            {
+              "q": "Does the base case always have to be $n = 1$?",
+              "a": "No. Start wherever the claim starts: $n = 0$, $n = 2$, $n = 5$. Just make sure the step is proved for every $k \\ge n_0$, with the same $n_0$ as the base case."
+            },
+            {
+              "q": "How do I find the formula in the first place?",
+              "a": "Induction checks a formula; it does not find one. Compute small cases, guess a pattern (for $1 + 3 + 5 + \\dots$ you get $1, 4, 9, 16$, so guess $n^2$), then prove the guess by induction."
+            },
+            {
+              "q": "My inductive step never used $P(k)$. Is that a problem?",
+              "a": "Not a logical error, but a warning sign. If you proved $P(k+1)$ without the hypothesis, you proved it directly and did not need induction. More often it means a step is wrong; check your algebra."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- **Induction:** prove the base case $P(n_0)$ and the step $P(k) \\Rightarrow P(k+1)$ for every $k \\ge n_0$; then $P(n)$ holds for all $n \\ge n_0$.\n- $P(k+1)$ comes from replacing **every** $n$ by $k + 1$; it is not $P(k)$ plus $1$.\n- The step must **use** the inductive hypothesis, usually by finding $P(k)$ inside $P(k+1)$.\n- Both halves matter: no base case, or one broken link (the horses at $k = 1$), and the proof fails.\n- **Strong induction** lets the step assume all earlier cases; use it when $k + 1$ breaks into smaller pieces that need not be $k$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "In the inductive step of a proof by induction, you…",
+          "options": [
+            "assume $P(k+1)$ and prove $P(k)$",
+            "assume $P(k)$ for an arbitrary $k$ and prove $P(k+1)$",
+            "check $P(k)$ for several values of $k$",
+            "assume $P(n)$ for all $n$ and deduce $P(k+1)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The inductive step proves the implication $P(k) \\Rightarrow P(k+1)$ for every $k$. Going from $P(k+1)$ to $P(k)$ runs the dominoes backwards; checking values covers only those values; and assuming $P(n)$ for all $n$ assumes what we want to prove."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $P(1)$ is true and $P(k) \\Rightarrow P(k+1)$ for every $k \\in \\mathbb{N}$, then $P(n)$ is true for every $n \\in \\mathbb{N}$.",
+          "answer": [
+            true
+          ],
+          "explanation": "This is precisely the principle of mathematical induction: $P(1)$ is true, then $P(2)$, then $P(3)$, and the chain reaches every $n$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$6$ divides $n^3 - n$ for every positive integer $n$.",
+          "answer": [
+            true
+          ],
+          "explanation": "$n^3 - n = (n-1)n(n+1)$ is a product of three consecutive integers, so it contains a multiple of $2$ and a multiple of $3$, hence is a multiple of $6$. For example $2^3 - 2 = 6$ and $4^3 - 4 = 60$. (It can also be proved by induction.)"
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following make an induction proof of \"$P(n)$ for all $n \\ge 1$\" invalid? Select all that apply.",
+          "options": [
+            "The base case is never checked",
+            "The argument for $P(k) \\Rightarrow P(k+1)$ only works when $k \\ge 2$, and only $P(1)$ is checked",
+            "The proof of $P(k+1)$ uses the assumption $P(k)$",
+            "The base case checked is $n = 1$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "Without a base case nothing gets started, and a step that only works for $k \\ge 2$ leaves $P(1) \\Rightarrow P(2)$ unproved (the horses fallacy). Using $P(k)$ is the whole point of the step, and $n = 1$ is the right base case here."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the smallest integer $n_0$ such that $2^n > n^2$ for **every** integer $n \\ge n_0$?",
+          "answer": [
+            "5",
+            "five"
+          ],
+          "explanation": "The inequality fails at $n = 4$ ($16 = 16$), and it holds for all $n \\ge 5$ by the induction proof in this lesson. (It also holds at $n = 1$, but not for all $n \\ge 1$, since it fails at $n = 2, 3, 4$.)"
+        },
+        {
+          "type": "single",
+          "prompt": "Which formula for $1 + 3 + 5 + \\dots + (2n - 1)$ can be proved by induction?",
+          "options": [
+            "$n^2$",
+            "$2n^2 - 1$",
+            "$n(n+1)$",
+            "$\\frac{n(n+1)}{2}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "For $n = 1$: $1 = 1^2$. If the sum of the first $k$ odd numbers is $k^2$, adding the next one, $2k + 1$, gives $k^2 + 2k + 1 = (k+1)^2$. $n(n+1)$ fails at $n = 1$ ($2 \\ne 1$); $2n^2 - 1$ and $\\frac{n(n+1)}{2}$ fail at $n = 2$ (they give $7$ and $3$, not $4$)."
+        },
+        {
+          "type": "short",
+          "prompt": "Compute $\\sum_{i=1}^{4} i^2$.",
+          "answer": [
+            "30",
+            "thirty"
+          ],
+          "explanation": "The counter $i$ takes the values $1, 2, 3, 4$: $1 + 4 + 9 + 16 = 30$."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $P(n)$ be \"$\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$\". Which statement is $P(k+1)$?",
+          "options": [
+            "$\\sum_{i=1}^{k} i = \\frac{k(k+1)}{2} + 1$",
+            "$\\sum_{i=1}^{k+1} i = \\frac{(k+1)(k+2)}{2}$",
+            "$\\sum_{i=1}^{k+1} i = \\frac{k(k+1)}{2}$",
+            "$\\sum_{i=1}^{k} i + 1 = \\frac{(k+1)(k+2)}{2}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Replace every $n$ by $k + 1$: the upper limit becomes $k + 1$ and $\\frac{n(n+1)}{2}$ becomes $\\frac{(k+1)(k+2)}{2}$. The other options change only some of the $n$'s, or add $1$ to $P(k)$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In the inductive step, we assume that $P(n)$ is true for every $n \\in \\mathbb{N}$ and then prove $P(k+1)$.",
+          "answer": [
+            false
+          ],
+          "explanation": "That would assume the very result we are proving. We assume $P(k)$ for **one** arbitrary $k$ and prove $P(k + 1)$ from it."
+        },
+        {
+          "type": "short",
+          "prompt": "In the \"all horses are the same colour\" argument, the step $P(k) \\Rightarrow P(k+1)$ fails for exactly one value of $k$. Which value?",
+          "answer": [
+            "1",
+            "one",
+            "k = 1",
+            "k=1"
+          ],
+          "explanation": "For $k = 1$, the two groups of $k$ horses are single horses with no horse in common, so their colours are not linked. For $k \\ge 2$ the groups overlap and the step works, but the chain is already broken at $P(1) \\Rightarrow P(2)$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $P(n)$ be \"$3 \\mid 4^n - 1$\". Which of these are true? Select all that apply.",
+          "options": [
+            "$P(1)$ is true",
+            "$4^{k+1} - 1 = 4(4^k - 1) + 3$",
+            "$4^{k+1} - 1 = (4^k - 1) + 4$",
+            "If $4^k - 1 = 3j$, then $4^{k+1} - 1 = 3(4j + 1)$",
+            "$P(2)$ says that $3$ divides $16$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "$4 - 1 = 3$; $4(4^k - 1) + 3 = 4^{k+1} - 4 + 3$; and substituting $4^k - 1 = 3j$ gives $12j + 3 = 3(4j + 1)$. But $(4^k - 1) + 4 = 4^k + 3$, not $4^{k+1} - 1$, and $P(2)$ is about $4^2 - 1 = 15$, not $16$."
+        },
+        {
+          "type": "single",
+          "prompt": "You want to prove that every amount of at least $12$ pence can be made from $4$p and $5$p coins. Your step handles $k + 1$ by adding a $4$p coin to an amount of $k - 3$ pence. What do you need?",
+          "options": [
+            "Ordinary induction with the single base case $12$",
+            "Strong induction, with base cases $12$, $13$, $14$ and $15$",
+            "No base case, because the step covers everything",
+            "Strong induction with the single base case $12$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The step uses the case $k - 3$, so it needs strong induction. And the step only makes sense when $k - 3 \\ge 12$, i.e. $k + 1 \\ge 16$, so $12 = 4+4+4$, $13 = 4+4+5$, $14 = 4+5+5$ and $15 = 5+5+5$ must be checked directly. With base case $12$ alone, $13$ would need the case $9$, which is not covered."
+        }
+      ]
+    },
+    {
+      "slug": "1-8-direct-proofs",
+      "title": "Direct proofs",
+      "summary": "Assume the hypothesis, unpack the definitions, and reason forward to the conclusion.",
+      "est_minutes": 36,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Direct proofs: what you will learn",
+          "md": "The direct proof is the workhorse of mathematics: assume what you are given, and reason forward until you reach what you want.\n\n**In this lesson you will learn to:**\n- spot the hypothesis and conclusion of a theorem, even when \"for all\" is hidden\n- start a proof with an **arbitrary** object\n- use the definitions of **divides** and **rational** in proofs\n- prove inequalities using the fact that squares are never negative\n- avoid the classic mistake of starting from the conclusion\n\n**You need:** the even/odd definitions and the unpack, work, repack recipe (lesson 1.1); implication $P \\Rightarrow Q$ (lesson 1.2); $\\forall$ (lesson 1.3); the sets $\\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{R}$ (lesson 1.4)."
+        },
+        {
+          "type": "text",
+          "md": "## The direct method\n\nMost theorems have the shape \"**if** $P$, **then** $Q$\". $P$ is the **hypothesis** (what you are given) and $Q$ is the **conclusion** (what you must show).\n\nRecall from lesson 1.2 that $P \\Rightarrow Q$ is false only when $P$ is true and $Q$ is false. So to prove it, you only need to handle the case where $P$ is true, and show $Q$ must be true too.\n\n**Plain words.** A **direct proof** assumes $P$ and moves forward, one justified step at a time, until it reaches $Q$:\n\n$$P \\Rightarrow R_1 \\Rightarrow R_2 \\Rightarrow \\dots \\Rightarrow Q.$$\n\nEach $R_i$ is an intermediate fact. Each arrow must be justified by a definition, by algebra, or by a result already proved.\n\n**Example.** *If $n$ is odd, then $n^2$ is odd.*\n- Assume $n$ is odd, so $n = 2k + 1$ for some integer $k$ (unpack).\n- Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$ (work).\n- $2k^2 + 2k$ is an integer, so $n^2$ is odd (repack).\n\nThis is the same unpack, work, repack recipe from lesson 1.1. What is new in this lesson is a wider range of definitions to unpack, and inequalities.\n\nDirect proof is not the only method. When it gets stuck you can try **contradiction** (lesson 1.9) or the **contrapositive** (lesson 1.10). Always try the direct route first."
+        },
+        {
+          "type": "check",
+          "question": "Which is the best first line of a direct proof that \"if $n$ is odd then $n^2$ is odd\"?",
+          "options": [
+            "Suppose $n^2$ is odd.",
+            "Let $n = 3$; then $n^2 = 9$ is odd.",
+            "Suppose $n$ is odd, so $n = 2k + 1$ for some integer $k$.",
+            "Suppose $n$ is even."
+          ],
+          "correct": 2,
+          "explanation": "A direct proof assumes the hypothesis and unpacks its definition. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$ is odd. \"Suppose $n^2$ is odd\" assumes the conclusion; $n = 3$ tests one case; \"suppose $n$ is even\" begins a different method (the contrapositive, lesson 1.10)."
+        },
+        {
+          "type": "text",
+          "md": "## Hidden \"for all\", and arbitrary objects\n\n\"The square of an odd integer is odd\" does not say \"if\". But it means\n\n$$\\forall n \\in \\mathbb{Z}:\\ n \\text{ odd} \\Rightarrow n^2 \\text{ odd}.$$\n\nMany theorems hide a $\\forall$ like this. Before you start, rewrite the claim as \"for all $x$ in some set, if (hypothesis) then (conclusion)\".\n\n**Arbitrary objects.** To prove a \"for all\" statement, begin:\n\n> Let $x \\in A$ be arbitrary, and suppose $P(x)$.\n\n\"Arbitrary\" means you pick **no particular** value. You may use only what the hypothesis tells you. Because nothing special about $x$ was used, the argument works for every element of $A$ at once.\n\n**Examples:**\n- \"For every integer $n$, $n^2 + n$ is even.\" Hypothesis: $n \\in \\mathbb{Z}$. Conclusion: $n^2 + n$ is even. Start: \"Let $n$ be any integer.\"\n- \"The product of two even integers is even.\" Start: \"Let $m$ and $n$ be any even integers, so $m = 2a$ and $n = 2b$ for some integers $a, b$.\" Two objects need **two different** letters, as in lesson 1.1.\n\n**Non-example.** \"Let $n = 6$. Then $n^2 = 36$ is a multiple of $4$.\" That checks one case. It is fine for exploring, but it proves nothing about other $n$.\n\n**Edge case.** Sometimes the hypothesis is just \"$n$ is an integer\" and nothing else. Then you cannot unpack a definition; you may need to split into cases ($n$ even or $n$ odd), which you will practise in the questions."
+        },
+        {
+          "type": "check",
+          "question": "Rewrite \"the sum of a rational number and an integer is rational\" in \"for all …, if …, then …\" form. What is the conclusion?",
+          "options": [
+            "$x$ is rational",
+            "$n$ is an integer",
+            "$x + n$ is rational",
+            "$x + n$ is an integer"
+          ],
+          "correct": 2,
+          "explanation": "It reads: for all $x$ and $n$, if $x \\in \\mathbb{Q}$ and $n \\in \\mathbb{Z}$, then $x + n \\in \\mathbb{Q}$. \"$x$ is rational\" and \"$n$ is an integer\" are the hypotheses, and \"$x + n$ is an integer\" is false in general (take $x = \\frac{1}{2}$, $n = 0$)."
+        },
+        {
+          "type": "text",
+          "md": "## Divisibility\n\n**Why it matters.** Divisibility is everywhere in number theory, and it gives perfect practice in unpacking a definition.\n\n**Definition.** For integers $a$ and $b$, we say $a$ **divides** $b$, written $a \\mid b$, if\n\n$$b = ak \\text{ for some } k \\in \\mathbb{Z}.$$\n\nRead $a \\mid b$ as \"$a$ divides $b$\". We also say $b$ is a **multiple** of $a$. If $a$ does not divide $b$ we write $a \\nmid b$.\n\n**Examples:**\n- $3 \\mid 12$, because $12 = 3 \\cdot 4$.\n- $-3 \\mid 12$, because $12 = (-3)(-4)$. Negatives are allowed.\n- $4 \\nmid 10$: $10 = 4k$ would need $k = 2.5$, not an integer.\n- **Edge case:** every integer divides $0$, because $0 = a \\cdot 0$. So $7 \\mid 0$ and even $0 \\mid 0$.\n- **Edge case:** $0 \\mid 5$ is false, since $0 \\cdot k = 0 \\ne 5$ for every $k$.\n\n**Not a fraction.** $a \\mid b$ is a **statement** (true or false). $\\frac{a}{b}$ or $a / b$ is a **number**. \"$3 \\mid 12$\" is true; \"$3/12$\" is $\\frac{1}{4}$. Also watch the order: $3 \\mid 12$ is true but $12 \\mid 3$ is false.\n\n**In proofs**, \"$a \\mid b$\" unpacks to \"$b = ak$ for some integer $k$\", and to repack you must show the thing is $a$ times an **integer**. You saw this pattern with $3 \\mid 4^n - 1$ in lesson 1.7."
+        },
+        {
+          "type": "check",
+          "question": "Which of these statements is **false**?",
+          "options": [
+            "$-4 \\mid 12$",
+            "$7 \\mid 0$",
+            "$0 \\mid 7$",
+            "$1 \\mid 7$"
+          ],
+          "correct": 2,
+          "explanation": "$0 \\mid 7$ would need $7 = 0 \\cdot k$ for some integer $k$, but $0 \\cdot k = 0$ always. The others hold: $12 = (-4)(-3)$, $0 = 7 \\cdot 0$, and $7 = 1 \\cdot 7$."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: divisibility is transitive",
+          "steps": [
+            {
+              "title": "State hypothesis and conclusion",
+              "md": "Let $a, b, c \\in \\mathbb{Z}$. **Claim:** if $a \\mid b$ and $b \\mid c$, then $a \\mid c$. Hypothesis: $a \\mid b$ and $b \\mid c$. Conclusion: $a \\mid c$."
+            },
+            {
+              "title": "Unpack both hypotheses",
+              "md": "By the definition of divides, there are integers $k$ and $l$ with\n\n$$b = ak \\quad\\text{and}\\quad c = bl.$$\n\nWe use **different** letters $k$ and $l$. Writing $k$ twice would claim both quotients are equal, which we do not know (for $2 \\mid 6$ and $6 \\mid 30$ they are $3$ and $5$)."
+            },
+            {
+              "title": "Substitute and simplify",
+              "md": "$$c = bl = (ak)l = a(kl).$$"
+            },
+            {
+              "title": "Repack",
+              "md": "$kl$ is a product of integers, so it is an integer. So $c = a \\times (\\text{an integer})$, which is the definition of $a \\mid c$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, what is the point of the final remark that $kl$ is an integer?",
+          "options": [
+            "It is decoration; $c = a(kl)$ already finishes the proof",
+            "The definition of $a \\mid c$ requires $c = a \\times$ (an **integer**), so this must be checked",
+            "It proves that $a \\mid b$",
+            "It shows $k = l$"
+          ],
+          "correct": 1,
+          "explanation": "$c = a \\cdot m$ for a non-integer $m$ proves nothing: $10 = 4 \\cdot 2.5$, yet $4 \\nmid 10$. The repack step must show the multiplier is an integer. It does not prove $a \\mid b$ (that was given) and says nothing about $k = l$."
+        },
+        {
+          "type": "text",
+          "md": "## Rational numbers\n\n**Definition.** A real number $x$ is **rational** if\n\n$$x = \\frac{p}{q} \\text{ for some } p, q \\in \\mathbb{Z} \\text{ with } q \\ne 0.$$\n\nThe set of rational numbers is $\\mathbb{Q}$, so \"$x \\in \\mathbb{Q}$\" is read \"$x$ is rational\".\n\n**Examples:**\n- $0.75 = \\frac{3}{4}$ is rational.\n- $-2 = \\frac{-2}{1}$ is rational. Every integer $n$ is rational, as $\\frac{n}{1}$.\n- **Edge case:** $0 = \\frac{0}{1}$ is rational. The **top** may be $0$; only the bottom must not be.\n- The same number has many forms: $\\frac{1}{2} = \\frac{2}{4} = \\frac{-3}{-6}$. The definition only asks for **some** form.\n\n**Non-example.** $\\sqrt{2}$ is not rational. That is not obvious; you will prove it in lesson 1.9.\n\n**Why $q \\ne 0$?** Because $\\frac{p}{0}$ is not a number. In proofs you must check that every denominator you build is nonzero.\n\n**A direct proof.** *The sum of two rationals is rational.* Let $x = \\frac{p}{q}$ and $y = \\frac{r}{s}$ with $p, q, r, s \\in \\mathbb{Z}$ and $q, s \\ne 0$ (four different letters). Then\n\n$$x + y = \\frac{ps + rq}{qs}.$$\n\nThe top $ps + rq$ is an integer, the bottom $qs$ is an integer, and $qs \\ne 0$ because a product of nonzero integers is nonzero. So $x + y \\in \\mathbb{Q}$. $\\blacksquare$"
+        },
+        {
+          "type": "match",
+          "prompt": "Match each statement to what it means when you unpack it in a proof.",
+          "pairs": [
+            {
+              "left": "$n$ is even",
+              "right": "$n = 2k$ for some $k \\in \\mathbb{Z}$"
+            },
+            {
+              "left": "$n$ is odd",
+              "right": "$n = 2k + 1$ for some $k \\in \\mathbb{Z}$"
+            },
+            {
+              "left": "$a \\mid b$",
+              "right": "$b = ak$ for some $k \\in \\mathbb{Z}$"
+            },
+            {
+              "left": "$x \\in \\mathbb{Q}$",
+              "right": "$x = \\frac{p}{q}$ for some $p, q \\in \\mathbb{Z}$, $q \\ne 0$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Direct proofs of inequalities\n\nReal analysis is full of inequalities, and many direct proofs of them rest on one fact:\n\n$$\\forall x \\in \\mathbb{R}:\\ x^2 \\ge 0.$$\n\nRead it as \"the square of every real number is at least $0$\". You will prove it from the axioms of $\\mathbb{R}$ in Level 2; for now we use it.\n\n**The trick.** Rewrite the expression so that a square appears, then use \"square $\\ge 0$\".\n\n**Example 1: completing the square.** *For every real $x$, $x^2 - 4x + 5 > 0$.* Half of $-4$ is $-2$, so\n\n$$x^2 - 4x + 5 = (x - 2)^2 - 4 + 5 = (x - 2)^2 + 1.$$\n\nSince $(x - 2)^2 \\ge 0$, we get $x^2 - 4x + 5 \\ge 1 > 0$. $\\blacksquare$\n\n**Example 2.** *For all real $x$ and $y$, $x^2 + y^2 \\ge 2xy$.* Start from a square that is known to be $\\ge 0$:\n\n$$0 \\le (x - y)^2 = x^2 - 2xy + y^2.$$\n\nAdd $2xy$ to both sides: $2xy \\le x^2 + y^2$. $\\blacksquare$\n\n**Edge case: when is it equal?** In Example 2, equality holds exactly when $(x - y)^2 = 0$, that is, $x = y$. Asking \"when is the inequality an equality?\" is a good habit: it tells you whether you can improve it.\n\n**Non-example.** \"$x^2 - 4x + 5 > 0$ because at $x = 2$ it equals $1$.\" One value of $x$ shows nothing about the rest."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Do not start from what you want to prove",
+          "md": "Writing the desired conclusion and deducing something true proves nothing.\n\n\"Proof\" that $1 = -1$: square both sides to get $1 = 1$, which is true. But $1 = -1$ is false. The step from $a = b$ to $a^2 = b^2$ is valid, but it does **not** reverse, so a true ending tells you nothing about the start.\n\nWorking backwards from the conclusion is fine as **scratch work**, to discover what to do. The written proof must run **forwards** from the hypotheses, and every step must be a valid implication in that direction."
+        },
+        {
+          "type": "check",
+          "question": "A student writes: \"We want $x^2 + 1 \\ge 2x$. So $x^2 - 2x + 1 \\ge 0$, so $(x - 1)^2 \\ge 0$, which is true. Done.\" What is the problem?",
+          "options": [
+            "The algebra is wrong",
+            "The argument starts from the conclusion; it should start from $(x - 1)^2 \\ge 0$ and work forwards to $x^2 + 1 \\ge 2x$",
+            "Nothing; ending at a true statement proves the claim",
+            "Squares can be negative"
+          ],
+          "correct": 1,
+          "explanation": "The algebra is fine, and here each step happens to reverse, so it is good scratch work. But as written it assumes the conclusion, the same pattern as the false \"proof\" that $1 = -1$. The proof should read: $(x - 1)^2 \\ge 0$, so $x^2 - 2x + 1 \\ge 0$, so $x^2 + 1 \\ge 2x$."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: the AM-GM inequality for two numbers",
+          "problem": "Prove that for all real numbers $x, y \\ge 0$,\n\n$$\\frac{x + y}{2} \\ge \\sqrt{xy}.$$\n\n(The left side is the **arithmetic mean** (AM), the right side the **geometric mean** (GM).)",
+          "solution": "**Scratch work** (not the proof): squaring and rearranging suggests the inequality is equivalent to $(\\sqrt{x} - \\sqrt{y})^2 \\ge 0$. Now we write the proof in the forward direction.\n\n**Proof.** Let $x, y \\ge 0$. Then $\\sqrt{x}$ and $\\sqrt{y}$ are real numbers, and since squares are nonnegative,\n\n$$0 \\le (\\sqrt{x} - \\sqrt{y})^2 = x - 2\\sqrt{x}\\sqrt{y} + y = x + y - 2\\sqrt{xy}.$$\n\nAdding $2\\sqrt{xy}$ to both sides and dividing by $2$ gives $\\frac{x + y}{2} \\ge \\sqrt{xy}$. $\\blacksquare$\n\nEquality holds exactly when $\\sqrt{x} = \\sqrt{y}$, i.e. $x = y$. **Why $x, y \\ge 0$?** Otherwise $\\sqrt{x}$ is not a real number. For example $x = y = -1$ gives a left side of $-1$, while $\\sqrt{xy} = 1$, so the inequality fails."
+        },
+        {
+          "type": "diagram",
+          "title": "Anatomy of a direct proof",
+          "nodes": [
+            "Assume the hypothesis for an arbitrary object",
+            "Unpack definitions into equations or inequalities",
+            "Manipulate using algebra and known results",
+            "Repack the result into the definition in the conclusion",
+            "State the conclusion"
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Direct proof",
+              "back": "Assume the **hypothesis** $P$ and reason forward, step by step, to the conclusion $Q$.\n\n*Example:* $n = 2k + 1 \\Rightarrow n^2 = 2(2k^2 + 2k) + 1$, so $n^2$ is odd."
+            },
+            {
+              "front": "Hypothesis and conclusion",
+              "back": "In \"if $P$ then $Q$\", $P$ is the **hypothesis** (given) and $Q$ the **conclusion** (to show).\n\n*Example:* in \"if $a \\mid b$ and $b \\mid c$ then $a \\mid c$\", the conclusion is $a \\mid c$."
+            },
+            {
+              "front": "Arbitrary object",
+              "back": "An element chosen with **no special value**, so the argument covers every element.\n\n*Example:* \"Let $n$ be any odd integer.\" *Non-example:* \"Let $n = 7$.\""
+            },
+            {
+              "front": "$a \\mid b$ ($a$ divides $b$)",
+              "back": "$b = ak$ for some **integer** $k$. A statement, not a fraction.\n\n*Example:* $3 \\mid 12$ since $12 = 3 \\cdot 4$; $7 \\mid 0$; but $0 \\nmid 5$."
+            },
+            {
+              "front": "Rational number",
+              "back": "$x = \\frac{p}{q}$ with $p, q$ **integers** and $q \\ne 0$. The set is $\\mathbb{Q}$.\n\n*Example:* $0 = \\frac{0}{1}$ and $-2 = \\frac{-2}{1}$. *Non-example:* $\\sqrt{2}$."
+            },
+            {
+              "front": "Scratch work",
+              "back": "Rough working, often **backwards** from the conclusion, to find a proof. Not part of the written proof.\n\n*Example:* reducing AM-GM to $(\\sqrt{x} - \\sqrt{y})^2 \\ge 0$."
+            },
+            {
+              "front": "AM-GM (two numbers)",
+              "back": "For $x, y \\ge 0$: $\\frac{x + y}{2} \\ge \\sqrt{xy}$, with **equality** exactly when $x = y$.\n\n*Example:* $x = 4$, $y = 9$: $6.5 \\ge 6$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You must prove \"for all integers $a, b, c$: if $a \\mid b$ and $a \\mid c$, then $a \\mid (b + c)$\". After \"Let $a, b, c$ be integers with $a \\mid b$ and $a \\mid c$\", what comes next?",
+          "options": [
+            "So $b = ak$ and $c = ak$ for some integer $k$.",
+            "So $b = ak$ and $c = al$ for some integers $k$ and $l$.",
+            "So $b + c = am$ for some integer $m$.",
+            "Take $a = 2$, $b = 4$, $c = 6$."
+          ],
+          "correct": 1,
+          "explanation": "Unpack each hypothesis with its own letter. Using $k$ twice would force $b = c$. Writing $b + c = am$ assumes the conclusion, and choosing numbers checks only one case."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of this proof in order: **for all integers $a, b, c$, if $a \\mid b$ and $a \\mid c$, then $a \\mid (b + c)$.**",
+          "items": [
+            "Let $a, b, c$ be integers with $a \\mid b$ and $a \\mid c$.",
+            "By definition, $b = ak$ and $c = al$ for some integers $k$ and $l$.",
+            "Then $b + c = ak + al = a(k + l)$.",
+            "Since $k + l$ is an integer, $a \\mid (b + c)$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a direct proof with divisibility",
+          "problem": "Prove that for every odd integer $n$, $4 \\mid (n^2 - 1)$. Use unpack, work, repack. Before you start, write down what you must reach: $n^2 - 1 = 4 \\times (\\text{an integer})$.",
+          "solution": "**Proof.** Let $n$ be any odd integer.\n\n**Unpack.** By the definition of odd, $n = 2k + 1$ for some integer $k$.\n\n**Work.**\n\n$$n^2 - 1 = (2k + 1)^2 - 1 = 4k^2 + 4k + 1 - 1 = 4(k^2 + k).$$\n\n**Repack.** $k^2 + k$ is an integer, so $n^2 - 1$ is $4$ times an integer. By the definition of divides, $4 \\mid (n^2 - 1)$. $\\blacksquare$\n\n**Check your version:** did you start from an arbitrary odd $n$, not a particular one like $n = 3$? Did you work forwards from $n = 2k + 1$, rather than from the conclusion? Did you say why $k^2 + k$ is an integer? Quick test: $n = 5$ gives $24 = 4 \\cdot 6$, and $k = 2$ gives $k^2 + k = 6$."
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "How do I know what to do after unpacking?",
+              "a": "Look at where you need to end up. If the goal is \"$a \\mid c$\", you need $c = a \\times (\\text{integer})$, so aim to factor out $a$. If the goal is \"odd\", aim for $2 \\times (\\text{integer}) + 1$. Writing the target form down first often shows the algebra."
+            },
+            {
+              "q": "Is it wrong to work backwards?",
+              "a": "Not in scratch work. It is how most proofs are found. The mistake is handing in the backwards argument as the proof. Reverse it, and check each step is valid in the forward direction."
+            },
+            {
+              "q": "Can I use results I already know?",
+              "a": "Yes, if they have been proved: earlier theorems, standard algebra, and facts such as \"a product of integers is an integer\" or \"$x^2 \\ge 0$\". Say what you are using. What you cannot use is the statement you are trying to prove."
+            },
+            {
+              "q": "When should I give up on a direct proof?",
+              "a": "When the hypothesis gives you little to work with but the negated conclusion would give a lot. For \"if $n^2$ is even then $n$ is even\", unpacking $n^2 = 2k$ leads nowhere, because you cannot take square roots in $\\mathbb{Z}$. The contrapositive (lesson 1.10) handles it easily."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **direct proof** of \"if $P$ then $Q$\" assumes $P$ and reasons forward to $Q$. Find the hidden \"for all\" and start with an **arbitrary** object.\n- **Unpack** each hypothesis with its own letters, **work** with algebra, **repack** into the definition of the conclusion.\n- $a \\mid b$ means $b = ak$ for some integer $k$; $x \\in \\mathbb{Q}$ means $x = \\frac{p}{q}$ with integers $p, q$ and $q \\ne 0$.\n- Many inequalities follow from $x^2 \\ge 0$: create a square, for example by completing the square.\n- Never start from the conclusion. Backwards reasoning is scratch work; the proof runs forwards."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "In a direct proof that the product of two rational numbers $a$ and $b$ is rational, which step is correct?",
+          "options": [
+            "Write $a = \\frac{p}{q}$ and $b = \\frac{p}{q}$ with $q \\neq 0$",
+            "Write $a = \\frac{p}{q}$ and $b = \\frac{r}{s}$ with $q, s \\neq 0$, so $ab = \\frac{pr}{qs}$ with $qs \\neq 0$",
+            "Check that $\\frac{1}{2} \\cdot \\frac{2}{3} = \\frac{1}{3}$ is rational",
+            "Assume $ab$ is rational and deduce that $a$ is rational"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Use independent names for the two fractions; then $pr$ and $qs$ are integers and $qs \\ne 0$ because a product of nonzero integers is nonzero. Using the same $\\frac{p}{q}$ assumes $a = b$; one example proves nothing; and assuming $ab$ is rational assumes the conclusion."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $n = 2k + 1$ for an integer $k$, then $n^2 = 2(2k^2 + 2k) + 1$, which shows that the square of an odd integer is odd.",
+          "answer": [
+            true
+          ],
+          "explanation": "$(2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, and $2k^2 + 2k$ is an integer, so $n^2$ has the form $2 \\times (\\text{integer}) + 1$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which moves are valid in a direct proof? Select all that apply.",
+          "options": [
+            "Replacing \"$n$ is even\" by \"$n = 2k$ for some integer $k$\"",
+            "Assuming the conclusion, deriving a true statement, and stopping there",
+            "Quoting a previously proved theorem",
+            "Checking the statement for $n = 1, 2, 3$ and concluding it holds for all $n$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "Unpacking definitions and citing proved results are the basic moves. Deriving a truth from the conclusion proves nothing (the implication may not reverse, as in $1 = -1 \\Rightarrow 1 = 1$), and finitely many checks never prove a universal statement."
+        },
+        {
+          "type": "single",
+          "prompt": "Which observation proves directly that $x^2 - 4x + 5 > 0$ for every real $x$?",
+          "options": [
+            "$x^2 - 4x + 5 = 1 > 0$ when $x = 2$",
+            "$x^2 - 4x + 5 = (x-1)(x-5)$",
+            "The discriminant of $x^2 - 4x + 5$ is positive",
+            "$x^2 - 4x + 5 = (x-2)^2 + 1 \\ge 1$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "Completing the square gives $(x-2)^2 + 1$, and $(x-2)^2 \\ge 0$ for every real $x$. One value proves nothing; $(x-1)(x-5) = x^2 - 6x + 5$, a different expression; and the discriminant is $16 - 20 = -4 < 0$, not positive."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For all integers $a, b, c$: if $a \\mid bc$, then $a \\mid b$ or $a \\mid c$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$6 \\mid 2 \\cdot 3$, but $6 \\nmid 2$ and $6 \\nmid 3$. (The statement is true when $a$ is prime: that is Euclid's lemma.)"
+        },
+        {
+          "type": "short",
+          "prompt": "Using AM-GM, find the largest possible value of $xy$ for real $x, y \\ge 0$ with $x + y = 10$.",
+          "answer": [
+            "25",
+            "twenty-five",
+            "twenty five"
+          ],
+          "explanation": "AM-GM gives $\\sqrt{xy} \\le \\frac{x + y}{2} = 5$, so $xy \\le 25$, with equality at $x = y = 5$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every integer $a$, $a \\mid 0$.",
+          "answer": [
+            true
+          ],
+          "explanation": "$0 = a \\cdot 0$ and $0$ is an integer, so the definition is met, even for $a = 0$. Do not confuse this with $\\frac{a}{0}$, which is undefined: $a \\mid 0$ is a statement, not a division."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these statements are true? Select all that apply.",
+          "options": [
+            "$3 \\mid 12$",
+            "$-4 \\mid 12$",
+            "$5 \\mid 0$",
+            "$0 \\mid 5$",
+            "$12 \\mid 3$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "$12 = 3 \\cdot 4$, $12 = (-4)(-3)$ and $0 = 5 \\cdot 0$. But $0 \\cdot k = 0 \\ne 5$ for every $k$, and $3 = 12k$ would need $k = \\frac{1}{4}$, not an integer."
+        },
+        {
+          "type": "single",
+          "prompt": "In the theorem \"the square of every even integer is divisible by $4$\", what is the hypothesis?",
+          "options": [
+            "$n^2$ is divisible by $4$",
+            "$n$ is an even integer",
+            "$4$ is even",
+            "$n = 4$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "With the hidden \"for all\" made visible: for every integer $n$, if $n$ is even, then $4 \\mid n^2$. The hypothesis is \"$n$ is even\"; \"$4 \\mid n^2$\" is the conclusion. (Proof: $n = 2k$ gives $n^2 = 4k^2$.)"
+        },
+        {
+          "type": "short",
+          "prompt": "Complete the square: $x^2 + 6x + 11 = (x + 3)^2 + c$. What is $c$?",
+          "answer": [
+            "2",
+            "two",
+            "c = 2",
+            "c=2"
+          ],
+          "explanation": "$(x + 3)^2 = x^2 + 6x + 9$, so $c = 11 - 9 = 2$. Since $(x + 3)^2 \\ge 0$, this shows $x^2 + 6x + 11 \\ge 2$ for every real $x$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "To prove \"if $x^2 = 4$ then $x = 2$\", it is enough to note that $x = 2$ gives $x^2 = 4$.",
+          "answer": [
+            false
+          ],
+          "explanation": "That proves the converse, \"if $x = 2$ then $x^2 = 4$\". The original claim is in fact false: $x = -2$ also gives $x^2 = 4$. A direct proof must start from the hypothesis $x^2 = 4$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which is a correct direct proof that $n^2 + n$ is even for every integer $n$?",
+          "options": [
+            "$n = 2$ gives $6$ and $n = 3$ gives $12$, both even",
+            "Assume $n^2 + n = 2m$; then $n(n+1) = 2m$, which is even",
+            "$n^2 + n = n(n + 1)$. If $n = 2k$ this is $2k(n + 1)$; if $n = 2k + 1$ it is $(2k + 1)(2k + 2) = 2(2k + 1)(k + 1)$. Either way it is $2 \\times$ an integer",
+            "$n^2$ is always even, and $n$ is always even, so the sum is even"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The hypothesis is only \"$n$ is an integer\", so split into the cases $n$ even and $n$ odd; each case gives twice an integer. Checking two values proves nothing; the second option assumes the conclusion; and neither $n^2$ nor $n$ is always even ($n = 3$)."
+        }
+      ]
+    }
+  ]
+}

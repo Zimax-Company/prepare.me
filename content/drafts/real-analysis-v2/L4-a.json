@@ -1,0 +1,1435 @@
+{
+  "concepts": [
+    {
+      "slug": "4-1-introduction-to-infinite-series",
+      "title": "Introduction to infinite series",
+      "summary": "What can $1 + \\frac12 + \\frac14 + \\cdots$ possibly mean? Defining infinite sums via limits.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Level 4: Infinite Series",
+          "md": "Study infinite sums and the conditions under which they converge.\n\n**In this lesson you will learn to:**\n- read and write sums with the $\\sum$ (sigma) symbol\n- say exactly what an infinite sum means, using partial sums and limits\n- decide whether simple series converge, and find their sums\n- sum a telescoping series, and see why brackets can mislead\n\n**You need:** sequences and their limits from Level 3, especially what $\\lim_{n \\to \\infty} s_n = S$ means (lessons 3.3 and 3.4). Every new symbol is explained."
+        },
+        {
+          "type": "text",
+          "md": "## Why infinite sums need a definition\n\nYou already use infinite sums without noticing. The decimal $0.333\\ldots$ means\n\n$$\\frac{3}{10} + \\frac{3}{100} + \\frac{3}{1000} + \\cdots$$\n\nand everyone agrees it equals $\\frac13$. Or walk half way to a wall, then half the remaining distance, then half of what is left, and so on. The distances you walk are $\\frac12, \\frac14, \\frac18, \\dots$, and it seems clear that in total you walk the whole distance, $1$.\n\nBut nobody can actually do infinitely many additions. Addition, as you learned it, combines two numbers, and by repeating it you can add any **finite** list. \"Add all of them\" has no meaning yet.\n\nThe way out is to do what you can do, add the first few terms, and watch what happens as you include more and more. Adding $\\frac12 + \\frac14 + \\frac18 + \\cdots$ term by term gives\n\n$$\\tfrac12, \\quad \\tfrac34, \\quad \\tfrac78, \\quad \\tfrac{15}{16}, \\quad \\dots$$\n\nThese running totals form a **sequence**, and they get closer and closer to $1$. So we will **define** the infinite sum to be the limit of this sequence. Everything from Level 3 about limits then applies.\n\nThe box below shows what goes wrong if we skip the definition and trust finite-sum habits."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "One sum, two answers",
+          "md": "Consider $1 - 1 + 1 - 1 + 1 - 1 + \\cdots$ (called **Grandi's series**).\n\nGroup the terms in pairs from the start:\n$$(1 - 1) + (1 - 1) + (1 - 1) + \\cdots = 0 + 0 + 0 + \\cdots = 0.$$\n\nNow leave the first $1$ alone and pair the rest:\n$$1 + (-1 + 1) + (-1 + 1) + \\cdots = 1 + 0 + 0 + \\cdots = 1.$$\n\nBoth calculations look like harmless algebra, yet they give different answers. So rules that are safe for finite sums, such as \"you may put brackets anywhere\", cannot simply be assumed for infinite ones. We need a definition first, and then we must prove which rules survive."
+        },
+        {
+          "type": "text",
+          "md": "## Sigma notation\n\nWriting \"$a_1 + a_2 + \\cdots + a_n$\" gets clumsy, so we use the Greek capital letter sigma, $\\sum$, which stands for \"sum\".\n\n$$\\sum_{k=1}^{n} a_k = a_1 + a_2 + \\cdots + a_n$$\n\nRead it as \"the sum of $a_k$ for $k$ from $1$ to $n$\". The letter $k$ is the **index**: it starts at the value written below the $\\sum$, goes up by $1$ each time, and stops at the value written above. (Recall from lesson 3.1 that $a_k$ is the $k$-th term of a sequence $(a_k)$.)\n\n**Examples:**\n- $\\displaystyle\\sum_{k=1}^{4} k^2 = 1^2 + 2^2 + 3^2 + 4^2 = 1 + 4 + 9 + 16 = 30.$\n- $\\displaystyle\\sum_{k=0}^{3} 2^k = 2^0 + 2^1 + 2^2 + 2^3 = 1 + 2 + 4 + 8 = 15.$ The index starts at $0$, so there are **four** terms, not three. In general $\\sum_{k=m}^{n}$ has $n - m + 1$ terms.\n- $\\displaystyle\\sum_{k=1}^{3} 5 = 5 + 5 + 5 = 15.$ The term does not involve $k$ at all, but it is still added once for each value of $k$.\n\n**The index is a dummy letter.** $\\sum_{k=1}^{n} a_k$ and $\\sum_{j=1}^{n} a_j$ are the same sum: the letter is only a counter and disappears once the sum is written out. The stopping value $n$, however, matters: the answer depends on it."
+        },
+        {
+          "type": "check",
+          "question": "What is $\\displaystyle\\sum_{k=2}^{5} (2k - 1)$?",
+          "options": [
+            "$16$",
+            "$25$",
+            "$24$",
+            "$15$"
+          ],
+          "correct": 2,
+          "explanation": "The index runs $k = 2, 3, 4, 5$, giving $3 + 5 + 7 + 9 = 24$. $16$ is what you get for $k = 1$ to $4$ (starting at the wrong place), $25$ is $k = 1$ to $5$, and $15$ comes from forgetting that $k = 2$ is included."
+        },
+        {
+          "type": "text",
+          "md": "## Partial sums\n\nNow give the running totals a name. Given a sequence of terms $a_1, a_2, a_3, \\dots$, the **$n$-th partial sum** is the sum of the first $n$ terms:\n\n$$s_n = \\sum_{k=1}^{n} a_k = a_1 + a_2 + \\cdots + a_n.$$\n\nInside the sum we use the letter $k$, because $n$ is already taken: it is the stopping point.\n\n**Example: halves.** Take $a_k = \\frac{1}{2^k}$. Then\n$$s_1 = \\tfrac12, \\quad s_2 = \\tfrac34, \\quad s_3 = \\tfrac78, \\quad s_4 = \\tfrac{15}{16}.$$\nThe pattern is $s_n = 1 - \\frac{1}{2^n}$: after $n$ steps towards the wall, the distance left is $\\frac{1}{2^n}$. Since $\\frac{1}{2^n} \\to 0$, the limit laws (lesson 3.6) give $s_n \\to 1$.\n\n**Example: Grandi.** Take $a_k = (-1)^{k+1}$, so the terms are $1, -1, 1, -1, \\dots$. Then\n$$s_1 = 1, \\quad s_2 = 0, \\quad s_3 = 1, \\quad s_4 = 0, \\quad \\dots$$\nThis sequence keeps jumping between $1$ and $0$ and has no limit (lesson 3.3).\n\n**Example: constant terms.** Take $a_k = 1$. Then $s_n = n$, which grows without bound.\n\nSo the sequence of partial sums can settle down, oscillate, or run off to infinity. Lesson 4.2 studies partial sums in more depth."
+        },
+        {
+          "type": "text",
+          "md": "## The definition of an infinite series\n\nLet $(a_n)$ be a sequence of real numbers. The **infinite series** with terms $a_n$ is written\n\n$$\\sum_{n=1}^{\\infty} a_n = a_1 + a_2 + a_3 + \\cdots$$\n\nThe $\\infty$ on top is **not a number** we stop at. It means \"keep going with no last term\".\n\n**Definition.** The series **converges to** $S$ (a real number) if its partial sums converge to $S$:\n\n$$\\sum_{n=1}^{\\infty} a_n = S \\quad\\text{means}\\quad \\lim_{n \\to \\infty} s_n = S.$$\n\nThen $S$ is called the **sum** of the series. If $(s_n)$ has no finite limit, the series **diverges**, and it has no sum.\n\n**Examples:**\n- $\\sum_{n=1}^{\\infty} \\frac{1}{2^n} = 1$, because $s_n = 1 - \\frac{1}{2^n} \\to 1$.\n- $\\sum_{n=1}^{\\infty} \\frac{3}{10^n} = \\frac13$. Here $s_n = 0.33\\ldots3$ ($n$ threes) $= \\frac13\\left(1 - \\frac{1}{10^n}\\right) \\to \\frac13$. This is what $0.333\\ldots = \\frac13$ really means.\n- $\\sum_{n=1}^{\\infty} 0 = 0$, since every $s_n = 0$. An edge case, but it does converge.\n- $\\sum_{n=1}^{\\infty} 1$ diverges, since $s_n = n$ has no finite limit.\n- Grandi's series diverges, since $s_n$ alternates $1, 0, 1, 0, \\dots$ So it has no sum at all, which is why the box above gave nonsense.\n\n**Two remarks.** The index may start anywhere, as in $\\sum_{n=0}^{\\infty} a_n$; then $s_n$ starts with $a_0$. And the symbol $\\sum a_n$ is used both for the series and, when it converges, for its sum; the context tells you which."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each series to its behaviour.",
+          "pairs": [
+            {
+              "left": "$\\sum_{n=1}^{\\infty} \\frac{1}{2^n}$",
+              "right": "Converges to $1$"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} 0$",
+              "right": "Converges to $0$"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} 1$",
+              "right": "Diverges: $s_n = n$ grows without bound"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} (-1)^{n+1}$",
+              "right": "Diverges: $s_n$ alternates between $1$ and $0$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "What is $\\displaystyle\\sum_{n=0}^{\\infty} \\left(\\tfrac12\\right)^n$?",
+          "options": [
+            "$1$",
+            "$\\tfrac32$",
+            "$2$",
+            "It diverges"
+          ],
+          "correct": 2,
+          "explanation": "The index starts at $n = 0$, so the first term is $\\left(\\frac12\\right)^0 = 1$. The partial sums are $1 + \\frac12 + \\cdots + \\frac{1}{2^n} = 2 - \\frac{1}{2^n} \\to 2$. The answer $1$ comes from starting at $n = 1$, which drops the first term. The terms shrink fast enough for the partial sums to settle, so it does not diverge."
+        },
+        {
+          "type": "text",
+          "md": "## Telescoping series\n\nTo use the definition you need a formula for $s_n$, and usually that is hard to find. One kind of series where it is easy is a **telescoping** series: each term is a difference, and almost everything cancels, like the sections of a collapsing telescope.\n\nIf every term has the form $a_k = b_k - b_{k+1}$, then\n\n$$s_n = (b_1 - b_2) + (b_2 - b_3) + \\cdots + (b_n - b_{n+1}) = b_1 - b_{n+1}.$$\n\nEach $-b_{k+1}$ cancels the $+b_{k+1}$ at the start of the next bracket. Only the first piece and the last piece survive. This cancellation is fine because $s_n$ is a **finite** sum.\n\n**Example.** $\\frac{1}{k(k+1)} = \\frac{1}{k} - \\frac{1}{k+1}$. Check: $\\frac1k - \\frac{1}{k+1} = \\frac{(k+1) - k}{k(k+1)} = \\frac{1}{k(k+1)}$. So $b_k = \\frac1k$ and $s_n = 1 - \\frac{1}{n+1}$.\n\n**Check with numbers.** $s_3 = \\frac12 + \\frac16 + \\frac{1}{12} = \\frac{6 + 2 + 1}{12} = \\frac34$, and the formula gives $1 - \\frac14 = \\frac34$. They agree.\n\n**A common slip.** The surviving last piece is $b_{n+1}$, not $b_n$. Writing $s_n = 1 - \\frac1n$ would give $s_1 = 0$, but $s_1 = a_1 = \\frac12$. Always test your formula at $n = 1$.\n\nThe steps below finish the job."
+        },
+        {
+          "type": "steps",
+          "title": "Prove that $\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)} = 1$",
+          "steps": [
+            {
+              "title": "Split each term",
+              "md": "For every $k \\ge 1$, $\\displaystyle\\frac{1}{k(k+1)} = \\frac1k - \\frac{1}{k+1}$, as checked above by putting the right side over a common denominator."
+            },
+            {
+              "title": "Write out the partial sum",
+              "md": "$$s_n = \\left(1 - \\tfrac12\\right) + \\left(\\tfrac12 - \\tfrac13\\right) + \\cdots + \\left(\\tfrac1n - \\tfrac{1}{n+1}\\right).$$\n\nWe work with $s_n$, a **finite** sum, not with the infinite series. Cancelling is only safe in a finite sum."
+            },
+            {
+              "title": "Cancel",
+              "md": "Every middle fraction appears once with $+$ and once with $-$, so $s_n = 1 - \\dfrac{1}{n+1}$."
+            },
+            {
+              "title": "Take the limit",
+              "md": "Since $\\frac{1}{n+1} \\to 0$, we get $s_n \\to 1 - 0 = 1$. By the definition, the series converges and its sum is $1$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we cancel inside $s_n$ and then take a limit, instead of cancelling the infinite series directly?",
+          "options": [
+            "It makes no difference; cancelling the infinite series directly is just as valid",
+            "Because the infinite sum is defined as $\\lim s_n$, and cancelling infinitely many terms is exactly the kind of step that gave two answers for Grandi's series",
+            "Because $s_n$ is easier to type",
+            "Because the series diverges, so only $s_n$ exists"
+          ],
+          "correct": 1,
+          "explanation": "The only meaning an infinite sum has is the limit of its partial sums. Regrouping infinitely many terms produced $0$ and $1$ for Grandi's series, so it is not a safe move. It does matter, the series converges (to $1$), and convenience has nothing to do with it."
+        },
+        {
+          "type": "text",
+          "md": "## Why brackets can mislead\n\nNow we can explain Grandi's paradox. Putting brackets into a series, without changing the order of the terms, means you only look at **some** of the partial sums.\n\nFor Grandi's series the partial sums are $1, 0, 1, 0, 1, 0, \\dots$\n- Bracketing as $(1 - 1) + (1 - 1) + \\cdots$ keeps only $s_2, s_4, s_6, \\dots$, which are $0, 0, 0, \\dots$\n- Bracketing as $1 + (-1 + 1) + \\cdots$ keeps only $s_1, s_3, s_5, \\dots$, which are $1, 1, 1, \\dots$\n\nEach bracketed version picks out a **subsequence** of $(s_n)$ (lesson 3.9). A subsequence can converge even when the whole sequence does not.\n\n**The safe direction.** If the original series converges to $S$, then every subsequence of $(s_n)$ also converges to $S$ (lesson 3.9). So inserting brackets into a **convergent** series never changes its sum.\n\n**The unsafe direction.** If a bracketed version converges, that tells you nothing about the original series. Brackets are a tool for series you already know converge, not a way to prove convergence.\n\n**Changing finitely many terms.** If you change $a_1, \\dots, a_N$, then every $s_n$ with $n \\ge N$ moves by the same fixed amount. So convergence is not affected, though the sum may change."
+        },
+        {
+          "type": "check",
+          "question": "You know that $\\sum_{n=1}^{\\infty} a_n$ converges to $5$. You group the terms in pairs, $(a_1 + a_2) + (a_3 + a_4) + \\cdots$, without reordering. What happens?",
+          "options": [
+            "The grouped series converges to $5$",
+            "The grouped series converges, but possibly to a different number",
+            "The grouped series might diverge",
+            "The grouped series converges to $\\frac52$"
+          ],
+          "correct": 0,
+          "explanation": "The partial sums of the grouped series are $s_2, s_4, s_6, \\dots$, a subsequence of $(s_n)$. A subsequence of a sequence converging to $5$ also converges to $5$. Brackets only cause trouble when the original series diverges. Grouping in pairs does not halve the sum, because no term is lost."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Sigma notation $\\sum_{k=m}^{n} a_k$",
+              "back": "The sum $a_m + a_{m+1} + \\cdots + a_n$, which has $n - m + 1$ terms.\n\n*Example:* $\\sum_{k=0}^{3} 2^k = 1 + 2 + 4 + 8 = 15$."
+            },
+            {
+              "front": "Index (dummy variable)",
+              "back": "The counting letter in a sum. Renaming it **does not change** the sum.\n\n*Example:* $\\sum_{k=1}^{3} k^2 = \\sum_{j=1}^{3} j^2 = 14$."
+            },
+            {
+              "front": "Partial sum $s_n$",
+              "back": "The sum of the **first $n$ terms**: $s_n = a_1 + \\cdots + a_n$.\n\n*Example:* for $a_k = \\frac{1}{2^k}$, $s_3 = \\frac78$."
+            },
+            {
+              "front": "Infinite series $\\sum_{n=1}^{\\infty} a_n$",
+              "back": "The expression $a_1 + a_2 + \\cdots$, studied through its sequence of partial sums $(s_n)$.\n\n*Example:* $\\sum_{n=1}^{\\infty} \\frac{3}{10^n}$ is $0.333\\ldots$"
+            },
+            {
+              "front": "Convergent series",
+              "back": "A series whose partial sums have a **finite limit** $S$, its sum.\n\n*Example:* $\\sum \\frac{1}{n(n+1)} = 1$, because $s_n = 1 - \\frac{1}{n+1} \\to 1$."
+            },
+            {
+              "front": "Divergent series",
+              "back": "A series whose partial sums have **no finite limit**. It has no sum.\n\n*Example:* $1 - 1 + 1 - \\cdots$, with $s_n = 1, 0, 1, 0, \\dots$"
+            },
+            {
+              "front": "Telescoping series",
+              "back": "Terms of the form $b_k - b_{k+1}$, so $s_n = b_1 - b_{n+1}$ after **cancelling**.\n\n*Example:* $\\frac{1}{k(k+1)} = \\frac1k - \\frac{1}{k+1}$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A computer finds $s_{1000} = 1.9990$ and $s_{1000000} = 1.999999$ for a certain series. What has been shown?",
+          "options": [
+            "The series converges to $2$",
+            "The series diverges, because $s_n$ never reaches $2$",
+            "Nothing certain: the values suggest the sum is $2$, but convergence needs a proof about all $n$",
+            "The sum is $1.999999$"
+          ],
+          "correct": 2,
+          "explanation": "As in lesson 1.1, finitely many values never prove a claim about all $n$; the partial sums could still drift away later. Not reaching $2$ is no problem: $s_n = 2 - \\frac{1}{2^n}$ never equals $2$ yet converges to $2$. And a single partial sum is not the sum of the series."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove that $\\sum_{n=1}^{\\infty} \\left(\\frac{1}{\\sqrt n} - \\frac{1}{\\sqrt{n+1}}\\right) = 1$.",
+          "items": [
+            "The terms have the form $b_k - b_{k+1}$ with $b_k = \\frac{1}{\\sqrt k}$.",
+            "So the partial sums telescope: $s_n = \\left(1 - \\frac{1}{\\sqrt2}\\right) + \\cdots + \\left(\\frac{1}{\\sqrt n} - \\frac{1}{\\sqrt{n+1}}\\right) = 1 - \\frac{1}{\\sqrt{n+1}}$.",
+            "Since $\\frac{1}{\\sqrt{n+1}} \\to 0$, we get $s_n \\to 1$.",
+            "By definition, the series converges and its sum is $1$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\sum \\frac{1}{(n+1)(n+2)}$",
+          "problem": "Find $\\displaystyle\\sum_{n=1}^{\\infty} \\frac{1}{(n+1)(n+2)}$, or show it diverges. Split the term, find $s_n$, test it at $n = 1$, then take the limit.",
+          "solution": "**Split.** $\\displaystyle\\frac{1}{(k+1)(k+2)} = \\frac{1}{k+1} - \\frac{1}{k+2}$, since the right side is $\\frac{(k+2) - (k+1)}{(k+1)(k+2)}$.\n\n**Telescope.**\n$$s_n = \\left(\\tfrac12 - \\tfrac13\\right) + \\left(\\tfrac13 - \\tfrac14\\right) + \\cdots + \\left(\\tfrac{1}{n+1} - \\tfrac{1}{n+2}\\right) = \\frac12 - \\frac{1}{n+2}.$$\n\n**Test at $n = 1$.** $s_1 = a_1 = \\frac{1}{2 \\cdot 3} = \\frac16$, and the formula gives $\\frac12 - \\frac13 = \\frac16$. They agree.\n\n**Limit.** $\\frac{1}{n+2} \\to 0$, so $s_n \\to \\frac12$. The series converges and its sum is $\\frac12$.\n\n**Check your version:** did your first surviving piece come from $k = 1$ (that is, $\\frac12$, not $1$)? Did you work with $s_n$ before taking the limit? Did you state the conclusion using the definition?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is an infinite series just \"adding infinitely many numbers\"?",
+              "a": "No. It is the limit of the sequence of partial sums $(s_n)$. Every property of series must be proved from that definition, because finite-sum habits can fail, as Grandi's series shows."
+            },
+            {
+              "q": "Is $0.999\\ldots$ really equal to $1$?",
+              "a": "Yes. $0.999\\ldots$ means $\\sum_{n=1}^{\\infty} \\frac{9}{10^n}$, whose partial sums are $s_n = 1 - \\frac{1}{10^n}$. These converge to $1$, so the sum is exactly $1$. No partial sum equals $1$, but the series is the limit, not any one partial sum."
+            },
+            {
+              "q": "Does the order of the terms matter?",
+              "a": "It can. For some convergent series, rearranging the terms changes the sum or even makes the series diverge (Riemann's rearrangement theorem, lesson 4.13). For series of nonnegative terms, and more generally absolutely convergent series (lesson 4.12), the order does not matter."
+            },
+            {
+              "q": "Does changing finitely many terms affect convergence?",
+              "a": "No. Changing $a_1, \\ldots, a_N$ shifts every $s_n$ with $n \\ge N$ by the same constant, so convergence is unaffected. The sum, however, may change."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $\\sum_{k=m}^{n} a_k$ means $a_m + \\cdots + a_n$; the index is a dummy letter.\n- The **partial sum** $s_n = a_1 + \\cdots + a_n$ is a finite sum, so ordinary algebra applies to it.\n- $\\sum_{n=1}^{\\infty} a_n = S$ **means** $s_n \\to S$. If $(s_n)$ has no finite limit, the series diverges and has no sum.\n- In a **telescoping** series, $s_n = b_1 - b_{n+1}$; test your formula at $n = 1$.\n- Brackets are safe in a convergent series but can make a divergent one look convergent, as in $1 - 1 + 1 - \\cdots$"
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "For $\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)}$, the partial sum $s_n$ equals:",
+          "options": [
+            "$\\frac{1}{n+1}$",
+            "$1 - \\frac{1}{n}$",
+            "$\\frac{n}{n+1}$",
+            "$\\frac{1}{n(n+1)}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Telescoping gives $s_n = 1 - \\frac{1}{n+1} = \\frac{n}{n+1}$. $1 - \\frac1n$ keeps the wrong last piece (it gives $s_1 = 0$ instead of $\\frac12$), $\\frac{1}{n+1}$ is only the part that is subtracted, and $\\frac{1}{n(n+1)}$ is the $n$-th term, not the sum of the first $n$ terms."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If a series converges, then inserting brackets (grouping consecutive terms without reordering) gives a series that converges to the same sum.",
+          "answer": [
+            true
+          ],
+          "explanation": "The partial sums of the bracketed series form a subsequence of $(s_n)$, and every subsequence of a convergent sequence has the same limit."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If some bracketing of a series converges, then the original series converges.",
+          "answer": [
+            false
+          ],
+          "explanation": "Grandi's series $1 - 1 + 1 - \\cdots$ diverges, but $(1-1)+(1-1)+\\cdots$ converges to $0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these series converge?",
+          "options": [
+            "$\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)}$",
+            "$\\sum_{n=1}^{\\infty} (-1)^n$",
+            "$\\sum_{n=1}^{\\infty} 0$",
+            "$\\sum_{n=1}^{\\infty} 1$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "The first converges to $1$ and the third to $0$. For $\\sum(-1)^n$ the partial sums alternate between $-1$ and $0$; for $\\sum 1$ we have $s_n = n \\to \\infty$."
+        },
+        {
+          "type": "short",
+          "prompt": "Compute the sum $\\displaystyle\\sum_{n=1}^{\\infty} \\left( \\frac{1}{n} - \\frac{1}{n+1} \\right)$.",
+          "answer": [
+            "1",
+            "one"
+          ],
+          "explanation": "The partial sums are $s_n = 1 - \\frac{1}{n+1} \\to 1$."
+        },
+        {
+          "prompt": "A convergent series has its first $100$ terms replaced by other real numbers. Which statement is correct?",
+          "options": [
+            "It must now diverge",
+            "It still converges, but the sum may change",
+            "It still converges to the same sum",
+            "Its convergence can no longer be determined"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "For $n \\ge 100$ every partial sum changes by the same constant $c$ (the total change in the first $100$ terms), so the new partial sums converge to $S + c$. The sum stays the same only if $c = 0$."
+        },
+        {
+          "type": "short",
+          "prompt": "Compute $\\displaystyle\\sum_{k=1}^{4} k^2$.",
+          "answer": [
+            "30"
+          ],
+          "explanation": "$1 + 4 + 9 + 16 = 30$."
+        },
+        {
+          "type": "short",
+          "prompt": "How many terms does the sum $\\displaystyle\\sum_{k=3}^{10} a_k$ have?",
+          "answer": [
+            "8",
+            "eight"
+          ],
+          "explanation": "The index takes the values $3, 4, \\dots, 10$, which is $10 - 3 + 1 = 8$ values. A common slip is $10 - 3 = 7$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these are equal to $\\displaystyle\\sum_{k=1}^{3} k^2$? Select all that apply.",
+          "options": [
+            "$\\sum_{j=1}^{3} j^2$",
+            "$1 + 4 + 9$",
+            "$\\sum_{k=0}^{2} (k+1)^2$",
+            "$(1 + 2 + 3)^2$",
+            "$\\sum_{k=1}^{3} 2k$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "All three correct options equal $1 + 4 + 9 = 14$: renaming the index changes nothing, and $\\sum_{k=0}^{2}(k+1)^2$ runs through the same squares with a shifted index. $(1 + 2 + 3)^2 = 36$: the square of a sum is not the sum of the squares. $\\sum_{k=1}^{3} 2k = 12$ doubles instead of squaring."
+        },
+        {
+          "type": "short",
+          "prompt": "For $\\sum_{n=1}^{\\infty} \\frac{1}{2^n}$, what is the partial sum $s_3$? Give a fraction or a decimal.",
+          "answer": [
+            "7/8",
+            "0.875"
+          ],
+          "explanation": "$s_3 = \\frac12 + \\frac14 + \\frac18 = \\frac78$, which matches $s_n = 1 - \\frac{1}{2^n}$."
+        },
+        {
+          "prompt": "What does the statement $\\sum_{n=1}^{\\infty} a_n = S$ mean?",
+          "options": [
+            "$a_n \\to S$ as $n \\to \\infty$",
+            "The partial sums $s_n = a_1 + \\cdots + a_n$ converge to $S$",
+            "$s_n = S$ for some large $n$",
+            "$s_n \\le S$ for every $n$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "By definition the sum of a series is the limit of its partial sums. The terms $a_n$ tending to $S$ is a different statement (for a convergent series the terms actually tend to $0$, lesson 4.4). No partial sum need ever equal $S$, and $s_n \\le S$ can fail for series with negative terms."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The series $\\sum_{n=1}^{\\infty} \\frac{9}{10^n}$, which is $0.999\\ldots$, converges to $1$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Its partial sums are $s_n = 1 - \\frac{1}{10^n}$, which converge to $1$. So $0.999\\ldots = 1$ exactly."
+        }
+      ]
+    },
+    {
+      "slug": "4-2-partial-sums",
+      "title": "Partial sums",
+      "summary": "A series is really a sequence in disguise: the sequence $(s_n)$ of partial sums.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "In this lesson",
+          "md": "**You will learn to:**\n- compute partial sums, and recover the terms from the partial sums\n- see why every question about a series is a question about a sequence\n- prove that a series of nonnegative terms converges by bounding its partial sums\n- spot why small terms alone do not make a series converge\n\n**You need:** series, partial sums and $\\sum$ notation (lesson 4.1); increasing sequences (lesson 3.7); the monotone convergence theorem (lesson 3.8); and the supremum $\\sup$ of a set (lesson 2.9)."
+        },
+        {
+          "type": "text",
+          "md": "## The sequence of partial sums\n\nIn lesson 4.1 we defined $\\sum_{n=1}^{\\infty} a_n$ to mean $\\lim_{n\\to\\infty} s_n$. So to study a series, you study one sequence: the **sequence of partial sums** $(s_n) = (s_1, s_2, s_3, \\dots)$. This matters because Level 3 gave you many tools for sequences, and every one of them now works for series.\n\nThink of $s_n$ as a **running total**. Each new term is added to the previous total:\n\n$$s_1 = a_1, \\qquad s_n = s_{n-1} + a_n \\quad (n \\ge 2).$$\n\n**Examples:**\n- $a_n = n$: the running totals are $1, 3, 6, 10, 15, \\dots$, and in general $s_n = \\frac{n(n+1)}{2}$ (the formula you can prove by induction, lesson 1.7). These grow without bound, so $\\sum n$ diverges.\n- $a_n = \\frac{1}{2^n}$: the totals are $\\frac12, \\frac34, \\frac78, \\dots$, with $s_n = 1 - \\frac{1}{2^n}$.\n- $a_n = (-1)^n$: the totals are $-1, 0, -1, 0, \\dots$ The partial sums stay small, yet they never settle.\n- $a_n = \\frac{1}{n}$: the totals are $1, \\frac32, \\frac{11}{6}, \\frac{25}{12}, \\dots$ There is no neat closed formula, which is common. We will need ways to study $(s_n)$ without one.\n\nDo not mix up the two sequences. $(a_n)$ lists the **terms**; $(s_n)$ lists the **running totals**. Convergence of the series is about $(s_n)$."
+        },
+        {
+          "type": "check",
+          "question": "For $a_n = \\frac{1}{n}$, what is the partial sum $s_4$?",
+          "options": [
+            "$\\frac14$",
+            "$\\frac{25}{12}$",
+            "$\\frac{11}{6}$",
+            "$\\frac{10}{4}$"
+          ],
+          "correct": 1,
+          "explanation": "$s_4 = 1 + \\frac12 + \\frac13 + \\frac14 = \\frac{12 + 6 + 4 + 3}{12} = \\frac{25}{12}$. $\\frac14$ is the term $a_4$, not the total; $\\frac{11}{6}$ is $s_3$; and $\\frac{10}{4}$ adds the numerators $1 + 2 + 3 + 4$ over the last denominator, which is not how fractions add."
+        },
+        {
+          "type": "text",
+          "md": "## Going back from partial sums to terms\n\nThe running total also works backwards. The $n$-th term is how much the total went up at step $n$:\n\n$$a_1 = s_1, \\qquad a_n = s_n - s_{n-1} \\quad (n \\ge 2).$$\n\n**Examples:**\n- $s_n = n^2$. Then $a_1 = 1$ and $a_n = n^2 - (n-1)^2 = 2n - 1$. So $1 + 3 + 5 + \\cdots + (2n - 1) = n^2$: adding the first $n$ odd numbers gives $n^2$.\n- $s_n = \\frac{n}{n+1}$. Then $a_n = \\frac{n}{n+1} - \\frac{n-1}{n} = \\frac{1}{n(n+1)}$, the telescoping series from lesson 4.1. Here $a_1 = s_1 = \\frac12$ happens to fit the same formula.\n- **Edge case:** $s_n = 2 - \\frac1n$. For $n \\ge 2$, $a_n = \\frac{1}{n-1} - \\frac1n = \\frac{1}{n(n-1)}$. That formula makes no sense at $n = 1$ (it divides by $0$), so $a_1$ must be found separately: $a_1 = s_1 = 1$. Always treat $a_1$ on its own; there is no $s_0$ to subtract.\n\n**What this shows.** Terms determine partial sums, and partial sums determine terms. So every sequence $(s_n)$ is the sequence of partial sums of exactly one series. Series and sequences are two views of the same object, and\n\n$$\\sum a_n \\text{ converges} \\iff (s_n) \\text{ converges}.$$\n\nSo limit laws (lesson 3.6), monotone convergence (lesson 3.8) and the Cauchy criterion (lesson 3.12) all apply to series through $(s_n)$."
+        },
+        {
+          "type": "check",
+          "question": "If the partial sums of a series are $s_n = \\frac{n}{n+1}$, what is $a_n$ for $n \\ge 2$?",
+          "options": [
+            "$\\frac{1}{n+1}$",
+            "$\\frac{1}{n(n+1)}$",
+            "$\\frac{n}{n+1}$",
+            "$\\frac{-1}{n(n+1)}$"
+          ],
+          "correct": 1,
+          "explanation": "$a_n = s_n - s_{n-1} = \\frac{n}{n+1} - \\frac{n-1}{n} = \\frac{n^2 - (n^2 - 1)}{n(n+1)} = \\frac{1}{n(n+1)}$. $\\frac{n}{n+1}$ confuses the term with the partial sum, $\\frac{-1}{n(n+1)}$ subtracts in the wrong order, and $\\frac{1}{n+1}$ is $1 - s_n$, the distance still to go."
+        },
+        {
+          "type": "text",
+          "md": "## Series with nonnegative terms\n\nWhen every term is $\\ge 0$, something useful happens. Adding a nonnegative number never lowers the total:\n\n$$s_{n+1} = s_n + a_{n+1} \\ge s_n.$$\n\nSo $(s_n)$ is **increasing** (lesson 3.7). Recall the monotone convergence theorem (lesson 3.8): an increasing sequence that is bounded above converges, and its limit is its supremum (its least upper bound, lesson 2.9). That gives:\n\n**Theorem.** If $a_n \\ge 0$ for all $n$, then\n$$\\sum_{n=1}^{\\infty} a_n \\text{ converges} \\iff (s_n) \\text{ is bounded above},$$\nand in that case $\\sum a_n = \\sup_n s_n$. If $(s_n)$ is not bounded above, then $s_n \\to +\\infty$, and we write $\\sum a_n = +\\infty$. This is shorthand for \"diverges, because the totals grow without bound\"; $+\\infty$ is not a sum.\n\n**Examples:**\n- $\\sum \\frac{1}{2^n}$: every $s_n = 1 - \\frac{1}{2^n} < 1$, so it converges, to $\\sup s_n = 1$.\n- $\\sum 1$: $s_n = n$ is not bounded above, so $\\sum 1 = +\\infty$.\n\n**Non-example.** $\\sum (-1)^n$ has bounded partial sums ($-1, 0, -1, 0, \\dots$), yet it diverges. The theorem does not apply, because the terms are not all $\\ge 0$, so $(s_n)$ is not increasing. Bounded is only enough when the totals can move in one direction.\n\nIn practice this turns \"does it converge?\" into \"can I find one number $M$ with $s_n \\le M$ for every $n$?\", and you do not need to know the sum."
+        },
+        {
+          "type": "check",
+          "question": "A series has positive terms, and you have shown that $s_n < 10$ for every $n$. What can you conclude?",
+          "options": [
+            "The series converges, and its sum is $10$",
+            "The series converges, and its sum is at most $10$",
+            "Nothing yet: bounded partial sums are not enough",
+            "The series diverges, because $s_n$ never reaches $10$"
+          ],
+          "correct": 1,
+          "explanation": "Positive terms make $(s_n)$ increasing, and it is bounded above by $10$, so it converges to $\\sup s_n \\le 10$. The sum need not equal the bound you found (any bigger bound would also work). Bounded partial sums are not enough in general, but they are with nonnegative terms. Never reaching $10$ says nothing about divergence."
+        },
+        {
+          "type": "text",
+          "md": "## How to find a bound: compare with a telescoping sum\n\nHow do you find a bound for $s_n$ when you have no formula for it? A good trick: compare each term with a slightly **bigger** term that telescopes, because telescoping sums you can add up exactly (lesson 4.1).\n\nTake $\\sum \\frac{1}{n^2}$. We cannot write $s_n$ in closed form. But $k^2 \\ge k(k-1)$, so $\\frac{1}{k^2} \\le \\frac{1}{k(k-1)}$, and the right-hand side is $\\frac{1}{k-1} - \\frac1k$, which telescopes. Adding these bigger terms gives an upper bound for $s_n$.\n\n**Why the terms must be compared the right way round.** To bound $s_n$ **above**, each term must be replaced by something **at least as big**. Replacing $\\frac{1}{k^2}$ by something smaller would give a lower bound, which says nothing about convergence.\n\n**The first term needs care.** $\\frac{1}{k(k-1)}$ is undefined at $k = 1$, so we keep $a_1 = 1$ aside and compare only from $k = 2$ onwards. It is common for a comparison to work only from some point on; you add the early terms separately.\n\nThe steps below carry this out. Lesson 4.7 turns this idea into the general **comparison test**."
+        },
+        {
+          "type": "steps",
+          "title": "Prove that $\\sum_{n=1}^{\\infty} \\frac{1}{n^2}$ converges, with sum at most $2$",
+          "steps": [
+            {
+              "title": "Reduce to a bound",
+              "md": "The terms are positive, so $(s_n)$ is increasing. By the theorem above it is enough to find one upper bound for every $s_n$."
+            },
+            {
+              "title": "Compare each term from k = 2",
+              "md": "For $k \\ge 2$, $k^2 \\ge k(k-1) > 0$, so\n$$\\frac{1}{k^2} \\le \\frac{1}{k(k-1)} = \\frac{1}{k-1} - \\frac{1}{k}.$$\nWe start at $k = 2$ because $\\frac{1}{k(k-1)}$ is undefined at $k = 1$."
+            },
+            {
+              "title": "Add up and telescope",
+              "md": "For $n \\ge 2$, keep $a_1 = 1$ aside:\n$$s_n = 1 + \\sum_{k=2}^{n} \\frac{1}{k^2} \\le 1 + \\sum_{k=2}^{n} \\left(\\frac{1}{k-1} - \\frac1k\\right) = 1 + \\left(1 - \\frac1n\\right) < 2.$$\nAlso $s_1 = 1 < 2$."
+            },
+            {
+              "title": "Conclude",
+              "md": "$(s_n)$ is increasing and bounded above by $2$, so it converges, and $\\sum \\frac{1}{n^2} = \\sup s_n \\le 2$. $\\blacksquare$\n\n(The exact sum is $\\frac{\\pi^2}{6} \\approx 1.645$, a famous result of Euler that needs much more work.)"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why is the comparison $\\frac{1}{k^2} \\le \\frac{1}{k(k-1)}$ used, rather than $\\frac{1}{k^2} \\ge \\frac{1}{k(k+1)}$?",
+          "options": [
+            "Because $\\frac{1}{k(k+1)}$ does not telescope",
+            "Both would work equally well",
+            "Because to bound $s_n$ above, each term must be replaced by something at least as big; a smaller comparison only gives a lower bound",
+            "Because $\\frac{1}{k(k-1)}$ is defined at $k = 1$"
+          ],
+          "correct": 2,
+          "explanation": "$\\frac{1}{k^2} \\ge \\frac{1}{k(k+1)}$ is true and does telescope, but it shows $s_n \\ge 1 - \\frac{1}{n+1}$, a lower bound, which cannot prove convergence. And $\\frac{1}{k(k-1)}$ is **undefined** at $k = 1$, which is exactly why the first term is kept aside."
+        },
+        {
+          "type": "text",
+          "md": "## Small terms are not enough\n\nIt is tempting to think: \"the terms shrink to $0$, so the total must settle down.\" The next example shows this is false.\n\nTake $a_n = \\ln\\left(1 + \\frac1n\\right)$. As $n$ grows, $1 + \\frac1n \\to 1$, so $a_n \\to \\ln 1 = 0$. The terms shrink to $0$. Now look at the partial sums. Since $\\ln\\left(1 + \\frac1k\\right) = \\ln\\frac{k+1}{k} = \\ln(k+1) - \\ln k$, the series telescopes:\n\n$$s_n = (\\ln 2 - \\ln 1) + (\\ln 3 - \\ln 2) + \\cdots + (\\ln(n+1) - \\ln n) = \\ln(n+1).$$\n\nAnd $\\ln(n+1)$ grows without bound, so the series diverges to $+\\infty$. Each term is tiny, but there are so many of them that the total keeps growing, slowly but forever.\n\n**Compare** $\\frac{1}{n^2}$, whose terms also tend to $0$ and whose series converges (as you just proved). So knowing $a_n \\to 0$ cannot decide convergence on its own: what matters is how the **totals** $s_n$ behave.\n\nYou met the same thing in lesson 3.12: the harmonic sums $H_n = 1 + \\frac12 + \\cdots + \\frac1n$ diverge, even though $\\frac1n \\to 0$. Lesson 4.4 shows that $a_n \\to 0$ is **necessary** for convergence, and lesson 4.6 studies $\\sum \\frac1n$ in detail."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each series to the formula for its partial sum $s_n$.",
+          "pairs": [
+            {
+              "left": "$\\sum_{k=1}^{\\infty} k$",
+              "right": "$s_n = \\frac{n(n+1)}{2}$"
+            },
+            {
+              "left": "$\\sum_{k=1}^{\\infty} \\ln\\left(1 + \\frac1k\\right)$",
+              "right": "$s_n = \\ln(n+1)$"
+            },
+            {
+              "left": "$\\sum_{k=1}^{\\infty} \\frac{1}{k(k+1)}$",
+              "right": "$s_n = \\frac{n}{n+1}$"
+            },
+            {
+              "left": "$\\sum_{k=1}^{\\infty} \\frac{1}{2^k}$",
+              "right": "$s_n = 1 - \\frac{1}{2^n}$"
+            },
+            {
+              "left": "$\\sum_{k=1}^{\\infty} (2k - 1)$",
+              "right": "$s_n = n^2$"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Sequence of partial sums",
+              "back": "The running totals $s_1, s_2, s_3, \\dots$ of a series. The series converges **exactly when** this sequence does.\n\n*Example:* for $\\sum \\frac{1}{2^k}$: $\\frac12, \\frac34, \\frac78, \\dots$"
+            },
+            {
+              "front": "Recovering the terms",
+              "back": "$a_1 = s_1$ and $a_n = s_n - s_{n-1}$ for $n \\ge 2$. Treat **$a_1$ separately**.\n\n*Example:* $s_n = n^2$ gives $a_n = 2n - 1$."
+            },
+            {
+              "front": "Nonnegative terms theorem",
+              "back": "If all $a_n \\ge 0$, then $(s_n)$ is increasing, so $\\sum a_n$ converges **iff** $(s_n)$ is bounded above; the sum is $\\sup s_n$.\n\n*Example:* $s_n < 2$ for $\\sum \\frac{1}{n^2}$."
+            },
+            {
+              "front": "$\\sum a_n = +\\infty$",
+              "back": "Shorthand for: the terms are nonnegative and the partial sums grow **without bound**. The series diverges.\n\n*Example:* $\\sum 1$, where $s_n = n$."
+            },
+            {
+              "front": "Bounded partial sums",
+              "back": "Enough for convergence **only** when the terms are nonnegative.\n\n*Example:* $\\sum (-1)^n$ has $s_n \\in \\{-1, 0\\}$ but diverges."
+            },
+            {
+              "front": "Terms tending to zero",
+              "back": "Does **not** make a series converge on its own.\n\n*Example:* $\\ln\\left(1 + \\frac1n\\right) \\to 0$, yet $s_n = \\ln(n+1) \\to \\infty$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A classmate says: \"$\\sum (-1)^n$ converges, because its partial sums are bounded between $-1$ and $0$.\" What is wrong?",
+          "options": [
+            "Nothing: bounded partial sums always mean convergence",
+            "The partial sums are not actually bounded",
+            "The bounded-implies-convergent theorem needs nonnegative terms, so that $(s_n)$ is increasing; here $s_n$ jumps between $-1$ and $0$ and has no limit",
+            "The series converges, but to $-\\frac12$, not to a bound"
+          ],
+          "correct": 2,
+          "explanation": "The theorem relies on monotone convergence, which needs $(s_n)$ to move in one direction. With terms of both signs, bounded partial sums can oscillate forever. They are bounded, so the second option is wrong; and $-\\frac12$ is only the average of the partial sums, not a limit."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove that $\\sum_{n=1}^{\\infty} \\frac{1}{n \\cdot 2^n}$ converges.",
+          "items": [
+            "The terms are positive, so $(s_n)$ is increasing; it is enough to bound it above.",
+            "For every $k \\ge 1$, $k \\cdot 2^k \\ge 2^k$, so $\\frac{1}{k \\cdot 2^k} \\le \\frac{1}{2^k}$.",
+            "Adding up, $s_n \\le \\sum_{k=1}^{n} \\frac{1}{2^k} = 1 - \\frac{1}{2^n} < 1$ for every $n$.",
+            "So $(s_n)$ is increasing and bounded above by $1$; by monotone convergence the series converges, with sum at most $1$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\sum \\frac{1}{n!}$",
+          "problem": "Recall $n! = 1 \\cdot 2 \\cdot 3 \\cdots n$ (read \"$n$ factorial\"). Prove that $\\displaystyle\\sum_{n=1}^{\\infty} \\frac{1}{n!}$ converges and that its sum is at most $2$. Hint: compare $n!$ with $2^{n-1}$.",
+          "solution": "**Reduce to a bound.** The terms are positive, so $(s_n)$ is increasing, and it is enough to bound it above.\n\n**Compare.** $n! = 1 \\cdot 2 \\cdot 3 \\cdots n$ contains the $n - 1$ factors $2, 3, \\dots, n$, each at least $2$. So $n! \\ge 2^{n-1}$, and therefore\n$$\\frac{1}{n!} \\le \\frac{1}{2^{n-1}}.$$\n(Check at $n = 1$: $1! = 1 = 2^0$. Fine.)\n\n**Add up.**\n$$s_n \\le 1 + \\frac12 + \\frac14 + \\cdots + \\frac{1}{2^{n-1}} = 2 - \\frac{1}{2^{n-1}} < 2.$$\n\n**Conclude.** $(s_n)$ is increasing and bounded above by $2$, so the series converges and $\\sum \\frac{1}{n!} \\le 2$. (Its exact value is $e - 1 \\approx 1.718$.)\n\n**Check your version:** did you say why the terms are positive and why that matters? Did your comparison go the right way (each term replaced by something **bigger**)? Did you check the comparison at $n = 1$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Does \"$\\sum a_n = +\\infty$\" mean the series converges to infinity?",
+              "a": "No. Convergence means a **finite** limit. $\\sum a_n = +\\infty$ is a short way of saying the series diverges in a particular way: the partial sums grow beyond every bound. We use it mainly for series of nonnegative terms, where it is the only way to diverge."
+            },
+            {
+              "q": "What if the terms are nonnegative only from some point on?",
+              "a": "The theorem still works. If $a_n \\ge 0$ for $n \\ge N$, then $(s_n)$ is increasing from $n = N$ onwards, and the first few terms only add a fixed constant. So the series converges iff $(s_n)$ is bounded above."
+            },
+            {
+              "q": "Is the sum always equal to the bound I found?",
+              "a": "No. You found **an** upper bound; the sum is the **least** upper bound, $\\sup s_n$. For $\\sum \\frac{1}{n^2}$ we proved $s_n < 2$, but the sum is about $1.645$."
+            },
+            {
+              "q": "Can partial sums go down and still converge?",
+              "a": "Yes, if some terms are negative. For example $\\sum \\frac{(-1)^{n+1}}{n} = 1 - \\frac12 + \\frac13 - \\cdots$ has partial sums that go up and down, and it converges (lesson 4.11). The \"bounded is enough\" shortcut just does not apply there."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A series is studied through its **sequence of partial sums**: $s_1 = a_1$, $s_n = s_{n-1} + a_n$.\n- Terms are recovered by $a_1 = s_1$ and $a_n = s_n - s_{n-1}$ for $n \\ge 2$; every sequence is the partial sums of exactly one series.\n- If all $a_n \\ge 0$, then $(s_n)$ is increasing, so the series converges **iff** $(s_n)$ is bounded above, and the sum is $\\sup s_n$.\n- To bound $s_n$ above, compare each term with a **bigger** term you can sum, such as a telescoping one.\n- Bounded partial sums are not enough when terms change sign, and terms tending to $0$ are never enough on their own."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "A series has partial sums $s_n = 2 - \\frac1n$ for $n \\ge 1$. Which statement is correct?",
+          "options": [
+            "$a_1 = 2$ and the sum is $2$",
+            "$a_1 = 1$ and the series diverges",
+            "$a_1 = 1$ and the sum is $1$",
+            "$a_1 = 1$ and the sum is $2$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$a_1 = s_1 = 2 - 1 = 1$, and $s_n \\to 2$, so the sum is $2$. The sum is the limit of $s_n$, not the first term, and $(s_n)$ does converge."
+        },
+        {
+          "type": "short",
+          "prompt": "A series has partial sums $s_n = 3 - 2^{-n}$. What is the sum of the series?",
+          "answer": [
+            "3",
+            "three"
+          ],
+          "explanation": "The sum is $\\lim s_n = 3 - 0 = 3$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A series with nonnegative terms converges if and only if its sequence of partial sums is bounded.",
+          "answer": [
+            true
+          ],
+          "explanation": "With $a_n \\ge 0$ the partial sums increase, so by the monotone convergence theorem they converge iff they are bounded above (they are automatically bounded below by $s_1$)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Any series whose partial sums are bounded converges.",
+          "answer": [
+            false
+          ],
+          "explanation": "$\\sum_{n=1}^{\\infty} (-1)^n$ has partial sums $-1, 0, -1, 0, \\ldots$, which are bounded, but the series diverges. Boundedness suffices only when the terms are nonnegative."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Suppose $a_n \\ge 0$ for all $n$. Which statements must be true?",
+          "options": [
+            "$(s_n)$ is increasing",
+            "$(s_n)$ is bounded",
+            "If the series converges to $S$, then $s_n \\le S$ for every $n$",
+            "$s_n \\to 0$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "Nonnegative terms make $(s_n)$ increasing, and an increasing convergent sequence lies below its limit. $\\sum 1$ shows $(s_n)$ need not be bounded, and $s_n \\to 0$ fails as soon as some term is positive."
+        },
+        {
+          "prompt": "What is the $n$-th partial sum of $\\sum_{k=1}^{\\infty} \\ln\\left(1 + \\frac1k\\right)$?",
+          "options": [
+            "$\\ln n$",
+            "$\\ln(n+1)$",
+            "$\\frac{1}{n+1}$",
+            "$\\ln 2$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Each term is $\\ln(k+1) - \\ln k$, so the sum telescopes to $\\ln(n+1) - \\ln 1 = \\ln(n+1)$. $\\ln n$ keeps the wrong last piece (it gives $s_1 = 0$ instead of $\\ln 2$), and $\\ln 2$ is only the first term."
+        },
+        {
+          "type": "short",
+          "prompt": "For the series $\\sum_{k=1}^{\\infty} k$, what is the partial sum $s_4$?",
+          "answer": [
+            "10",
+            "ten"
+          ],
+          "explanation": "$s_4 = 1 + 2 + 3 + 4 = 10$, which matches $\\frac{n(n+1)}{2}$ at $n = 4$."
+        },
+        {
+          "type": "short",
+          "prompt": "A series has partial sums $s_n = n^2$. What is the term $a_5$?",
+          "answer": [
+            "9",
+            "nine"
+          ],
+          "explanation": "$a_5 = s_5 - s_4 = 25 - 16 = 9$. A common slip is to give $s_5 = 25$, the running total, instead of the term."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $a_n \\ge 0$ for all $n$ and the partial sums are not bounded above, then $s_n \\to +\\infty$.",
+          "answer": [
+            true
+          ],
+          "explanation": "An increasing sequence that is not bounded above eventually exceeds any $M$ and stays above it, which is what $s_n \\to +\\infty$ means. So the series diverges."
+        },
+        {
+          "type": "multiple",
+          "prompt": "A series has partial sums $s_n = 5 - \\frac1n$. Which statements are true? Select all that apply.",
+          "options": [
+            "$a_1 = 4$",
+            "The series converges to $5$",
+            "$a_n > 0$ for every $n$",
+            "$s_n \\le 5$ for every $n$",
+            "$a_n \\to 5$"
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "explanation": "$a_1 = s_1 = 4$; $s_n \\to 5$; for $n \\ge 2$, $a_n = \\frac{1}{n-1} - \\frac1n = \\frac{1}{n(n-1)} > 0$; and clearly $5 - \\frac1n \\le 5$. But the **terms** tend to $0$, not $5$: it is the partial sums that tend to $5$."
+        },
+        {
+          "prompt": "To show $(s_n)$ is bounded above for $\\sum \\frac{1}{n^2}$, which comparison is used for $k \\ge 2$?",
+          "options": [
+            "$\\frac{1}{k^2} \\ge \\frac{1}{k(k+1)}$",
+            "$\\frac{1}{k^2} \\le \\frac{1}{k(k-1)} = \\frac{1}{k-1} - \\frac1k$",
+            "$\\frac{1}{k^2} \\le \\frac1k$",
+            "$\\frac{1}{k^2} \\le \\frac{1}{2^k}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "This bound is bigger than each term and telescopes, giving $s_n < 2$. The first gives only a lower bound. $\\frac{1}{k^2} \\le \\frac1k$ is true but useless, since $\\sum \\frac1k$ diverges. $\\frac{1}{k^2} \\le \\frac{1}{2^k}$ is false for $k = 3$, where $\\frac19 > \\frac18$."
+        },
+        {
+          "prompt": "Using $n! \\ge 2^{n-1}$, what upper bound do you get for the partial sums of $\\sum_{n=1}^{\\infty} \\frac{1}{n!}$?",
+          "options": [
+            "$1$",
+            "$2$",
+            "$e$",
+            "No bound: the comparison goes the wrong way"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\frac{1}{n!} \\le \\frac{1}{2^{n-1}}$, so $s_n \\le 1 + \\frac12 + \\cdots + \\frac{1}{2^{n-1}} < 2$. The bound $1$ is too small ($s_2 = 1.5$ already). $e$ is not what this comparison gives (the sum is $e - 1$). The comparison goes the right way: each term is replaced by something bigger."
+        }
+      ]
+    },
+    {
+      "slug": "4-3-convergence-and-divergence-of-series",
+      "title": "Convergence and divergence of series",
+      "summary": "The $\\varepsilon$–$N$ definition for series, the Cauchy criterion and linearity.",
+      "est_minutes": 40,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "In this lesson",
+          "md": "**You will learn to:**\n- write out and use the $\\varepsilon$–$N$ definition of a convergent series\n- tell apart the ways a series can diverge\n- use tails: only the long-run terms decide convergence\n- prove convergence without knowing the sum, using the Cauchy criterion\n- add and scale convergent series (linearity), and avoid its classic misuse\n\n**You need:** series and partial sums (lessons 4.1 and 4.2); the $\\varepsilon$–$N$ definition of a limit (lesson 3.4); Cauchy sequences and the Cauchy criterion (lessons 3.11 and 3.12); limit laws (lesson 3.6)."
+        },
+        {
+          "type": "text",
+          "md": "## The definition, written out\n\nLesson 4.1 said $\\sum a_n = S$ means $s_n \\to S$. To prove things about series, we unpack that using the $\\varepsilon$–$N$ definition from lesson 3.4.\n\n**In plain words:** however small a tolerance $\\varepsilon$ you choose, from some point on every partial sum is within $\\varepsilon$ of $S$.\n\n**Formally,** $\\sum_{n=1}^{\\infty} a_n$ converges to $S$ when\n$$\\forall \\varepsilon > 0 \\;\\; \\exists N \\in \\mathbb{N} \\;\\; \\forall n \\ge N: \\quad \\left| s_n - S \\right| < \\varepsilon, \\qquad\\text{where } s_n = \\sum_{k=1}^{n} a_k.$$\n\nReminder (lesson 1.3): $\\forall$ reads \"for every\" and $\\exists$ reads \"there exists\". $\\mathbb{N}$ is the set of natural numbers $1, 2, 3, \\dots$ The order matters: $\\varepsilon$ is chosen first, and $N$ may depend on it.\n\n**Example.** For $\\sum \\frac{1}{n(n+1)}$ we found $s_n = 1 - \\frac{1}{n+1}$, so the gap is $|s_n - 1| = \\frac{1}{n+1}$.\n- With $\\varepsilon = \\frac{1}{10}$: we need $\\frac{1}{n+1} < \\frac{1}{10}$, that is $n + 1 > 10$, so $n \\ge 10$. Take $N = 10$.\n- **Edge case**, $\\varepsilon = \\frac{1}{100}$: $N = 99$ does **not** work, because $|s_{99} - 1| = \\frac{1}{100}$, which is not **strictly** less than $\\frac{1}{100}$. $N = 100$ works.\n- In general, given any $\\varepsilon > 0$, choose an integer $N > \\frac{1}{\\varepsilon}$ (the Archimedean property, lesson 2.11). Then for $n \\ge N$, $\\frac{1}{n+1} < \\frac{1}{N} < \\varepsilon$.\n\nSo the gap $|s_n - S|$ is the distance still to go after $n$ terms, and convergence means it can be made as small as you like."
+        },
+        {
+          "type": "check",
+          "question": "For $\\sum \\frac{1}{n(n+1)}$, where $|s_n - 1| = \\frac{1}{n+1}$, what is the smallest $N$ that works for $\\varepsilon = \\frac15$?",
+          "options": [
+            "$4$",
+            "$5$",
+            "$6$",
+            "$25$"
+          ],
+          "correct": 1,
+          "explanation": "We need $\\frac{1}{n+1} < \\frac15$, so $n + 1 > 5$, so $n \\ge 5$. $N = 4$ fails because $|s_4 - 1| = \\frac15$ exactly, and the inequality is strict. $N = 6$ and $N = 25$ also work, but they are not the smallest."
+        },
+        {
+          "type": "text",
+          "md": "## Ways to diverge\n\nA series that does not converge **diverges**. That can happen in different ways, and it helps to name them.\n\n- **Diverges to $+\\infty$:** the partial sums eventually pass any level and stay above it. Formally, for every $M$ there is an $N$ with $s_n > M$ for all $n \\ge N$. *Example:* $\\sum n$, with $s_n = \\frac{n(n+1)}{2}$.\n- **Diverges to $-\\infty$:** for every $M$ there is an $N$ with $s_n < M$ for all $n \\ge N$. *Example:* $\\sum (-n)$.\n- **Oscillates:** neither of the above, and no finite limit. *Example:* $\\sum (-1)^n$, with partial sums $-1, 0, -1, 0, \\dots$\n\n**An edge case students get wrong.** Take $\\sum (-1)^n n = -1 + 2 - 3 + 4 - \\cdots$. Its partial sums are\n$$-1, \\; 1, \\; -2, \\; 2, \\; -3, \\; 3, \\; \\dots$$\nThey become arbitrarily large, but they do **not** diverge to $+\\infty$: every other partial sum is very negative. This series oscillates, and its partial sums are unbounded. \"Unbounded\" and \"diverges to $+\\infty$\" are different things.\n\nAll three kinds are divergence. A series that diverges to $+\\infty$ does not have the sum $+\\infty$ in the sense of a real number; $\\sum a_n = +\\infty$ is just shorthand."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each series to its behaviour",
+          "pairs": [
+            {
+              "left": "$\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)}$",
+              "right": "Converges to $1$"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} (-1)^n$",
+              "right": "Diverges; partial sums oscillate between $-1$ and $0$"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} n$",
+              "right": "Diverges to $+\\infty$"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} (-n)$",
+              "right": "Diverges to $-\\infty$"
+            },
+            {
+              "left": "$\\sum_{n=1}^{\\infty} (-1)^n n$",
+              "right": "Diverges; partial sums oscillate and are unbounded"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Tails: only the long run matters\n\nSuppose a series starts with a million huge terms and then continues with $\\frac{1}{2^n}$. Does it converge? Yes. Any fixed number of early terms adds only a fixed amount to every later partial sum, so it cannot decide whether the totals settle.\n\nThe **tail** of a series after $N$ terms is $\\sum_{n=N+1}^{\\infty} a_n = a_{N+1} + a_{N+2} + \\cdots$\n\n**Theorem (tails).** For any fixed $N$, $\\sum_{n=1}^{\\infty} a_n$ converges if and only if the tail $\\sum_{n=N+1}^{\\infty} a_n$ converges, and then\n$$\\sum_{n=1}^{\\infty} a_n = s_N + \\sum_{n=N+1}^{\\infty} a_n.$$\n\n*Why:* for $n > N$, the partial sums of the tail are $s_n - s_N$, which is $(s_n)$ shifted by the fixed number $s_N$.\n\n**Examples:**\n- $\\sum_{n=1}^{\\infty} \\frac{1}{2^n} = 1$ and $s_3 = \\frac78$, so the tail $\\sum_{n=4}^{\\infty} \\frac{1}{2^n} = 1 - \\frac78 = \\frac18$.\n- For $\\sum \\frac{1}{n(n+1)}$, the tail from $n = 1000$ telescopes to $\\frac{1}{1000}$, since it equals $1 - s_{999} = 1 - \\frac{999}{1000}$. Watch the index: the tail **from** $1000$ is the tail **after** $999$ terms.\n\n**A useful consequence.** If the series converges to $S$, the tail after $N$ terms is $S - s_N$, which tends to $0$ as $N \\to \\infty$. Far enough out, the remaining terms add up to almost nothing.\n\nSo when you test a series for convergence, you may ignore any finite number of terms at the start. They change the sum, not whether there is one."
+        },
+        {
+          "type": "check",
+          "question": "Given $\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)} = 1$ and $s_n = \\frac{n}{n+1}$, what is $\\sum_{n=11}^{\\infty} \\frac{1}{n(n+1)}$?",
+          "options": [
+            "$\\frac{1}{10}$",
+            "$\\frac{1}{11}$",
+            "$\\frac{1}{12}$",
+            "$\\frac{10}{11}$"
+          ],
+          "correct": 1,
+          "explanation": "The tail from $n = 11$ comes after $10$ terms, so it equals $1 - s_{10} = 1 - \\frac{10}{11} = \\frac{1}{11}$. $\\frac{1}{12}$ is the tail after $11$ terms (an off-by-one slip), $\\frac{1}{10}$ is the tail after $9$ terms, and $\\frac{10}{11}$ is $s_{10}$, the part that was removed."
+        },
+        {
+          "type": "text",
+          "md": "## The Cauchy criterion for series\n\nOften you cannot guess the sum $S$, so you cannot use the definition directly. The Cauchy criterion tests convergence **without** knowing $S$.\n\nReminder (lessons 3.11 and 3.12): a sequence is **Cauchy** if its terms eventually all lie close to each other, and in $\\mathbb{R}$ a sequence converges if and only if it is Cauchy. Apply this to $(s_n)$. For $m > n$, the difference of two partial sums is a **block** of consecutive terms:\n$$s_m - s_n = a_{n+1} + a_{n+2} + \\cdots + a_m = \\sum_{k=n+1}^{m} a_k.$$\n\n**Theorem (Cauchy criterion).**\n$$\\sum a_n \\text{ converges} \\iff \\forall \\varepsilon > 0 \\;\\exists N \\;\\forall m > n \\ge N: \\; \\left| \\sum_{k=n+1}^{m} a_k \\right| < \\varepsilon.$$\n\n**In plain words:** far enough out, **every** block of consecutive terms, however long, adds up to less than $\\varepsilon$ in size.\n\n**Example (block of length one).** Taking $m = n + 1$ the block is a single term, so a convergent series has $|a_{n+1}| < \\varepsilon$ for $n \\ge N$. That is, $a_n \\to 0$. Lesson 4.4 is about this fact.\n\n**Non-example.** For the harmonic series $\\sum \\frac1n$, lesson 3.12 showed that the block from $n + 1$ to $2n$ satisfies\n$$\\frac{1}{n+1} + \\cdots + \\frac{1}{2n} \\ge n \\cdot \\frac{1}{2n} = \\frac12.$$\nSo with $\\varepsilon = \\frac12$, no $N$ works, and the series diverges. Each single term is tiny, but long blocks are not. The criterion asks about **all** blocks, not just single terms."
+        },
+        {
+          "type": "check",
+          "question": "For a series, you show that for every $N$ there is a block $a_{n+1} + \\cdots + a_m$ with $m > n \\ge N$ whose sum is at least $\\frac12$. What can you conclude?",
+          "options": [
+            "The series diverges, by the Cauchy criterion",
+            "The series converges, because each block is finite",
+            "Nothing, unless the terms also fail to tend to $0$",
+            "The series diverges to $+\\infty$"
+          ],
+          "correct": 0,
+          "explanation": "This is exactly the failure of the Cauchy criterion with $\\varepsilon = \\frac12$, so the series diverges, even if its terms tend to $0$ (as for $\\sum \\frac1n$). You cannot say **how** it diverges without more information: the blocks could have changing signs elsewhere."
+        },
+        {
+          "type": "steps",
+          "title": "Prove that $\\sum_{n=1}^{\\infty} \\frac{\\sin n}{2^n}$ converges, without finding its sum",
+          "steps": [
+            {
+              "title": "Pick the tool",
+              "md": "The terms change sign in an irregular way and we have no formula for $s_n$, so we use the Cauchy criterion: we must make every far-out block small."
+            },
+            {
+              "title": "Bound a block",
+              "md": "Let $m > n$. By the triangle inequality for finite sums (lesson 2.5) and $|\\sin k| \\le 1$,\n$$\\left| \\sum_{k=n+1}^{m} \\frac{\\sin k}{2^k} \\right| \\le \\sum_{k=n+1}^{m} \\frac{|\\sin k|}{2^k} \\le \\sum_{k=n+1}^{m} \\frac{1}{2^k}.$$\nThe key move: we replace the unknown signs by a bound we can add up exactly."
+            },
+            {
+              "title": "Add up the bound",
+              "md": "$$\\sum_{k=n+1}^{m} \\frac{1}{2^k} = \\frac{1}{2^n}\\left(1 - \\frac{1}{2^{m-n}}\\right) < \\frac{1}{2^n}.$$"
+            },
+            {
+              "title": "Choose N",
+              "md": "Let $\\varepsilon > 0$. Since $\\frac{1}{2^n} \\to 0$, choose $N$ with $\\frac{1}{2^N} < \\varepsilon$. Then for all $m > n \\ge N$ the block has size less than $\\frac{1}{2^n} \\le \\frac{1}{2^N} < \\varepsilon$. By the Cauchy criterion the series converges. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we replace $\\frac{\\sin k}{2^k}$ by $\\frac{1}{2^k}$?",
+          "options": [
+            "Because $\\sin k = 1$ for every integer $k$",
+            "Because the bound does not depend on the unpredictable signs and sizes of $\\sin k$, and blocks of $\\frac{1}{2^k}$ can be summed exactly",
+            "Because it gives a lower bound for the block",
+            "Because it shows the sum of the series is $1$"
+          ],
+          "correct": 1,
+          "explanation": "$|\\sin k| \\le 1$ gives an upper bound on the size of each block that we can compute. $\\sin k$ is not $1$ (for example $\\sin 1 \\approx 0.84$). The replacement gives an **upper** bound, which is what the criterion needs. It does not find the sum: the sum of $\\sum \\frac{\\sin n}{2^n}$ is not $1$, and the criterion never needs it."
+        },
+        {
+          "type": "text",
+          "md": "## Linearity: adding and scaling series\n\nYou would expect to add two convergent series term by term, and to pull out a constant factor. This is true, and it lets you build new sums from known ones.\n\n**Theorem (linearity).** If $\\sum a_n = A$ and $\\sum b_n = B$, and $\\alpha, \\beta$ are real numbers, then\n$$\\sum_{n=1}^{\\infty} (\\alpha a_n + \\beta b_n) = \\alpha A + \\beta B.$$\n\n**Proof.** Let $s_n$, $t_n$ and $u_n$ be the $n$-th partial sums of $\\sum a_n$, $\\sum b_n$ and $\\sum (\\alpha a_n + \\beta b_n)$. These are finite sums, which may be regrouped freely, so $u_n = \\alpha s_n + \\beta t_n$ for every $n$. Since $s_n \\to A$ and $t_n \\to B$, the limit laws (lesson 3.6) give $u_n \\to \\alpha A + \\beta B$. $\\blacksquare$ The only regrouping happens inside the finite sum $u_n$, which is why it is safe.\n\n**Examples:**\n- $\\sum \\frac{2}{n(n+1)} = 2 \\cdot 1 = 2$ (here $\\beta = 0$).\n- $\\sum \\left( \\frac{3}{n(n+1)} + \\frac{1}{2^n} \\right) = 3 \\cdot 1 + 1 = 4$.\n- **Edge case:** $\\sum \\left( \\frac{1}{2^n} - \\frac{1}{n(n+1)} \\right) = 1 - 1 = 0$. A convergent series can have sum $0$ even though its terms are not all $0$ (here $a_1 = 0$, $a_2 = \\frac14 - \\frac16 = \\frac{1}{12}$, and so on).\n\n**What linearity needs.** Both series must already converge. The theorem says nothing about a sum of series when one of them diverges, which is the next topic."
+        },
+        {
+          "type": "check",
+          "question": "Given $\\sum \\frac{1}{2^n} = 1$ and $\\sum \\frac{1}{n(n+1)} = 1$ (both from $n = 1$), what is $\\sum_{n=1}^{\\infty} \\left( \\frac{5}{2^n} - \\frac{2}{n(n+1)} \\right)$?",
+          "options": [
+            "$7$",
+            "$3$",
+            "$-3$",
+            "It cannot be found without the partial sums"
+          ],
+          "correct": 1,
+          "explanation": "By linearity, the sum is $5 \\cdot 1 - 2 \\cdot 1 = 3$. $7$ adds instead of subtracting, and $-3$ swaps the coefficients. Linearity applies because both series converge, so no new partial sums are needed."
+        },
+        {
+          "type": "text",
+          "md": "## Convergent plus divergent\n\n**Claim.** If $\\sum a_n$ converges and $\\sum b_n$ diverges, then $\\sum (a_n + b_n)$ diverges.\n\n**Proof.** Suppose, for a contradiction (lesson 1.9), that $\\sum (a_n + b_n)$ converges. Since\n$$b_n = (a_n + b_n) - a_n,$$\nlinearity with $\\alpha = 1$, $\\beta = -1$ shows that $\\sum b_n$ converges, being the difference of two convergent series. This contradicts the hypothesis. So $\\sum (a_n + b_n)$ diverges. $\\blacksquare$\n\n**Example.** $\\sum \\left( \\frac{1}{2^n} + 1 \\right)$ diverges: $\\sum \\frac{1}{2^n}$ converges and $\\sum 1$ diverges.\n\n**Example.** $\\sum \\left( (-1)^n - \\frac{1}{n(n+1)} \\right)$ diverges, by the same claim (subtracting a convergent series is adding one with $\\alpha = -1$).\n\n**But two divergent series can add up to a convergent one.** This is the classic trap; see the box below."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Linearity runs one way",
+          "md": "Linearity says: convergent $+$ convergent is convergent. It does **not** say that if $\\sum (a_n + b_n)$ converges then each of $\\sum a_n$, $\\sum b_n$ converges. Take $a_n = 1$, $b_n = -1$: then $\\sum (a_n + b_n) = \\sum 0 = 0$, but both $\\sum a_n$ and $\\sum b_n$ diverge.\n\nSo you may **not** split $\\sum (a_n + b_n)$ into $\\sum a_n + \\sum b_n$ until you know both pieces converge."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Convergence ($\\varepsilon$–$N$)",
+              "back": "For every $\\varepsilon > 0$ there is $N$ with $|s_n - S| < \\varepsilon$ for **all** $n \\ge N$.\n\n*Example:* for $\\sum \\frac{1}{n(n+1)}$, $N > \\frac1\\varepsilon$ works."
+            },
+            {
+              "front": "Diverges to $+\\infty$",
+              "back": "For every $M$, eventually **all** $s_n > M$.\n\n*Example:* $\\sum n$. *Non-example:* $\\sum (-1)^n n$, which is unbounded but oscillates."
+            },
+            {
+              "front": "Tail of a series",
+              "back": "What is left after $N$ terms: $\\sum_{n=N+1}^{\\infty} a_n$. It converges **iff** the whole series does.\n\n*Example:* $\\sum_{n=4}^{\\infty} \\frac{1}{2^n} = \\frac18$."
+            },
+            {
+              "front": "Cauchy criterion for series",
+              "back": "$\\sum a_n$ converges iff far-out **blocks** $a_{n+1} + \\cdots + a_m$ are all smaller than any $\\varepsilon$.\n\n*Example:* used for $\\sum \\frac{\\sin n}{2^n}$, sum unknown."
+            },
+            {
+              "front": "Linearity",
+              "back": "If $\\sum a_n = A$ and $\\sum b_n = B$, then $\\sum(\\alpha a_n + \\beta b_n) = \\alpha A + \\beta B$. **Both** must converge.\n\n*Example:* $\\sum \\frac{2}{n(n+1)} = 2$."
+            },
+            {
+              "front": "Convergent + divergent",
+              "back": "Always **diverges**. (Divergent + divergent can converge.)\n\n*Example:* $\\sum \\left(\\frac{1}{2^n} + 1\\right)$ diverges."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove from the definition that $\\sum_{n=1}^{\\infty} \\frac{1}{2^n} = 1$.",
+          "items": [
+            "The partial sums are $s_n = 1 - \\frac{1}{2^n}$, so $|s_n - 1| = \\frac{1}{2^n}$.",
+            "Let $\\varepsilon > 0$ be given.",
+            "Choose $N$ with $2^N > \\frac1\\varepsilon$; this is possible because $2^N \\ge N$ and $\\mathbb{N}$ is unbounded.",
+            "For every $n \\ge N$, $|s_n - 1| = \\frac{1}{2^n} \\le \\frac{1}{2^N} < \\varepsilon$.",
+            "So $s_n \\to 1$, and by definition $\\sum \\frac{1}{2^n} = 1$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: convergent or divergent?",
+          "problem": "Decide whether each series converges, giving a reason. If it converges, find its sum.\n\n(a) $\\displaystyle\\sum_{n=1}^{\\infty} \\left( \\frac{3}{2^n} + \\frac{1}{n(n+1)} \\right)$  (b) $\\displaystyle\\sum_{n=1}^{\\infty} \\left( \\frac{1}{2^n} + (-1)^n \\right)$  (c) $\\displaystyle\\sum_{n=1}^{\\infty} \\left( (-1)^n + (-1)^{n+1} \\right)$",
+          "solution": "**(a) Converges, sum $4$.** Both pieces converge, $\\sum \\frac{1}{2^n} = 1$ and $\\sum \\frac{1}{n(n+1)} = 1$, so by linearity the sum is $3 \\cdot 1 + 1 = 4$.\n\n**(b) Diverges.** $\\sum \\frac{1}{2^n}$ converges and $\\sum (-1)^n$ diverges, so their sum diverges (convergent plus divergent). You cannot use linearity here, since one piece diverges.\n\n**(c) Converges, sum $0$.** Each term is $(-1)^n + (-1)^{n+1} = (-1)^n(1 - 1) = 0$, so this is $\\sum 0 = 0$. Both pieces diverge, yet the sum converges: divergent plus divergent can converge.\n\n**Check your version:** before using linearity, did you confirm **both** pieces converge? In (c), did you simplify the term first rather than splitting the series?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "If I can't find $S$, how can I ever prove a series converges?",
+              "a": "Use a criterion that does not mention $S$. For nonnegative terms, show the partial sums are bounded (lesson 4.2). In general, use the Cauchy criterion, as for $\\sum \\frac{\\sin n}{2^n}$. Later lessons (4.7 to 4.11) give ready-made tests built on these ideas."
+            },
+            {
+              "q": "Is $\\sum_{n=1}^{\\infty} (-1)^n = -\\frac12$, since the partial sums average to that?",
+              "a": "No. The partial sums are $-1, 0, -1, 0, \\dots$, which have no limit, so the series diverges. Averaging the partial sums (called Cesàro summation) does give $-\\frac12$, but that is a different, weaker notion, not convergence."
+            },
+            {
+              "q": "Why does changing the first few terms change the sum but not convergence?",
+              "a": "By the tails theorem, $\\sum a_n = s_N + (\\text{tail after } N)$. Changing early terms changes $s_N$, a fixed number, so the total moves by that amount. Whether the tail converges is untouched."
+            },
+            {
+              "q": "Does the Cauchy criterion just say the terms get small?",
+              "a": "No. It says every **block** of terms far out is small, however long the block. The harmonic series has tiny terms but blocks $\\frac{1}{n+1} + \\cdots + \\frac{1}{2n}$ that are always at least $\\frac12$, so it diverges."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $\\sum a_n = S$ means: for every $\\varepsilon > 0$ there is $N$ with $|s_n - S| < \\varepsilon$ for all $n \\ge N$.\n- A divergent series may go to $+\\infty$, to $-\\infty$, or oscillate; unbounded is not the same as diverging to $+\\infty$.\n- Only the tail matters for convergence: finitely many terms change the sum, not whether there is one.\n- **Cauchy criterion:** $\\sum a_n$ converges iff all far-out blocks $a_{n+1} + \\cdots + a_m$ are small. It needs no knowledge of the sum.\n- **Linearity:** $\\sum(\\alpha a_n + \\beta b_n) = \\alpha A + \\beta B$ when both series converge. Convergent plus divergent diverges, but divergent plus divergent can converge."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which is the Cauchy criterion for $\\sum a_n$?",
+          "options": [
+            "$\\forall \\varepsilon > 0\\; \\exists N\\; \\forall n \\ge N: |a_n| < \\varepsilon$",
+            "$\\forall \\varepsilon > 0\\; \\exists N\\; \\forall m > n \\ge N: |a_m - a_n| < \\varepsilon$",
+            "$\\forall \\varepsilon > 0\\; \\exists N\\; \\forall m > n \\ge N: \\left|\\sum_{k=n+1}^{m} a_k\\right| < \\varepsilon$",
+            "$\\exists N\\; \\forall m > n \\ge N: \\left|\\sum_{k=n+1}^{m} a_k\\right| < 1$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The criterion says $(s_n)$ is Cauchy, and $s_m - s_n = \\sum_{k=n+1}^m a_k$. The first two options only say that the terms (not the partial sums) are small or Cauchy; that is necessary for convergence but not sufficient, as $\\sum \\frac1n$ shows. The last option fixes $\\varepsilon = 1$ instead of requiring every $\\varepsilon > 0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $\\sum a_n$ and $\\sum b_n$ both diverge, then $\\sum (a_n + b_n)$ diverges.",
+          "answer": [
+            false
+          ],
+          "explanation": "With $a_n = 1$ and $b_n = -1$ both diverge, but $\\sum (a_n + b_n) = \\sum 0$ converges."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\sum_{n=1}^{\\infty} a_n$ converges if and only if $\\sum_{n=1000}^{\\infty} a_n$ converges.",
+          "answer": [
+            true
+          ],
+          "explanation": "For $n \\ge 1000$ the partial sums of the two series differ by the fixed constant $a_1 + \\cdots + a_{999}$, so one sequence of partial sums converges iff the other does."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Suppose $\\sum a_n$ converges to $A$ and $\\sum b_n$ diverges. Which statements are necessarily true?",
+          "options": [
+            "$\\sum 3a_n$ converges to $3A$",
+            "$\\sum (a_n + b_n)$ diverges",
+            "$\\sum a_n b_n$ diverges",
+            "$\\sum (b_n - a_n)$ diverges"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first follows from linearity, and the second and fourth from the convergent-plus-divergent argument. The third can fail: if $a_n = 0$ for all $n$, then $\\sum a_n b_n = 0$ converges."
+        },
+        {
+          "type": "short",
+          "prompt": "Using linearity and the telescoping sum $\\sum \\frac{1}{n(n+1)} = 1$, compute $\\displaystyle\\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)}$.",
+          "answer": [
+            "2",
+            "two"
+          ],
+          "explanation": "By linearity the sum is $2 \\cdot 1 = 2$."
+        },
+        {
+          "prompt": "Which describes $\\sum_{n=1}^{\\infty} (-1)^n$?",
+          "options": [
+            "It converges to $0$",
+            "It converges to $-\\frac12$",
+            "It diverges to $-\\infty$",
+            "It diverges because its partial sums oscillate between $-1$ and $0$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$s_n = -1$ for odd $n$ and $s_n = 0$ for even $n$, so $(s_n)$ has no limit. Averaging methods (Cesàro) assign $-\\frac12$, but that is not convergence. The partial sums are bounded, so they do not go to $-\\infty$."
+        },
+        {
+          "type": "short",
+          "prompt": "For $\\sum \\frac{1}{n(n+1)}$ we have $|s_n - 1| = \\frac{1}{n+1}$. What is the smallest $N$ such that $|s_n - 1| < \\frac{1}{100}$ for all $n \\ge N$?",
+          "answer": [
+            "100"
+          ],
+          "explanation": "We need $\\frac{1}{n+1} < \\frac{1}{100}$, so $n + 1 > 100$, so $n \\ge 100$. $N = 99$ fails because $|s_{99} - 1| = \\frac{1}{100}$ exactly, and the inequality is strict."
+        },
+        {
+          "type": "short",
+          "prompt": "Given $\\sum_{n=1}^{\\infty} \\frac{1}{2^n} = 1$, compute the tail $\\displaystyle\\sum_{n=4}^{\\infty} \\frac{1}{2^n}$. Give a fraction or a decimal.",
+          "answer": [
+            "1/8",
+            "0.125"
+          ],
+          "explanation": "The tail from $n = 4$ comes after $3$ terms, so it is $1 - s_3 = 1 - \\frac78 = \\frac18$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The series $\\sum_{n=1}^{\\infty} (-1)^n n$ diverges to $+\\infty$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Its partial sums are $-1, 1, -2, 2, -3, 3, \\dots$ They are unbounded, but every odd-numbered one is very negative, so they do not eventually stay above every level. The series diverges by oscillation."
+        },
+        {
+          "prompt": "In the Cauchy criterion for $\\sum a_n$, what does the condition say when you take $m = n + 1$?",
+          "options": [
+            "$|s_n| < \\varepsilon$ for $n \\ge N$",
+            "$|a_{n+1}| < \\varepsilon$ for $n \\ge N$, so $a_n \\to 0$",
+            "$|a_{n+1} - a_n| < \\varepsilon$ for $n \\ge N$",
+            "The series converges to $0$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "With $m = n + 1$ the block $\\sum_{k=n+1}^{m} a_k$ is the single term $a_{n+1}$. So a convergent series has terms tending to $0$ (lesson 4.4). It says nothing about $s_n$ itself being small, and comparing neighbouring terms is a different condition."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these series converge? Select all that apply.",
+          "options": [
+            "$\\sum_{n=1}^{\\infty} \\left( \\frac{1}{2^n} + \\frac{1}{n(n+1)} \\right)$",
+            "$\\sum_{n=1}^{\\infty} \\left( 1 + (-1) \\right)$",
+            "$\\sum_{n=1}^{\\infty} \\left( \\frac{1}{2^n} + 1 \\right)$",
+            "$\\sum_{n=1}^{\\infty} \\frac{5}{2^n}$",
+            "$\\sum_{n=1}^{\\infty} \\left( (-1)^n + \\frac{1}{2^n} \\right)$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first converges to $1 + 1 = 2$ and the fourth to $5$, by linearity. The second is $\\sum 0 = 0$. The third and fifth are convergent plus divergent, so they diverge."
+        },
+        {
+          "type": "short",
+          "prompt": "If $\\sum a_n = 2$ and $\\sum b_n = 5$, what is $\\displaystyle\\sum_{n=1}^{\\infty} (3a_n - b_n)$?",
+          "answer": [
+            "1",
+            "one"
+          ],
+          "explanation": "By linearity, $3 \\cdot 2 - 5 = 1$."
+        }
+      ]
+    },
+    {
+      "slug": "4-4-necessary-condition-for-convergence",
+      "title": "Necessary condition for convergence",
+      "summary": "If $\\sum a_n$ converges then $a_n \\to 0$, but the converse fails.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "In this lesson",
+          "md": "**You will learn to:**\n- tell a necessary condition from a sufficient one\n- prove that the terms of a convergent series tend to $0$\n- use the **$n$-th term test** to prove a series diverges\n- recognise when the test says nothing, and why $a_n \\to 0$ is not enough\n\n**You need:** partial sums and $a_n = s_n - s_{n-1}$ (lesson 4.2); limit laws (lesson 3.6); implications and their converses (lesson 1.2); proof by contrapositive (lesson 1.10)."
+        },
+        {
+          "type": "text",
+          "md": "## Why look at the terms first?\n\nBefore reaching for any clever test, there is a quick check that settles many series at once. Consider\n$$\\sum_{n=1}^{\\infty} \\frac{n}{2n+1} = \\frac13 + \\frac25 + \\frac37 + \\cdots$$\nThe terms get close to $\\frac12$, and every one of them is at least $\\frac13$. So each step adds at least $\\frac13$ to the running total, and $s_n \\ge \\frac{n}{3}$. The totals grow without bound and the series diverges.\n\nThe general idea: **if the terms do not shrink to $0$, the partial sums keep taking jumps that do not die out, so they cannot settle.**\n\n**Necessary and sufficient.** We will state this using two words from logic. Recall from lesson 1.2 that in an implication $P \\Rightarrow Q$ (\"if $P$ then $Q$\"):\n- $Q$ is **necessary** for $P$: you cannot have $P$ without $Q$.\n- $P$ is **sufficient** for $Q$: having $P$ is enough to guarantee $Q$.\n\n*Example:* \"$n$ is divisible by $4$ $\\Rightarrow$ $n$ is even\". Being even is necessary for divisibility by $4$, but not sufficient: $6$ is even and not divisible by $4$.\n\nIn this lesson, \"the terms tend to $0$\" is **necessary** for convergence, but **not sufficient**."
+        },
+        {
+          "type": "check",
+          "question": "A square has four equal sides. Is \"has four equal sides\" necessary or sufficient for a quadrilateral to be a square?",
+          "options": [
+            "Necessary and sufficient",
+            "Sufficient but not necessary",
+            "Necessary but not sufficient",
+            "Neither"
+          ],
+          "correct": 2,
+          "explanation": "Every square has four equal sides, so it is necessary. But a rhombus with no right angles also has four equal sides, so it is not sufficient. This is exactly the relationship between \"$a_n \\to 0$\" and \"$\\sum a_n$ converges\"."
+        },
+        {
+          "type": "text",
+          "md": "## The theorem\n\n**In plain words:** if a series converges, its terms must shrink to zero.\n\n**Theorem (necessary condition).** If $\\sum_{n=1}^{\\infty} a_n$ converges, then\n$$\\lim_{n \\to \\infty} a_n = 0.$$\n\n**Why it is true.** Each term is the change in the running total: $a_n = s_n - s_{n-1}$ (lesson 4.2). If the totals settle down to some $S$, then $s_n$ and $s_{n-1}$ are both close to $S$ for large $n$, so their difference is close to $0$.\n\n**Examples:**\n- $\\sum \\frac{1}{2^n} = 1$ converges, and indeed $\\frac{1}{2^n} \\to 0$.\n- $\\sum \\frac{1}{n(n+1)} = 1$ converges, and $\\frac{1}{n(n+1)} \\to 0$.\n- **Edge case:** $\\sum 0 = 0$ converges, and its terms are $0$ all along. Terms that are exactly $0$ count as tending to $0$.\n\nThe theorem tells you something about the terms of a series you **already know** converges. Its real power comes from turning it around, after the proof."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of the theorem",
+          "steps": [
+            {
+              "title": "Name the sum",
+              "md": "Suppose the series converges, so $s_n \\to S$ for some real $S$, where $s_n = a_1 + \\cdots + a_n$."
+            },
+            {
+              "title": "Express the term",
+              "md": "For $n \\ge 2$, $a_n = s_n - s_{n-1}$."
+            },
+            {
+              "title": "Shift the index",
+              "md": "$(s_{n-1})_{n \\ge 2}$ is the sequence $s_1, s_2, s_3, \\dots$ again, just with its labels moved by one place. So it also converges to $S$. This is the subtle step: shifting the index does not change the limit."
+            },
+            {
+              "title": "Conclude",
+              "md": "By the limit laws (lesson 3.6), $a_n = s_n - s_{n-1} \\to S - S = 0$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why does $s_{n-1} \\to S$ follow from $s_n \\to S$?",
+          "options": [
+            "Because $s_{n-1} = s_n$ for large $n$",
+            "Because $(s_{n-1})$ lists the same partial sums with the labels shifted by one, and shifting labels does not change the limit",
+            "Because $s_{n-1} < s_n$",
+            "Because $a_n \\to 0$"
+          ],
+          "correct": 1,
+          "explanation": "If $|s_n - S| < \\varepsilon$ for all $n \\ge N$, then $|s_{n-1} - S| < \\varepsilon$ for all $n \\ge N + 1$. The partial sums need not be equal or increasing (terms may be negative). Using $a_n \\to 0$ would be circular: that is what we are proving."
+        },
+        {
+          "type": "text",
+          "md": "## The n-th term test for divergence\n\nRecall from lesson 1.10 that $P \\Rightarrow Q$ is equivalent to its **contrapositive** \"not $Q$ $\\Rightarrow$ not $P$\". Applying this to the theorem gives the most-used form.\n\n**The $n$-th term test.** If $a_n \\not\\to 0$, then $\\sum a_n$ diverges.\n\nHere $a_n \\not\\to 0$ means \"$(a_n)$ does not converge to $0$\". That can happen in two ways:\n- **The limit exists but is not $0$.** $\\frac{n}{2n+1} = \\frac{1}{2 + 1/n} \\to \\frac12$, so $\\sum \\frac{n}{2n+1}$ diverges. Also $a_n = n \\to \\infty$, so $\\sum n$ diverges.\n- **The limit does not exist.** $(-1)^n$ jumps between $-1$ and $1$, so $\\sum (-1)^n$ diverges.\n\n**A trickier case.** $a_n = (-1)^n \\frac{n}{n+1}$ has no limit, but how do we prove it does not tend to $0$? Look at the size: $|a_n| = \\frac{n}{n+1} \\to 1$. If $a_n \\to 0$ we would have $|a_n| \\to 0$, since $\\big||a_n| - 0\\big| = |a_n - 0|$. Limits are unique (lesson 3.5), so $|a_n|$ cannot tend to both $0$ and $1$. Hence $a_n \\not\\to 0$, and the series diverges.\n\n**Non-example.** $\\sum \\frac{1}{\\sqrt n}$: here $\\frac{1}{\\sqrt n} \\to 0$, so the test does **not** apply. It cannot prove divergence, and it cannot prove convergence either."
+        },
+        {
+          "type": "check",
+          "question": "What does the $n$-th term test say about $\\sum_{n=1}^{\\infty} \\cos\\frac1n$?",
+          "options": [
+            "It converges, since $\\frac1n \\to 0$",
+            "Nothing: the test is inconclusive",
+            "It diverges, since $\\cos\\frac1n \\to \\cos 0 = 1 \\ne 0$",
+            "It converges to $1$"
+          ],
+          "correct": 2,
+          "explanation": "The test looks at the terms $a_n = \\cos\\frac1n$, not at $\\frac1n$. Since $\\frac1n \\to 0$ and cosine is continuous, $a_n \\to 1 \\ne 0$, so the series diverges. Mixing up the inside $\\frac1n$ with the term itself is a common slip. The test can never show convergence."
+        },
+        {
+          "type": "example",
+          "title": "Three divergent series",
+          "problem": "Show that each series diverges: (a) $\\displaystyle\\sum_{n=1}^{\\infty} \\frac{n}{2n+1}$; (b) $\\displaystyle\\sum_{n=1}^{\\infty} (-1)^n \\frac{n}{n+1}$; (c) $\\displaystyle\\sum_{n=1}^{\\infty} \\sin n$.",
+          "solution": "(a) $\\frac{n}{2n+1} = \\frac{1}{2 + 1/n} \\to \\frac12 \\ne 0$, so the series diverges.\n\n(b) Let $a_n = (-1)^n \\frac{n}{n+1}$. Then $|a_n| = \\frac{n}{n+1} \\to 1$. If $a_n \\to 0$ we would have $|a_n| \\to 0$, a contradiction. So $a_n \\not\\to 0$ and the series diverges.\n\n(c) This one is harder, since $\\sin n$ has no obvious pattern. Suppose $\\sin n \\to 0$. Then $\\sin(n+1) \\to 0$ too (a shifted sequence). By the addition formula,\n$$\\sin(n+1) = \\sin n \\cos 1 + \\cos n \\sin 1, \\quad\\text{so}\\quad \\cos n = \\frac{\\sin(n+1) - \\sin n \\cos 1}{\\sin 1} \\to 0,$$\nusing $\\sin 1 \\ne 0$. But then $1 = \\sin^2 n + \\cos^2 n \\to 0$, which is absurd. Hence $\\sin n \\not\\to 0$ and $\\sum \\sin n$ diverges. $\\blacksquare$"
+        },
+        {
+          "type": "text",
+          "md": "## The converse is false\n\nThe **converse** of the theorem would be: \"if $a_n \\to 0$, then $\\sum a_n$ converges.\" This is **false**. Terms tending to $0$ are necessary, not sufficient.\n\n**Counterexamples you have already met:**\n- $\\sum \\ln\\left(1 + \\frac1n\\right)$: the terms tend to $\\ln 1 = 0$, but the partial sums telescope to $s_n = \\ln(n+1) \\to \\infty$ (lesson 4.2).\n- The harmonic series $\\sum \\frac1n$: the terms tend to $0$, but blocks $\\frac{1}{n+1} + \\cdots + \\frac{1}{2n}$ are always at least $\\frac12$, so it diverges (lessons 3.12 and 4.3; lesson 4.6 studies it fully).\n\n**And a series that does converge:** $\\sum \\frac{1}{n^2}$, whose terms also tend to $0$ (lesson 4.2).\n\nSo two series can both have terms tending to $0$, and one converges while the other diverges. Knowing $a_n \\to 0$ does not tell you which kind you have. What decides it is **how fast** the terms shrink, compared with how many of them there are, and the later tests in this level (lessons 4.5 to 4.11) measure exactly that.\n\n**The practical rule:** the $n$-th term test can only ever give the answer \"diverges\". If you find $a_n \\to 0$, the test is **inconclusive** (it gives no information) and you must try something else."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The test can only prove divergence",
+          "md": "Finding $a_n \\to 0$ proves **nothing**. For example $\\frac1n \\to 0$ and $\\ln\\left(1 + \\frac1n\\right) \\to 0$, yet both $\\sum \\frac1n$ and $\\sum \\ln(1 + \\frac1n)$ diverge, while $\\frac{1}{n^2} \\to 0$ and $\\sum \\frac{1}{n^2}$ converges. When the terms tend to $0$, you need a different test.\n\nNever write \"$a_n \\to 0$, so the series converges by the $n$-th term test\". That is using the converse, which is false."
+        },
+        {
+          "type": "check",
+          "question": "For $\\sum_{n=1}^\\infty \\frac{1}{\\sqrt n}$, what does the $n$-th term test tell you?",
+          "options": [
+            "The series converges, since $\\frac{1}{\\sqrt n} \\to 0$",
+            "The series diverges",
+            "Nothing: the terms tend to $0$, so the test is inconclusive",
+            "The sum is $0$"
+          ],
+          "correct": 2,
+          "explanation": "The terms tend to $0$, so the test gives no information. It cannot give \"converges\", and it cannot give \"diverges\" here either. (The series does in fact diverge, since it is a $p$-series with $p = \\frac12 \\le 1$; see lesson 4.6.) The sum of a series is never found from the limit of its terms."
+        },
+        {
+          "type": "diagram",
+          "title": "Using the n-th term test",
+          "nodes": [
+            "Compute $\\lim a_n$",
+            "Limit $\\ne 0$ or does not exist: the series diverges",
+            "Limit $= 0$: the test is inconclusive",
+            "Move on to another test (comparison, ratio, root, alternating, ...)"
+          ]
+        },
+        {
+          "type": "match",
+          "prompt": "Match each series to what the $n$-th term test says about it.",
+          "pairs": [
+            {
+              "left": "$\\sum \\frac{n}{n+1}$",
+              "right": "Diverges: the terms tend to $1$"
+            },
+            {
+              "left": "$\\sum (-1)^n$",
+              "right": "Diverges: the terms have no limit"
+            },
+            {
+              "left": "$\\sum \\frac1n$",
+              "right": "Inconclusive (the series in fact diverges)"
+            },
+            {
+              "left": "$\\sum \\frac{1}{n^2}$",
+              "right": "Inconclusive (the series in fact converges)"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Necessary condition",
+              "back": "$Q$ is necessary for $P$ when $P \\Rightarrow Q$: you **cannot have $P$ without $Q$**.\n\n*Example:* $a_n \\to 0$ is necessary for $\\sum a_n$ to converge."
+            },
+            {
+              "front": "Sufficient condition",
+              "back": "$P$ is sufficient for $Q$ when $P \\Rightarrow Q$: $P$ alone is **enough** for $Q$.\n\n*Example:* $a_n \\to 0$ is **not** sufficient: $\\sum \\frac1n$ diverges."
+            },
+            {
+              "front": "Necessary condition theorem",
+              "back": "If $\\sum a_n$ converges, then **$a_n \\to 0$**.\n\n*Example:* $\\sum \\frac{1}{2^n}$ converges and $\\frac{1}{2^n} \\to 0$."
+            },
+            {
+              "front": "$n$-th term test",
+              "back": "If $a_n \\not\\to 0$ (limit nonzero or nonexistent), then $\\sum a_n$ **diverges**.\n\n*Example:* $\\frac{n}{2n+1} \\to \\frac12$, so $\\sum \\frac{n}{2n+1}$ diverges."
+            },
+            {
+              "front": "Inconclusive",
+              "back": "The test gives **no information**. This is the $n$-th term test's verdict whenever $a_n \\to 0$.\n\n*Example:* $\\sum \\frac{1}{\\sqrt n}$."
+            },
+            {
+              "front": "Converse (false here)",
+              "back": "\"If $a_n \\to 0$ then $\\sum a_n$ converges.\" **False.**\n\n*Example:* $\\ln\\left(1 + \\frac1n\\right) \\to 0$ but $\\sum \\ln\\left(1 + \\frac1n\\right) = +\\infty$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A classmate writes: \"$a_n = \\frac{1}{\\ln(n+1)} \\to 0$, so $\\sum a_n$ converges by the $n$-th term test.\" What is wrong?",
+          "options": [
+            "Nothing; the argument is correct",
+            "The limit is wrong: $\\frac{1}{\\ln(n+1)}$ does not tend to $0$",
+            "The test only proves divergence; $a_n \\to 0$ makes it inconclusive, so a different argument is needed",
+            "The test should be applied to $\\ln(n+1)$ instead"
+          ],
+          "correct": 2,
+          "explanation": "The limit is correct, but the conclusion uses the false converse. In fact this series diverges: $\\ln(n+1) \\le n$, so $\\frac{1}{\\ln(n+1)} \\ge \\frac1n$, and $\\sum \\frac1n$ diverges (the comparison test, lesson 4.7, makes this precise). The test is applied to the terms themselves, not to part of them."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove that $\\sum_{n=1}^{\\infty} (-1)^n \\frac{2n}{n+3}$ diverges.",
+          "items": [
+            "Let $a_n = (-1)^n \\frac{2n}{n+3}$. Then $|a_n| = \\frac{2n}{n+3} = \\frac{2}{1 + 3/n} \\to 2$.",
+            "Suppose, for a contradiction, that $a_n \\to 0$. Then $|a_n| \\to 0$ as well.",
+            "Limits are unique, and $|a_n| \\to 2 \\ne 0$, so this is impossible.",
+            "Hence $a_n \\not\\to 0$, and by the $n$-th term test the series diverges. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: does the test decide?",
+          "problem": "For each series, apply the $n$-th term test. If it is inconclusive, try to decide another way.\n\n(a) $\\displaystyle\\sum_{n=1}^{\\infty} \\frac{n^2 + 1}{2n^2 - n}$  (b) $\\displaystyle\\sum_{n=1}^{\\infty} \\left(\\sqrt{n+1} - \\sqrt{n}\\right)$",
+          "solution": "**(a)** Divide top and bottom by $n^2$:\n$$\\frac{n^2 + 1}{2n^2 - n} = \\frac{1 + 1/n^2}{2 - 1/n} \\to \\frac12 \\ne 0.$$\nSo the series diverges by the $n$-th term test.\n\n**(b)** Multiply top and bottom by $\\sqrt{n+1} + \\sqrt n$:\n$$\\sqrt{n+1} - \\sqrt n = \\frac{(n+1) - n}{\\sqrt{n+1} + \\sqrt n} = \\frac{1}{\\sqrt{n+1} + \\sqrt n} \\to 0.$$\nSo the test is **inconclusive**. But the series telescopes (lesson 4.1), with $b_k = -\\sqrt{k}$:\n$$s_n = (\\sqrt2 - 1) + (\\sqrt3 - \\sqrt2) + \\cdots + (\\sqrt{n+1} - \\sqrt n) = \\sqrt{n+1} - 1 \\to \\infty.$$\nSo the series diverges, even though its terms tend to $0$.\n\n**Check your version:** in (a), did you find the limit of the **terms** and say it is nonzero? In (b), did you avoid claiming convergence from $a_n \\to 0$, and did you give a separate reason for the verdict?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "If the terms tend to $0$ very fast, is that enough?",
+              "a": "Fast enough is enough, but \"tends to $0$\" alone says nothing about speed. $\\frac{1}{n^2}$ shrinks fast enough and its series converges; $\\frac1n$ does not. Lessons 4.5 to 4.10 give tests that measure the speed, for example by comparing with $\\frac{1}{2^n}$ or $\\frac{1}{n^p}$."
+            },
+            {
+              "q": "If $\\sum a_n$ converges, must $n a_n \\to 0$ too?",
+              "a": "Not in general. $a_n = \\frac{(-1)^n}{n}$ gives a convergent series (lesson 4.11), yet $n a_n = (-1)^n$ has no limit. For nonnegative, decreasing terms it is true, but that needs extra work."
+            },
+            {
+              "q": "Why bother with a test that so often says nothing?",
+              "a": "Because it is fast and catches many divergent series in one line, before you spend effort on harder tests. Always try it first: if the terms do not tend to $0$, you are done."
+            },
+            {
+              "q": "Does $a_n \\to 0$ at least mean the partial sums are bounded?",
+              "a": "No. For $\\sum \\frac1n$ the terms tend to $0$ but the partial sums grow without bound (slowly: $s_n$ is roughly $\\ln n$)."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- If $\\sum a_n$ converges, then $a_n \\to 0$. Proof: $a_n = s_n - s_{n-1} \\to S - S = 0$.\n- **$n$-th term test:** if $a_n$ tends to a nonzero limit, or has no limit, then $\\sum a_n$ diverges.\n- To show $a_n \\not\\to 0$ when signs alternate, look at $|a_n|$.\n- The converse is false: $a_n \\to 0$ is **necessary but not sufficient**. $\\sum \\frac1n$ and $\\sum \\ln\\left(1 + \\frac1n\\right)$ diverge; $\\sum \\frac{1}{n^2}$ converges.\n- If $a_n \\to 0$, the test is **inconclusive**: move on to another test."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "For which series does the $n$-th term test prove divergence?",
+          "options": [
+            "$\\sum \\frac1n$",
+            "$\\sum \\frac{1}{n^2}$",
+            "$\\sum \\frac{n}{n+1}$",
+            "$\\sum \\frac{(-1)^n}{n}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\frac{n}{n+1} \\to 1 \\ne 0$. In the other three the terms tend to $0$, so the test is inconclusive."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $a_n \\to 0$, then $\\sum a_n$ converges.",
+          "answer": [
+            false
+          ],
+          "explanation": "The harmonic series $\\sum \\frac1n$ has terms tending to $0$ but diverges."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $\\sum a_n$ converges, then $n a_n \\to 0$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Take $a_n = \\frac{(-1)^n}{n}$: the series converges (alternating series test, lesson 4.11), but $n a_n = (-1)^n$ has no limit. (The statement does hold for series whose terms are nonnegative and decreasing.)"
+        },
+        {
+          "type": "multiple",
+          "prompt": "For which series does the $n$-th term test prove divergence?",
+          "options": [
+            "$\\sum \\left(1 + \\frac1n\\right)^n$",
+            "$\\sum n \\sin\\frac1n$",
+            "$\\sum \\frac{1}{\\ln(n+1)}$",
+            "$\\sum (-1)^n$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "$(1 + \\frac1n)^n \\to e$, $n \\sin\\frac1n \\to 1$, and $(-1)^n$ has no limit, so all three diverge by the test. $\\frac{1}{\\ln(n+1)} \\to 0$, so the test is inconclusive there (that series does diverge, by comparison with $\\sum \\frac1n$)."
+        },
+        {
+          "prompt": "What does the $n$-th term test say about $\\sum_{n=1}^\\infty \\left(\\frac{n}{n+1}\\right)^n$?",
+          "options": [
+            "It converges, since $\\frac{n}{n+1} < 1$",
+            "It diverges, since the terms tend to $\\frac1e \\ne 0$",
+            "Nothing, since the terms tend to $0$",
+            "It diverges, since the terms tend to $1$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\left(\\frac{n}{n+1}\\right)^n = \\frac{1}{(1 + 1/n)^n} \\to \\frac1e \\ne 0$, so the series diverges. The base tends to $1$, but the power $n$ grows too, so the terms do not tend to $1$. The test can never prove convergence."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $a_n = \\frac{3n^2 + 1}{n^2 + 5}$. What is $\\lim_{n\\to\\infty} a_n$? (This shows that $\\sum a_n$ diverges.)",
+          "answer": [
+            "3",
+            "three"
+          ],
+          "explanation": "Divide top and bottom by $n^2$: $a_n = \\frac{3 + 1/n^2}{1 + 5/n^2} \\to 3 \\ne 0$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $a_n = \\frac{2n + 3}{5n - 1}$. What is $\\lim_{n\\to\\infty} a_n$? Give a fraction or a decimal.",
+          "answer": [
+            "2/5",
+            "0.4"
+          ],
+          "explanation": "Divide top and bottom by $n$: $a_n = \\frac{2 + 3/n}{5 - 1/n} \\to \\frac25$. Since $\\frac25 \\ne 0$, $\\sum a_n$ diverges."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $a_n \\to 1$, then $\\sum a_n$ diverges.",
+          "answer": [
+            true
+          ],
+          "explanation": "The limit of the terms is not $0$, so by the $n$-th term test the series diverges."
+        },
+        {
+          "prompt": "Which statement correctly describes the condition \"$a_n \\to 0$\" for the convergence of $\\sum a_n$?",
+          "options": [
+            "It is sufficient but not necessary",
+            "It is necessary but not sufficient",
+            "It is both necessary and sufficient",
+            "It is neither necessary nor sufficient"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Every convergent series has $a_n \\to 0$, so it is necessary. But $\\sum \\frac1n$ has $a_n \\to 0$ and diverges, so it is not sufficient."
+        },
+        {
+          "prompt": "Why does $\\sum_{n=1}^{\\infty} (-1)^n \\frac{n}{n+1}$ diverge?",
+          "options": [
+            "Because its terms tend to $-1$",
+            "Because $|a_n| = \\frac{n}{n+1} \\to 1$, so $a_n$ cannot tend to $0$",
+            "Because the signs alternate, and alternating series always diverge",
+            "Because its partial sums tend to $+\\infty$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "If $a_n \\to 0$ then $|a_n| \\to 0$, but $|a_n| \\to 1$. So $a_n \\not\\to 0$ and the $n$-th term test applies. The terms have no limit at all (they approach $1$ and $-1$ in turn). Alternating series can converge, such as $\\sum \\frac{(-1)^n}{n}$ (lesson 4.11). The partial sums stay bounded here; they oscillate."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements about $\\sum_{n=1}^{\\infty} \\ln\\left(1 + \\frac1n\\right)$ are true? Select all that apply.",
+          "options": [
+            "Its terms tend to $0$",
+            "The $n$-th term test proves that it converges",
+            "The $n$-th term test proves that it diverges",
+            "Its partial sums are $s_n = \\ln(n+1)$, so it diverges",
+            "It converges to $\\ln 2$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "$\\ln\\left(1 + \\frac1n\\right) \\to \\ln 1 = 0$, so the $n$-th term test is inconclusive: it proves neither convergence nor divergence. The partial sums telescope to $\\ln(n+1) \\to \\infty$, so the series diverges. $\\ln 2$ is only the first term."
+        },
+        {
+          "type": "short",
+          "prompt": "What is $\\lim_{n\\to\\infty} \\left(\\sqrt{n+1} - \\sqrt{n}\\right)$?",
+          "answer": [
+            "0",
+            "zero"
+          ],
+          "explanation": "$\\sqrt{n+1} - \\sqrt n = \\frac{1}{\\sqrt{n+1} + \\sqrt n} \\to 0$. So the $n$-th term test is inconclusive for $\\sum (\\sqrt{n+1} - \\sqrt n)$, which in fact diverges, since $s_n = \\sqrt{n+1} - 1$."
+        }
+      ]
+    }
+  ]
+}

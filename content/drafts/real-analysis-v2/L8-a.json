@@ -1,0 +1,1503 @@
+{
+  "concepts": [
+    {
+      "slug": "8-1-introduction-to-metric-spaces",
+      "title": "Introduction to metric spaces",
+      "summary": "Distance, axiomatised: what $|x-y|$ on $\\mathbb{R}$ really needs to satisfy.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Level 8: Advanced Real Analysis",
+          "md": "Extend classical real analysis into more abstract mathematical structures and advanced convergence concepts.\n\n**In this lesson you will learn to:**\n- state the three rules (axioms) that any sensible distance must obey\n- check whether a proposed formula is a **metric**, and find the rule it breaks if not\n- work with the standard examples: $\\mathbb{R}$, three distances on $\\mathbb{R}^n$, the discrete metric and the sup metric on functions\n- describe **open balls** and **bounded sets** in any metric space\n\n**You need:** absolute value and the triangle inequality $|a+b| \\le |a|+|b|$ (lesson 2.5), $\\varepsilon$-neighbourhoods (2.6), bounded sets (2.7) and the supremum (2.9)."
+        },
+        {
+          "type": "text",
+          "md": "## Why abstract distance?\n\nLook back at the big definitions of this course. A sequence $a_n \\to L$ when $|a_n - L| < \\varepsilon$ for large $n$ (lesson 3.4). A function is continuous at $c$ when $|x - c| < \\delta$ forces $|f(x) - f(c)| < \\varepsilon$ (lesson 5.6). Every one of them is built from one quantity: $|x - y|$, the **distance** between $x$ and $y$ on the number line.\n\nNow suppose you want the same ideas somewhere else. When do points in the plane get close to a point? When does a sequence of **functions** get close to a function (lesson 8.9)? You need a distance there too.\n\nHere is the good news. When you check the proofs, they only ever used three facts about $|x - y|$:\n- it is $0$ exactly when $x = y$;\n- it is the same from $x$ to $y$ as from $y$ to $x$;\n- the triangle inequality: $|x - z| \\le |x - y| + |y - z|$. (This is $|a + b| \\le |a| + |b|$ from lesson 2.5 with $a = x - y$ and $b = y - z$.)\n\nSo we turn those three facts into a definition. Anything that obeys them is called a **metric**, and every theorem proved from the three facts alone works for all metrics at once. That is the plan for this whole level."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "There is more than one honest distance",
+          "md": "In a city laid out on a grid, you cannot walk through buildings. To get from the corner $(0,0)$ to the corner $(3,4)$ you walk $3$ blocks east and $4$ blocks north: **$7$ blocks**. A bird flies straight there: $\\sqrt{3^2 + 4^2} = 5$ blocks.\n\nBoth numbers are sensible distances. They just measure different things. So \"the distance between two points\" is not fixed by the points alone; you must also say **which** distance you mean. That is why a metric space is always a pair: a set **and** a choice of distance."
+        },
+        {
+          "type": "check",
+          "question": "In the grid city, you walk only along streets. How many blocks is it from the corner $(1,1)$ to the corner $(4,-3)$?",
+          "options": [
+            "$5$",
+            "$7$",
+            "$4$",
+            "$1$"
+          ],
+          "correct": 1,
+          "explanation": "You walk $|4 - 1| = 3$ blocks east and $|-3 - 1| = 4$ blocks south, so $3 + 4 = 7$. The answer $5$ is the straight-line (bird) distance $\\sqrt{3^2 + 4^2}$. The answer $4$ is only the longer of the two legs, and $1$ comes from adding the signed differences $3 + (-4)$ without absolute values."
+        },
+        {
+          "type": "text",
+          "md": "## The definition of a metric\n\nFirst, two bits of notation.\n- $X \\times X$ is the set of all **pairs** $(x, y)$ with $x$ and $y$ in $X$.\n- $d : X \\times X \\to [0, \\infty)$ means: $d$ is a function that takes a pair of points and returns a number in $[0, \\infty)$, that is, a real number $\\ge 0$. We write the output as $d(x, y)$ and read it \"the distance from $x$ to $y$\".\n\n**In plain words**, a metric is a rule for measuring distance that never gives a negative answer and obeys three rules: only a point is at distance $0$ from itself, distance is the same both ways, and a detour never makes a trip shorter.\n\n**Definition.** A **metric** on a set $X$ is a function $d : X \\times X \\to [0, \\infty)$ such that, for all $x, y, z \\in X$:\n\n$$\\text{(M1)}\\quad d(x,y) = 0 \\iff x = y$$\n\n$$\\text{(M2)}\\quad d(x,y) = d(y,x)$$\n\n$$\\text{(M3)}\\quad d(x,z) \\le d(x,y) + d(y,z)$$\n\n(M3) is the **triangle inequality**: going from $x$ to $z$ via a stop at $y$ is never shorter than going directly. The pair $(X, d)$ is called a **metric space**.\n\n**The first example.** On $\\mathbb{R}$, $d(x,y) = |x - y|$ is a metric: $|x - y| = 0$ only when $x = y$; $|x - y| = |y - x|$; and (M3) is the triangle inequality from lesson 2.5. We call this the **usual metric** on $\\mathbb{R}$. Whenever this level says \"$\\mathbb{R}$\" without naming a metric, this is the one meant."
+        },
+        {
+          "type": "text",
+          "md": "## Testing a formula: examples and non-examples\n\nTo show a formula **is** a metric, you must prove all three rules for every $x, y, z$. To show it is **not**, one counterexample to one rule is enough (lesson 1.11).\n\n**The discrete metric.** On any set $X$ at all (numbers, words, people) put\n$$d(x,y) = \\begin{cases} 0 & \\text{if } x = y,\\\\ 1 & \\text{if } x \\ne y. \\end{cases}$$\n(M1) and (M2) are clear. For (M3): if $x = z$ the left side is $0$ and there is nothing to prove. If $x \\ne z$, then $y$ differs from at least one of $x$ and $z$, so the right side is at least $1$. This strange metric is a valuable test case: many \"obvious\" facts about $\\mathbb{R}$ fail in it.\n\n**Non-example: squared distance.** $d(x,y) = (x - y)^2$ satisfies (M1) and (M2). But take $x = 0$, $y = 1$, $z = 2$:\n$$d(0,2) = 4 \\quad\\text{but}\\quad d(0,1) + d(1,2) = 1 + 1 = 2.$$\nThe detour is \"shorter\", so (M3) fails. Squaring punishes long jumps too much.\n\n**Non-example: $d(x,y) = |x^2 - y^2|$.** It looks fine, but $d(1, -1) = |1 - 1| = 0$ although $1 \\ne -1$. (M1) fails: two different points are at distance $0$.\n\n**Non-example: $d(x,y) = x - y$.** This can be negative, so it does not even map into $[0, \\infty)$, and $d(0,1) = -1 \\ne 1 = d(1,0)$ breaks (M2)."
+        },
+        {
+          "type": "check",
+          "question": "Is $d(x,y) = (x-y)^2$ a metric on $\\mathbb{R}$?",
+          "options": [
+            "Yes, it satisfies all three axioms",
+            "No, it fails symmetry",
+            "No, it fails the triangle inequality",
+            "No, it can be negative"
+          ],
+          "correct": 2,
+          "explanation": "(M1) and (M2) hold, but $d(0,2) = 4 > 2 = d(0,1) + d(1,2)$, so (M3) fails. It is symmetric because $(x-y)^2 = (y-x)^2$, and it is never negative because it is a square."
+        },
+        {
+          "type": "check",
+          "question": "A student proposes $d(x,y) = |x^2 - y^2|$ as a metric on $\\mathbb{R}$. Which rule breaks first, and for which pair?",
+          "options": [
+            "(M1), for the pair $x = 2$, $y = -2$",
+            "(M2), for the pair $x = 1$, $y = 2$",
+            "(M3), for the points $0, 1, 2$",
+            "None: it is a metric"
+          ],
+          "correct": 0,
+          "explanation": "$d(2,-2) = |4 - 4| = 0$ although $2 \\ne -2$, so (M1) fails. (M2) holds because $|x^2 - y^2| = |y^2 - x^2|$. (M3) actually holds too, since $|x^2 - z^2| \\le |x^2 - y^2| + |y^2 - z^2|$ is the usual triangle inequality for the numbers $x^2, y^2, z^2$. So the only problem is (M1)."
+        },
+        {
+          "type": "text",
+          "md": "## Three distances on $\\mathbb{R}^n$\n\n$\\mathbb{R}^n$ is the set of lists $x = (x_1, x_2, \\dots, x_n)$ of $n$ real numbers. $\\mathbb{R}^2$ is the plane, $\\mathbb{R}^3$ is space. $x_i$ is the $i$th coordinate of $x$. Three metrics are in common use. Here $\\sum_{i=1}^n$ means \"add up over $i = 1, \\dots, n$\" and $\\max_i$ means \"the largest over $i = 1, \\dots, n$\".\n\n- **Euclidean metric** (the bird): $d_2(x,y) = \\sqrt{\\sum_{i=1}^n (x_i - y_i)^2}$. This is Pythagoras.\n- **Taxicab metric** (the grid city): $d_1(x,y) = \\sum_{i=1}^n |x_i - y_i|$.\n- **Max metric**: $d_\\infty(x,y) = \\max_i |x_i - y_i|$, the largest change in any single coordinate.\n\n**Example.** From $(0,0)$ to $(3,4)$ in $\\mathbb{R}^2$:\n$$d_1 = 3 + 4 = 7, \\qquad d_2 = \\sqrt{9 + 16} = 5, \\qquad d_\\infty = \\max(3, 4) = 4.$$\n\n**Edge case.** For $n = 1$ all three are the same: $d_1 = d_2 = d_\\infty = |x - y|$. The differences only appear in two or more dimensions.\n\nThese three always satisfy\n$$d_\\infty \\le d_2 \\le d_1 \\le n\\, d_\\infty.$$\nSo if one of them is small, so are the others. You will see in lesson 8.2 that this makes them agree about which sets are open.\n\n(M1) and (M2) are easy for all three. For $d_1$ and $d_\\infty$, (M3) follows by applying the triangle inequality on $\\mathbb{R}$ to each coordinate; you will rebuild the $d_1$ proof below. For $d_2$, (M3) needs the Cauchy–Schwarz inequality, which we take as known."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each distance from $(0,0)$ to $(3,4)$ to its value.",
+          "pairs": [
+            {
+              "left": "Taxicab $d_1$",
+              "right": "$7$"
+            },
+            {
+              "left": "Euclidean $d_2$",
+              "right": "$5$"
+            },
+            {
+              "left": "Max $d_\\infty$",
+              "right": "$4$"
+            },
+            {
+              "left": "Discrete metric",
+              "right": "$1$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Open balls and bounded sets\n\nOn $\\mathbb{R}$ you described \"near $x$\" with the $\\varepsilon$-neighbourhood $(x - \\varepsilon, x + \\varepsilon)$, the set of points $y$ with $|x - y| < \\varepsilon$ (lesson 2.6). Replace $|x - y|$ by $d(x, y)$ and you get the same idea in any metric space.\n\n**Definition.** For $x \\in X$ and a radius $r > 0$, the **open ball** is\n$$B(x, r) = \\{\\, y \\in X : d(x, y) < r \\,\\}.$$\nRead it as \"all points closer than $r$ to $x$\". The inequality is strict.\n\n**Examples.**\n- In $\\mathbb{R}$: $B(2, 0.5) = (1.5, 2.5)$, an open interval.\n- In $\\mathbb{R}^2$ the ball $B(0, 1)$ depends on the metric. With $d_2$ it is the open disc $x_1^2 + x_2^2 < 1$. With $d_1$ it is a diamond, $|x_1| + |x_2| < 1$. With $d_\\infty$ it is the open square $(-1,1) \\times (-1,1)$. A \"ball\" need not be round.\n- **Edge case**, discrete metric: $B(x, 1) = \\{x\\}$, because every other point is at distance exactly $1$, which is not $< 1$. But $B(x, 2) = X$, the whole space.\n\n**Definition.** A set $A \\subseteq X$ is **bounded** if it fits inside some ball: $A \\subseteq B(x, r)$ for some $x \\in X$ and some $r > 0$. In $\\mathbb{R}$ this matches lesson 2.7: fitting inside $[-M, M]$ is the same as fitting inside some ball $B(0, r)$.\n\n**Example.** $\\{1/n : n \\ge 1\\} \\subseteq B(0, 2)$, so it is bounded in $\\mathbb{R}$. **Surprise:** with the discrete metric on $\\mathbb{R}$, the whole of $\\mathbb{R}$ is bounded, since $\\mathbb{R} = B(0, 2)$. Whether a set is bounded depends on the metric."
+        },
+        {
+          "type": "check",
+          "question": "Let $X$ be any set with at least two points and the discrete metric. What is the open ball $B(x, 1)$?",
+          "options": [
+            "$\\{x\\}$",
+            "$X$",
+            "$X \\setminus \\{x\\}$",
+            "The empty set"
+          ],
+          "correct": 0,
+          "explanation": "$B(x,1)$ holds the points at distance **strictly less than** $1$ from $x$. Only $x$ itself (distance $0$) qualifies; every other point is at distance exactly $1$. You get $X$ for any radius bigger than $1$. $X \\setminus \\{x\\}$ would leave out $x$, but $d(x,x) = 0 < 1$. A ball is never empty, since it always contains its centre."
+        },
+        {
+          "type": "text",
+          "md": "## Distances between functions, and subspaces\n\nMetrics are not only for points. Let $C[a,b]$ be the set of all continuous functions $f : [a,b] \\to \\mathbb{R}$. The **sup metric** is\n$$d_\\infty(f, g) = \\sup_{x \\in [a,b]} |f(x) - g(x)|,$$\nthe largest vertical gap between the two graphs. (Recall $\\sup$ is the least upper bound, lesson 2.9. Here it is actually a maximum, by the Extreme Value Theorem, lesson 5.10.)\n\n**Example.** On $[0,1]$ take $f(x) = x$ and $g(x) = x^2$. The gap is $x - x^2$. Its derivative $1 - 2x$ is zero at $x = \\tfrac12$, where the gap is $\\tfrac12 - \\tfrac14 = \\tfrac14$. So $d_\\infty(f, g) = \\tfrac14$.\n\n**Edge case.** $d_\\infty(f,g)$ small means the graphs are close **everywhere** at once, not just at most points. This is exactly the idea behind uniform convergence in lesson 8.9.\n\n**Subspaces.** If $(X, d)$ is a metric space and $Y \\subseteq X$, you can measure distances in $Y$ with the same $d$. The three rules still hold, because they held for all points of $X$. So $(Y, d)$ is a metric space, called a **subspace**. For example, $[0,1]$ and $\\mathbb{Z}$ with $d(x,y) = |x - y|$ are metric spaces in their own right. Lesson 8.2 shows that a set can behave differently inside a subspace than inside the bigger space."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Metric",
+              "back": "A distance function $d(x,y) \\ge 0$ with **three rules**: zero only when $x = y$; symmetric; triangle inequality.\n\n*Example:* $d(x,y) = |x - y|$ on $\\mathbb{R}$."
+            },
+            {
+              "front": "Triangle inequality (M3)",
+              "back": "$d(x,z) \\le d(x,y) + d(y,z)$: a **detour** is never shorter.\n\n*Example:* $(x-y)^2$ fails it: $d(0,2) = 4 > 1 + 1$."
+            },
+            {
+              "front": "Discrete metric",
+              "back": "Distance $1$ between **any two different** points, $0$ from a point to itself. Works on any set.\n\n*Example:* $d(\\text{cat}, \\text{dog}) = 1$."
+            },
+            {
+              "front": "$d_1, d_2, d_\\infty$ on $\\mathbb{R}^n$",
+              "back": "Taxicab (sum), Euclidean (Pythagoras) and max distances. Always $d_\\infty \\le d_2 \\le d_1$.\n\n*Example:* from $(0,0)$ to $(3,4)$: $7$, $5$, $4$."
+            },
+            {
+              "front": "Open ball",
+              "back": "$B(x,r) = \\{y : d(x,y) < r\\}$, points **strictly** closer than $r$.\n\n*Example:* in $\\mathbb{R}$, $B(2, 0.5) = (1.5, 2.5)$."
+            },
+            {
+              "front": "Bounded set",
+              "back": "A set that fits inside **some ball** $B(x, r)$.\n\n*Example:* $\\{1/n\\}$ is bounded in $\\mathbb{R}$; with the discrete metric, all of $\\mathbb{R}$ is bounded."
+            },
+            {
+              "front": "Sup metric",
+              "back": "On continuous functions: $d_\\infty(f,g) = \\sup |f(x) - g(x)|$, the **largest gap** between graphs.\n\n*Example:* $x$ and $x^2$ on $[0,1]$ are $\\tfrac14$ apart."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You want a distance between two continuous functions on $[0,1]$ that is small **only** when the graphs are close at every single $x$. Which should you use?",
+          "options": [
+            "$d(f,g) = |f(0) - g(0)|$",
+            "$d_\\infty(f,g) = \\sup_{x \\in [0,1]} |f(x) - g(x)|$",
+            "The discrete metric on $C[0,1]$",
+            "$d(f,g) = |f(1) - g(1)|$"
+          ],
+          "correct": 1,
+          "explanation": "The sup metric is the largest gap over all $x$, so a small value means a small gap everywhere. Comparing at one point ($x = 0$ or $x = 1$) ignores the rest of the graph, and it is not even a metric: two different functions can agree at $0$, breaking (M1). The discrete metric is a metric, but it is $1$ for any two different functions however close they are."
+        },
+        {
+          "type": "steps",
+          "title": "The reverse triangle inequality",
+          "steps": [
+            {
+              "title": "State the claim",
+              "md": "In any metric space, for all $x, y, z$,\n$$|d(x,z) - d(y,z)| \\le d(x,y).$$\nIn words: two points that are close have nearly the same distance to any third point $z$."
+            },
+            {
+              "title": "Get one direction from (M3)",
+              "md": "By (M3) with the stop at $y$: $d(x,z) \\le d(x,y) + d(y,z)$. Subtract $d(y,z)$:\n$$d(x,z) - d(y,z) \\le d(x,y).$$"
+            },
+            {
+              "title": "Swap the roles of x and y",
+              "md": "By (M3) again, now going from $y$ to $z$ via $x$: $d(y,z) \\le d(y,x) + d(x,z)$. The subtle move: (M3) gives $d(y,x)$, not $d(x,y)$, so we need (M2) to swap them. Then\n$$d(y,z) - d(x,z) \\le d(x,y).$$"
+            },
+            {
+              "title": "Combine with absolute value",
+              "md": "Write $t = d(x,z) - d(y,z)$. We showed $t \\le d(x,y)$ and $-t \\le d(x,y)$. A number that is at most $c$ and whose negative is at most $c$ has $|t| \\le c$ (lesson 2.5). So $|d(x,z) - d(y,z)| \\le d(x,y)$. $\\blacksquare$"
+            },
+            {
+              "title": "See why it matters",
+              "md": "Fix $z$ and let $g(x) = d(x,z)$. The result says $|g(x) - g(y)| \\le d(x,y)$, so moving $x$ a little changes $g$ only a little. **Distance to a fixed point is a continuous function.** You will use this again and again."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the third step, why do we need (M2)?",
+          "options": [
+            "Because (M3) only works when the middle point comes first",
+            "Because (M3) produces $d(y,x)$, and we want the result in terms of $d(x,y)$",
+            "Because (M1) does not apply when $x \\ne y$",
+            "We do not: the step works without it"
+          ],
+          "correct": 1,
+          "explanation": "Applying (M3) to the trip $y \\to x \\to z$ gives $d(y,z) \\le d(y,x) + d(x,z)$. To match the claim, we must replace $d(y,x)$ by $d(x,y)$, which is exactly symmetry (M2). (M3) works for any order of points; (M1) is not used here; and without (M2) the two directions would involve two different quantities."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove that $d_1(x,y) = \\sum_{i=1}^n |x_i - y_i|$ satisfies the triangle inequality (M3) on $\\mathbb{R}^n$.",
+          "items": [
+            "Let $x, y, z$ be any points of $\\mathbb{R}^n$.",
+            "For each coordinate $i$, the triangle inequality on $\\mathbb{R}$ gives $|x_i - z_i| \\le |x_i - y_i| + |y_i - z_i|$.",
+            "Add these $n$ inequalities over $i = 1, \\dots, n$.",
+            "The left side becomes $d_1(x,z)$ and the right side becomes $d_1(x,y) + d_1(y,z)$.",
+            "So $d_1(x,z) \\le d_1(x,y) + d_1(y,z)$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the sup metric on C[a,b]",
+          "problem": "Show that $d_\\infty(f,g) = \\sup_{x \\in [a,b]} |f(x) - g(x)|$ is a metric on $C[a,b]$. First explain why the supremum is a finite number, then check (M1), (M2) and (M3).",
+          "solution": "**Well defined.** $|f - g|$ is continuous on the closed bounded interval $[a,b]$, so by the Extreme Value Theorem (lesson 5.10) it is bounded and attains a maximum. So the supremum is a finite number, and it is $\\ge 0$.\n\n**(M1)** If $d_\\infty(f,g) = 0$, then $0 \\le |f(x) - g(x)| \\le 0$ for every $x$, so $f(x) = g(x)$ for every $x$, that is, $f = g$. Conversely $d_\\infty(f,f) = \\sup 0 = 0$.\n\n**(M2)** $|f(x) - g(x)| = |g(x) - f(x)|$ for every $x$, so the two suprema are equal.\n\n**(M3)** Let $f, g, h \\in C[a,b]$. For each fixed $x$,\n$$|f(x) - h(x)| \\le |f(x) - g(x)| + |g(x) - h(x)| \\le d_\\infty(f,g) + d_\\infty(g,h).$$\nThe right-hand side does not depend on $x$, so it is an upper bound for all the numbers $|f(x) - h(x)|$. The supremum is the **least** upper bound, so $d_\\infty(f,h) \\le d_\\infty(f,g) + d_\\infty(g,h)$. $\\blacksquare$\n\n**Check your version:** did you say why the supremum is finite? In (M1), did you conclude $f(x) = g(x)$ for **every** $x$? In (M3), did you bound each $|f(x) - h(x)|$ first and only then take the supremum?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why is $d(x,y) ge 0$ built into the definition? Could it follow from the rules?",
+              "a": "It does follow. Put $z = x$ in (M3): $0 = d(x,x) \\le d(x,y) + d(y,x) = 2\\,d(x,y)$, using (M1) and (M2). So $d(x,y) \\ge 0$. Writing $[0, \\infty)$ in the definition just saves you that step."
+            },
+            {
+              "q": "If two metrics are different, are the metric spaces different?",
+              "a": "Yes. $(\\mathbb{R}, |x-y|)$ and $\\mathbb{R}$ with the discrete metric have the same points but behave very differently. In the first, $1/n$ gets close to $0$. In the second, $d(1/n, 0) = 1$ for every $n$, so it never gets close. Always say which metric you use."
+            },
+            {
+              "q": "Why is a ball defined with $<$ and not $le$?",
+              "a": "The strict inequality gives \"room to move\", which is what open sets need (lesson 8.2). The set $\\{y : d(x,y) \\le r\\}$ is also useful; it is called the **closed ball**. In the discrete metric the difference is dramatic: $B(x,1) = \\{x\\}$ but the closed ball of radius $1$ is all of $X$."
+            },
+            {
+              "q": "Is every \"distance-like\" formula a metric?",
+              "a": "No. $(x-y)^2$ fails (M3), and $|x^2 - y^2|$ fails (M1). On the other hand some odd-looking formulas do work: $\\min(1, |x - y|)$ and $\\dfrac{|x-y|}{1 + |x-y|}$ are both metrics on $\\mathbb{R}$. You must check the three rules each time."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A **metric** $d$ on a set $X$ gives distances $\\ge 0$ with: (M1) $d(x,y) = 0 \\iff x = y$; (M2) $d(x,y) = d(y,x)$; (M3) $d(x,z) \\le d(x,y) + d(y,z)$.\n- To disprove a metric, find **one** counterexample to **one** rule: $(x-y)^2$ fails (M3), $|x^2 - y^2|$ fails (M1).\n- Key examples: $|x - y|$ on $\\mathbb{R}$; $d_1, d_2, d_\\infty$ on $\\mathbb{R}^n$; the **discrete metric** on any set; the **sup metric** on $C[a,b]$; any subset as a subspace.\n- The **open ball** $B(x,r) = \\{y : d(x,y) < r\\}$ replaces the interval $(x - r, x + r)$. A set is **bounded** if it fits inside some ball. Both depend on the metric.\n- The **reverse triangle inequality** $|d(x,z) - d(y,z)| \\le d(x,y)$ shows distance to a fixed point is continuous."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which of the following is **not** a metric on $\\mathbb{R}$?",
+          "options": [
+            "$d(x,y)=\\min(1,|x-y|)$",
+            "$d(x,y)=|x^3-y^3|$",
+            "$d(x,y)=(x-y)^2$",
+            "$d(x,y)=|x-y|$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$(x-y)^2$ breaks the triangle inequality: $d(0,2) = 4 > d(0,1) + d(1,2) = 2$. The truncated metric $\\min(1,|x-y|)$ is a metric, and $|x^3 - y^3|$ is a metric because $x \\mapsto x^3$ is injective (so (M1) holds) and (M3) is the triangle inequality for the numbers $x^3, y^3, z^3$. $|x - y|$ is the usual metric."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$d(x,y)=\\dfrac{|x-y|}{1+|x-y|}$ is a metric on $\\mathbb{R}$.",
+          "answer": [
+            true
+          ],
+          "explanation": "(M1) and (M2) are clear. For (M3), $\\varphi(t) = t/(1+t)$ is increasing and satisfies $\\varphi(s+t) \\le \\varphi(s) + \\varphi(t)$ for $s, t \\ge 0$, so $d(x,z) \\le \\varphi(|x-y| + |y-z|) \\le d(x,y) + d(y,z)$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements hold in **every** metric space $(X,d)$?",
+          "options": [
+            "$|d(x,z)-d(y,z)|\\le d(x,y)$",
+            "$d(x,y)\\le d(x,z)\\,d(z,y)$",
+            "$d(x,w)\\le d(x,y)+d(y,z)+d(z,w)$",
+            "$d(x,y)\\ge 0$"
+          ],
+          "answer": [
+            0,
+            2,
+            3
+          ],
+          "explanation": "The reverse triangle inequality always holds, and so does the four-point inequality (apply (M3) twice). $d \\ge 0$ holds too; it even follows from the rules: $0 = d(x,x) \\le 2d(x,y)$. The product inequality fails: in $\\mathbb{R}$ with $z = x$ and $x \\ne y$ it would give $d(x,y) \\le 0$."
+        },
+        {
+          "type": "short",
+          "prompt": "In a set with the discrete metric, what is $d(a,b)$ when $a\\ne b$?",
+          "answer": [
+            "1",
+            "one"
+          ],
+          "explanation": "By definition the discrete metric is $1$ between any two different points and $0$ from a point to itself."
+        },
+        {
+          "type": "single",
+          "prompt": "In $\\mathbb{R}^2$ with $d_\\infty(x,y)=\\max(|x_1-y_1|,|x_2-y_2|)$, the open ball $B(0,1)$ is",
+          "options": [
+            "the open disc $x_1^2+x_2^2<1$",
+            "the open diamond $|x_1|+|x_2|<1$",
+            "the closed square $[-1,1]^2$",
+            "the open square $(-1,1)^2$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$\\max(|x_1|,|x_2|) < 1$ exactly when both $|x_1| < 1$ and $|x_2| < 1$, that is, $x \\in (-1,1)^2$. The disc is the $d_2$ ball and the diamond is the $d_1$ ball. The closed square would include points at distance exactly $1$, but the ball uses a strict inequality."
+        },
+        {
+          "type": "single",
+          "prompt": "What is $d_1\\big((0,0),(3,4)\\big)$ in $\\mathbb{R}^2$?",
+          "options": [
+            "$5$",
+            "$7$",
+            "$4$",
+            "$12$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$d_1 = |3 - 0| + |4 - 0| = 7$. For comparison $d_2 = 5$ and $d_\\infty = 4$; $12$ is the product $3 \\times 4$, which is not a distance formula."
+        },
+        {
+          "type": "short",
+          "prompt": "In $\\mathbb{R}^2$ with the Euclidean metric $d_2$, what is $d_2\\big((1,2),(4,6)\\big)$?",
+          "answer": [
+            "5",
+            "five"
+          ],
+          "explanation": "$d_2 = \\sqrt{(4-1)^2 + (6-2)^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which metric rule does $d(x,y) = |x^2 - y^2|$ break on $\\mathbb{R}$?",
+          "options": [
+            "(M1): $d(x,y) = 0$ only when $x = y$",
+            "(M2): symmetry",
+            "(M3): the triangle inequality",
+            "None of them"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$d(3,-3) = |9 - 9| = 0$ although $3 \\ne -3$, so (M1) fails. Symmetry holds since $|x^2 - y^2| = |y^2 - x^2|$, and (M3) holds because it is the triangle inequality for $x^2, y^2, z^2$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these are metric spaces? Select all that apply.",
+          "options": [
+            "$\\mathbb{R}$ with $d(x,y) = |x - y|$",
+            "$\\mathbb{Z}$ with $d(x,y) = |x - y|$",
+            "$\\mathbb{R}$ with $d(x,y) = (x - y)^2$",
+            "$\\mathbb{R}$ with $d(x,y) = x - y$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "$\\mathbb{R}$ with the usual metric is a metric space, and $\\mathbb{Z}$ is a subspace of it, so it is one too. $(x-y)^2$ fails the triangle inequality, and $x - y$ can be negative and is not symmetric."
+        },
+        {
+          "type": "true_false",
+          "prompt": "With the discrete metric on $\\mathbb{R}$, the whole set $\\mathbb{R}$ is bounded.",
+          "answer": [
+            true
+          ],
+          "explanation": "Every distance is $0$ or $1$, so $\\mathbb{R} = B(0, 2)$. $\\mathbb{R}$ fits in a ball, so it is bounded. With the usual metric it is not bounded; boundedness depends on the metric."
+        },
+        {
+          "type": "short",
+          "prompt": "On $C[0,1]$ with the sup metric, what is $d_\\infty(f,g)$ for $f(x) = x$ and $g(x) = x^2$? Give a fraction or decimal.",
+          "answer": [
+            "1/4",
+            "0.25",
+            "¼"
+          ],
+          "explanation": "The gap $x - x^2$ is largest where $1 - 2x = 0$, at $x = \\tfrac12$, giving $\\tfrac12 - \\tfrac14 = \\tfrac14$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For all points $x, y$ of $\\mathbb{R}^2$, $d_2(x,y) \\le d_1(x,y)$.",
+          "answer": [
+            true
+          ],
+          "explanation": "With $a = |x_1 - y_1|$ and $b = |x_2 - y_2|$, we have $(a + b)^2 = a^2 + 2ab + b^2 \\ge a^2 + b^2$, so $\\sqrt{a^2 + b^2} \\le a + b$. The bird's flight is never longer than the taxi's route."
+        }
+      ]
+    },
+    {
+      "slug": "8-2-open-and-closed-sets",
+      "title": "Open and closed sets",
+      "summary": "Open sets: every point has some room to move. Closed sets: they keep their limits.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "Two kinds of set that the rest of analysis is built on.\n\n**In this lesson you will learn to:**\n- decide whether a set is **open** by finding a ball around each point\n- decide whether a set is **closed**, using its complement or using sequences\n- explain why a set can be both open and closed, or neither\n- know which unions and intersections of open and closed sets stay open or closed\n\n**You need:** metric spaces and open balls $B(x,r) = \\{y : d(x,y) < r\\}$ (lesson 8.1), complements and De Morgan's laws (lesson 1.4), quantifiers $\\forall$ (\"for all\") and $\\exists$ (\"there exists\") (lesson 1.3), and convergence of real sequences (lesson 3.4)."
+        },
+        {
+          "type": "text",
+          "md": "## Why open and closed sets?\n\nCompare $(0,1)$ and $[0,1]$ on the real line.\n\nStand at any point of $(0,1)$, say $x = 0.99$. You can step a little in either direction and stay inside: everything within $0.01$ of $0.99$ is still in $(0,1)$. Every point has some **room to move**. That matters because limits and continuity only look at what happens **near** a point. If a function is defined on a set where every point has room around it, you can approach each point from all sides.\n\nNow look at $[0,1]$. The point $0$ has no room on its left. But $[0,1]$ has a different strength: if a sequence of points in $[0,1]$ converges, the limit is still in $[0,1]$. The set **keeps its limits**. The Extreme Value Theorem (lesson 5.10) needed exactly this: on $(0,1]$, the function $1/x$ has no maximum because the sequence $1/n$ escapes to $0$, which is not in the set.\n\nThese two properties are called **open** and **closed**. Using open balls from lesson 8.1, we can define both in any metric space."
+        },
+        {
+          "type": "text",
+          "md": "## Open sets\n\n**In plain words:** a set is open if every point in it has a ball around it that stays inside the set.\n\n**Definition.** Let $(X,d)$ be a metric space. A set $U \\subseteq X$ is **open** if\n$$\\forall x \\in U \\ \\exists r > 0 : B(x,r) \\subseteq U.$$\nRead: \"for every point $x$ of $U$ there is a radius $r > 0$ such that the ball $B(x,r)$ lies inside $U$\". The radius may depend on $x$, and usually does.\n\n**Examples in $\\mathbb{R}$.**\n- $(0,1)$ is open. For $x \\in (0,1)$, take $r = \\min(x, 1 - x)$, the distance to the nearer end. Then $B(x,r) = (x - r, x + r) \\subseteq (0,1)$. Points near the ends get small balls, but every ball has $r > 0$.\n- $\\mathbb{R}$ itself is open: any ball works.\n- **Edge case:** the empty set $\\emptyset$ is open. The definition says \"for every $x$ in $\\emptyset$, …\", and there are no such $x$, so there is nothing to check. A claim about every element of the empty set is automatically true (lesson 1.3).\n\n**Non-examples.**\n- $[0,1)$ is not open. At $x = 0$, every ball $(-r, r)$ contains negative numbers, which are not in the set. **One** bad point is enough.\n- $\\mathbb{Z}$ is not open. Any ball around $3$ contains $3.0001$, which is not an integer.\n- $\\mathbb{Q}$ is not open. Any ball contains irrational numbers (lesson 2.12)."
+        },
+        {
+          "type": "check",
+          "question": "Which subset of $\\mathbb{R}$ (usual metric) is open?",
+          "options": [
+            "$\\mathbb{Q}$",
+            "$(0,1)\\cup(2,3)$",
+            "$[0,1)$",
+            "$\\mathbb{Z}$"
+          ],
+          "correct": 1,
+          "explanation": "Each point of $(0,1)\\cup(2,3)$ lies in one of the two open intervals and has a ball inside that interval. $\\mathbb{Q}$ contains no interval, since every interval contains irrationals. $[0,1)$ has no ball around $0$ inside it. $\\mathbb{Z}$ contains no interval either."
+        },
+        {
+          "type": "text",
+          "md": "## Open balls are open\n\nThe name \"open ball\" suggests the ball is an open set. It is, but this needs a proof, because a point near the edge of the ball has little room.\n\n**Claim.** In any metric space, $B(x,r)$ is open.\n\n**Idea.** Take a point $y$ inside the ball. It is at distance $d(x,y)$ from the centre, so it has $s = r - d(x,y)$ of \"room left\" before the edge. We show the smaller ball $B(y, s)$ fits inside $B(x, r)$.\n\n**Proof.** Let $y \\in B(x,r)$, so $d(x,y) < r$, and put $s = r - d(x,y) > 0$. Let $z \\in B(y,s)$, so $d(y,z) < s$. By the triangle inequality (M3),\n$$d(x,z) \\le d(x,y) + d(y,z) < d(x,y) + s = r.$$\nSo $z \\in B(x,r)$. This shows $B(y,s) \\subseteq B(x,r)$, and since $y$ was any point of the ball, $B(x,r)$ is open. $\\blacksquare$\n\n**Example.** In $\\mathbb{R}$, $y = 1.7$ lies in $B(1, 1) = (0, 2)$. Here $d(1, 1.7) = 0.7$, so $s = 0.3$, and indeed $B(1.7, 0.3) = (1.4, 2) \\subseteq (0,2)$.\n\n**Edge case.** In the discrete metric, $B(x, \\tfrac12) = \\{x\\}$. So a **single point** is an open ball, and hence an open set. That never happens in $\\mathbb{R}$."
+        },
+        {
+          "type": "check",
+          "question": "In $\\mathbb{R}^2$ with $d_2$, the point $y$ lies in $B(x, 5)$ with $d_2(x,y) = 3.5$. Following the proof, what radius $s$ guarantees $B(y,s) \\subseteq B(x,5)$?",
+          "options": [
+            "$s = 1.5$",
+            "$s = 3.5$",
+            "$s = 5$",
+            "$s = 8.5$"
+          ],
+          "correct": 0,
+          "explanation": "The room left is $s = r - d(x,y) = 5 - 3.5 = 1.5$. Then any $z$ with $d(y,z) < 1.5$ has $d(x,z) < 3.5 + 1.5 = 5$. Taking $s = 3.5$ or $s = 5$ would let the small ball poke outside the big one, and $8.5$ adds the distances instead of subtracting."
+        },
+        {
+          "type": "text",
+          "md": "## Closed sets\n\n**In plain words:** a set is closed if everything **outside** it has room to move away from it.\n\n**Definition.** A set $F \\subseteq X$ is **closed** if its complement $X \\setminus F$ is open. (Recall $X \\setminus F$ is the set of points of $X$ not in $F$, lesson 1.4.)\n\n**Examples in $\\mathbb{R}$.**\n- $[0,1]$ is closed: its complement $(-\\infty, 0) \\cup (1, \\infty)$ is open, since each of its points has a ball avoiding $[0,1]$.\n- A single point $\\{a\\}$ is closed: the complement $(-\\infty, a) \\cup (a, \\infty)$ is open.\n- $\\mathbb{Z}$ is closed: its complement is the union of the open intervals $(n, n+1)$, which is open.\n- **Edge case:** $\\mathbb{R}$ and $\\emptyset$ are closed, because their complements $\\emptyset$ and $\\mathbb{R}$ are open.\n\n**In any metric space**, the **closed ball** $\\overline{B}(x,r) = \\{y : d(x,y) \\le r\\}$ is closed. If $d(x,y) > r$, put $s = d(x,y) - r > 0$. Any $z$ with $d(y,z) < s$ has, by the reverse triangle inequality (lesson 8.1),\n$$d(x,z) \\ge d(x,y) - d(y,z) > d(x,y) - s = r,$$\nso the ball $B(y,s)$ misses the closed ball. The complement is open.\n\n**Non-example.** $[0,1)$ is not closed. Its complement $(-\\infty, 0) \\cup [1, \\infty)$ contains $1$, and every ball around $1$ dips into $[0,1)$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Closed is not the opposite of open",
+          "md": "Sets are not doors. \"Not open\" does **not** mean \"closed\".\n\n- **Both open and closed:** $\\emptyset$ and $X$, in every metric space. In a discrete space, **every** subset is both.\n- **Neither:** $[0,1)$ in $\\mathbb{R}$ is not open (no room at $0$) and not closed (the complement has no room at $1$). $\\mathbb{Q}$ is also neither.\n\nSo to show a set is closed, never argue \"it is not open\". Check the complement, or use sequences (next)."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each subset of $\\mathbb{R}$ to its type.",
+          "pairs": [
+            {
+              "left": "$(0,1)$",
+              "right": "Open, not closed"
+            },
+            {
+              "left": "$[0,1]$",
+              "right": "Closed, not open"
+            },
+            {
+              "left": "$[0,1)$",
+              "right": "Neither open nor closed"
+            },
+            {
+              "left": "$\\mathbb{R}$",
+              "right": "Both open and closed"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Closed sets keep their limits\n\nChecking complements can be awkward. There is a test that matches the \"keeps its limits\" idea from the start of the lesson.\n\nFirst, convergence in a metric space: $x_n \\to x$ means $d(x_n, x) \\to 0$, an ordinary limit of real numbers (lesson 3.4). In $\\mathbb{R}$ this is the old definition, since $d(x_n, x) = |x_n - x|$. Lesson 8.7 develops this fully.\n\n**Theorem (sequential test for closed sets).** $F$ is closed if and only if: whenever $(x_n)$ is a sequence of points of $F$ and $x_n \\to x$ for some $x \\in X$, the limit $x$ is in $F$.\n\n**Why it is true (one direction).** Suppose $F$ is closed and $x \\notin F$. Then $x$ lies in the open set $X \\setminus F$, so some ball $B(x, r)$ misses $F$ completely. A sequence in $F$ then stays at distance $\\ge r$ from $x$, so it cannot converge to $x$.\n\n**Examples.**\n- $[0,1]$: if $0 \\le x_n \\le 1$ and $x_n \\to x$, then $0 \\le x \\le 1$ (limits keep non-strict inequalities, lesson 3.6). Closed.\n- $(0,1]$: the sequence $x_n = 1/n$ lies in $(0,1]$ but converges to $0 \\notin (0,1]$. **Not closed.** One escaping sequence is enough.\n- $\\mathbb{Q}$: the decimals $1, 1.4, 1.41, 1.414, \\dots$ are rational and converge to $\\sqrt2 \\notin \\mathbb{Q}$. Not closed.\n- **Edge case:** a finite set such as $\\{1, 2, 5\\}$. A convergent sequence in it must eventually be constant, so its limit is one of the points. Closed."
+        },
+        {
+          "type": "check",
+          "question": "You find a sequence $(x_n)$ in a set $F \\subseteq \\mathbb{R}$ with $x_n \\to 7$, but $7 \\notin F$. What can you conclude?",
+          "options": [
+            "$F$ is open",
+            "$F$ is not closed",
+            "$F$ is not open",
+            "Nothing until you check more sequences"
+          ],
+          "correct": 1,
+          "explanation": "A closed set keeps the limits of its sequences, so one sequence escaping to $7 \\notin F$ proves $F$ is not closed. It says nothing about openness: $(0,7)$ is open and $[0,7)$ is not, yet both have $x_n = 7 - 1/n \\to 7$. And no further checking is needed, because one counterexample settles it."
+        },
+        {
+          "type": "text",
+          "md": "## Unions and intersections\n\nHow do open sets combine? Here $\\bigcup$ means union and $\\bigcap$ means intersection of a whole family of sets, possibly infinitely many.\n\n**Theorem.**\n- Any union of open sets is open, even infinitely many.\n- A **finite** intersection of open sets is open.\n- Any intersection of closed sets is closed, even infinitely many.\n- A **finite** union of closed sets is closed.\n\n**Why unions of open sets are open.** If $x$ is in the union, it is in one of the sets, $U$ say. That $U$ has a ball around $x$, and the ball lies in the union too.\n\n**The closed versions** follow from De Morgan's laws (lesson 1.4): the complement of an intersection is the union of the complements. So $X \\setminus \\bigcap F_i = \\bigcup (X \\setminus F_i)$ is a union of open sets, hence open.\n\n**Why \"finite\" matters.** Infinitely many open sets can squeeze down to something that is not open:\n$$\\bigcap_{n \\ge 1} \\left(-\\tfrac1n, \\tfrac1n\\right) = \\{0\\},$$\nbecause $0$ is in every interval, and any $x \\ne 0$ falls outside $(-\\tfrac1n, \\tfrac1n)$ once $\\tfrac1n < |x|$. And $\\{0\\}$ is not open in $\\mathbb{R}$.\n\nLikewise infinitely many closed sets can grow into something that is not closed:\n$$\\bigcup_{n \\ge 1} \\left[\\tfrac1n, 1\\right] = (0, 1].$$"
+        },
+        {
+          "type": "steps",
+          "title": "Proof: finite intersections of open sets are open",
+          "steps": [
+            {
+              "title": "Set up",
+              "md": "Let $U_1, \\dots, U_k$ be open sets and let $x$ be in $U_1 \\cap \\dots \\cap U_k$. We need one ball around $x$ inside **all** of them."
+            },
+            {
+              "title": "Use each set separately",
+              "md": "Each $U_i$ is open and contains $x$, so there is $r_i > 0$ with $B(x, r_i) \\subseteq U_i$. Different sets may need different radii."
+            },
+            {
+              "title": "Take the smallest radius",
+              "md": "Put $r = \\min(r_1, \\dots, r_k)$. This is the key move: the minimum of **finitely many** positive numbers is one of them, so $r > 0$."
+            },
+            {
+              "title": "Conclude",
+              "md": "For each $i$, $B(x, r) \\subseteq B(x, r_i) \\subseteq U_i$, because a smaller radius gives a smaller ball. So $B(x, r) \\subseteq \\bigcap_i U_i$, and the intersection is open. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "Why does the proof break for the infinite family $U_n = (-\\tfrac1n, \\tfrac1n)$, $n \\ge 1$, at $x = 0$?",
+          "options": [
+            "Some $U_n$ is not open",
+            "The best radii are $r_n = \\tfrac1n$, and there is no smallest; their infimum is $0$, which is not a valid radius",
+            "$0$ is not in every $U_n$",
+            "The triangle inequality fails for infinitely many sets"
+          ],
+          "correct": 1,
+          "explanation": "A ball inside every $U_n$ would need $r \\le \\tfrac1n$ for all $n$, forcing $r \\le 0$. With finitely many sets the minimum is positive; with infinitely many the infimum can be $0$. Each $U_n$ is open, $0$ is in all of them, and the triangle inequality is not involved."
+        },
+        {
+          "type": "text",
+          "md": "## Open depends on the space you are in\n\n\"Open\" always means open **in some metric space $X$**, because the balls are made of points of $X$. Change $X$ and the answer can change.\n\nTake the subspace $X = [0,1]$ with $d(x,y) = |x - y|$ (lesson 8.1). In $X$, the ball around $0$ of radius $\\tfrac12$ is\n$$B_X(0, \\tfrac12) = \\{y \\in [0,1] : |y| < \\tfrac12\\} = [0, \\tfrac12).$$\nNegative numbers are simply not in $X$, so they cannot spoil anything. Since open balls are open, **$[0, \\tfrac12)$ is open in $[0,1]$**, even though it is not open in $\\mathbb{R}$.\n\n**Example.** $[0,1]$ is open in the space $[0,1]$ (the whole space is always open), but not open in $\\mathbb{R}$.\n\n**Non-example.** $[\\tfrac12, 1)$ is not open in $[0,1]$: every $X$-ball around $\\tfrac12$ contains points just below $\\tfrac12$, which are in $X$ but not in the set.\n\nWhen the space is not stated in this level, it is $\\mathbb{R}$ or the space under discussion."
+        },
+        {
+          "type": "check",
+          "question": "Let $X = [0,2]$ with the usual metric. Which set is open **in $X$** but not open in $\\mathbb{R}$?",
+          "options": [
+            "$(1,2]$",
+            "$(0,1)$",
+            "$[1,2)$",
+            "$\\{2\\}$"
+          ],
+          "correct": 0,
+          "explanation": "$(1,2]$ is the $X$-ball $B_X(2, 1)$: the points of $X$ within $1$ of $2$. At $2$, points to the right are not in $X$, so they do not count. $(0,1)$ is open in both. $[1,2)$ has no $X$-ball around $1$ inside it, since points just below $1$ are in $X$. $\\{2\\}$ is not open in $X$: every $X$-ball around $2$ contains points like $1.99$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Open set",
+              "back": "Every point has a **ball** around it inside the set.\n\n*Example:* $(0,1)$, using $r = \\min(x, 1-x)$. *Non-example:* $[0,1)$, at $0$."
+            },
+            {
+              "front": "Closed set",
+              "back": "A set whose **complement is open**. Equivalently, it keeps the limits of its convergent sequences.\n\n*Example:* $[0,1]$, $\\mathbb{Z}$, any single point in $\\mathbb{R}$."
+            },
+            {
+              "front": "Both open and closed",
+              "back": "Possible: \"closed\" is **not** \"not open\".\n\n*Example:* $\\emptyset$ and $X$ always; every subset of a discrete space."
+            },
+            {
+              "front": "Neither open nor closed",
+              "back": "Fails both tests.\n\n*Example:* $[0,1)$: no room at $0$, and $1 - \\tfrac1n \\to 1 \\notin [0,1)$."
+            },
+            {
+              "front": "Finite intersection rule",
+              "back": "A **finite** intersection of open sets is open; an infinite one may not be.\n\n*Example:* $\\bigcap_n (-\\tfrac1n, \\tfrac1n) = \\{0\\}$, not open."
+            },
+            {
+              "front": "Open in a subspace",
+              "back": "Open using only balls made of points **of the subspace**.\n\n*Example:* $[0, \\tfrac12)$ is open in $[0,1]$ but not in $\\mathbb{R}$."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove that the closed ball $\\overline{B}(x,r) = \\{y : d(x,y) \\le r\\}$ is a closed set.",
+          "items": [
+            "We show that the complement $\\{y : d(x,y) > r\\}$ is open.",
+            "Let $y$ satisfy $d(x,y) > r$, and put $s = d(x,y) - r > 0$.",
+            "Let $z$ be any point with $d(y,z) < s$.",
+            "By the reverse triangle inequality, $d(x,z) \\ge d(x,y) - d(y,z) > d(x,y) - s = r$.",
+            "So $B(y,s)$ lies in the complement, the complement is open, and $\\overline{B}(x,r)$ is closed. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: finite sets are closed",
+          "problem": "Let $(X,d)$ be any metric space. Prove that every finite set $\\{a_1, \\dots, a_k\\} \\subseteq X$ is closed. Hint: first prove that one point $\\{a\\}$ is closed, then use a rule from this lesson.",
+          "solution": "**One point.** Let $a \\in X$. We show $X \\setminus \\{a\\}$ is open. Take $y \\ne a$. By (M1), $r = d(a,y) > 0$. The ball $B(y, r)$ does not contain $a$, because $d(y, a) = r$ is not less than $r$. So $B(y,r) \\subseteq X \\setminus \\{a\\}$. Hence $X \\setminus \\{a\\}$ is open and $\\{a\\}$ is closed.\n\n**Finitely many points.** $\\{a_1, \\dots, a_k\\} = \\{a_1\\} \\cup \\dots \\cup \\{a_k\\}$ is a **finite** union of closed sets, so it is closed. (The empty set, $k = 0$, is closed too.) $\\blacksquare$\n\n**Check your version:** did you use (M1) to know $d(a,y) > 0$? Did you note that the ball uses a strict inequality, so it misses $a$? Did you say the union is **finite**? (An infinite union of points need not be closed: $\\{1/n : n \\ge 1\\}$ is not closed, since $1/n \\to 0$.)"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is every open set in $mathbb{R}$ an open interval?",
+              "a": "No: $(0,1) \\cup (2,3)$ is open but not an interval. It is true, though harder to prove, that every open subset of $\\mathbb{R}$ is a union of countably many disjoint open intervals."
+            },
+            {
+              "q": "If $F$ is closed, must its points be limits of sequences in $F$?",
+              "a": "Yes, but trivially: every $x \\in F$ is the limit of the constant sequence $x, x, x, \\dots$. The real content of closedness is the other way round: limits of sequences in $F$ stay in $F$."
+            },
+            {
+              "q": "Is a union of infinitely many closed sets closed?",
+              "a": "Not in general: $\\bigcup_{n \\ge 1} [1/n, 1] = (0,1]$ is not closed in $\\mathbb{R}$. Each $[1/n, 1]$ is closed, but the union loses the limit point $0$."
+            },
+            {
+              "q": "Do $d_1$, $d_2$ and $d_infty$ on $mathbb{R}^n$ give different open sets?",
+              "a": "No. Because $d_\\infty \\le d_2 \\le d_1 \\le n\\,d_\\infty$ (lesson 8.1), every ball for one metric contains a smaller ball for each of the others, centred at the same point. So \"room to move\" in one metric gives room in all three, and they have exactly the same open sets."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $U$ is **open** if every point has a ball $B(x,r)$, $r > 0$, inside $U$. Open balls are open (by the triangle inequality).\n- $F$ is **closed** if $X \\setminus F$ is open; equivalently, limits of sequences in $F$ stay in $F$. One escaping sequence shows a set is not closed.\n- Open and closed are not opposites: $\\emptyset$ and $X$ are both; $[0,1)$ and $\\mathbb{Q}$ are neither.\n- Any union and **finite** intersections of open sets are open; any intersection and **finite** unions of closed sets are closed.\n- Openness depends on the space: $[0, \\tfrac12)$ is open in $[0,1]$ but not in $\\mathbb{R}$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "In $\\mathbb{R}$, the set $\\bigcap_{n\\ge1}\\left(-\\tfrac1n,1+\\tfrac1n\\right)$ is",
+          "options": [
+            "open but not closed",
+            "closed but not open",
+            "neither open nor closed",
+            "both open and closed"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The intersection equals $[0,1]$: $0$ and $1$ are in every interval, while a point outside $[0,1]$ drops out once $\\tfrac1n$ is small enough. $[0,1]$ is closed (its complement is open) and not open (no ball around $0$ lies in it). This shows an infinite intersection of open sets need not be open."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In a discrete metric space, every subset is both open and closed.",
+          "answer": [
+            true
+          ],
+          "explanation": "$B(x,\\tfrac12) = \\{x\\}$, so every point of any set $A$ has a ball inside $A$, and $A$ is open. Every complement is then open too, so every set is also closed."
+        },
+        {
+          "type": "multiple",
+          "prompt": "In an arbitrary metric space, which sets are **always** open?",
+          "options": [
+            "A union of any family of open sets",
+            "The intersection of two open sets",
+            "The intersection of countably many open sets",
+            "The complement of a closed set"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "Any union and finite intersections of open sets are open, and the complement of a closed set is open by definition. A countable intersection can fail: $\\bigcap_n (-\\tfrac1n, \\tfrac1n) = \\{0\\}$ is not open in $\\mathbb{R}$."
+        },
+        {
+          "type": "single",
+          "prompt": "As a subset of $\\mathbb{R}$, $\\mathbb{Q}$ is",
+          "options": [
+            "open",
+            "closed",
+            "both open and closed",
+            "neither open nor closed"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "No interval lies inside $\\mathbb{Q}$ (every interval contains irrationals), so it is not open. The rationals $1, 1.4, 1.41, 1.414, \\dots$ converge to $\\sqrt2 \\notin \\mathbb{Q}$, so $\\mathbb{Q}$ does not keep its limits and is not closed."
+        },
+        {
+          "type": "single",
+          "prompt": "Consider the subspace $X=[0,1]$ with the usual metric. Which set is open **in $X$**?",
+          "options": [
+            "$\\{\\tfrac12\\}$",
+            "$[\\tfrac12,1)$",
+            "$[0,\\tfrac12)$",
+            "$\\mathbb{Q}\\cap[0,1]$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$[0,\\tfrac12) = \\{y \\in X : |y - 0| < \\tfrac12\\}$ is an open ball of $X$, so it is open in $X$. $\\{\\tfrac12\\}$ and $[\\tfrac12,1)$ contain no $X$-ball around $\\tfrac12$, since points just below $\\tfrac12$ lie in $X$. $\\mathbb{Q} \\cap [0,1]$ contains no interval."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every $x\\in X$ and $r>0$, the closed ball $\\{y : d(x,y)\\le r\\}$ is a closed set.",
+          "answer": [
+            true
+          ],
+          "explanation": "Its complement is open: if $d(x,y) > r$, the ball $B(y, d(x,y) - r)$ misses the closed ball, by the reverse triangle inequality."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The empty set is an open subset of every metric space.",
+          "answer": [
+            true
+          ],
+          "explanation": "The condition \"every point of $\\emptyset$ has a ball inside $\\emptyset$\" has no points to check, so it holds automatically. The empty set is also closed, since its complement $X$ is open."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the largest $r$ such that $B(0.3, r) \\subseteq (0,1)$ in $\\mathbb{R}$? Give a decimal.",
+          "answer": [
+            "0.3",
+            ".3",
+            "3/10"
+          ],
+          "explanation": "$B(0.3, r) = (0.3 - r, 0.3 + r)$ fits in $(0,1)$ when $0.3 - r \\ge 0$ and $0.3 + r \\le 1$, that is $r \\le 0.3$ and $r \\le 0.7$. So $r = \\min(0.3, 0.7) = 0.3$, the distance to the nearer end."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these subsets of $\\mathbb{R}$ are closed? Select all that apply.",
+          "options": [
+            "$[2,5]$",
+            "$(0,1]$",
+            "$\\mathbb{Q}$",
+            "$\\{0\\} \\cup \\{\\tfrac1n : n \\ge 1\\}$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "$[2,5]$ is closed. $\\{0\\} \\cup \\{\\tfrac1n\\}$ is closed: the only point its sequences can approach from outside the list is $0$, and $0$ is included. $(0,1]$ is not closed, since $\\tfrac1n \\to 0 \\notin (0,1]$. $\\mathbb{Q}$ is not closed, since rationals converge to $\\sqrt2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A union of infinitely many closed subsets of $\\mathbb{R}$ is always closed.",
+          "answer": [
+            false
+          ],
+          "explanation": "$\\bigcup_{n \\ge 1} [\\tfrac1n, 1] = (0,1]$, which is not closed. Only **finite** unions of closed sets are guaranteed closed."
+        },
+        {
+          "type": "single",
+          "prompt": "The sequence $x_n = 1 - \\tfrac1n$ lies in $[0,1)$ and converges to $1$. What does this show?",
+          "options": [
+            "$[0,1)$ is not closed",
+            "$[0,1)$ is not open",
+            "$[0,1)$ is open",
+            "$[0,1)$ is closed"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "A closed set keeps the limits of its sequences, and $1 \\notin [0,1)$, so $[0,1)$ is not closed. The sequence says nothing about openness. ($[0,1)$ is in fact not open either, because of the point $0$, but that needs a different argument.)"
+        },
+        {
+          "type": "single",
+          "prompt": "In $\\mathbb{R}$, the complement $\\mathbb{R} \\setminus \\mathbb{Z}$ is",
+          "options": [
+            "open",
+            "closed",
+            "both open and closed",
+            "neither open nor closed"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$\\mathbb{R} \\setminus \\mathbb{Z}$ is the union of the open intervals $(n, n+1)$, so it is open. It is not closed, because its complement $\\mathbb{Z}$ is not open. (Equivalently, $\\mathbb{Z}$ is closed.)"
+        }
+      ]
+    },
+    {
+      "slug": "8-3-interior-closure-and-boundary",
+      "title": "Interior, closure and boundary",
+      "summary": "The largest open set inside $A$, the smallest closed set containing it, and the edge between them.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "Most sets are neither open nor closed. This lesson gives every set an open \"inside\", a closed \"completion\" and an \"edge\".\n\n**In this lesson you will learn to:**\n- find the **interior** $A^\\circ$, the **closure** $\\overline{A}$ and the **boundary** $\\partial A$ of a set\n- tell a **limit point** from an **isolated point**, and recognise **dense** sets\n- use sequences to show a point is in the closure\n\n**You need:** open and closed sets and the sequential test for closed sets (lesson 8.2), open balls (lesson 8.1), and the density of $\\mathbb{Q}$ and of the irrationals in $\\mathbb{R}$ (lesson 2.12)."
+        },
+        {
+          "type": "text",
+          "md": "## The inside, the completion and the edge\n\nTake $A = [0,1)$ in $\\mathbb{R}$. It is neither open nor closed (lesson 8.2). But it is close to both:\n- remove the point $0$ and you get $(0,1)$, which is open;\n- add the point $1$ and you get $[0,1]$, which is closed;\n- the two troublesome points $0$ and $1$ form the \"edge\" of the set.\n\nWe want to do this for **any** set in **any** metric space, however messy. Why bother? Many theorems need an open set or a closed set. Interior and closure let you apply them to a set that is neither, by shrinking it or completing it in the most economical way. The closure also gives a precise meaning to \"the points you can get arbitrarily close to using $A$\", which is how limits work.\n\nIn this lesson $(X, d)$ is a metric space and $A \\subseteq X$. The three new objects have special symbols:\n- $A^\\circ$, read \"$A$ interior\";\n- $\\overline{A}$, read \"$A$ closure\" or \"$A$ bar\";\n- $\\partial A$, read \"the boundary of $A$\"."
+        },
+        {
+          "type": "text",
+          "md": "## Interior\n\n**In plain words:** the interior of $A$ is the set of points of $A$ that have room to move inside $A$.\n\n**Definition.** A point $x$ is an **interior point** of $A$ if some ball $B(x, r)$ with $r > 0$ lies inside $A$. The **interior** $A^\\circ$ is the set of all interior points of $A$.\n\nSo $A$ is open exactly when every point of $A$ is interior, that is, when $A^\\circ = A$.\n\n**Fact.** $A^\\circ$ is open, and it is the **largest** open set inside $A$: any open $U \\subseteq A$ satisfies $U \\subseteq A^\\circ$. (Each point of $U$ has a ball in $U$, hence in $A$.)\n\n**Examples in $\\mathbb{R}$.**\n- $[0,1)^\\circ = (0,1)$. Points strictly between $0$ and $1$ have room; $0$ does not.\n- $\\big([0,1] \\cup \\{2\\}\\big)^\\circ = (0,1)$. The single point $2$ is not interior: every ball around $2$ contains $2.001$, which is not in the set.\n- **Edge case:** $\\mathbb{Q}^\\circ = \\emptyset$. A set can be large and still have empty interior: every ball contains irrationals (lesson 2.12), so no rational has room inside $\\mathbb{Q}$.\n- $(0,1)^\\circ = (0,1)$, since $(0,1)$ is already open."
+        },
+        {
+          "type": "check",
+          "question": "What is the interior of $A = [0,1) \\cup \\{2\\}$ in $\\mathbb{R}$?",
+          "options": [
+            "$(0,1)$",
+            "$[0,1)$",
+            "$(0,1) \\cup \\{2\\}$",
+            "$[0,1]$"
+          ],
+          "correct": 0,
+          "explanation": "Only points with a ball inside $A$ count. Points of $(0,1)$ qualify. $0$ fails, because every ball around it contains negative numbers. $2$ fails, because every ball around it contains points like $2.001$. $[0,1]$ even contains $1$, which is not in $A$ at all; the interior is always inside $A$."
+        },
+        {
+          "type": "text",
+          "md": "## Closure\n\n**In plain words:** the closure of $A$ is the set of points you can get as close to as you like using points of $A$.\n\n**Definition.** A point $x \\in X$ is in the **closure** $\\overline{A}$ if every ball $B(x, r)$ contains at least one point of $A$. Note that $x$ itself need not be in $A$.\n\n**Fact.** $\\overline{A}$ is closed, and it is the **smallest** closed set containing $A$. So $A$ is closed exactly when $\\overline{A} = A$.\n\n**Examples in $\\mathbb{R}$.**\n- $\\overline{(0,1)} = [0,1]$. Every ball around $0$ contains small positive numbers such as $r/2$, which lie in $(0,1)$. A point like $1.5$ is not in the closure: the ball $B(1.5, 0.5)$ misses $(0,1)$.\n- $\\overline{\\{1/n : n \\ge 1\\}} = \\{1/n : n \\ge 1\\} \\cup \\{0\\}$. The points $1/n$ get as close to $0$ as you like.\n- **Edge case:** $\\overline{\\mathbb{Q}} = \\mathbb{R}$. Every ball around any real number contains a rational (lesson 2.12).\n- $\\overline{[0,1]} = [0,1]$, since $[0,1]$ is already closed.\n\n**Sequential form.** $x \\in \\overline{A}$ if and only if some sequence of points of $A$ converges to $x$. For example $\\sqrt{2} \\in \\overline{\\mathbb{Q}}$ because of the rational sequence $1, 1.4, 1.41, 1.414, \\dots$. You will rebuild the proof of one direction below."
+        },
+        {
+          "type": "check",
+          "question": "What is the closure of $A = \\{\\tfrac1n : n \\ge 1\\} = \\{1, \\tfrac12, \\tfrac13, \\dots\\}$ in $\\mathbb{R}$?",
+          "options": [
+            "$A$ itself",
+            "$A \\cup \\{0\\}$",
+            "$[0,1]$",
+            "$(0,1]$"
+          ],
+          "correct": 1,
+          "explanation": "The sequence $\\tfrac1n \\to 0$ lies in $A$, so $0 \\in \\overline{A}$. No other new point is added: a point such as $0.4$ lies strictly between $\\tfrac13$ and $\\tfrac12$, and a small ball around it misses $A$. So $A$ alone is too small, while $[0,1]$ and $(0,1]$ are too big."
+        },
+        {
+          "type": "text",
+          "md": "## Limit points, isolated points and dense sets\n\nA point of the closure can be close to $A$ for two different reasons. Either $A$ piles up around it, or it simply belongs to $A$ and stands alone.\n\n**Definition.** $x$ is a **limit point** of $A$ if every ball $B(x, r)$ contains a point of $A$ **other than $x$ itself**. A point of $A$ that is not a limit point is an **isolated point**: some ball around it meets $A$ only at that point.\n\n**Examples.** Let $A = [0,1) \\cup \\{2\\}$.\n- $1$ is a limit point, though $1 \\notin A$.\n- $0.5$ is a limit point, and it is in $A$.\n- **Edge case:** $2$ is in $A$, and so in $\\overline{A}$, but it is **not** a limit point. The ball $B(2, 0.5)$ meets $A$ only at $2$. So $2$ is isolated.\n- Every point of $\\{1/n : n \\ge 1\\}$ is isolated; its only limit point is $0$.\n\n**Fact.** $\\overline{A} = A \\cup \\{\\text{limit points of } A\\}$.\n\n**Definition.** $A$ is **dense** in $X$ if $\\overline{A} = X$: every point of $X$ can be approximated by points of $A$.\n\n**Examples.** $\\mathbb{Q}$ and the irrationals $\\mathbb{R} \\setminus \\mathbb{Q}$ are both dense in $\\mathbb{R}$ (lesson 2.12). **Non-example:** $\\mathbb{Z}$ is not dense, since $\\overline{\\mathbb{Z}} = \\mathbb{Z}$ and $0.5$ is not in it."
+        },
+        {
+          "type": "check",
+          "question": "Let $A = \\{\\tfrac1n : n \\ge 1\\}$. Is $\\tfrac12$ a limit point of $A$?",
+          "options": [
+            "Yes, because $\\tfrac12 \\in A$",
+            "No: the ball $B(\\tfrac12, \\tfrac1{10})$ contains no point of $A$ other than $\\tfrac12$, so $\\tfrac12$ is isolated",
+            "Yes, because $\\tfrac12$ is in the closure of $A$",
+            "No, because limit points are never in the set"
+          ],
+          "correct": 1,
+          "explanation": "The nearest other points of $A$ are $1$ and $\\tfrac13$, both more than $\\tfrac1{10}$ away, so that ball meets $A$ only at $\\tfrac12$. Being in $A$, or in $\\overline{A}$, does not make a point a limit point; that is exactly the difference between the two ideas. And limit points can be in the set: $0.5$ is a limit point of $[0,1)$."
+        },
+        {
+          "type": "order",
+          "prompt": "Put in order the proof that $x\\in\\overline{A}$ implies some sequence in $A$ converges to $x$.",
+          "items": [
+            "Since $x\\in\\overline{A}$, every ball around $x$ meets $A$.",
+            "For each $n\\ge1$, choose $a_n\\in A\\cap B(x,1/n)$.",
+            "Then $d(a_n,x)<1/n$ for every $n$.",
+            "Given $\\varepsilon>0$, pick $N>1/\\varepsilon$; for $n\\ge N$, $d(a_n,x)<1/n\\le 1/N<\\varepsilon$.",
+            "Hence $a_n\\to x$ with every $a_n\\in A$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Boundary\n\n**In plain words:** a boundary point is one where $A$ and the outside meet. However closely you look, you see points of $A$ **and** points not in $A$.\n\n**Definition.** $x$ is a **boundary point** of $A$ if every ball $B(x, r)$ contains a point of $A$ and a point of $X \\setminus A$. The **boundary** $\\partial A$ is the set of boundary points. Equivalently,\n$$\\partial A = \\overline{A} \\setminus A^\\circ = \\overline{A} \\cap \\overline{X \\setminus A}:$$\nthe points of the closure that are not interior.\n\n**Examples in $\\mathbb{R}$.**\n- $\\partial [0,1) = [0,1] \\setminus (0,1) = \\{0, 1\\}$. A boundary point may be in $A$ ($0$) or not ($1$).\n- $\\partial \\big((0,1) \\cup \\{2\\}\\big) = \\{0, 1, 2\\}$. The isolated point $2$ is on the boundary: every ball around it contains $2$ (in the set) and $2.001$ (not in it).\n- **Edge case:** $\\partial \\mathbb{Q} = \\mathbb{R}$. Every ball contains rationals and irrationals, so **every** real number is a boundary point. The boundary need not be \"thin\".\n- $\\partial \\mathbb{R} = \\emptyset$ and $\\partial \\emptyset = \\emptyset$.\n\n**Fact.** $\\partial A$ is always closed, because it is the intersection of the two closed sets $\\overline{A}$ and $\\overline{X \\setminus A}$."
+        },
+        {
+          "type": "check",
+          "question": "What is $\\partial A$ for $A = [-1, 0) \\cup (0, 1]$ in $\\mathbb{R}$?",
+          "options": [
+            "$\\{-1, 1\\}$",
+            "$\\{-1, 0, 1\\}$",
+            "$\\{0\\}$",
+            "$[-1, 1]$"
+          ],
+          "correct": 1,
+          "explanation": "$\\overline{A} = [-1, 1]$ and $A^\\circ = (-1, 0) \\cup (0, 1)$, so $\\partial A = \\{-1, 0, 1\\}$. The point $0$ is easy to miss: it is not in $A$, but every ball around it contains points of $A$ on both sides and also $0$ itself, which is outside $A$. $[-1,1]$ is the closure, not the boundary."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each notion to its description",
+          "pairs": [
+            {
+              "left": "Interior $A^\\circ$",
+              "right": "The largest open set contained in $A$"
+            },
+            {
+              "left": "Closure $\\overline{A}$",
+              "right": "The smallest closed set containing $A$"
+            },
+            {
+              "left": "Boundary $\\partial A$",
+              "right": "Points every ball around which meets both $A$ and $X\\setminus A$"
+            },
+            {
+              "left": "Limit point of $A$",
+              "right": "Every ball around it contains a point of $A$ other than itself"
+            },
+            {
+              "left": "Dense set",
+              "right": "A set whose closure is the whole space"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The closure of an open ball need not be the closed ball",
+          "md": "In $\\mathbb{R}$ and $\\mathbb{R}^n$ the closure of the open ball $B(x,r)$ is the closed ball $\\{y : d(x,y) \\le r\\}$. It is tempting to believe this in every metric space. It is false.\n\nIn a discrete space with at least two points, $B(x,1) = \\{x\\}$. A single point is already closed (lesson 8.2), so $\\overline{B(x,1)} = \\{x\\}$. But $\\{y : d(x,y) \\le 1\\} = X$, since every point is at distance $0$ or $1$.\n\nIn general only $\\overline{B(x,r)} \\subseteq \\{y : d(x,y) \\le r\\}$ holds: the closed ball is a closed set containing $B(x,r)$, and the closure is the smallest such set."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Interior $A^\\circ$",
+              "back": "Points of $A$ with a **ball inside $A$**; the largest open subset of $A$.\n\n*Example:* $[0,1)^\\circ = (0,1)$; $\\mathbb{Q}^\\circ = \\emptyset$."
+            },
+            {
+              "front": "Closure $\\overline{A}$",
+              "back": "Points whose every ball **meets $A$**; the smallest closed set containing $A$.\n\n*Example:* $\\overline{(0,1)} = [0,1]$; $\\overline{\\mathbb{Q}} = \\mathbb{R}$."
+            },
+            {
+              "front": "Boundary $\\partial A$",
+              "back": "Points whose every ball meets **both** $A$ and its complement. $\\partial A = \\overline{A} \\setminus A^\\circ$.\n\n*Example:* $\\partial [0,1) = \\{0, 1\\}$; $\\partial \\mathbb{Q} = \\mathbb{R}$."
+            },
+            {
+              "front": "Limit point",
+              "back": "Every ball around it holds a point of $A$ **other than itself**. It need not be in $A$.\n\n*Example:* $0$ for $\\{1/n : n \\ge 1\\}$."
+            },
+            {
+              "front": "Isolated point",
+              "back": "A point of $A$ with a ball meeting $A$ **only at that point**.\n\n*Example:* $2$ in $[0,1) \\cup \\{2\\}$."
+            },
+            {
+              "front": "Dense set",
+              "back": "A set whose **closure is the whole space**.\n\n*Example:* $\\mathbb{Q}$ in $\\mathbb{R}$. *Non-example:* $\\mathbb{Z}$ in $\\mathbb{R}$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You find a sequence of points of $A$ converging to $x$, and you also know $x \\notin A$. Which conclusion is correct?",
+          "options": [
+            "$x$ is an interior point of $A$",
+            "$x$ is in the boundary $\\partial A$",
+            "$x$ is an isolated point of $A$",
+            "$x$ is not in $\\overline{A}$"
+          ],
+          "correct": 1,
+          "explanation": "The sequence puts $x$ in $\\overline{A}$. Since $x \\notin A$, it cannot be interior (interior points lie in $A$), so $x \\in \\overline{A} \\setminus A^\\circ = \\partial A$. It is not isolated, because isolated points belong to $A$. In fact it is a limit point."
+        },
+        {
+          "type": "steps",
+          "title": "Worked example: interior, closure and boundary of a messy set",
+          "steps": [
+            {
+              "title": "Name the set and its pieces",
+              "md": "In $\\mathbb{R}$ let $A = [0,1) \\cup \\{2\\} \\cup \\big(\\mathbb{Q} \\cap (3,4)\\big)$. Deal with each piece in turn, because each behaves differently."
+            },
+            {
+              "title": "Find the interior",
+              "md": "Points of $(0,1)$ have a small interval inside $[0,1)$. The point $0$ does not, and neither does the isolated point $2$. No point of $\\mathbb{Q} \\cap (3,4)$ is interior, since every interval contains irrationals, which are not in $A$. So $A^\\circ = (0,1)$."
+            },
+            {
+              "title": "Find the closure",
+              "md": "Every ball around a point of $[0,1]$ meets $[0,1)$, and $2 \\in A$. The rationals are dense, so every point of $[3,4]$, including the irrationals and the ends $3$ and $4$, is a limit of rationals in $(3,4)$. Any other point has a small ball missing $A$. So $\\overline{A} = [0,1] \\cup \\{2\\} \\cup [3,4]$."
+            },
+            {
+              "title": "Subtract to get the boundary",
+              "md": "$\\partial A = \\overline{A} \\setminus A^\\circ = \\{0, 1, 2\\} \\cup [3,4]$. The subtle part: the **whole** interval $[3,4]$ is boundary, not just its ends, because near every point there you meet both rationals (in $A$) and irrationals (not in $A$)."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the worked example, why is $\\pi \\approx 3.14$ in $\\partial A$, even though $\\pi \\notin A$?",
+          "options": [
+            "Because $\\pi$ is an endpoint of an interval in $A$",
+            "Because every ball around $\\pi$ contains rationals in $(3,4)$, which are in $A$, and $\\pi$ itself, which is not",
+            "Because irrational numbers are always boundary points of every set",
+            "It is not: $\\pi \\notin A$, so it cannot be in $\\partial A$"
+          ],
+          "correct": 1,
+          "explanation": "A boundary point needs every ball to meet both $A$ and its complement. Density of $\\mathbb{Q}$ gives the first; $\\pi$ itself gives the second. $\\pi$ is not an endpoint of anything here. Irrationals are not boundary points of every set: $\\pi$ is not in $\\partial [0,1]$. And boundary points need not belong to $A$, just as $1 \\in \\partial [0,1)$."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: three sets from one",
+          "problem": "In $\\mathbb{R}$, let $A = (0,2] \\setminus \\{1\\} \\cup \\{3\\}$, that is, $A = (0,1) \\cup (1,2] \\cup \\{3\\}$. Find $A^\\circ$, $\\overline{A}$ and $\\partial A$. Which points of $A$ are isolated?",
+          "solution": "**Interior.** Points of $(0,1)$ and $(1,2)$ have room. $2$ does not (points just above $2$ are missing), and $3$ is alone. So $A^\\circ = (0,1) \\cup (1,2)$.\n\n**Closure.** Add the points that $A$ gets arbitrarily close to: $0$ (via $\\tfrac1n$), $1$ (via $1 - \\tfrac1n$), and keep $2$ and $3$. So $\\overline{A} = [0,2] \\cup \\{3\\}$.\n\n**Boundary.** $\\partial A = \\overline{A} \\setminus A^\\circ = \\{0, 1, 2, 3\\}$.\n\n**Isolated points.** Only $3$: the ball $B(3, \\tfrac12)$ meets $A$ only at $3$. Every other point of $A$ is a limit point.\n\n**Check your version:** did you include $1$ in the closure and boundary, even though it is not in $A$? Did you remember that the isolated point $3$ is a boundary point? Is your interior a subset of $A$, and your boundary a subset of your closure?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is the closure the same as \"$A$ plus its boundary\"?",
+              "a": "Yes: $\\overline{A} = A \\cup \\partial A$. For $A = [0,1)$, $A \\cup \\{0,1\\} = [0,1]$. Similarly, the interior is $A$ with its boundary points removed: $A^\\circ = A \\setminus \\partial A$."
+            },
+            {
+              "q": "Why do we need both \"limit point\" and \"point of the closure\"?",
+              "a": "They differ only at isolated points. $2$ is in the closure of $[0,1) \\cup \\{2\\}$ but is not a limit point. Limit points matter when you need points of $A$ **different from $x$**, as in the definition of $\\lim_{x \\to c} f(x)$ (lesson 5.1), where $c$ must be a limit point of the domain."
+            },
+            {
+              "q": "Does the closure of an intersection equal the intersection of the closures?",
+              "a": "Not always. With $A = \\mathbb{Q}$ and $B = \\mathbb{R} \\setminus \\mathbb{Q}$, $\\overline{A \\cap B} = \\overline{\\emptyset} = \\emptyset$, but $\\overline{A} \\cap \\overline{B} = \\mathbb{R}$. Only $\\overline{A \\cap B} \\subseteq \\overline{A} \\cap \\overline{B}$ holds. For unions you do get equality: $\\overline{A \\cup B} = \\overline{A} \\cup \\overline{B}$."
+            },
+            {
+              "q": "Is the boundary always small, like a few endpoints?",
+              "a": "No. $\\partial \\mathbb{Q} = \\mathbb{R}$, and in the worked example the whole interval $[3,4]$ was boundary. Sets that mix densely with their complement have large boundaries."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- The **interior** $A^\\circ$ is the set of points with a ball inside $A$: the largest open subset of $A$. $A$ is open iff $A^\\circ = A$.\n- The **closure** $\\overline{A}$ is the set of points whose every ball meets $A$: the smallest closed set containing $A$. $x \\in \\overline{A}$ iff some sequence in $A$ converges to $x$.\n- The **boundary** $\\partial A = \\overline{A} \\setminus A^\\circ$: every ball meets both $A$ and its complement. It is always closed and can be large ($\\partial \\mathbb{Q} = \\mathbb{R}$).\n- A **limit point** has points of $A$ other than itself arbitrarily close; points of $A$ that are not limit points are **isolated**. $\\overline{A} = A \\cup \\{\\text{limit points}\\}$.\n- $A$ is **dense** when $\\overline{A} = X$, as $\\mathbb{Q}$ is in $\\mathbb{R}$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "What is the interior of $\\mathbb{Q}$ in $\\mathbb{R}$?",
+          "options": [
+            "$\\mathbb{Q}$",
+            "$\\mathbb{R}$",
+            "$\\emptyset$",
+            "$\\mathbb{R}\\setminus\\mathbb{Q}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Every interval contains irrationals, so no ball lies inside $\\mathbb{Q}$ and no rational is an interior point. The interior is always a subset of the set itself, which rules out $\\mathbb{R}$ and $\\mathbb{R} \\setminus \\mathbb{Q}$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is $\\partial\\mathbb{Q}$ in $\\mathbb{R}$?",
+          "options": [
+            "$\\emptyset$",
+            "$\\mathbb{Q}$",
+            "$\\mathbb{R}\\setminus\\mathbb{Q}$",
+            "$\\mathbb{R}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$\\overline{\\mathbb{Q}} = \\mathbb{R}$ and $\\mathbb{Q}^\\circ = \\emptyset$, so $\\partial\\mathbb{Q} = \\mathbb{R} \\setminus \\emptyset = \\mathbb{R}$. Every ball contains both rationals and irrationals."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For every subset $A$ of a metric space, $\\partial A$ is closed.",
+          "answer": [
+            true
+          ],
+          "explanation": "$\\partial A = \\overline{A} \\cap \\overline{X \\setminus A}$ is an intersection of two closed sets, and intersections of closed sets are closed (lesson 8.2)."
+        },
+        {
+          "type": "multiple",
+          "prompt": "For subsets $A,B$ of a metric space $X$, which statements **always** hold?",
+          "options": [
+            "$A^\\circ\\subseteq A\\subseteq\\overline{A}$",
+            "$\\overline{A\\cup B}=\\overline{A}\\cup\\overline{B}$",
+            "$\\overline{A\\cap B}=\\overline{A}\\cap\\overline{B}$",
+            "$X\\setminus\\overline{A}=(X\\setminus A)^\\circ$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first, second and fourth always hold. The fourth says: a point is outside the closure exactly when some ball around it misses $A$, that is, lies in $X \\setminus A$. The third fails: with $A = \\mathbb{Q}$ and $B = \\mathbb{R} \\setminus \\mathbb{Q}$, $\\overline{A \\cap B} = \\emptyset$ while $\\overline{A} \\cap \\overline{B} = \\mathbb{R}$. Only $\\overline{A \\cap B} \\subseteq \\overline{A} \\cap \\overline{B}$ holds."
+        },
+        {
+          "type": "single",
+          "prompt": "In a discrete metric space $X$ with at least two points, what is the closure of $B(x,1)$?",
+          "options": [
+            "$X$",
+            "$\\{x\\}$",
+            "$X\\setminus\\{x\\}$",
+            "$\\emptyset$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$B(x,1) = \\{x\\}$, and every subset of a discrete space is closed, so the closure is $\\{x\\}$, even though the closed ball of radius $1$ is all of $X$."
+        },
+        {
+          "type": "short",
+          "prompt": "In $\\mathbb{R}$, how many points does $\\partial\\big((0,1)\\cup\\{2\\}\\big)$ contain?",
+          "answer": [
+            "3",
+            "three"
+          ],
+          "explanation": "The closure is $[0,1] \\cup \\{2\\}$ and the interior is $(0,1)$, so the boundary is $\\{0, 1, 2\\}$."
+        },
+        {
+          "type": "short",
+          "prompt": "In $\\mathbb{R}$, what is the only limit point of the set $\\{\\tfrac1n : n \\ge 1\\}$?",
+          "answer": [
+            "0",
+            "zero"
+          ],
+          "explanation": "$\\tfrac1n \\to 0$, so every ball around $0$ contains points of the set other than $0$. Each $\\tfrac1n$ itself is isolated, and any other real number has a small ball containing at most one point of the set."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $A$ is a closed set, then $\\overline{A} = A$.",
+          "answer": [
+            true
+          ],
+          "explanation": "The closure is the smallest closed set containing $A$. If $A$ is already closed, $A$ itself is that set."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every point of $\\overline{A}$ is a limit point of $A$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Isolated points are in $\\overline{A}$ but are not limit points. For $A = [0,1) \\cup \\{2\\}$, $2 \\in \\overline{A}$, but the ball $B(2, 0.5)$ meets $A$ only at $2$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the closure of $(0,1) \\cup (1,2)$ in $\\mathbb{R}$?",
+          "options": [
+            "$[0,2]$",
+            "$[0,1) \\cup (1,2]$",
+            "$(0,2)$",
+            "$[0,2] \\setminus \\{1\\}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The closure adds every point the set gets arbitrarily close to: $0$, $2$ and also $1$, which is approached from both sides. So it is $[0,1] \\cup [1,2] = [0,2]$. The second and fourth options forget $1$; the third forgets $0$ and $2$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these sets are dense in $\\mathbb{R}$? Select all that apply.",
+          "options": [
+            "$\\mathbb{Q}$",
+            "$\\mathbb{R} \\setminus \\mathbb{Q}$",
+            "$\\mathbb{Z}$",
+            "$(0,1)$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "Between any two reals there are rationals and irrationals (lesson 2.12), so both have closure $\\mathbb{R}$. $\\overline{\\mathbb{Z}} = \\mathbb{Z}$ and $\\overline{(0,1)} = [0,1]$, neither of which is $\\mathbb{R}$."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $A = (0,1) \\cup \\{2\\}$. Which point is in $\\overline{A}$ but is **not** a limit point of $A$?",
+          "options": [
+            "$0$",
+            "$\\tfrac12$",
+            "$1$",
+            "$2$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$2$ is in $A$, hence in $\\overline{A}$, but $B(2, \\tfrac12)$ meets $A$ only at $2$, so it is isolated. $0$, $\\tfrac12$ and $1$ all have points of $(0,1)$ other than themselves arbitrarily close, so they are limit points."
+        }
+      ]
+    },
+    {
+      "slug": "8-4-compactness",
+      "title": "Compactness",
+      "summary": "The property that turns 'infinitely many' into 'finitely many': open covers and subsequences.",
+      "est_minutes": 40,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "The general definition of compactness, and why it is the property behind the big theorems on $[a,b]$.\n\n**In this lesson you will learn to:**\n- say what an **open cover** and a **finite subcover** are\n- prove a set is **not** compact by finding a cover with no finite subcover, or a sequence with no good subsequence\n- use the **Heine–Borel theorem** in $\\mathbb{R}^n$, and know why it fails in other metric spaces\n- prove that a continuous function maps compact sets to compact sets, and get the Extreme Value Theorem from it\n\n**You need:** open and closed sets (lesson 8.2), bounded sets (8.1), subsequences (3.9), the Bolzano–Weierstrass theorem (3.10) and the Extreme Value Theorem (5.10). In lesson 5.12 \"compact\" meant \"closed and bounded\" in $\\mathbb{R}$; this lesson gives the real definition."
+        },
+        {
+          "type": "text",
+          "md": "## Why compactness?\n\nFinite collections are easy to handle. Take finitely many positive numbers, say $0.3, 0.01, 2$. Their minimum, $0.01$, is positive. You used this in lesson 8.2: a finite intersection of open sets is open because the minimum of finitely many radii is positive.\n\nInfinite collections are not so kind. The numbers $1, \\tfrac12, \\tfrac13, \\dots$ are all positive, but no positive number is below all of them; their infimum is $0$.\n\nSo many proofs go: \"for each point I have something good (a radius, a bound, a $\\delta$). If only there were finitely many points, I could take the minimum or the maximum.\" **Compactness is the property that lets you reduce to finitely many.**\n\nYou already met this on $[a,b]$. A continuous function there is bounded and attains its maximum (lesson 5.10), and it is uniformly continuous (lesson 5.12). In those lessons the key was that $[a,b]$ is closed and bounded, so Bolzano–Weierstrass applies. In a general metric space \"closed and bounded\" turns out to be the wrong condition. This lesson gives the right one, in two equivalent forms: one with open sets, one with sequences."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Infinitely many positive numbers can have infimum 0",
+          "md": "A common slip in proofs: \"each point $x$ has a radius $r_x > 0$, so let $r = \\min_x r_x$.\" With infinitely many points, there may be **no** minimum, and the infimum can be $0$, which is useless as a radius.\n\nFor example, in $(0,1)$ the largest ball around $x$ that stays inside has radius $r_x = \\min(x, 1 - x)$, and $\\inf_x r_x = 0$. Compactness is exactly what licenses passing to finitely many points first."
+        },
+        {
+          "type": "check",
+          "question": "For each $x \\in (0,1]$ you are given the radius $r_x = x/2 > 0$. Can you choose one $r > 0$ with $r \\le r_x$ for every $x \\in (0,1]$?",
+          "options": [
+            "Yes, take $r = \\min_x r_x$",
+            "No: $r_x = x/2$ gets as small as you like as $x \\to 0$, so $\\inf_x r_x = 0$",
+            "Yes, take $r = \\tfrac12$",
+            "Yes, because every $r_x$ is positive"
+          ],
+          "correct": 1,
+          "explanation": "For any proposed $r > 0$, the point $x = r$ has $r_x = r/2 < r$. So no single positive $r$ works. The minimum does not exist (the infimum $0$ is not attained), $r = \\tfrac12$ fails at small $x$, and \"each is positive\" does not make infinitely many of them bounded away from $0$."
+        },
+        {
+          "type": "text",
+          "md": "## Open covers\n\n**In plain words:** an open cover of $K$ is a collection of open sets that, together, contain every point of $K$.\n\nWe write a collection of sets as $\\{U_\\alpha\\}$: one set $U_\\alpha$ for each label $\\alpha$. The labels can be $1, 2, 3, \\dots$ or something bigger, such as one label for each point of an interval.\n\n**Definition.** An **open cover** of a set $K \\subseteq X$ is a collection $\\{U_\\alpha\\}$ of open sets with\n$$K \\subseteq \\bigcup_\\alpha U_\\alpha.$$\nA **subcover** is a sub-collection that still covers $K$. It is a **finite subcover** if it uses only finitely many of the sets.\n\n**Examples.**\n- $\\{(-0.1, 0.6),\\ (0.4, 1.1)\\}$ is an open cover of $[0,1]$ using just two sets.\n- $\\{(x - 0.1, x + 0.1) : x \\in [0,1]\\}$ is an open cover of $[0,1]$ with one interval for each point: infinitely many sets. It has a finite subcover, for instance the intervals centred at $0, 0.1, 0.2, \\dots, 1$.\n- **Edge case:** $\\{X\\}$, the single set $X$, is an open cover of anything. It is already finite.\n\n**Non-example.** $\\{(0.1, 0.6),\\ (0.5, 1.1)\\}$ is **not** a cover of $[0,1]$: it misses $0$ and every point up to $0.1$."
+        },
+        {
+          "type": "check",
+          "question": "Which collection is an open cover of $[0,2]$?",
+          "options": [
+            "$\\{(0,1),\\ (1,2)\\}$",
+            "$\\{(-1,1),\\ (0.5, 3)\\}$",
+            "$\\{[0,1],\\ [1,2]\\}$",
+            "$\\{(-1,1.5),\\ (1.5,3)\\}$"
+          ],
+          "correct": 1,
+          "explanation": "$(-1,1) \\cup (0.5,3) = (-1, 3)$ contains $[0,2]$, and both sets are open. The first misses $0$, $1$ and $2$. The third covers $[0,2]$ but its sets are closed, not open. The fourth misses the single point $1.5$."
+        },
+        {
+          "type": "text",
+          "md": "## The definition of compactness\n\n**Definition.** A set $K \\subseteq X$ is **compact** if **every** open cover of $K$ has a finite subcover:\n$$K \\subseteq U_{\\alpha_1} \\cup \\dots \\cup U_{\\alpha_m} \\text{ for some finitely many labels } \\alpha_1, \\dots, \\alpha_m.$$\n\n**Read the word \"every\" carefully.** Every set has **some** open cover with a finite subcover, namely $\\{X\\}$. That proves nothing. Compactness means that no matter how cleverly someone covers $K$ with open sets, even with infinitely many tiny ones, you can always throw away all but finitely many and still cover $K$.\n\n**Examples.**\n- **Edge case:** every **finite** set $\\{a_1, \\dots, a_k\\}$ is compact. Given any open cover, each $a_i$ lies in some set $U_{\\alpha_i}$; those $k$ sets are a finite subcover. The empty set is compact too.\n- $[a,b]$ is compact. This is the Heine–Borel theorem below.\n\n**How to use the definition.**\n- To show $K$ **is** compact from the definition, you must handle an arbitrary cover. That is usually hard, so we lean on theorems instead.\n- To show $K$ is **not** compact, you need **one** open cover with no finite subcover. That is often easy, as the next example shows."
+        },
+        {
+          "type": "text",
+          "md": "## A set that is not compact: $(0,1]$\n\n**Claim.** $(0,1]$ is not compact.\n\n**The cover.** For $n \\ge 1$ let $U_n = (\\tfrac1n, 2)$. Each $U_n$ is open. Every $x \\in (0,1]$ is positive, so some $n$ has $\\tfrac1n < x$ (Archimedean property, lesson 2.11), and then $x \\in U_n$. So $\\{U_n\\}$ covers $(0,1]$.\n\n**No finite subcover.** Suppose finitely many sets $U_{n_1}, \\dots, U_{n_m}$ covered $(0,1]$. Let $N$ be the largest of $n_1, \\dots, n_m$. The sets grow as $n$ grows ($U_1 \\subseteq U_2 \\subseteq \\cdots$), so their union is just $U_N = (\\tfrac1N, 2)$. But the point $\\tfrac1{2N}$ is in $(0,1]$ and not in $(\\tfrac1N, 2)$. Contradiction.\n\nSo this cover has no finite subcover, and $(0,1]$ is not compact. $\\blacksquare$\n\n**What went wrong.** The sets crept towards $0$, a point **not in the set**. Every finite batch stops short of $0$ and leaves a gap. Compare $[0,1]$: any open set containing $0$ also contains a whole interval $[0, \\varepsilon)$, which plugs that gap. This is why missing limit points destroy compactness.\n\n**Non-compact for another reason.** $[0, \\infty)$ is not compact: the cover $\\{(-1, n) : n \\ge 1\\}$ has no finite subcover, since finitely many have union $(-1, N)$, which misses $N$. Here the problem is unboundedness."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to show that $(0,1)$ is not compact.",
+          "items": [
+            "For $n \\ge 2$ let $U_n = (\\tfrac1n, 1)$. Each $U_n$ is open.",
+            "Every $x \\in (0,1)$ has $\\tfrac1n < x$ for some $n$, so the sets $U_n$ cover $(0,1)$.",
+            "Suppose finitely many $U_{n_1}, \\dots, U_{n_m}$ cover $(0,1)$, and let $N = \\max n_i$.",
+            "Since the sets increase with $n$, their union is $U_N = (\\tfrac1N, 1)$.",
+            "But $\\tfrac1{2N} \\in (0,1)$ is not in $U_N$, a contradiction. So $(0,1)$ is not compact. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Sequential compactness\n\nThere is a second way to say \"compact\", using sequences instead of covers.\n\n**Definition.** $K$ is **sequentially compact** if every sequence in $K$ has a subsequence that converges to a point **of $K$**. (Recall from lesson 3.9: a subsequence picks infinitely many terms, in order. Convergence in a metric space means $d(x_n, x) \\to 0$; see lesson 8.2.)\n\n**Examples.**\n- $[a,b]$ is sequentially compact. A sequence in $[a,b]$ is bounded, so by Bolzano–Weierstrass (lesson 3.10) it has a convergent subsequence. The limit is in $[a,b]$ because $[a,b]$ is closed (lesson 8.2).\n- $(0,1]$ is not: $x_n = \\tfrac1n$ converges to $0$, so **every** subsequence also converges to $0$, which is not in $(0,1]$. The limit escapes.\n- $[0,\\infty)$ is not: $x_n = n$ has no convergent subsequence at all, since every subsequence is unbounded.\n\nNotice the two ways to fail match the two non-compact examples above: a missing limit point, or running off to infinity.\n\n**Theorem.** In a metric space, $K$ is compact if and only if $K$ is sequentially compact.\n\nThe proof is longer than this lesson has room for, so we use the theorem without proof. The practical message: **use whichever form is easier**. Covers are good for proofs that need finitely many pieces; sequences are good for finding limits."
+        },
+        {
+          "type": "check",
+          "question": "Which sequence shows directly that $[0,\\infty)$ is not sequentially compact?",
+          "options": [
+            "$x_n = \\tfrac1n$",
+            "$x_n = n$",
+            "$x_n = (-1)^n$",
+            "$x_n = 5$"
+          ],
+          "correct": 1,
+          "explanation": "Every subsequence of $x_n = n$ is unbounded, so none converges. $\\tfrac1n$ has its limit $0$ inside $[0,\\infty)$. $(-1)^n$ is not even in $[0,\\infty)$, since $-1$ is negative. The constant sequence $5$ converges to $5$, which is in the set."
+        },
+        {
+          "type": "text",
+          "md": "## Compact sets are closed and bounded; Heine–Borel\n\n**Theorem.** In any metric space, a compact set $K$ is **closed** and **bounded**.\n\n**Bounded.** Fix a point $p$. The balls $B(p, n)$, $n = 1, 2, 3, \\dots$, cover all of $X$, so they cover $K$. Take a finite subcover; the balls are nested, so $K$ lies in the largest one, $B(p, N)$. So $K$ is bounded.\n\n**Closed.** Let $(x_n)$ be a sequence in $K$ with $x_n \\to x$. By sequential compactness some subsequence converges to a point of $K$. But a subsequence of a convergent sequence has the same limit $x$ (lesson 3.9), so $x \\in K$. By the sequential test (lesson 8.2), $K$ is closed.\n\n**Theorem (Heine–Borel).** In $\\mathbb{R}^n$ with the usual metric, $K$ is compact **if and only if** $K$ is closed and bounded.\n\nThis is why \"closed and bounded\" worked as the definition of compact in lesson 5.12: in $\\mathbb{R}$ the two agree.\n\n**Examples in $\\mathbb{R}$.** $[0,1]$, $[0,1] \\cup [2,3]$, and $\\{0\\} \\cup \\{\\tfrac1n : n \\ge 1\\}$ are compact. **Non-examples:** $(0,1]$ (not closed), $\\mathbb{Z}$ (not bounded), $\\mathbb{Q} \\cap [0,1]$ (not closed: it misses irrational limits).\n\n**One more useful fact.** A closed subset of a compact set is compact. You will prove this at the end of the lesson."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Closed and bounded does not imply compact in general",
+          "md": "Heine–Borel is special to $\\mathbb{R}^n$. Outside it, closed and bounded is **not enough**.\n\nLet $X = \\mathbb{N}$ with the discrete metric. $X$ is closed in itself and bounded (every distance is at most $1$, so $X = B(1, 2)$). But each single point $\\{n\\}$ is open (lesson 8.2), and the cover $\\{\\{n\\} : n \\in \\mathbb{N}\\}$ has no finite subcover: each set covers one point, and there are infinitely many points. Sequentially: $1, 2, 3, \\dots$ has no convergent subsequence, because distinct terms are always at distance $1$.\n\nAnother example: in $C[0,1]$ with the sup metric, the set of functions with $\\sup |f| \\le 1$ is closed and bounded but not compact. The sequence $f_n(x) = x^n$ has no subsequence converging in the sup metric (you will see why in lesson 8.10)."
+        },
+        {
+          "type": "check",
+          "question": "Which subset of $\\mathbb{R}$ is compact?",
+          "options": [
+            "$\\mathbb{Q}\\cap[0,1]$",
+            "$[0,\\infty)$",
+            "$\\{0\\}\\cup\\{\\tfrac1n : n\\ge1\\}$",
+            "$(0,1)$"
+          ],
+          "correct": 2,
+          "explanation": "$\\{0\\}\\cup\\{\\tfrac1n\\}$ is bounded and closed (its only limit point, $0$, belongs to it), so it is compact by Heine–Borel. $\\mathbb{Q} \\cap [0,1]$ is bounded but not closed (rationals converge to irrationals such as $\\tfrac{\\sqrt2}{2}$). $[0,\\infty)$ is closed but unbounded. $(0,1)$ is bounded but not closed."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Open cover",
+              "back": "A collection of **open sets** whose union contains $K$.\n\n*Example:* $\\{(\\tfrac1n, 2) : n \\ge 1\\}$ covers $(0,1]$."
+            },
+            {
+              "front": "Finite subcover",
+              "back": "**Finitely many** sets from a cover that still contain $K$.\n\n*Example:* from $\\{(x - 0.1, x + 0.1)\\}$, the intervals centred at $0, 0.1, \\dots, 1$ cover $[0,1]$."
+            },
+            {
+              "front": "Compact set",
+              "back": "**Every** open cover has a finite subcover. In metric spaces, same as sequentially compact.\n\n*Example:* $[0,1]$, any finite set. *Non-example:* $(0,1]$."
+            },
+            {
+              "front": "Sequentially compact",
+              "back": "Every sequence has a subsequence converging to a point **of the set**.\n\n*Example:* $[a,b]$ (Bolzano–Weierstrass). *Non-example:* $(0,1]$, via $\\tfrac1n$."
+            },
+            {
+              "front": "Heine–Borel theorem",
+              "back": "In $\\mathbb{R}^n$: compact $\\iff$ **closed and bounded**. False in general metric spaces.\n\n*Example:* $[0,1] \\cup [2,3]$ is compact."
+            },
+            {
+              "front": "Continuous image of a compact set",
+              "back": "If $f$ is continuous and $K$ compact, then $f(K)$ is **compact**.\n\n*Example:* gives the Extreme Value Theorem on $[a,b]$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "Your friend says: \"$\\mathbb{N}$ with the discrete metric is closed and bounded, so it is compact.\" What is wrong?",
+          "options": [
+            "Nothing: closed and bounded sets are always compact",
+            "$\\mathbb{N}$ is not bounded in the discrete metric",
+            "Heine–Borel only holds in $\\mathbb{R}^n$; here the cover by single points $\\{n\\}$ has no finite subcover",
+            "$\\mathbb{N}$ is not closed in itself"
+          ],
+          "correct": 2,
+          "explanation": "Closed and bounded implies compact only in $\\mathbb{R}^n$ with the usual metric. In the discrete metric each $\\{n\\}$ is open, and covering infinitely many points one at a time needs infinitely many sets. $\\mathbb{N}$ is bounded here (all distances are at most $1$), and every space is closed in itself."
+        },
+        {
+          "type": "text",
+          "md": "## Continuous functions preserve compactness\n\nContinuity works in metric spaces just as on $\\mathbb{R}$ (lesson 5.6), with distances in place of $|\\cdot|$. A function $f : X \\to Y$ between metric spaces is **continuous at $c$** if for every $\\varepsilon > 0$ there is $\\delta > 0$ with\n$$d_X(x, c) < \\delta \\implies d_Y(f(x), f(c)) < \\varepsilon.$$\nAs on $\\mathbb{R}$, this is the same as the **sequential criterion**: whenever $x_n \\to c$, we have $f(x_n) \\to f(c)$. (The proof is word for word the one from Level 5; lesson 8.7 revisits it.)\n\n**Theorem.** If $f : X \\to Y$ is continuous and $K \\subseteq X$ is compact, then $f(K) = \\{f(x) : x \\in K\\}$ is compact.\n\n**Why it matters.** Combine it with Heine–Borel and you get the Extreme Value Theorem in one line: $f(K)$ is a compact subset of $\\mathbb{R}$, so it is closed and bounded, so it contains its supremum. That is the maximum.\n\n**Example.** $f(x) = x^2$ maps the compact set $[-1, 2]$ onto $[0, 4]$, which is compact.\n\n**Non-example (wrong direction).** The **preimage** of a compact set need not be compact. $\\sin$ is continuous, and $\\{x : \\sin x \\in [-1,1]\\} = \\mathbb{R}$, which is not compact. Compactness passes forwards through $f$, not backwards."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: continuous images of compact sets are compact, and the Extreme Value Theorem",
+          "steps": [
+            {
+              "title": "Take any sequence in the image",
+              "md": "Let $(y_n)$ be a sequence in $f(K)$. We use sequential compactness, so we must find a subsequence converging to a point of $f(K)$."
+            },
+            {
+              "title": "Pull back to the domain",
+              "md": "Each $y_n$ is in $f(K)$, so we can choose $x_n \\in K$ with $f(x_n) = y_n$. The subtle move: we work with the $x_n$ in $K$, where compactness is available."
+            },
+            {
+              "title": "Use compactness of K",
+              "md": "$K$ is sequentially compact, so some subsequence $x_{n_k}$ converges to a point $x \\in K$."
+            },
+            {
+              "title": "Push forward with continuity",
+              "md": "By the sequential criterion, $y_{n_k} = f(x_{n_k}) \\to f(x)$, and $f(x) \\in f(K)$ because $x \\in K$. So $f(K)$ is sequentially compact, hence compact. $\\blacksquare$"
+            },
+            {
+              "title": "Deduce the Extreme Value Theorem",
+              "md": "Now let $f : K \\to \\mathbb{R}$ be continuous with $K$ compact and **nonempty**. Then $f(K)$ is a nonempty compact subset of $\\mathbb{R}$, so it is bounded and closed. Being nonempty and bounded above, it has a supremum $M$ (lesson 2.10). $M$ is in the closure of $f(K)$ (lesson 8.3), which is $f(K)$ itself. So $M = f(c)$ for some $c \\in K$: **$f$ attains its maximum.** The minimum is similar. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the last step, why must $K$ be nonempty?",
+          "options": [
+            "Because the empty set is not compact",
+            "Because $f(\\emptyset) = \\emptyset$ has no supremum, and there is no point at which to attain a maximum",
+            "Because continuity is only defined on nonempty sets",
+            "It is not needed"
+          ],
+          "correct": 1,
+          "explanation": "The completeness property gives a supremum only for **nonempty** sets bounded above, and a maximum must be a value $f(c)$ for some $c$, which needs a point. The empty set **is** compact (every cover has the empty subcover), and the empty function is vacuously continuous, so neither of those is the reason."
+        },
+        {
+          "type": "example",
+          "title": "Your turn: closed subsets of compact sets",
+          "problem": "Let $K$ be a compact subset of a metric space and let $F \\subseteq K$ be closed. Prove that $F$ is compact. Use sequential compactness.",
+          "solution": "**Proof.** Let $(x_n)$ be any sequence in $F$. We need a subsequence converging to a point of $F$.\n\n**Use $K$.** Since $F \\subseteq K$, $(x_n)$ is also a sequence in $K$. $K$ is sequentially compact, so some subsequence $x_{n_k}$ converges to a point $x \\in K$.\n\n**Use closedness.** The subsequence $(x_{n_k})$ lies in $F$, and $F$ is closed, so it keeps its limits (lesson 8.2). Hence $x \\in F$.\n\nSo every sequence in $F$ has a subsequence converging in $F$: $F$ is sequentially compact, hence compact. $\\blacksquare$\n\n**Check your version:** did you first get a limit in $K$, and only then use closedness to put it in $F$? Did you say the subsequence lies in $F$? (Without closedness this fails: $(0,1] \\subseteq [0,1]$, but $(0,1]$ is not compact.)"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is a compact set just a finite set in disguise?",
+              "a": "No. $[0,1]$ is compact and uncountable. Compact sets behave **like** finite sets in one key way: any covering by open sets can be cut down to finitely many. That is what lets \"pick the minimum\" arguments work."
+            },
+            {
+              "q": "Can I prove compactness of $[0,1]$ with the open-cover definition directly?",
+              "a": "Yes. Given an open cover, let $s$ be the supremum of the points $t \\in [0,1]$ such that $[0,t]$ is covered by finitely many sets. Completeness gives $s$, and a set from the cover containing $s$ shows both that $s = 1$ and that $[0,1]$ itself is finitely covered. In this course we got there through sequences instead."
+            },
+            {
+              "q": "Is there a cover-based proof that $f(K)$ is compact?",
+              "a": "Yes. For continuous $f$, the preimage $f^{-1}(V)$ of an open set is open. Given an open cover $\\{V_\\alpha\\}$ of $f(K)$, the sets $f^{-1}(V_\\alpha)$ cover $K$; take finitely many, and their $V_\\alpha$ cover $f(K)$."
+            },
+            {
+              "q": "What replaces Heine–Borel outside $mathbb{R}^n$?",
+              "a": "In any metric space, $K$ is compact if and only if it is **complete** (every Cauchy sequence converges in it, lesson 8.6) and **totally bounded** (for each $\\varepsilon > 0$ it is covered by finitely many balls of radius $\\varepsilon$). In $\\mathbb{R}^n$ these reduce to closed and bounded. In the discrete $\\mathbb{N}$, balls of radius $\\tfrac12$ are single points, so it is not totally bounded."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $K$ is **compact** if **every** open cover has a **finite subcover**. To disprove it, find one cover with no finite subcover, such as $\\{(\\tfrac1n, 2)\\}$ for $(0,1]$.\n- In metric spaces, compact $\\iff$ **sequentially compact**: every sequence has a subsequence converging to a point **of $K$**.\n- Compact sets are closed and bounded. **Heine–Borel:** in $\\mathbb{R}^n$ the converse holds too; in general it does not (discrete $\\mathbb{N}$).\n- Closed subsets of compact sets are compact; finite sets are compact.\n- Continuous images of compact sets are compact, which gives the **Extreme Value Theorem** on any nonempty compact set."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which subset of $\\mathbb{R}$ is compact?",
+          "options": [
+            "$\\mathbb{Z}$",
+            "$[0,1)\\cup(1,2]$",
+            "$\\{0\\}\\cup\\{\\tfrac1n : n\\ge1\\}$",
+            "$\\mathbb{Q}\\cap[0,1]$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "It is closed and bounded, so it is compact by Heine–Borel. $\\mathbb{Z}$ is unbounded; $[0,1)\\cup(1,2]$ misses its limit point $1$; $\\mathbb{Q}\\cap[0,1]$ misses irrational limit points."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In every metric space, every closed and bounded subset is compact.",
+          "answer": [
+            false
+          ],
+          "explanation": "This is Heine–Borel, which holds in $\\mathbb{R}^n$ but not in general: an infinite set with the discrete metric is closed and bounded but not compact."
+        },
+        {
+          "type": "multiple",
+          "prompt": "If $K$ is a compact subset of a metric space, which must be true?",
+          "options": [
+            "$K$ is closed",
+            "$K$ is bounded",
+            "Every sequence in $K$ has a subsequence converging to a point of $K$",
+            "$K$ is finite"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "Compact sets in metric spaces are closed, bounded and sequentially compact. They need not be finite: $[0,1]$ is compact."
+        },
+        {
+          "type": "single",
+          "prompt": "Which open cover of $(0,1)$ has **no** finite subcover?",
+          "options": [
+            "$\\{(0,1)\\}$",
+            "$\\{(-1,\\tfrac12),(\\tfrac14,2)\\}$",
+            "$\\{(x-0.1,x+0.1) : x\\in(0,1)\\}$",
+            "$\\{(\\tfrac1n,1) : n\\ge2\\}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "A finite subfamily of $\\{(\\tfrac1n,1)\\}$ has union $(\\tfrac1N,1)$ for its largest $N$, which misses $\\tfrac1{2N}$. The first two covers are already finite. In the third, finitely many intervals suffice, for example those centred at $0.05, 0.15, \\dots, 0.95$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The image of a compact set under a continuous map is compact.",
+          "answer": [
+            true
+          ],
+          "explanation": "Take a sequence $f(x_n)$ in the image. A subsequence $x_{n_k}$ converges to some $x \\in K$, and by continuity $f(x_{n_k}) \\to f(x) \\in f(K)$. (Or: pull back an open cover, take a finite subcover, push it forward.)"
+        },
+        {
+          "type": "single",
+          "prompt": "Let $K$ be a compact metric space and $F\\subseteq K$ a closed subset. Then $F$ is",
+          "options": [
+            "open",
+            "finite",
+            "compact",
+            "not necessarily compact"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Given a sequence in $F$, compactness of $K$ gives a subsequence converging in $K$, and closedness puts the limit in $F$. So $F$ is sequentially compact, hence compact. It need not be open or finite: $[0,1]$ inside $[0,2]$."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the smallest number of sets from $\\{(-0.1, 0.6),\\ (0.4, 1.1),\\ (0.5, 0.7)\\}$ needed to cover $[0,1]$?",
+          "answer": [
+            "2",
+            "two"
+          ],
+          "explanation": "No single set contains $[0,1]$, but $(-0.1, 0.6) \\cup (0.4, 1.1) = (-0.1, 1.1)$ does. So $2$ sets suffice."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every finite subset of a metric space is compact.",
+          "answer": [
+            true
+          ],
+          "explanation": "Given an open cover of $\\{a_1, \\dots, a_k\\}$, pick one set containing each $a_i$. Those $k$ sets form a finite subcover."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\mathbb{R}$, with the usual metric, is compact.",
+          "answer": [
+            false
+          ],
+          "explanation": "$\\mathbb{R}$ is unbounded, and compact sets are bounded. Concretely, the cover $\\{(-n, n) : n \\ge 1\\}$ has no finite subcover, and the sequence $x_n = n$ has no convergent subsequence."
+        },
+        {
+          "type": "single",
+          "prompt": "Which sequence in $(0,1]$ has **no** subsequence converging to a point of $(0,1]$?",
+          "options": [
+            "$x_n = \\tfrac1n$",
+            "$x_n = 1$",
+            "$x_n = \\tfrac12 + \\tfrac1{2n}$",
+            "$x_n = \\tfrac12$ for odd $n$ and $1$ for even $n$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$\\tfrac1n \\to 0$, so every subsequence also tends to $0 \\notin (0,1]$. The constant sequence converges to $1$; $\\tfrac12 + \\tfrac1{2n} \\to \\tfrac12 \\in (0,1]$; and the alternating sequence has the constant subsequence $\\tfrac12, \\tfrac12, \\dots$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these subsets of $\\mathbb{R}^2$ (usual metric) are compact? Select all that apply.",
+          "options": [
+            "The closed disc $\\{(x,y) : x^2 + y^2 \\le 1\\}$",
+            "The open disc $\\{(x,y) : x^2 + y^2 < 1\\}$",
+            "The $x$-axis $\\{(x, 0) : x \\in \\mathbb{R}\\}$",
+            "The two-point set $\\{(0,0), (1,1)\\}$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "By Heine–Borel, compact means closed and bounded. The closed disc is both; a finite set is compact. The open disc is bounded but not closed (it misses its edge). The $x$-axis is closed but unbounded."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f : [0,1] \\cup [2,3] \\to \\mathbb{R}$ be continuous. Which must be true?",
+          "options": [
+            "$f$ attains a maximum value",
+            "$f([0,1] \\cup [2,3])$ is an interval",
+            "$f$ is increasing",
+            "$f$ is unbounded"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$[0,1] \\cup [2,3]$ is closed, bounded and nonempty, so it is compact, and a continuous real function on a nonempty compact set attains its maximum. The image need not be an interval: $f = 0$ on $[0,1]$ and $f = 1$ on $[2,3]$ gives $\\{0,1\\}$. Nothing forces $f$ to be increasing, and compactness makes it bounded."
+        }
+      ]
+    }
+  ]
+}

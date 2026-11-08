@@ -26,21 +26,43 @@ export function MathTex({ src, display = false }: { src: string; display?: boole
 // Inline math follows pandoc's rules so prices like "$1,600 and $960" stay plain text:
 // the opening $ is not followed by whitespace, the closing $ is not preceded by whitespace
 // and not followed by a digit.
-const INLINE = new RegExp(
+// Code and maths are "atoms": they are swapped for placeholders before bold, italic and links
+// are matched, so a * or _ inside a formula (e.g. "**the outer measure $m^*$**", "_see $a_n$_")
+// can never be mistaken for emphasis.
+const ATOM = new RegExp(
   [
     '(`[^`]+`)', // 1 code
     '(\\\\\\$)', // 2 escaped dollar
     '(\\$\\$[^$]+?\\$\\$)', // 3 display math inline
     '(\\$(?=\\S)(?:\\\\.|[^$\\\\\\n])+?(?<=\\S)\\$(?!\\d))', // 4 inline math
-    '(\\*\\*[^*]+\\*\\*)', // 5 bold
-    '(_[^_\\s][^_]*_)', // 6 italic
-    '(\\*[^*\\s][^*]*\\*)', // 7 italic
-    '(\\[[^\\]]+\\]\\([^)\\s]+\\))', // 8 link
+  ].join('|'),
+  'g',
+)
+const INLINE = new RegExp(
+  [
+    '\\u0000(\\d+)\\u0000', // 1 atom placeholder
+    '(\\*\\*[^*]+\\*\\*)', // 2 bold
+    '(_[^_\\s][^_]*_)', // 3 italic
+    '(\\*[^*\\s][^*]*\\*)', // 4 italic
+    '(\\[[^\\]]+\\]\\([^)\\s]+\\))', // 5 link
   ].join('|'),
   'g',
 )
 
-function inline(text: string, keyPrefix = ''): ReactNode[] {
+function atom(t: string, k: string): ReactNode {
+  if (t.startsWith('`')) return <code key={k}>{t.slice(1, -1)}</code>
+  if (t === '\\$') return '$'
+  if (t.startsWith('$$')) return <MathTex key={k} src={t.slice(2, -2)} display />
+  return <MathTex key={k} src={t.slice(1, -1)} />
+}
+
+function inline(text: string, keyPrefix = '', atoms?: string[]): ReactNode[] {
+  if (!atoms) {
+    const store: string[] = []
+    text = text.replace(/\u0000/g, '').replace(ATOM, (a) => `\u0000${store.push(a) - 1}\u0000`)
+    atoms = store
+  }
+  const restore = (s: string) => s.replace(/\u0000(\d+)\u0000/g, (_, n) => atoms![Number(n)])
   const out: ReactNode[] = []
   const re = new RegExp(INLINE.source, 'g')
   let last = 0
@@ -50,16 +72,13 @@ function inline(text: string, keyPrefix = ''): ReactNode[] {
     if (m.index > last) out.push(text.slice(last, m.index))
     const t = m[0]
     const k = `${keyPrefix}${i++}`
-    if (m[1]) out.push(<code key={k}>{t.slice(1, -1)}</code>)
-    else if (m[2]) out.push('$')
-    else if (m[3]) out.push(<MathTex key={k} src={t.slice(2, -2)} display />)
-    else if (m[4]) out.push(<MathTex key={k} src={t.slice(1, -1)} />)
-    else if (m[5]) out.push(<strong key={k}>{inline(t.slice(2, -2), k)}</strong>)
-    else if (m[6] || m[7]) out.push(<em key={k}>{inline(t.slice(1, -1), k)}</em>)
-    else if (m[8]) {
+    if (m[1]) out.push(atom(atoms[Number(m[1])], k))
+    else if (m[2]) out.push(<strong key={k}>{inline(t.slice(2, -2), k, atoms)}</strong>)
+    else if (m[3] || m[4]) out.push(<em key={k}>{inline(t.slice(1, -1), k, atoms)}</em>)
+    else if (m[5]) {
       const [, label, href] = t.match(/^\[([^\]]+)\]\(([^)]+)\)$/)!
       const safe = /^(https?:|mailto:|\/)/i.test(href) ? href : '#'
-      out.push(<a key={k} href={safe} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>{label}</a>)
+      out.push(<a key={k} href={safe} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>{restore(label)}</a>)
     }
     last = m.index + t.length
   }

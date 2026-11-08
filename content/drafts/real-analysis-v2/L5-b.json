@@ -1,0 +1,1139 @@
+{
+  "concepts": [
+    {
+      "slug": "5-5-infinite-limits-and-limits-at-infinity",
+      "title": "Infinite limits and limits at infinity",
+      "summary": "Making sense of $f(x) \\to \\infty$ and of $x \\to \\infty$ without treating $\\infty$ as a number.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "**In this lesson you will learn to:**\n- say precisely what $\\lim_{x\\to c} f(x) = \\infty$ means, and prove such limits\n- say precisely what $\\lim_{x\\to\\infty} f(x) = L$ means, and prove such limits\n- evaluate limits of rational functions as $x \\to \\infty$ by dividing by the highest power\n- recognise the **indeterminate forms**, where the limit laws give no answer\n\n**You need:** the $\\varepsilon$–$\\delta$ definition of a limit (lesson 5.2), one-sided limits (lesson 5.3) and the limit laws (lesson 5.4). The $\\varepsilon$–$N$ definition for sequences (lesson 3.4) is a close relative of one of today's definitions."
+        },
+        {
+          "type": "text",
+          "md": "## Two questions the old definition cannot answer\n\nLook at two functions.\n\n- $f(x) = \\dfrac{1}{x^2}$ near $x = 0$. Try $x = 0.1$: $f = 100$. Try $x = 0.01$: $f = 10\\,000$. The values do not settle near any number; they **grow without bound**.\n- $g(x) = \\dfrac{2x + 1}{x + 3}$ for large $x$. Try $x = 100$: $g \\approx 1.95$. Try $x = 10\\,000$: $g \\approx 1.9995$. The values settle near $2$, but $x$ is not approaching any point $c$. It is **running off to the right**.\n\nOur limit definition from lesson 5.2,\n\n$$\\lim_{x\\to c} f(x) = L \\iff \\forall \\varepsilon > 0\\ \\exists \\delta > 0\\ \\forall x \\in A:\\ 0 < |x - c| < \\delta \\implies |f(x) - L| < \\varepsilon,$$\n\nneeds a real number $L$ and a real point $c$. (Reminder: $\\forall$ reads \"for every\", $\\exists$ reads \"there exists\", and $A$ is the domain of $f$.)\n\nThe symbol $\\infty$ is **not a real number**. You cannot write $|f(x) - \\infty| < \\varepsilon$, and you cannot ask $x$ to satisfy $|x - \\infty| < \\delta$. So we need new definitions. The trick is to replace \"within $\\varepsilon$ of $L$\" by \"**bigger than $M$**\", and \"within $\\delta$ of $c$\" by \"**bigger than $K$**\"."
+        },
+        {
+          "type": "text",
+          "md": "## Infinite limits\n\n**Plain words.** $\\lim_{x\\to c} f(x) = \\infty$ means: whatever height $M$ someone names, you can make $f(x)$ bigger than $M$ by taking $x$ close enough to $c$ (but not equal to $c$).\n\n**Definition.** Let $c$ be a limit point of $A$ (lesson 5.1: there are points of $A$, other than $c$, arbitrarily close to $c$). We write $\\lim_{x\\to c} f(x) = \\infty$ if\n\n$$\\forall M \\in \\mathbb{R}\\ \\exists \\delta > 0\\ \\forall x \\in A:\\ 0 < |x - c| < \\delta \\implies f(x) > M.$$\n\nIt is the same challenge–response game as in lesson 5.2, but the challenge is now a height $M$ instead of a tolerance $\\varepsilon$. Large $M$ is the hard case, just as small $\\varepsilon$ was.\n\n**Example.** For $f(x) = 1/x^2$ at $c = 0$:\n- $M = 100$: we need $1/x^2 > 100$, that is $x^2 < 0.01$, that is $|x| < 0.1$. So $\\delta = 0.1$ works.\n- $M = 10^6$: we need $|x| < 0.001$. So $\\delta = 0.001$ works. A bigger $M$ needs a smaller $\\delta$.\n\n**Minus infinity.** $\\lim_{x\\to c} f(x) = -\\infty$ means: for every $M$ there is $\\delta > 0$ with $f(x) < M$ whenever $x \\in A$ and $0 < |x - c| < \\delta$. Now very negative $M$ is the hard case. *Example:* $\\lim_{x\\to 0} \\left(-\\dfrac{1}{x^2}\\right) = -\\infty$.\n\n**One-sided versions** work as in lesson 5.3. For $\\lim_{x\\to c^+} f(x) = \\infty$, replace $0 < |x - c| < \\delta$ by $c < x < c + \\delta$ (only points to the right of $c$).\n\nWhen any of these holds, the graph has a **vertical asymptote** at $x = c$."
+        },
+        {
+          "type": "check",
+          "question": "You are proving $\\lim_{x\\to 0} \\frac{1}{x^2} = \\infty$ and the challenge is $M = 10\\,000$. Which $\\delta$ works?",
+          "options": [
+            "$\\delta = 0.1$",
+            "$\\delta = 0.02$",
+            "$\\delta = 0.01$",
+            "$\\delta = 1$"
+          ],
+          "correct": 2,
+          "explanation": "We need $x^2 < \\frac{1}{10\\,000}$, that is $|x| < 0.01$, so $\\delta = 0.01$ works. With $\\delta = 0.02$ the point $x = 0.015$ is allowed, but $1/0.015^2 \\approx 4444 < 10\\,000$. Larger choices like $0.1$ and $1$ fail for the same reason."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: an infinite limit from the definition",
+          "problem": "Prove that $\\lim_{x \\to 0} \\dfrac{1}{x^2} = \\infty$.",
+          "solution": "**Scratch work.** We want $\\frac{1}{x^2} > M$. For $M > 0$ this is the same as $x^2 < \\frac1M$, that is $|x| < \\frac{1}{\\sqrt{M}}$. So try $\\delta = \\frac{1}{\\sqrt{M}}$.\n\n**Proof.** Let $M \\in \\mathbb{R}$.\n\nIf $M \\le 0$, any $\\delta$ works (say $\\delta = 1$), because $\\frac{1}{x^2} > 0 \\ge M$ for every $x \\ne 0$. So assume $M > 0$.\n\nPut $\\delta = \\dfrac{1}{\\sqrt{M}} > 0$. If $0 < |x| < \\delta$, then $0 < x^2 < \\delta^2 = \\dfrac1M$, so taking reciprocals (which reverses the inequality for positive numbers)\n\n$$\\frac{1}{x^2} > M.$$\n\nHence $\\lim_{x\\to 0} \\frac{1}{x^2} = \\infty$. $\\blacksquare$\n\n**Notice:** the easy case $M \\le 0$ had to be dealt with separately, because $\\frac{1}{\\sqrt{M}}$ only makes sense for $M > 0$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Sign matters near a pole",
+          "md": "$\\lim_{x\\to 0} \\frac{1}{x}$ is **not** $\\infty$. For small $x > 0$ the values are huge and positive, so $\\lim_{x\\to 0^+} \\frac1x = \\infty$. For small $x < 0$ they are huge and **negative**, so $\\lim_{x\\to 0^-} \\frac1x = -\\infty$. The two sides disagree, so the two-sided limit does not exist, not even in this extended sense.\n\nCompare $\\frac{1}{x^2}$, which is positive on both sides and does tend to $\\infty$. Before writing \"$=\\infty$\", always check the sign on each side of $c$."
+        },
+        {
+          "type": "check",
+          "question": "What is $\\lim_{x\\to 0^-} \\dfrac{1}{x}$?",
+          "options": [
+            "$\\infty$",
+            "$-\\infty$",
+            "$0$",
+            "It does not exist in any sense."
+          ],
+          "correct": 1,
+          "explanation": "For $x < 0$ the values $\\frac1x$ are negative. Given $M < 0$, take $\\delta = -\\frac1M$: for $-\\delta < x < 0$ we get $\\frac1x < -\\frac1\\delta = M$. So the left-hand limit is $-\\infty$. It is not $\\infty$ (the values are negative), not $0$ (they grow in size), and it does exist in the extended sense; only the **two-sided** limit fails to exist."
+        },
+        {
+          "type": "text",
+          "md": "## Limits at infinity\n\n**Plain words.** $\\lim_{x\\to\\infty} f(x) = L$ means: $f(x)$ is as close to $L$ as you like, as soon as $x$ is past some threshold $K$.\n\n**Definition.** Let the domain $A$ be unbounded above (it contains arbitrarily large numbers, so \"$x \\to \\infty$\" makes sense). We write $\\lim_{x\\to\\infty} f(x) = L$ if\n\n$$\\forall \\varepsilon > 0\\ \\exists K \\in \\mathbb{R}\\ \\forall x \\in A:\\ x > K \\implies |f(x) - L| < \\varepsilon.$$\n\nThis is the $\\varepsilon$–$N$ definition of $a_n \\to L$ from lesson 3.4, with the whole number $N$ replaced by a real threshold $K$. Similarly, $\\lim_{x\\to -\\infty} f(x) = L$ uses \"$x < K$\" instead. The line $y = L$ is then a **horizontal asymptote**.\n\n**Examples.**\n- $\\lim_{x\\to\\infty} \\frac{1}{x} = 0$. Given $\\varepsilon$, take $K = \\frac1\\varepsilon$: if $x > K$ then $0 < \\frac1x < \\varepsilon$.\n- $\\lim_{x\\to\\infty} \\frac{\\sin x}{x} = 0$, because $\\left|\\frac{\\sin x}{x}\\right| \\le \\frac1x$ for $x > 0$. This is an edge case: the graph crosses its limit $0$ infinitely often. A limit does **not** require $f(x)$ to stay on one side of $L$, or to avoid $L$.\n\n**Non-example.** $\\sin x$ has no limit as $x \\to \\infty$. At $x = n\\pi$ it equals $0$, and at $x = 2n\\pi + \\frac\\pi2$ it equals $1$, and both kinds of points go off to infinity. No single $L$ can be within $\\varepsilon = \\frac12$ of both $0$ and $1$."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = 3 + \\frac1x$, so $\\lim_{x\\to\\infty} f(x) = 3$. A sceptic names $\\varepsilon = 0.001$. Which threshold $K$ works?",
+          "options": [
+            "$K = 100$",
+            "$K = 999$",
+            "$K = 1000$",
+            "$K = 0.001$"
+          ],
+          "correct": 2,
+          "explanation": "We need $|f(x) - 3| = \\frac1x < 0.001$, that is $x > 1000$. So $K = 1000$ works. With $K = 999$ the point $x = 999.5$ is allowed, and $\\frac{1}{999.5} > 0.001$. $K = 100$ and $K = 0.001$ fail for the same reason: they let in values of $x$ that are too small."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: a limit at infinity",
+          "problem": "Prove that $\\lim_{x \\to \\infty} \\dfrac{2x + 1}{x + 3} = 2$.",
+          "solution": "**Scratch work.** For $x > -3$ the denominator is positive, and\n\n$$\\left|\\frac{2x+1}{x+3} - 2\\right| = \\left|\\frac{2x + 1 - 2x - 6}{x + 3}\\right| = \\frac{5}{x + 3}.$$\n\nThis is less than $\\varepsilon$ when $x + 3 > \\frac5\\varepsilon$. Choosing $x > \\frac5\\varepsilon$ is enough, and simpler.\n\n**Proof.** Let $\\varepsilon > 0$ and put $K = \\frac5\\varepsilon$. If $x > K$ then $x + 3 > K > 0$, so\n\n$$\\left|\\frac{2x+1}{x+3} - 2\\right| = \\frac{5}{x+3} < \\frac{5}{K} = \\varepsilon.$$\n\nHence the limit is $2$. $\\blacksquare$\n\n**Notice:** as in lesson 5.2, we simplified $|f(x) - L|$ first, then made the leftover expression small. Making $K$ a little bigger than necessary is always allowed."
+        },
+        {
+          "type": "text",
+          "md": "## Both at once, and the quick method\n\nThe two ideas combine. $\\lim_{x\\to\\infty} f(x) = \\infty$ means\n\n$$\\forall M\\ \\exists K\\ \\forall x \\in A:\\ x > K \\implies f(x) > M.$$\n\n*Example:* $\\lim_{x\\to\\infty} x^2 = \\infty$. Given $M > 0$, take $K = \\sqrt{M}$: if $x > K$ then $x^2 > K^2 = M$.\n\n**The limit laws still work.** If $\\lim_{x\\to\\infty} f = L$ and $\\lim_{x\\to\\infty} g = M$ (both real numbers), then sums, products and quotients (with $M \\ne 0$) behave exactly as in lesson 5.4. The proofs are the same, with $K$ in place of $\\delta$.\n\n**Quick method for rational functions:** divide top and bottom by the highest power of $x$ in the **denominator**, then use $\\frac{1}{x^k} \\to 0$.\n\n- $\\dfrac{3x^2 - x}{x^2 + 5} = \\dfrac{3 - 1/x}{1 + 5/x^2} \\to \\dfrac{3 - 0}{1 + 0} = 3$.\n- $\\dfrac{x + 1}{x^2} = \\dfrac{1/x + 1/x^2}{1} \\to 0$. Top degree smaller than bottom: limit $0$.\n- $\\dfrac{x^2}{x + 1} = \\dfrac{x}{1 + 1/x}$. The top grows without bound and the bottom tends to $1$, so the limit is $\\infty$.\n\n**A useful swap.** Putting $t = \\frac1x$ turns \"$x \\to \\infty$\" into \"$t \\to 0^+$\":\n\n$$\\lim_{x\\to\\infty} f(x) = L \\iff \\lim_{t\\to 0^+} f(1/t) = L.$$\n\nSo $x \\sin\\frac1x = \\frac{\\sin t}{t} \\to 1$ as $x \\to \\infty$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function with its behaviour as $x \\to \\infty$.",
+          "pairs": [
+            {
+              "left": "$\\dfrac{3x^2 - x}{x^2 + 5}$",
+              "right": "tends to $3$"
+            },
+            {
+              "left": "$\\dfrac{x + 1}{x^2}$",
+              "right": "tends to $0$"
+            },
+            {
+              "left": "$\\dfrac{x^2}{x + 1}$",
+              "right": "tends to $\\infty$"
+            },
+            {
+              "left": "$\\sin x$",
+              "right": "has no limit, finite or infinite"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Indeterminate forms\n\nIt is tempting to do arithmetic with $\\infty$: \"$\\infty - \\infty = 0$\", \"$0 \\cdot \\infty = 0$\". This goes wrong, because $\\infty$ is not a number. Watch what happens when both $f(x) \\to \\infty$ and $g(x) \\to \\infty$ as $x \\to \\infty$:\n\n- $f = x + 1$, $g = x$: then $f - g = 1 \\to 1$.\n- $f = x^2$, $g = x$: then $f - g = x^2 - x \\to \\infty$.\n- $f = x$, $g = x^2$: then $f - g \\to -\\infty$.\n- $f = x + \\sin x$, $g = x$: then $f - g = \\sin x$ has no limit.\n\nSame \"form\" $\\infty - \\infty$, four different answers. A pattern whose answer depends on the particular functions is called an **indeterminate form**. The main ones are\n\n$$\\infty - \\infty, \\qquad 0 \\cdot \\infty, \\qquad \\frac{\\infty}{\\infty}, \\qquad \\frac{0}{0}.$$\n\nMeeting one means \"**do more work**\", usually algebra such as dividing by the highest power. It never means the limit fails to exist.\n\n**Safe combinations** (each is a small theorem, written in shorthand): $\\infty + \\infty = \\infty$; $L + \\infty = \\infty$ for real $L$; $L \\cdot \\infty = \\infty$ for $L > 0$; $\\frac{L}{\\infty} = 0$ for real $L$. For example, $x^2 + \\sin x \\to \\infty$ because $\\sin x$ stays between $-1$ and $1$ while $x^2 \\to \\infty$."
+        },
+        {
+          "type": "check",
+          "question": "A student argues: \"As $x \\to \\infty$, both $x^2 + 3x$ and $x^2$ tend to $\\infty$, so $(x^2 + 3x) - x^2 \\to \\infty - \\infty = 0$.\" What is the correct verdict?",
+          "options": [
+            "Correct: $\\infty - \\infty = 0$",
+            "Wrong: $\\infty - \\infty$ is indeterminate. Here the difference is $3x$, which tends to $\\infty$",
+            "Wrong: the difference tends to $3$",
+            "Wrong: the difference has no limit"
+          ],
+          "correct": 1,
+          "explanation": "The form $\\infty - \\infty$ tells you nothing; you must simplify. Here $(x^2 + 3x) - x^2 = 3x \\to \\infty$. The answer $3$ forgets the $x$ in $3x$, and the difference certainly has a limit (it is $\\infty$)."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Infinite limit $\\lim_{x\\to c} f(x) = \\infty$",
+              "back": "For every height $M$ there is $\\delta > 0$ with $f(x) > M$ whenever $0 < |x - c| < \\delta$.\n\n*Example:* $\\lim_{x\\to 0} \\frac{1}{x^2} = \\infty$, with $\\delta = \\frac{1}{\\sqrt M}$."
+            },
+            {
+              "front": "$\\lim_{x\\to c} f(x) = -\\infty$",
+              "back": "For every $M$ there is $\\delta > 0$ with $f(x) < M$ whenever $0 < |x - c| < \\delta$. Very **negative** $M$ is the hard case.\n\n*Example:* $\\lim_{x\\to 0} \\left(-\\frac{1}{x^2}\\right) = -\\infty$."
+            },
+            {
+              "front": "Limit at infinity $\\lim_{x\\to\\infty} f(x) = L$",
+              "back": "For every $\\varepsilon > 0$ there is a **threshold** $K$ with $|f(x) - L| < \\varepsilon$ whenever $x > K$.\n\n*Example:* $\\frac{1}{x} \\to 0$, with $K = \\frac1\\varepsilon$."
+            },
+            {
+              "front": "$\\lim_{x\\to\\infty} f(x) = \\infty$",
+              "back": "For every $M$ there is $K$ with $f(x) > M$ whenever $x > K$.\n\n*Example:* $x^2 \\to \\infty$, with $K = \\sqrt M$."
+            },
+            {
+              "front": "Indeterminate form",
+              "back": "A pattern such as $\\infty - \\infty$, $0 \\cdot \\infty$, $\\frac\\infty\\infty$ or $\\frac00$ whose limit **depends on the functions**. Simplify first.\n\n*Example:* $x^2 - x \\to \\infty$ but $(x+1) - x \\to 1$."
+            },
+            {
+              "front": "Vertical asymptote",
+              "back": "A line $x = c$ where $f(x) \\to \\pm\\infty$ as $x \\to c$ from at least one side.\n\n*Example:* $x = 0$ for $\\frac1x$, which tends to $\\infty$ from the right and $-\\infty$ from the left."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A function $f$ has this property: for every $M$ there is a $K$ such that $f(x) > M$ whenever $x > K$. Which statement does this say?",
+          "options": [
+            "$\\lim_{x\\to\\infty} f(x) = \\infty$",
+            "$\\lim_{x\\to 0} f(x) = \\infty$",
+            "$f$ is bounded above",
+            "$\\lim_{x\\to\\infty} f(x) = M$"
+          ],
+          "correct": 0,
+          "explanation": "\"$x > K$\" means $x$ is heading to $\\infty$, and \"$f(x) > M$ for every $M$\" means the values pass every height. So $f(x) \\to \\infty$ as $x \\to \\infty$. A limit at $0$ would use $0 < |x| < \\delta$; a bounded function is the opposite; and $M$ here is a challenge that changes, not a fixed limit."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: $\\lim_{x\\to\\infty} (x^2 - 3x) = \\infty$",
+          "steps": [
+            {
+              "title": "Read off the goal",
+              "md": "Given any $M$, we must find $K$ such that $x > K$ implies $x^2 - 3x > M$. If $M \\le 0$, a $K$ that works for $M = 1$ also works, so assume $M > 0$."
+            },
+            {
+              "title": "Tame the awkward term",
+              "md": "The $-3x$ makes $x^2 - 3x$ hard to solve exactly. Instead, bound it from below. If $x \\ge 6$, then $x - 3 \\ge \\frac{x}{2}$, so\n\n$$x^2 - 3x = x(x - 3) \\ge x \\cdot \\frac{x}{2} = \\frac{x^2}{2}.$$\n\nThis is the same move as \"first restrict to $|x - c| < 1$\" in lesson 5.2: we agree to look only at $x \\ge 6$, where a simple bound holds."
+            },
+            {
+              "title": "Choose K",
+              "md": "We want $\\frac{x^2}{2} > M$, that is $x > \\sqrt{2M}$. To have **both** $x \\ge 6$ and $x > \\sqrt{2M}$, take\n\n$$K = \\max\\{6, \\sqrt{2M}\\}.$$\n\n($\\max$ means the larger of the two numbers.)"
+            },
+            {
+              "title": "Check it works",
+              "md": "If $x > K$ then $x > 6$, so $x^2 - 3x \\ge \\frac{x^2}{2}$; and $x > \\sqrt{2M}$, so $\\frac{x^2}{2} > M$. Together, $x^2 - 3x > M$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why is $K = \\max\\{6, \\sqrt{2M}\\}$ used instead of just $K = \\sqrt{2M}$?",
+          "options": [
+            "Because $\\sqrt{2M}$ might not be a real number",
+            "Because the bound $x^2 - 3x \\ge \\frac{x^2}{2}$ was only proved for $x \\ge 6$, so we must make sure $x$ is at least $6$",
+            "Because $K$ must be a whole number",
+            "It makes no difference; $\\sqrt{2M}$ alone always works"
+          ],
+          "correct": 1,
+          "explanation": "For small $M$, $\\sqrt{2M}$ could be less than $6$, and then some allowed $x$ would lie where our bound was never proved. For example $M = 1$, $x = 2$: $x > \\sqrt 2$ but $x^2 - 3x = -2 < 1$. We assumed $M > 0$, so $\\sqrt{2M}$ is real, and $K$ need not be a whole number."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of this proof in order: $\\lim_{x\\to\\infty} \\dfrac{x + 2}{x} = 1$.",
+          "items": [
+            "Let $\\varepsilon > 0$.",
+            "Put $K = \\frac{2}{\\varepsilon}$.",
+            "If $x > K$, then $x > 0$ and $\\left|\\frac{x+2}{x} - 1\\right| = \\frac{2}{x}$.",
+            "Since $x > K$, we get $\\frac2x < \\frac2K = \\varepsilon$.",
+            "So $\\left|\\frac{x+2}{x} - 1\\right| < \\varepsilon$ for all $x > K$, and the limit is $1$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a one-sided infinite limit",
+          "problem": "Prove that $\\lim_{x\\to 1^+} \\dfrac{1}{x - 1} = \\infty$. Then say what happens as $x \\to 1^-$, and whether $\\lim_{x\\to 1} \\frac{1}{x-1}$ exists. Try it before opening the solution.",
+          "solution": "**Scratch work.** For $x > 1$ we have $x - 1 > 0$, and $\\frac{1}{x-1} > M$ (with $M > 0$) means $x - 1 < \\frac1M$. So try $\\delta = \\frac1M$.\n\n**Proof.** Let $M \\in \\mathbb{R}$. If $M \\le 0$, any $\\delta$ works, since $\\frac{1}{x-1} > 0 \\ge M$ for all $x > 1$. So assume $M > 0$ and put $\\delta = \\frac1M$. If $1 < x < 1 + \\delta$, then $0 < x - 1 < \\frac1M$, so $\\frac{1}{x - 1} > M$. Hence $\\lim_{x\\to 1^+} \\frac{1}{x-1} = \\infty$. $\\blacksquare$\n\n**From the left**, $x - 1 < 0$, so the values are negative and large in size: $\\lim_{x\\to 1^-} \\frac{1}{x-1} = -\\infty$. The two sides disagree, so the two-sided limit does **not** exist.\n\n**Check your version:** did you handle $M \\le 0$ separately? Did you only use $x$ with $1 < x < 1 + \\delta$ (one side)? Did you check the sign on the other side before saying anything about the two-sided limit?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "If $\\lim_{x\\to c} f(x) = \\infty$, does the limit exist?",
+              "a": "Not as a real number. \"$= \\infty$\" is shorthand for a specific way of **failing** to converge: the values grow past every height. It is more informative than \"does not exist\", because it tells you the direction. The limit laws of lesson 5.4 are about real limits, so you cannot feed $\\infty$ into them as if it were a number."
+            },
+            {
+              "q": "If $f$ is unbounded near $c$, must $f(x) \\to \\infty$ or $-\\infty$?",
+              "a": "No. $\\frac1x$ is unbounded near $0$ but tends to neither (the sides disagree). Worse, $\\frac1x \\sin\\frac1x$ is unbounded near $0$ yet equals $0$ at every point $x = \\frac{1}{n\\pi}$, so it keeps coming back to $0$. Tending to $\\infty$ needs **all** nearby values to be large, not just some."
+            },
+            {
+              "q": "Why can't I just \"plug in $\\infty$\"?",
+              "a": "Because $\\infty$ is not in the domain of any real function. Writing $\\frac{2\\infty + 1}{\\infty + 3}$ gives the indeterminate $\\frac\\infty\\infty$. The quick method works because dividing by $x$ first produces terms like $\\frac1x$, whose limits really are $0$."
+            },
+            {
+              "q": "Is $\\lim_{x\\to\\infty}$ just the sequence limit from Level 3?",
+              "a": "Almost, but not quite. If $\\lim_{x\\to\\infty} f(x) = L$ then $f(n) \\to L$ as a sequence. The converse fails: $\\sin(\\pi x)$ equals $0$ at every whole number, so $f(n) \\to 0$, yet $\\sin(\\pi x)$ has no limit as $x \\to \\infty$."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $\\infty$ is not a number. Limits involving it are defined by replacing \"within $\\varepsilon$ of $L$\" with \"**bigger than $M$**\" and \"within $\\delta$ of $c$\" with \"**bigger than $K$**\".\n- $\\lim_{x\\to c} f(x) = \\infty$: $\\forall M\\ \\exists \\delta > 0$ with $f(x) > M$ when $0 < |x - c| < \\delta$.\n- $\\lim_{x\\to\\infty} f(x) = L$: $\\forall \\varepsilon > 0\\ \\exists K$ with $|f(x) - L| < \\varepsilon$ when $x > K$.\n- Check signs on both sides of a pole: $\\frac1x$ goes to $+\\infty$ on the right and $-\\infty$ on the left, so it has no two-sided limit.\n- For rational functions as $x \\to \\infty$, divide by the highest power in the denominator.\n- $\\infty - \\infty$, $0 \\cdot \\infty$, $\\frac\\infty\\infty$ and $\\frac00$ are **indeterminate**: simplify before taking the limit."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Evaluate $\\lim_{x\\to\\infty} \\dfrac{3x^2 - x}{x^2 + 5}$.",
+          "options": [
+            "$\\infty$",
+            "$0$",
+            "$-\\tfrac15$",
+            "$3$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "Divide top and bottom by $x^2$: $\\frac{3 - 1/x}{1 + 5/x^2} \\to \\frac{3 - 0}{1 + 0} = 3$ by the limit laws at infinity. $-\\frac15$ is what you get by wrongly plugging in $x = 0$; $0$ and $\\infty$ are the answers when the degrees differ."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\lim_{x\\to 0} \\dfrac{1}{x} = \\infty$.",
+          "answer": [
+            false
+          ],
+          "explanation": "For $x < 0$ the values are negative and unbounded below: the left-hand limit is $-\\infty$, the right-hand limit is $+\\infty$, so there is no two-sided limit."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of the following satisfy $\\lim_{x\\to\\infty} f(x) = 0$?",
+          "options": [
+            "$f(x) = \\dfrac{\\sin x}{x}$",
+            "$f(x) = \\dfrac{1}{\\ln x}$ (on $x > 1$)",
+            "$f(x) = x\\sin(1/x)$ (on $x > 0$)",
+            "$f(x) = e^{-x}\\cos x$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "$\\left|\\frac{\\sin x}{x}\\right| \\le \\frac1x \\to 0$; $\\ln x \\to \\infty$ so $\\frac{1}{\\ln x} \\to 0$; $|e^{-x}\\cos x| \\le e^{-x} \\to 0$. But with $t = \\frac1x \\to 0^+$, $x\\sin\\frac1x = \\frac{\\sin t}{t} \\to 1$."
+        },
+        {
+          "type": "short",
+          "prompt": "In proving $\\lim_{x\\to 0} 1/x^2 = \\infty$, take $M = 100$. What is the **largest** $\\delta$ such that $0 < |x| < \\delta$ implies $1/x^2 > 100$?",
+          "answer": [
+            "0.1",
+            "1/10",
+            ".1",
+            "δ = 0.1",
+            "δ=0.1"
+          ],
+          "explanation": "$\\frac{1}{x^2} > 100 \\iff x^2 < \\frac{1}{100} \\iff |x| < 0.1$. So $\\delta = 0.1$ works, and any larger $\\delta$ admits some $x$ with $0.1 \\le |x| < \\delta$, where $\\frac{1}{x^2} \\le 100$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is $\\lim_{x\\to\\infty} \\sin x$?",
+          "options": [
+            "$0$",
+            "$1$",
+            "It does not exist.",
+            "$\\infty$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Along $x_n = n\\pi$ the values are $0$, and along $y_n = 2n\\pi + \\frac\\pi2$ they are $1$. Both sequences tend to $\\infty$ but give different values, so there is no limit. It is not $\\infty$ either, since $\\sin x \\le 1$ always."
+        },
+        {
+          "type": "single",
+          "prompt": "Which statement defines $\\lim_{x\\to c} f(x) = -\\infty$?",
+          "options": [
+            "$\\forall M \\ \\exists \\delta > 0 \\ \\forall x \\in A: 0 < |x-c| < \\delta \\implies f(x) < M$",
+            "$\\exists M \\ \\forall \\delta > 0 \\ \\exists x \\in A: 0 < |x-c| < \\delta$ and $f(x) < M$",
+            "$\\forall \\delta > 0 \\ \\exists M \\ \\forall x \\in A: 0 < |x-c| < \\delta \\implies f(x) < M$",
+            "$\\forall M \\ \\exists \\delta > 0 \\ \\forall x \\in A: |x - c| > \\delta \\implies f(x) < M$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Every bound $M$, however negative, must be undercut on a punctured neighbourhood of $c$. The second and third options swap the quantifiers, so they say much less (the third holds for any function bounded above near $c$). The fourth looks at $x$ **far** from $c$."
+        },
+        {
+          "type": "short",
+          "prompt": "For $\\lim_{x\\to\\infty} \\frac{1}{x} = 0$ with $\\varepsilon = 0.01$, what is the smallest threshold $K$ such that $x > K$ implies $\\frac{1}{x} < 0.01$?",
+          "answer": [
+            "100",
+            "K = 100",
+            "K=100"
+          ],
+          "explanation": "$\\frac1x < 0.01 \\iff x > 100$ (for $x > 0$). So $K = 100$ works, and any smaller $K$ lets in some $x \\le 100$, where $\\frac1x \\ge 0.01$."
+        },
+        {
+          "type": "short",
+          "prompt": "Evaluate $\\lim_{x\\to\\infty} \\dfrac{4x + 7}{2x - 1}$.",
+          "answer": [
+            "2",
+            "two"
+          ],
+          "explanation": "Divide top and bottom by $x$: $\\frac{4 + 7/x}{2 - 1/x} \\to \\frac{4}{2} = 2$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is $\\lim_{x\\to 3^-} \\dfrac{1}{x - 3}$?",
+          "options": [
+            "$\\infty$",
+            "$-\\infty$",
+            "$0$",
+            "$\\frac13$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "For $x$ just below $3$, $x - 3$ is a small **negative** number, so $\\frac{1}{x-3}$ is large and negative. The answer $\\infty$ ignores the sign; $0$ and $\\frac13$ come from treating the pole as an ordinary point."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these are indeterminate forms? Select all that apply.",
+          "options": [
+            "$\\infty - \\infty$",
+            "$\\infty + \\infty$",
+            "$0 \\cdot \\infty$",
+            "$\\dfrac{\\infty}{\\infty}$",
+            "$5 \\cdot \\infty$"
+          ],
+          "answer": [
+            0,
+            2,
+            3
+          ],
+          "explanation": "$\\infty - \\infty$, $0 \\cdot \\infty$ and $\\frac\\infty\\infty$ can give any answer depending on the functions (for instance $x^2 - x \\to \\infty$ but $(x + 1) - x \\to 1$). $\\infty + \\infty$ is always $\\infty$, and $5 \\cdot \\infty$ is always $\\infty$ because $5 > 0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is unbounded on every interval around $0$, then $\\lim_{x\\to 0} f(x) = \\infty$ or $\\lim_{x\\to 0} f(x) = -\\infty$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$\\frac1x$ is unbounded near $0$, but it tends to $\\infty$ on the right and $-\\infty$ on the left, so neither statement holds. An infinite limit needs **all** nearby values to be large with the same sign."
+        },
+        {
+          "type": "single",
+          "prompt": "Evaluate $\\lim_{x\\to\\infty} \\dfrac{x^2 + 1}{x + 1}$.",
+          "options": [
+            "$1$",
+            "$0$",
+            "$\\infty$",
+            "It is indeterminate, so it does not exist"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Divide by $x$: $\\frac{x + 1/x}{1 + 1/x}$. The top grows without bound and the bottom tends to $1$, so the limit is $\\infty$. \"Indeterminate\" describes the form $\\frac\\infty\\infty$, which only means more work is needed; it never means the limit fails to exist."
+        }
+      ]
+    },
+    {
+      "slug": "5-6-continuity-at-a-point",
+      "title": "Continuity at a point",
+      "summary": "$f$ is continuous at $c$ when the limit at $c$ is exactly the value $f(c)$.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "**In this lesson you will learn to:**\n- state what it means for $f$ to be **continuous at a point** $c$, in three equivalent ways\n- check the three conditions: $f(c)$ defined, limit exists, the two agree\n- prove continuity with $\\varepsilon$ and $\\delta$, and disprove it with a sequence\n- build new continuous functions from old ones by algebra and composition\n\n**You need:** the $\\varepsilon$–$\\delta$ definition of a limit (lesson 5.2), the sequential criterion for limits (lesson 5.1), the limit laws (lesson 5.4), and density of $\\mathbb{Q}$ and of the irrationals (lesson 2.12)."
+        },
+        {
+          "type": "text",
+          "md": "## What a limit leaves out\n\nA limit describes what $f(x)$ does **near** $c$ and deliberately ignores $f(c)$ itself (lesson 5.1). Compare three functions near $c = 0$:\n\n- $f_1(x) = x + 1$. Near $0$ the values approach $1$, and $f_1(0) = 1$. Prediction and value agree.\n- $f_2(x) = x + 1$ for $x \\ne 0$, but $f_2(0) = 7$. The limit is still $1$, but the value is $7$. The graph has a single point lifted off the line.\n- $f_3(x) = \\lfloor x \\rfloor$, the floor function from lesson 5.3 (the largest integer $\\le x$). From the right the values are $0$, from the left they are $-1$. There is no limit at all.\n\nOnly $f_1$ behaves the way you expect a \"nice\" function to behave: the value at $c$ is exactly what the nearby values predict. That is **continuity**.\n\nIn plain words: $f$ is continuous at $c$ when **small changes in the input near $c$ cause only small changes in the output**. If you measure $c$ slightly wrongly, $f(c)$ is only slightly wrong.\n\nThis matters because almost every big theorem still to come (the Intermediate and Extreme Value Theorems in lessons 5.9 and 5.10, and the Fundamental Theorem of Calculus in lesson 7.9) assumes continuity. It is also what lets you finally \"plug in\": for a continuous function, $\\lim_{x\\to c} f(x) = f(c)$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Three conditions, not one",
+          "md": "At a limit point $c$ of the domain, continuity needs **all three** of:\n\n1. $f(c)$ is defined;\n2. $\\lim_{x\\to c} f(x)$ exists;\n3. they are equal: $\\lim_{x\\to c} f(x) = f(c)$.\n\nA common error is to check only (2). For example, $f(x) = \\frac{\\sin x}{x}$ for $x \\ne 0$ with $f(0) = 0$ has a limit at $0$, namely $1$, but $f(0) = 0 \\ne 1$, so it is **not** continuous there. And $g(x) = \\frac{x^2 - 4}{x - 2}$ has limit $4$ at $2$, but $g(2)$ is not defined, so continuity at $2$ is not even a meaningful question until someone defines $g(2)$."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = 1$ for $x \\ne 0$ and $f(0) = 7$. Which of the three conditions for continuity at $0$ fails?",
+          "options": [
+            "$f(0)$ is not defined",
+            "$\\lim_{x\\to 0} f(x)$ does not exist",
+            "The limit exists and $f(0)$ is defined, but they are not equal",
+            "None: $f$ is continuous at $0$"
+          ],
+          "correct": 2,
+          "explanation": "$f(0) = 7$ is defined, and $\\lim_{x\\to 0} f(x) = 1$ exists (the value at $0$ plays no part in the limit). But $1 \\ne 7$, so condition (3) fails and $f$ is not continuous at $0$. Redefining $f(0) = 1$ would fix it."
+        },
+        {
+          "type": "text",
+          "md": "## The definition\n\n**Definition.** Let $f : A \\to \\mathbb{R}$ (so $A$ is the domain) and let $c \\in A$. Then $f$ is **continuous at $c$** if\n\n$$\\forall \\varepsilon > 0\\ \\exists \\delta > 0\\ \\forall x \\in A:\\ |x - c| < \\delta \\implies |f(x) - f(c)| < \\varepsilon.$$\n\nRead it as the same game as lesson 5.2: a sceptic names a tolerance $\\varepsilon$; you reply with $\\delta$ so that every input within $\\delta$ of $c$ gives an output within $\\varepsilon$ of $f(c)$.\n\n**Two differences from the limit definition:**\n- $c$ must be **in** the domain, and the target is the actual value $f(c)$, not some number $L$.\n- There is no \"$0 <$\" in front of $|x - c|$. Allowing $x = c$ costs nothing, because then $|f(c) - f(c)| = 0 < \\varepsilon$ automatically.\n\n**Example.** $f(x) = 3x + 1$ is continuous at $c = 2$. We have $|f(x) - f(2)| = |3x - 6| = 3|x - 2|$, so given $\\varepsilon$, take $\\delta = \\frac\\varepsilon3$: then $|x - 2| < \\delta$ gives $|f(x) - f(2)| < 3\\delta = \\varepsilon$.\n\n**Edge case: a constant function** $f(x) = k$. Here $|f(x) - f(c)| = 0$ for every $x$, so **any** $\\delta$ works, however small $\\varepsilon$ is. Continuity does not require $\\delta$ to depend on $\\varepsilon$; it only requires that some $\\delta$ exists."
+        },
+        {
+          "type": "check",
+          "question": "You are proving that $f(x) = 3x + 1$ is continuous at $c = 2$, and the sceptic names $\\varepsilon = 0.6$. What is the largest $\\delta$ that works?",
+          "options": [
+            "$\\delta = 0.6$",
+            "$\\delta = 1.8$",
+            "$\\delta = 0.2$",
+            "$\\delta = 0.1$"
+          ],
+          "correct": 2,
+          "explanation": "$|f(x) - f(2)| = 3|x - 2|$, and $3|x - 2| < 0.6$ exactly when $|x - 2| < 0.2$. So $\\delta = 0.2$ is the largest. $\\delta = 0.1$ also works but is not the largest; $0.6$ forgets the factor $3$, and $1.8$ multiplies by $3$ instead of dividing."
+        },
+        {
+          "type": "text",
+          "md": "## Isolated points, and the limit form\n\nThe definition needs $c \\in A$ but not that $c$ is a limit point of $A$. That allows a strange but useful case.\n\nA point $c \\in A$ is an **isolated point** of $A$ if some interval $(c - \\delta, c + \\delta)$ contains **no** point of $A$ except $c$ itself. It is the opposite of a limit point (lesson 5.1).\n\n*Example:* in $A = \\mathbb{N} = \\{1, 2, 3, \\dots\\}$, every point is isolated: the interval $(n - \\frac12, n + \\frac12)$ contains only $n$. In $A = [0, 1] \\cup \\{2\\}$, the point $2$ is isolated and every point of $[0, 1]$ is a limit point.\n\nAt an isolated point, **every function is continuous**. Choose $\\delta$ so small that the only $x \\in A$ with $|x - c| < \\delta$ is $c$; then $|f(x) - f(c)| = 0 < \\varepsilon$ for that one $x$. There are no nearby inputs to cause trouble.\n\nAt a limit point, the definition is exactly the limit statement with $L = f(c)$. So:\n\n**Theorem (limit form).** For $c \\in A$, $f$ is continuous at $c$ if and only if\n\n- $c$ is an isolated point of $A$, **or**\n- $c$ is a limit point of $A$ and $\\lim_{x\\to c} f(x) = f(c)$.\n\nIn practice, almost all the points you meet are limit points, and the three-condition checklist from the warning box above is the working test."
+        },
+        {
+          "type": "check",
+          "question": "Let $A = \\{0\\} \\cup [1, 2]$ and define $f(0) = 100$ and $f(x) = x$ for $x \\in [1, 2]$. Is $f$ continuous at $0$?",
+          "options": [
+            "No, because $f(0) = 100$ is far from the other values",
+            "No, because $\\lim_{x\\to 0} f(x)$ does not exist",
+            "Yes, because $0$ is an isolated point of $A$",
+            "It depends on $\\varepsilon$"
+          ],
+          "correct": 2,
+          "explanation": "With $\\delta = \\frac12$, the only point of $A$ within $\\delta$ of $0$ is $0$ itself, so $|f(x) - f(0)| = 0 < \\varepsilon$ for every $\\varepsilon$. The limit at $0$ is not defined (it is not a limit point), but continuity does not need it there. How far $100$ is from other values is irrelevant: there are no nearby inputs."
+        },
+        {
+          "type": "text",
+          "md": "## The sequential criterion\n\nLesson 5.1 linked function limits to sequences. The same link works for continuity.\n\n**Theorem (sequential criterion).** For $c \\in A$, $f$ is continuous at $c$ if and only if: for **every** sequence $(x_n)$ in $A$ with $x_n \\to c$, we have $f(x_n) \\to f(c)$.\n\nIn plain words: continuous functions are exactly the ones you can move a limit through,\n\n$$f\\left(\\lim_{n\\to\\infty} x_n\\right) = \\lim_{n\\to\\infty} f(x_n).$$\n\n**How to use it.**\n- To prove **discontinuity**, one bad sequence is enough: find $x_n \\to c$ with $f(x_n) \\not\\to f(c)$.\n- To prove **continuity** this way you need **every** sequence, so the $\\varepsilon$–$\\delta$ definition is usually easier.\n\n**Example.** $\\lfloor x \\rfloor$ is discontinuous at $2$. Take $x_n = 2 - \\frac1n$. Then $x_n \\to 2$, but $\\lfloor x_n \\rfloor = 1$ for every $n \\ge 2$, so $\\lfloor x_n \\rfloor \\to 1 \\ne 2 = \\lfloor 2 \\rfloor$.\n\n**Example.** The **Dirichlet function** $D(x) = 1$ for rational $x$ and $D(x) = 0$ for irrational $x$ is continuous **nowhere**. Fix any $c$. By density (lesson 2.12) there are rationals $q_n \\to c$ and irrationals $s_n \\to c$. Then $D(q_n) \\to 1$ and $D(s_n) \\to 0$, and these cannot both equal $D(c)$.\n\n**Non-example: one good sequence proves nothing.** For the floor function at $2$, the sequence $x_n = 2 + \\frac1n$ gives $\\lfloor x_n \\rfloor = 2 \\to 2$. That sequence happens to behave, but the function is still discontinuous."
+        },
+        {
+          "type": "check",
+          "question": "You want to use the sequential criterion to show that $\\lfloor x \\rfloor$ is discontinuous at $1$. Which sequence does the job?",
+          "options": [
+            "$x_n = 1 + \\frac1n$",
+            "$x_n = 1 - \\frac1n$",
+            "$x_n = 1$ for every $n$",
+            "$x_n = n$"
+          ],
+          "correct": 1,
+          "explanation": "$x_n = 1 - \\frac1n \\to 1$, and $\\lfloor x_n \\rfloor = 0$ for $n \\ge 2$, so $\\lfloor x_n \\rfloor \\to 0 \\ne 1$. The sequence $1 + \\frac1n$ gives $\\lfloor x_n \\rfloor = 1 \\to 1$, which agrees with $\\lfloor 1 \\rfloor$ and shows nothing. The constant sequence also agrees, and $x_n = n$ does not tend to $1$ at all."
+        },
+        {
+          "type": "text",
+          "md": "## Building continuous functions\n\nProving continuity from scratch every time would be slow. Instead, a few rules let you build continuous functions out of simple ones.\n\n**Theorem.** If $f$ and $g$ are continuous at $c$, then so are $f + g$, $kf$ (for any constant $k$), $fg$, and $\\frac{f}{g}$ provided $g(c) \\ne 0$.\n\nThis follows straight from the limit laws (lesson 5.4): for example $\\lim_{x\\to c}(f + g)(x) = f(c) + g(c) = (f + g)(c)$.\n\n**Composition.** Recall from lesson 1.6 that $f \\circ g$ means \"do $g$, then $f$\": $(f \\circ g)(x) = f(g(x))$.\n\n**Theorem.** If $g$ is continuous at $c$ and $f$ is continuous at the point $g(c)$, then $f \\circ g$ is continuous at $c$.\n\nNotice where $f$ must be continuous: at $g(c)$, the point that $g$ delivers, not at $c$.\n\n**Examples.**\n- $x \\mapsto x$ and constants are continuous, so by the rules every **polynomial** is continuous at every point.\n- $\\dfrac{x^2 + 1}{x - 3}$ is continuous at every $c \\ne 3$. At $c = 3$ it is not defined, so there is nothing to ask.\n- Taking as known that $\\sin$, $\\cos$ and $e^x$ are continuous everywhere (lesson 5.7 lists the standard functions), $\\sin(x^2)$ and $e^{\\cos x}$ are continuous everywhere, by composition.\n\n**Edge case.** The rules only go one way. $f + g$ can be continuous when neither $f$ nor $g$ is: $\\lfloor x \\rfloor + (-\\lfloor x \\rfloor) = 0$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: compositions of continuous functions are continuous",
+          "steps": [
+            {
+              "title": "Set up the hypotheses",
+              "md": "Let $g : A \\to \\mathbb{R}$ be continuous at $c$, with all its values in $B$ (written $g(A) \\subseteq B$), and let $f : B \\to \\mathbb{R}$ be continuous at $g(c)$. Fix $\\varepsilon > 0$. We need a $\\delta$ that makes $|f(g(x)) - f(g(c))| < \\varepsilon$."
+            },
+            {
+              "title": "Start from the outside function f",
+              "md": "$f$ is continuous at $g(c)$, so there is $\\eta > 0$ ($\\eta$ is the Greek letter eta) with\n\n$$|f(y) - f(g(c))| < \\varepsilon \\quad\\text{whenever } y \\in B \\text{ and } |y - g(c)| < \\eta.$$\n\nSo it is enough to make $g(x)$ land within $\\eta$ of $g(c)$."
+            },
+            {
+              "title": "Use continuity of g with η as the tolerance",
+              "md": "The definition of continuity of $g$ works for **every** positive tolerance, so we may feed it $\\eta$ instead of $\\varepsilon$. There is $\\delta > 0$ with\n\n$$|g(x) - g(c)| < \\eta \\quad\\text{whenever } x \\in A \\text{ and } |x - c| < \\delta.$$"
+            },
+            {
+              "title": "Chain the two implications",
+              "md": "If $x \\in A$ and $|x - c| < \\delta$, then $y = g(x)$ satisfies $|y - g(c)| < \\eta$, hence $|f(g(x)) - f(g(c))| < \\varepsilon$. So $f \\circ g$ is continuous at $c$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the composition proof, why do we apply the continuity of $g$ with tolerance $\\eta$ rather than $\\varepsilon$?",
+          "options": [
+            "Because $\\eta$ is always smaller than $\\varepsilon$",
+            "Because $f$ only promises to stay within $\\varepsilon$ when its input is within $\\eta$ of $g(c)$, so $g(x)$ must land within $\\eta$",
+            "Because $g$ is not continuous for tolerance $\\varepsilon$",
+            "It makes no difference which tolerance we use"
+          ],
+          "correct": 1,
+          "explanation": "The chain is: $|x - c| < \\delta \\Rightarrow |g(x) - g(c)| < \\eta \\Rightarrow |f(g(x)) - f(g(c))| < \\varepsilon$. The middle step must match what $f$ needs, which is $\\eta$. $\\eta$ need not be smaller than $\\varepsilon$ (it depends on $f$), $g$ works for every tolerance, and using $\\varepsilon$ would break the chain."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: continuous at exactly one point",
+          "problem": "Define $g : \\mathbb{R} \\to \\mathbb{R}$ by $g(x) = x$ if $x \\in \\mathbb{Q}$ and $g(x) = 0$ if $x \\notin \\mathbb{Q}$. ($\\mathbb{Q}$ is the set of rational numbers.) Prove that $g$ is continuous at $0$ and at no other point.",
+          "solution": "**Continuity at $0$.** Here $g(0) = 0$, and for every $x$ we have $|g(x)| \\le |x|$ (it is either $|x|$ or $0$). Given $\\varepsilon > 0$ take $\\delta = \\varepsilon$: if $|x| < \\delta$ then $|g(x) - g(0)| \\le |x| < \\varepsilon$.\n\n**Discontinuity at $c \\ne 0$.** We use the sequential criterion: one bad sequence is enough.\n\n- If $c \\in \\mathbb{Q}$, then $g(c) = c \\ne 0$. By density of the irrationals choose irrational $x_n$ with $|x_n - c| < \\frac1n$. Then $x_n \\to c$ but $g(x_n) = 0 \\to 0 \\ne g(c)$.\n- If $c \\notin \\mathbb{Q}$, then $g(c) = 0$. By density of $\\mathbb{Q}$ choose rational $q_n$ with $|q_n - c| < \\frac1n$. Then $q_n \\to c$ but $g(q_n) = q_n \\to c \\ne 0 = g(c)$.\n\nIn both cases the criterion fails, so $g$ is discontinuous at $c$. $\\blacksquare$\n\n**Notice:** at $0$, the two \"pieces\" $x$ and $0$ meet, which is why the squeeze $|g(x)| \\le |x|$ works there and nowhere else."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Continuous at $c$",
+              "back": "$c$ is in the domain and $\\forall \\varepsilon > 0\\ \\exists \\delta > 0$: $|x - c| < \\delta \\Rightarrow |f(x) - f(c)| < \\varepsilon$. Nearby inputs give **nearby outputs**.\n\n*Example:* $3x + 1$ at $c = 2$, with $\\delta = \\frac\\varepsilon3$."
+            },
+            {
+              "front": "The three conditions",
+              "back": "At a limit point $c$: $f(c)$ is defined, $\\lim_{x\\to c} f(x)$ exists, and they are **equal**.\n\n*Example:* $\\frac{\\sin x}{x}$ with $f(0) = 0$ fails the third."
+            },
+            {
+              "front": "Isolated point",
+              "back": "A point $c \\in A$ with an interval around it containing **no other** point of $A$. Every function is continuous there.\n\n*Example:* every $n$ in $\\mathbb{N}$."
+            },
+            {
+              "front": "Sequential criterion",
+              "back": "$f$ is continuous at $c$ iff $x_n \\to c$ implies $f(x_n) \\to f(c)$ for **every** sequence in the domain.\n\n*Example:* $x_n = 2 - \\frac1n$ shows $\\lfloor x \\rfloor$ is discontinuous at $2$."
+            },
+            {
+              "front": "Composition rule",
+              "back": "If $g$ is continuous at $c$ and $f$ is continuous at $g(c)$, then $f \\circ g$ is continuous at $c$.\n\n*Example:* $\\sin(x^2)$ is continuous everywhere."
+            },
+            {
+              "front": "Dirichlet function",
+              "back": "$D(x) = 1$ for rational $x$, $0$ for irrational $x$. Continuous at **no** point, because rationals and irrationals are both dense.\n\n*Example:* $D(q_n) \\to 1$ but $D(s_n) \\to 0$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A classmate shows that $x_n = \\frac1n \\to 0$ and $f\\left(\\frac1n\\right) \\to f(0)$, then concludes that $f$ is continuous at $0$. What is wrong?",
+          "options": [
+            "Nothing: one sequence is enough to prove continuity",
+            "The criterion needs $f(x_n) \\to f(c)$ for **every** sequence $x_n \\to 0$, not just one",
+            "The sequence should tend to $\\infty$",
+            "The sequence must avoid rational numbers"
+          ],
+          "correct": 1,
+          "explanation": "One sequence can only **disprove** continuity. For the Dirichlet function, $D\\left(\\frac1n\\right) = 1 = D(0)$, yet $D$ is discontinuous at $0$ (irrationals tending to $0$ give $0$). The sequence must tend to $c = 0$, not $\\infty$, and there is no rule about rational terms."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of this proof in order: $f(x) = 2x - 5$ is continuous at $c = 1$.",
+          "items": [
+            "Let $\\varepsilon > 0$.",
+            "Put $\\delta = \\frac{\\varepsilon}{2}$.",
+            "Suppose $|x - 1| < \\delta$.",
+            "Then $|f(x) - f(1)| = |2x - 5 - (-3)| = 2|x - 1|$.",
+            "So $|f(x) - f(1)| < 2\\delta = \\varepsilon$, and $f$ is continuous at $1$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: filling a hole",
+          "problem": "Let $f(x) = \\dfrac{x^2 - 9}{x - 3}$ for $x \\ne 3$, and $f(3) = k$. Find the value of $k$ that makes $f$ continuous at $3$, and prove continuity with $\\varepsilon$ and $\\delta$. Try it before opening the solution.",
+          "solution": "**Find $k$.** For $x \\ne 3$, $\\frac{x^2 - 9}{x - 3} = \\frac{(x - 3)(x + 3)}{x - 3} = x + 3$. So $\\lim_{x\\to 3} f(x) = 6$, and continuity needs $f(3) = 6$. Take $k = 6$.\n\n**Prove it.** With $k = 6$ we have $f(x) = x + 3$ for **every** $x$, including $x = 3$. Let $\\varepsilon > 0$ and put $\\delta = \\varepsilon$. If $|x - 3| < \\delta$, then\n\n$$|f(x) - f(3)| = |(x + 3) - 6| = |x - 3| < \\varepsilon.$$\n\nSo $f$ is continuous at $3$. $\\blacksquare$ For any other $k$, the limit is still $6$ but $f(3) = k \\ne 6$, so $f$ is discontinuous.\n\n**Check your version:** did you cancel $x - 3$ only for $x \\ne 3$? Did you compare with $f(3)$, not with some other number? Is your $\\delta$ free of $x$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is $f : \\mathbb{N} \\to \\mathbb{R}$, $f(n) = (-1)^n n^2$, continuous?",
+              "a": "Yes, at every point. Each $n \\in \\mathbb{N}$ is isolated in $\\mathbb{N}$: with $\\delta = \\tfrac12$ the only $x \\in \\mathbb{N}$ with $|x - n| < \\delta$ is $n$ itself, so $|f(x) - f(n)| = 0 < \\varepsilon$ holds automatically. Wild jumps between neighbouring whole numbers do not matter, because $n$ and $n + 1$ are never \"close\" in the sense of $\\delta < 1$."
+            },
+            {
+              "q": "Is \"continuous means you can draw the graph without lifting the pen\" a definition?",
+              "a": "No. It is a rough guide for functions on intervals and fails badly in general: $g$ in the worked example is continuous at $0$, yet its graph cannot be drawn at all. Continuity is a property **at a point**, defined by $\\varepsilon$ and $\\delta$."
+            },
+            {
+              "q": "Can a function be continuous at $c$ if $\\lim_{x\\to c} f(x)$ does not exist?",
+              "a": "Only if $c$ is an isolated point of the domain, where the limit is not defined at all. At a limit point $c$, continuity requires the limit to exist and equal $f(c)$."
+            },
+            {
+              "q": "Is $\\frac1x$ discontinuous at $0$?",
+              "a": "The question does not arise: $0$ is not in the domain, and continuity is only asked at points of the domain. Lesson 5.7 returns to this."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $f$ is **continuous at $c$** (with $c$ in the domain) when $\\forall \\varepsilon > 0\\ \\exists \\delta > 0$: $|x - c| < \\delta \\Rightarrow |f(x) - f(c)| < \\varepsilon$.\n- At a limit point this means three things: $f(c)$ is defined, $\\lim_{x\\to c} f(x)$ exists, and they are **equal**.\n- Every function is continuous at an **isolated point** of its domain.\n- **Sequential criterion:** continuous at $c$ iff $f(x_n) \\to f(c)$ for every $x_n \\to c$. One bad sequence proves discontinuity; one good sequence proves nothing.\n- Sums, multiples, products, quotients (denominator $\\ne 0$) and compositions of continuous functions are continuous. For $f \\circ g$, $f$ must be continuous at $g(c)$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "Every function $f : \\mathbb{N} \\to \\mathbb{R}$ is continuous (with $\\mathbb{N}$ regarded as a subset of $\\mathbb{R}$).",
+          "answer": [
+            true
+          ],
+          "explanation": "Every point of $\\mathbb{N}$ is isolated. Taking $\\delta = \\frac12$, the only admissible $x$ near $n$ is $n$ itself, so the continuity condition holds for every $\\varepsilon$."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $g(x) = x$ for rational $x$ and $g(x) = 0$ for irrational $x$. At which points is $g$ continuous?",
+          "options": [
+            "At every rational point",
+            "At every irrational point",
+            "Only at $0$",
+            "Nowhere"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "At $0$, $|g(x)| \\le |x|$ gives continuity. At $c \\ne 0$, sequences of rationals and of irrationals tending to $c$ give the different limits $c$ and $0$, so $g$ cannot be continuous there."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $c \\in A$ be a limit point of $A$ and $f : A \\to \\mathbb{R}$. Which statements are equivalent to continuity of $f$ at $c$?",
+          "options": [
+            "$\\lim_{x\\to c} f(x) = f(c)$",
+            "For every sequence $(x_n)$ in $A$ with $x_n \\to c$, $f(x_n) \\to f(c)$.",
+            "There is a sequence $(x_n)$ in $A\\setminus\\{c\\}$ with $x_n \\to c$ and $f(x_n) \\to f(c)$.",
+            "$\\forall \\varepsilon > 0 \\ \\exists \\delta > 0 \\ \\forall x \\in A: |x-c| < \\delta \\implies |f(x)-f(c)| < \\varepsilon$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first is the limit form, the second the sequential criterion and the fourth the definition. One convenient sequence proves nothing: for the Dirichlet function at $c = 0$, the rationals $x_n = \\frac1n$ give $D(x_n) = 1 = D(0)$, yet $D$ is discontinuous at $0$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = \\dfrac{x^2 - 1}{x - 1}$ for $x \\neq 1$ and $f(1) = k$. For which value of $k$ is $f$ continuous at $1$?",
+          "answer": [
+            "2",
+            "two",
+            "k = 2",
+            "k=2"
+          ],
+          "explanation": "For $x \\ne 1$, $f(x) = \\frac{(x - 1)(x + 1)}{x - 1} = x + 1 \\to 2$. Continuity at $1$ requires $f(1) = \\lim_{x\\to 1} f(x) = 2$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which hypothesis guarantees that $f \\circ g$ is continuous at $c$?",
+          "options": [
+            "$g$ is continuous at $c$ and $f$ is continuous at $g(c)$.",
+            "$g$ is continuous at $c$ and $f$ is continuous at $c$.",
+            "$f$ is continuous at $g(c)$ only.",
+            "$f$ and $g$ both have limits at $c$."
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The proof feeds the $\\eta$ from continuity of $f$ at the point $g(c)$ into the continuity of $g$ at $c$. Continuity of $f$ at $c$ is irrelevant unless $g(c) = c$; without continuity of $g$, $g(x)$ might not land near $g(c)$; and limits alone ignore the values at $c$."
+        },
+        {
+          "type": "single",
+          "prompt": "The Dirichlet function, $D(x) = 1$ for $x \\in \\mathbb{Q}$ and $D(x) = 0$ otherwise, is continuous at",
+          "options": [
+            "every rational point",
+            "every irrational point",
+            "$0$ only",
+            "no point"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "Every interval contains both rationals and irrationals, so for any $c$ there are sequences tending to $c$ along which $D$ is constantly $1$ and constantly $0$. These cannot both converge to $D(c)$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $\\lim_{x\\to c} f(x)$ exists and $c$ is in the domain of $f$, then $f$ is continuous at $c$.",
+          "answer": [
+            false
+          ],
+          "explanation": "The limit must also **equal** $f(c)$. For $f(x) = 1$ ($x \\ne 0$), $f(0) = 7$, the limit at $0$ is $1$ but $f(0) = 7$."
+        },
+        {
+          "type": "single",
+          "prompt": "To prove $f(x) = 3x + 1$ is continuous at $c = 2$, which choice of $\\delta$ works for every $\\varepsilon > 0$?",
+          "options": [
+            "$\\delta = 3\\varepsilon$",
+            "$\\delta = \\frac{\\varepsilon}{3}$",
+            "$\\delta = \\varepsilon + 3$",
+            "$\\delta = \\frac{\\varepsilon}{3x}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$|f(x) - f(2)| = 3|x - 2| < 3\\delta = \\varepsilon$. $3\\varepsilon$ and $\\varepsilon + 3$ are too big (they allow outputs up to $9\\varepsilon$ or more away), and $\\delta$ must not depend on $x$."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = 3x + 1$ at $c = 2$ with $\\varepsilon = 0.3$, what is the largest $\\delta$ that works?",
+          "answer": [
+            "0.1",
+            "1/10",
+            ".1",
+            "δ = 0.1",
+            "δ=0.1"
+          ],
+          "explanation": "$3|x - 2| < 0.3 \\iff |x - 2| < 0.1$. Any larger $\\delta$ lets in an $x$ with $3|x - 2| \\ge 0.3$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are continuous at $0$? Select all that apply.",
+          "options": [
+            "$x^2$",
+            "$\\lfloor x \\rfloor$",
+            "$\\sin(1/x)$ for $x \\ne 0$, with value $0$ at $0$",
+            "$x\\sin(1/x)$ for $x \\ne 0$, with value $0$ at $0$"
+          ],
+          "answer": [
+            0,
+            3
+          ],
+          "explanation": "$x^2$ is a polynomial. For $x \\sin\\frac1x$, $|x \\sin\\frac1x| \\le |x|$, so it is squeezed to $0 = f(0)$. $\\lfloor x \\rfloor$ jumps from $-1$ to $0$ at $0$. $\\sin\\frac1x$ swings between $-1$ and $1$ on every interval around $0$, so it has no limit there."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ and $g$ are continuous at $c$ and $g(c) \\ne 0$, then $\\frac{f}{g}$ is continuous at $c$.",
+          "answer": [
+            true
+          ],
+          "explanation": "By the quotient law for limits, $\\lim_{x\\to c} \\frac{f(x)}{g(x)} = \\frac{f(c)}{g(c)}$, which is the value of $\\frac fg$ at $c$. The condition $g(c) \\ne 0$ makes sure $\\frac fg$ is defined at $c$ and near it."
+        },
+        {
+          "type": "single",
+          "prompt": "Which sequence shows, by the sequential criterion, that $\\lfloor x \\rfloor$ is discontinuous at $2$?",
+          "options": [
+            "$x_n = 2 + \\frac1n$",
+            "$x_n = 2 - \\frac1n$",
+            "$x_n = 2$",
+            "$x_n = \\frac2n$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$2 - \\frac1n \\to 2$ but $\\lfloor 2 - \\frac1n \\rfloor = 1$ for $n \\ge 2$, and $1 \\ne 2 = \\lfloor 2 \\rfloor$. The sequences $2 + \\frac1n$ and $2$ give values $2$, which agree with $\\lfloor 2 \\rfloor$ and prove nothing; $\\frac2n \\to 0$, not $2$."
+        }
+      ]
+    },
+    {
+      "slug": "5-7-continuity-on-an-interval",
+      "title": "Continuity on an interval",
+      "summary": "Continuity at every point of a set, with one-sided continuity at closed endpoints.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "What this lesson covers",
+          "md": "**In this lesson you will learn to:**\n- say what it means for $f$ to be continuous **on a set**, such as an interval\n- handle the endpoints of a closed interval with **one-sided** continuity\n- decide where the standard functions are continuous, and glue pieces together continuously\n- use density to pin down a continuous function from its values on $\\mathbb{Q}$\n- recognise the \"open preimage\" description of continuity (a preview of lesson 8.2)\n\n**You need:** continuity at a point and the sequential criterion (lesson 5.6), one-sided limits (lesson 5.3), and intervals (lesson 2.6)."
+        },
+        {
+          "type": "text",
+          "md": "## Why a whole interval?\n\nLesson 5.6 defined continuity at **one** point. The big results still to come in this level are about functions that are continuous at **every** point of an interval:\n\n- the Intermediate Value Theorem (lesson 5.9): a continuous function on an interval cannot skip values;\n- the Extreme Value Theorem (lesson 5.10): on $[a, b]$ a continuous function has a largest and a smallest value.\n\nSo we need to say what \"continuous on an interval\" means. Most of it is obvious: continuous at each point. The subtle part is the **endpoints**.\n\nTake $\\sqrt{x}$ at $x = 0$. There is nothing to the left of $0$ in its domain, so we cannot ask about a two-sided limit there. We only want the right-hand side to behave: $\\sqrt{x} \\to 0$ as $x \\to 0^+$.\n\nOr take the floor function $\\lfloor x \\rfloor$ (the largest integer $\\le x$) on $[0, 1)$. On this interval it is the constant $0$, which looks perfectly continuous. Yet as a function on all of $\\mathbb{R}$ it jumps at $0$, from $-1$ to $0$. Is it \"continuous on $[0, 1)$\" or not? The definition must decide. It will say yes, because points outside the interval are ignored."
+        },
+        {
+          "type": "text",
+          "md": "## Continuity on a set\n\nFirst, one piece of notation. If $f : A \\to \\mathbb{R}$ and $B \\subseteq A$ ($B$ is a subset of $A$, lesson 1.4), the **restriction** $f|_B$ is the same rule as $f$ but with its domain cut down to $B$. Only inputs from $B$ are allowed.\n\n**Definition.** $f$ is **continuous on $B$** if the restriction $f|_B$ is continuous at every point of $B$. Spelled out: for every $c \\in B$ and every $\\varepsilon > 0$ there is $\\delta > 0$ with\n\n$$|f(x) - f(c)| < \\varepsilon \\quad\\text{for all } x \\in B \\text{ with } |x - c| < \\delta.$$\n\nThe only change from lesson 5.6 is \"$x \\in B$\": inputs outside $B$ are ignored.\n\nWhen $f$ is continuous at every point of its **whole domain**, we simply say $f$ is **continuous**, or a **continuous function**.\n\n**Examples.**\n- $f(x) = x^2$ is continuous on $\\mathbb{R}$, so on every interval.\n- $\\lfloor x \\rfloor$ is continuous on $[0, 1)$: restricted to $[0, 1)$ it is the constant $0$.\n- Edge case: $\\lfloor x \\rfloor$ is **not** continuous on $[0, 1]$. At $c = 1$, inputs $x \\in [0, 1)$ close to $1$ give $\\lfloor x \\rfloor = 0$, but $\\lfloor 1 \\rfloor = 1$.\n\n**For an open interval** $(a, b)$, every point has room on both sides inside the interval, so \"continuous on $(a, b)$\" just means continuous at each point of $(a, b)$ in the ordinary two-sided sense."
+        },
+        {
+          "type": "check",
+          "question": "Is $\\lfloor x \\rfloor$ continuous on the interval $[1, 2)$?",
+          "options": [
+            "No, because $\\lfloor x \\rfloor$ jumps at $x = 1$",
+            "Yes: on $[1, 2)$ it is the constant $1$, and points outside the interval are ignored",
+            "No, because $[1, 2)$ is not a closed interval",
+            "Yes, because $\\lfloor x \\rfloor$ is continuous everywhere"
+          ],
+          "correct": 1,
+          "explanation": "Restricted to $[1, 2)$, the floor function is the constant $1$, which is continuous. The jump at $1$ comes from values to the **left** of $1$, which are not in the interval. Intervals need not be closed, and $\\lfloor x \\rfloor$ is certainly not continuous everywhere (it jumps at every integer)."
+        },
+        {
+          "type": "text",
+          "md": "## Closed intervals: one-sided at the ends\n\nFor a closed interval $[a, b]$, the definition above unpacks into three conditions. $f$ is continuous on $[a, b]$ exactly when:\n\n- $f$ is continuous at every $c \\in (a, b)$ (two-sided, as in lesson 5.6);\n- $f$ is **right-continuous** at $a$: $\\lim_{x\\to a^+} f(x) = f(a)$;\n- $f$ is **left-continuous** at $b$: $\\lim_{x\\to b^-} f(x) = f(b)$.\n\nWhy? Near $a$, the only inputs in $[a, b]$ lie to the right of $a$, so the continuity condition at $a$ only ever looks at $a \\le x < a + \\delta$. That is the right-hand limit of lesson 5.3, with target $f(a)$. Similarly at $b$.\n\nThe same goes for half-open intervals: $[a, b)$ needs right-continuity at $a$ only; $(a, b]$ needs left-continuity at $b$ only.\n\n**Examples.**\n- $\\sqrt{x}$ on $[0, 4]$: continuous inside, $\\lim_{x\\to 0^+}\\sqrt x = 0 = \\sqrt 0$, and $\\lim_{x\\to 4^-}\\sqrt x = 2 = \\sqrt 4$. So it is continuous on $[0, 4]$.\n- $\\lfloor x \\rfloor$ on $[0, 1]$: inside it is $0$; right-continuous at $0$; but $\\lim_{x\\to 1^-}\\lfloor x \\rfloor = 0 \\ne 1$. Not continuous on $[0, 1]$.\n- Edge case: $f(x) = \\frac1x$ on $(0, 1]$ is continuous, even though it blows up near $0$. The endpoint $0$ is not in the interval, so nothing is required there.\n\n**What is not required:** anything about points outside the interval. What happens to the left of $a$ or the right of $b$ is irrelevant."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = 0$ for $x < 2$ and $f(x) = 5$ for $x \\ge 2$. On which interval is $f$ continuous?",
+          "options": [
+            "$[0, 2]$",
+            "$[2, 3]$",
+            "$[1, 3]$",
+            "$(1, 3)$"
+          ],
+          "correct": 1,
+          "explanation": "On $[2, 3]$, $f$ is the constant $5$, and the jump comes from the left of $2$, outside the interval. On $[0, 2]$ left-continuity at $2$ fails: $\\lim_{x\\to 2^-} f(x) = 0 \\ne 5 = f(2)$. Both $[1, 3]$ and $(1, 3)$ contain $2$ as an interior point, where $f$ jumps."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "\"Continuous\" refers to the domain",
+          "md": "$f(x) = \\frac1x$ **is** a continuous function: its domain is $\\mathbb{R}\\setminus\\{0\\}$ (all reals except $0$) and it is continuous at every point of that domain. It makes no sense to call it discontinuous at $0$, since $0$ is not in the domain, and continuity is only asked at points of the domain.\n\nWhat is true is that $\\frac1x$ has no continuous **extension** to $\\mathbb{R}$: no choice of value at $0$ makes it continuous there, because the one-sided limits are $\\pm\\infty$ (lesson 5.5).\n\nSimilarly, $\\tan x$ is a continuous function on its domain, even though its graph has gaps."
+        },
+        {
+          "type": "text",
+          "md": "## The standard continuous functions\n\nProving each function continuous from scratch would be slow. We take the following as known (each can be proved with $\\varepsilon$ and $\\delta$, or from the series definitions in later courses):\n\n- **Polynomials**, $\\sin$, $\\cos$ and $e^x$ are continuous on $\\mathbb{R}$.\n- $|x|$ is continuous on $\\mathbb{R}$: by the reverse triangle inequality (lesson 2.5), $\\big||x| - |c|\\big| \\le |x - c|$, so $\\delta = \\varepsilon$ works.\n- $\\sqrt{x}$ is continuous on $[0, \\infty)$ (proved in the next block).\n- $\\ln x$ is continuous on $(0, \\infty)$.\n- Rational functions $\\frac{p(x)}{q(x)}$ and $\\tan x = \\frac{\\sin x}{\\cos x}$ are continuous on their natural domains, which leave out the zeros of the denominator.\n\nThen the rules of lesson 5.6 (sums, products, quotients with nonzero denominator, compositions) give continuity of anything built from these. For example, $\\sqrt{1 - x^2}$ is continuous on $[-1, 1]$, and $e^{\\sin x} + |x|$ is continuous on $\\mathbb{R}$.\n\n**Edge case.** $\\lfloor x \\rfloor$ is continuous at every non-integer, and at no integer. The set of points where it is continuous is $\\mathbb{R}\\setminus\\mathbb{Z}$, all reals except the integers."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function with the set of points of its domain at which it is continuous.",
+          "pairs": [
+            {
+              "left": "$\\sqrt{x}$",
+              "right": "$[0, \\infty)$"
+            },
+            {
+              "left": "$\\ln x$",
+              "right": "$(0, \\infty)$"
+            },
+            {
+              "left": "$\\lfloor x \\rfloor$",
+              "right": "$\\mathbb{R} \\setminus \\mathbb{Z}$"
+            },
+            {
+              "left": "$|x|$",
+              "right": "$\\mathbb{R}$"
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Worked example: the square root is continuous on its domain",
+          "problem": "Prove that $f(x) = \\sqrt{x}$ is continuous on $[0, \\infty)$.",
+          "solution": "Let $c \\ge 0$ and $\\varepsilon > 0$. Only inputs $x \\ge 0$ count.\n\n**Case $c = 0$ (the endpoint).** Take $\\delta = \\varepsilon^2$. If $x \\ge 0$ and $|x - 0| < \\delta$, then $|\\sqrt{x} - 0| = \\sqrt{x} < \\sqrt{\\delta} = \\varepsilon$. This is right-continuity at $0$.\n\n**Case $c > 0$.** Multiply and divide by $\\sqrt x + \\sqrt c$ (the \"conjugate\" trick). For $x \\ge 0$,\n\n$$|\\sqrt{x} - \\sqrt{c}| = \\frac{|x - c|}{\\sqrt{x} + \\sqrt{c}} \\le \\frac{|x - c|}{\\sqrt{c}},$$\n\nbecause the denominator is at least $\\sqrt c$. Take $\\delta = \\varepsilon\\sqrt{c}$. If $x \\ge 0$ and $|x - c| < \\delta$, then $|\\sqrt{x} - \\sqrt{c}| < \\frac{\\delta}{\\sqrt{c}} = \\varepsilon$.\n\nSo $f$ is continuous at every point of $[0,\\infty)$. $\\blacksquare$\n\n**Notice:** $\\delta$ depends on $c$ in the second case; near $0$ it has to be very small. Whether one $\\delta$ can serve every $c$ at once is the question of _uniform_ continuity (lesson 5.11)."
+        },
+        {
+          "type": "steps",
+          "title": "Worked example: gluing two pieces together",
+          "steps": [
+            {
+              "title": "State the problem",
+              "md": "For which $a \\in \\mathbb{R}$ is\n\n$$f(x) = \\begin{cases} ax - 1, & x < 3, \\\\ x^2 - 2a, & x \\ge 3 \\end{cases}$$\n\ncontinuous on $\\mathbb{R}$?"
+            },
+            {
+              "title": "Deal with the points away from the join",
+              "md": "On $(-\\infty, 3)$, $f$ agrees with the polynomial $ax - 1$; on $(3, \\infty)$ it agrees with $x^2 - 2a$. Continuity at a point only depends on values **near** that point, and around any $c \\ne 3$ there is a small interval where only one formula is used. So $f$ is continuous at every $c \\ne 3$, whatever $a$ is."
+            },
+            {
+              "title": "Compute both one-sided limits at the join",
+              "md": "$$\\lim_{x\\to 3^-} f(x) = 3a - 1, \\qquad \\lim_{x\\to 3^+} f(x) = 9 - 2a = f(3).$$\n\n(The value $f(3)$ uses the second formula, because of \"$x \\ge 3$\".)"
+            },
+            {
+              "title": "Make them agree and solve",
+              "md": "Continuity at $3$ needs the limit to exist and equal $f(3)$, so both sides must equal $9 - 2a$:\n\n$$3a - 1 = 9 - 2a \\iff 5a = 10 \\iff a = 2.$$\n\nSo $f$ is continuous on $\\mathbb{R}$ exactly when $a = 2$. Check: both sides give $5$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the gluing example, why was $x = 3$ the only point that needed a calculation?",
+          "options": [
+            "Because $3$ is the only point where $f$ is defined",
+            "Because around every other point there is an interval where $f$ is given by a single polynomial, and polynomials are continuous",
+            "Because piecewise functions are always continuous away from integers",
+            "Because $f(3)$ is the largest value of $f$"
+          ],
+          "correct": 1,
+          "explanation": "Continuity at $c$ only looks at inputs near $c$. For $c \\ne 3$, a small enough interval around $c$ stays on one side of $3$, where $f$ is a polynomial. $f$ is defined everywhere, integers play no special role, and $f(3)$ need not be the largest value."
+        },
+        {
+          "type": "text",
+          "md": "## Continuous functions are fixed by their values on $\\mathbb{Q}$\n\nHere is a striking use of the sequential criterion (lesson 5.6) together with density (lesson 2.12: every interval contains a rational number).\n\n**Claim.** If $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous and $f(q) = 0$ for every rational $q$, then $f(x) = 0$ for **every** real $x$.\n\n**Proof.** Fix any real $x$. By density, for each $n$ pick a rational $q_n$ with $|q_n - x| < \\frac1n$. Then $q_n \\to x$. Because $f$ is continuous at $x$, the sequential criterion gives $f(q_n) \\to f(x)$. But $f(q_n) = 0$ for every $n$, so the sequence $f(q_n)$ is constantly $0$ and its limit is $0$. Limits are unique (lesson 3.5), so $f(x) = 0$. $\\blacksquare$\n\n**Why it matters.** A continuous function is completely determined by its values on the rationals. Apply the claim to $f - g$: if two continuous functions agree at every rational, they agree everywhere.\n\n**Non-example: without continuity, nothing follows.** The Dirichlet-type function $h(x) = 0$ for rational $x$ and $h(x) = 1$ for irrational $x$ is zero on $\\mathbb{Q}$ but not on $\\mathbb{R}$. It is, of course, continuous nowhere."
+        },
+        {
+          "type": "check",
+          "question": "Suppose $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous and $f(q) = 0$ for every $q \\in \\mathbb{Q}$. What can you conclude?",
+          "options": [
+            "Nothing about irrational points.",
+            "$f(x) = 0$ for every $x \\in \\mathbb{R}$.",
+            "$f$ is constant on each interval, but the constant may change.",
+            "$f$ must be discontinuous somewhere."
+          ],
+          "correct": 1,
+          "explanation": "Given $x$, choose rationals $q_n \\to x$ (density). By the sequential criterion $f(x) = \\lim f(q_n) = 0$. \"Nothing about irrationals\" ignores continuity; a changing constant would need jumps, which continuity forbids; and the zero function shows no discontinuity is forced."
+        },
+        {
+          "type": "text",
+          "md": "## A preview: open sets and preimages\n\nThis idea is developed properly in lesson 8.2; here is just enough to answer a question about it.\n\nTwo reminders. The **preimage** of a set $U$ under $f$ (lesson 1.6) is\n\n$$f^{-1}(U) = \\{x : f(x) \\in U\\},$$\n\nthe set of inputs that land in $U$. It makes sense even when $f$ has no inverse. A set $U \\subseteq \\mathbb{R}$ is **open** if every point of $U$ has some room around it inside $U$: for each $u \\in U$ there is $r > 0$ with $(u - r, u + r) \\subseteq U$. So $(0, 1)$ and $\\mathbb{R}$ are open, but $[0, 1)$ is not (the point $0$ has no room to its left).\n\n**Theorem.** For $f : \\mathbb{R} \\to \\mathbb{R}$,\n\n$$f \\text{ is continuous} \\iff f^{-1}(U) \\text{ is open for every open set } U \\subseteq \\mathbb{R}.$$\n\nThis is the $\\varepsilon$–$\\delta$ definition in disguise: \"outputs within $\\varepsilon$ of $f(c)$\" is an open set around $f(c)$, and \"inputs within $\\delta$ of $c$\" is the room around $c$ in the preimage.\n\n**Example.** For $\\lfloor x \\rfloor$, the open set $U = (0.5, 1.5)$ has preimage $[1, 2)$, which is not open. So $\\lfloor x \\rfloor$ is not continuous, as we knew.\n\n**Watch out: preimages, not images.** The constant function $f(x) = 0$ is continuous, yet it sends the open set $\\mathbb{R}$ to the image $\\{0\\}$, which is not open."
+        },
+        {
+          "type": "check",
+          "question": "What is the preimage of the open set $(0.5, 1.5)$ under $f(x) = \\lfloor x \\rfloor$?",
+          "options": [
+            "$(0.5, 1.5)$",
+            "$\\{1\\}$",
+            "$[1, 2)$",
+            "$(1, 2)$"
+          ],
+          "correct": 2,
+          "explanation": "$\\lfloor x \\rfloor \\in (0.5, 1.5)$ means $\\lfloor x \\rfloor = 1$, which happens exactly for $1 \\le x < 2$. $\\{1\\}$ is the **image** of that set, not the preimage; $(0.5, 1.5)$ is $U$ itself; and $(1, 2)$ forgets $x = 1$, where $\\lfloor 1 \\rfloor = 1$. Since $[1, 2)$ is not open, this confirms $\\lfloor x \\rfloor$ is not continuous."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Continuous on $B$",
+              "back": "The restriction $f|_B$ is continuous at **every point of $B$**; inputs outside $B$ are ignored.\n\n*Example:* $\\lfloor x \\rfloor$ is continuous on $[0, 1)$ but not on $[0, 1]$."
+            },
+            {
+              "front": "Restriction $f|_B$",
+              "back": "The same rule as $f$, with the domain cut down to $B$.\n\n*Example:* $\\lfloor x \\rfloor|_{[0,1)}$ is the constant function $0$."
+            },
+            {
+              "front": "Continuous on $[a, b]$",
+              "back": "Continuous at each point of $(a, b)$, **right-continuous** at $a$ and **left-continuous** at $b$.\n\n*Example:* $\\sqrt x$ on $[0, 4]$."
+            },
+            {
+              "front": "Right-continuous at $a$",
+              "back": "$\\lim_{x\\to a^+} f(x) = f(a)$: the values from the **right** approach $f(a)$.\n\n*Example:* $\\lfloor x \\rfloor$ is right-continuous at every integer."
+            },
+            {
+              "front": "Continuous function",
+              "back": "Continuous at every point of its **own domain**.\n\n*Example:* $\\frac1x$ on $\\mathbb{R}\\setminus\\{0\\}$. The point $0$ is not in the domain, so it does not count."
+            },
+            {
+              "front": "Open-preimage test",
+              "back": "$f : \\mathbb{R} \\to \\mathbb{R}$ is continuous iff $f^{-1}(U)$ is open for every open $U$. **Preimages**, not images.\n\n*Example:* $\\lfloor x \\rfloor^{-1}\\big((0.5, 1.5)\\big) = [1, 2)$ is not open."
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of this proof in order: **if $f, g : \\mathbb{R} \\to \\mathbb{R}$ are continuous and $f(q) = g(q)$ for every rational $q$, then $f = g$.**",
+          "items": [
+            "Let $x$ be any real number.",
+            "By density of $\\mathbb{Q}$, choose rationals $q_n$ with $|q_n - x| < \\frac1n$, so $q_n \\to x$.",
+            "By the sequential criterion, $f(q_n) \\to f(x)$ and $g(q_n) \\to g(x)$.",
+            "But $f(q_n) = g(q_n)$ for every $n$, so these are the same sequence.",
+            "A sequence has only one limit, so $f(x) = g(x)$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: glue two pieces",
+          "problem": "Find the value of $b$ for which\n\n$$f(x) = \\begin{cases} x^2 + b, & x < 1, \\\\ 3x, & x \\ge 1 \\end{cases}$$\n\nis continuous on $\\mathbb{R}$. Then decide whether, for **other** values of $b$, $f$ is still continuous on the interval $[1, 5]$. Try it before opening the solution.",
+          "solution": "**Away from $1$.** Near any $c \\ne 1$ only one polynomial is used, so $f$ is continuous there for every $b$.\n\n**At $1$.** $\\lim_{x\\to 1^-} f(x) = 1 + b$ and $\\lim_{x\\to 1^+} f(x) = 3 = f(1)$. Continuity needs $1 + b = 3$, so $b = 2$.\n\n**On $[1, 5]$ for other $b$.** On $[1, 5]$ only the formula $3x$ is used, and at the endpoint $1$ we only need right-continuity: $\\lim_{x\\to 1^+} 3x = 3 = f(1)$. So $f$ is continuous on $[1, 5]$ for **every** $b$, even though it is discontinuous at $1$ as a function on $\\mathbb{R}$ when $b \\ne 2$.\n\n**Check your version:** did you use the \"$x \\ge 1$\" formula for $f(1)$? Did you check both one-sided limits? For $[1, 5]$, did you look only to the right of $1$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Isn't \"continuous on an interval\" just \"the graph has no breaks\"?",
+              "a": "For intervals it is a good mental picture, but the definition is what you prove with. The picture also misleads at endpoints: $\\lfloor x \\rfloor$ on $[1, 2)$ has a break at $1$ when drawn on all of $\\mathbb{R}$, yet it is continuous on $[1, 2)$."
+            },
+            {
+              "q": "If $f$ is continuous on $[0, 1]$ and on $[1, 2]$, is it continuous on $[0, 2]$?",
+              "a": "Yes. At $1$, continuity on $[0, 1]$ gives the left-hand limit $f(1)$, and continuity on $[1, 2]$ gives the right-hand limit $f(1)$. Both sides agree with $f(1)$, so $f$ is continuous at $1$. The same fails for $[0, 1)$ and $[1, 2]$: the first says nothing about the left-hand limit at $1$."
+            },
+            {
+              "q": "Is $\\tan x$ continuous? Its graph has gaps.",
+              "a": "Yes. Its domain leaves out the odd multiples of $\\frac\\pi2$, and it is continuous at every point that is left. The gaps are holes in the domain, not discontinuities."
+            },
+            {
+              "q": "Why mention open sets now, if they are taught in lesson 8.2?",
+              "a": "Because the open-preimage test is the definition of continuity used in metric spaces and topology, where there may be no $|x - c|$ at all. Seeing it now, for $\\mathbb{R}$, makes it familiar when you meet it properly."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $f$ is **continuous on $B$** when $f|_B$ is continuous at every point of $B$; inputs outside $B$ are ignored.\n- On $[a, b]$ this means: continuous inside, **right-continuous** at $a$, **left-continuous** at $b$.\n- A **continuous function** is continuous at every point of its own domain: $\\frac1x$ and $\\tan x$ qualify.\n- Polynomials, $\\sin$, $\\cos$, $e^x$, $|x|$ are continuous on $\\mathbb{R}$; $\\sqrt x$ on $[0, \\infty)$; $\\ln x$ on $(0, \\infty)$. Algebra and composition preserve continuity.\n- For piecewise functions, only the joins need checking: make the one-sided limits agree with the value.\n- Two continuous functions that agree on $\\mathbb{Q}$ agree everywhere. And $f$ is continuous iff **preimages** of open sets are open."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "$f(x) = 1/x$ is continuous on its domain $\\mathbb{R}\\setminus\\{0\\}$.",
+          "answer": [
+            true
+          ],
+          "explanation": "At each $c \\ne 0$, $\\frac1x$ is a quotient of continuous functions with nonzero denominator, so it is continuous at $c$. The point $0$ is not in the domain, so nothing is asked there."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = ax - 1$ for $x < 3$ and $f(x) = x^2 - 2a$ for $x \\geq 3$. For which value of $a$ is $f$ continuous on $\\mathbb{R}$?",
+          "answer": [
+            "2",
+            "two",
+            "a = 2",
+            "a=2"
+          ],
+          "explanation": "Continuity at $3$ requires $3a - 1 = 9 - 2a$, so $5a = 10$ and $a = 2$. Elsewhere $f$ is locally a polynomial."
+        },
+        {
+          "type": "multiple",
+          "prompt": "For $f : [a, b] \\to \\mathbb{R}$, which conditions together say exactly that $f$ is continuous on $[a, b]$?",
+          "options": [
+            "$f$ is continuous at each point of $(a, b)$.",
+            "$\\lim_{x\\to a^+} f(x) = f(a)$.",
+            "$\\lim_{x\\to b^-} f(x) = f(b)$.",
+            "$f$ is differentiable on $(a, b)$."
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "Interior continuity plus one-sided continuity at the endpoints is exactly continuity on $[a, b]$. Differentiability (Level 6) is a stronger property and is not part of the definition."
+        },
+        {
+          "type": "single",
+          "prompt": "Which property characterises continuity of $f : \\mathbb{R} \\to \\mathbb{R}$?",
+          "options": [
+            "The preimage of every open set is open.",
+            "The image of every open set is open.",
+            "The image of every closed set is closed.",
+            "The preimage of every bounded set is bounded."
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Continuity is equivalent to open preimages. Images fail: a constant function maps $\\mathbb{R}$ (open) to a single point, and $\\arctan$ maps the closed set $\\mathbb{R}$ to the non-closed $\\left(-\\frac\\pi2, \\frac\\pi2\\right)$. Constant functions also have unbounded preimages of bounded sets."
+        },
+        {
+          "type": "single",
+          "prompt": "Suppose $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous and $f(q) = 0$ for all $q \\in \\mathbb{Q}$. Then",
+          "options": [
+            "$f$ could take any value at irrational points.",
+            "$f(x) = 0$ for all $x$.",
+            "$f$ is zero on all algebraic numbers, but possibly not elsewhere.",
+            "no such $f$ exists."
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "For any $x$, pick rationals $q_n \\to x$. Continuity gives $f(x) = \\lim f(q_n) = 0$. (The zero function shows such $f$ exists.)"
+        },
+        {
+          "type": "single",
+          "prompt": "On which set is $\\tan x$ continuous?",
+          "options": [
+            "$\\mathbb{R}$",
+            "$\\left(-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right)$ only",
+            "$\\mathbb{R}\\setminus\\{k\\pi : k \\in \\mathbb{Z}\\}$",
+            "$\\mathbb{R}\\setminus\\{\\tfrac{\\pi}{2} + k\\pi : k \\in \\mathbb{Z}\\}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "$\\tan = \\frac{\\sin}{\\cos}$ is a quotient of continuous functions, continuous wherever $\\cos x \\ne 0$, that is away from the odd multiples of $\\frac\\pi2$. That is its whole domain. The points $k\\pi$ are where $\\sin x = 0$, which is harmless."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\lfloor x \\rfloor$ is continuous on the interval $[0, 1)$.",
+          "answer": [
+            true
+          ],
+          "explanation": "Restricted to $[0, 1)$ it is the constant $0$. At the endpoint $0$ only right-continuity is needed, and $\\lim_{x\\to 0^+}\\lfloor x \\rfloor = 0 = \\lfloor 0 \\rfloor$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "$\\lfloor x \\rfloor$ is continuous on the interval $[0, 1]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "At the endpoint $1$ we need left-continuity, but $\\lim_{x\\to 1^-}\\lfloor x \\rfloor = 0 \\ne 1 = \\lfloor 1 \\rfloor$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these functions are continuous on $[0, 1]$? Select all that apply.",
+          "options": [
+            "$\\sqrt{x}$",
+            "$\\frac{1}{x}$",
+            "$\\frac{1}{x - 2}$",
+            "$x^2$",
+            "$\\left|x - \\tfrac12\\right|$"
+          ],
+          "answer": [
+            0,
+            2,
+            3,
+            4
+          ],
+          "explanation": "$\\sqrt x$ is right-continuous at $0$; $\\frac{1}{x-2}$ has its only problem at $2$, outside $[0, 1]$; $x^2$ and $\\left|x - \\frac12\\right|$ are continuous on $\\mathbb{R}$. But $\\frac1x$ is not even defined at $0 \\in [0, 1]$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^2 + b$ for $x < 1$ and $f(x) = 3x$ for $x \\geq 1$. For which value of $b$ is $f$ continuous on $\\mathbb{R}$?",
+          "answer": [
+            "2",
+            "two",
+            "b = 2",
+            "b=2"
+          ],
+          "explanation": "At $1$: $\\lim_{x\\to 1^-} f(x) = 1 + b$ and $\\lim_{x\\to 1^+} f(x) = 3 = f(1)$. So $1 + b = 3$ and $b = 2$."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the preimage $f^{-1}\\big((0.5, 1.5)\\big)$ when $f(x) = \\lfloor x \\rfloor$?",
+          "options": [
+            "$\\{1\\}$",
+            "$[1, 2)$",
+            "$(1, 2)$",
+            "$(0.5, 1.5)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\lfloor x \\rfloor \\in (0.5, 1.5)$ exactly when $\\lfloor x \\rfloor = 1$, that is $1 \\le x < 2$. $\\{1\\}$ is the image, not the preimage, and $(1, 2)$ misses $x = 1$."
+        },
+        {
+          "type": "single",
+          "prompt": "To prove $\\sqrt{x}$ is right-continuous at $0$, which $\\delta$ works for a given $\\varepsilon > 0$?",
+          "options": [
+            "$\\delta = \\varepsilon$",
+            "$\\delta = \\sqrt{\\varepsilon}$",
+            "$\\delta = \\varepsilon^2$",
+            "$\\delta = 2\\varepsilon$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "If $0 \\le x < \\varepsilon^2$ then $\\sqrt x < \\varepsilon$. With $\\delta = \\varepsilon$ (and say $\\varepsilon = 0.01$) the input $x = 0.005$ gives $\\sqrt{x} \\approx 0.07 > 0.01$, so it fails for small $\\varepsilon$; $\\sqrt\\varepsilon$ and $2\\varepsilon$ are even larger in that case."
+        }
+      ]
+    }
+  ]
+}

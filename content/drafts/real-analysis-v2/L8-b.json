@@ -1,0 +1,1527 @@
+{
+  "concepts": [
+    {
+      "slug": "8-5-connectedness",
+      "title": "Connectedness",
+      "summary": "A space in one piece, and why that gives the intermediate value theorem.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "A space in one piece",
+          "md": "The intermediate value theorem (lesson 5.9) says a continuous function on an interval cannot skip values. This lesson finds the real reason: an interval is **in one piece**.\n\n**In this lesson you will learn to:**\n- say what a **separation** of a space is, and when a space is **connected**\n- use two equivalent tests: sets that are both open and closed, and continuous maps to $\\{0,1\\}$\n- show that the connected subsets of $\\mathbb{R}$ are exactly the intervals\n- prove that continuous images of connected sets are connected, and get the intermediate value theorem for free\n\n**You need:** metric spaces and open balls (lesson 8.1), open and closed sets, including sets that are open *in a subspace* (lesson 8.2), and the supremum (lesson 2.9)."
+        },
+        {
+          "type": "text",
+          "md": "## Why \"one piece\" matters\n\nTake the function $s$ on $X = (-1,0) \\cup (0,1)$ given by\n\n$$s(x) = -1 \\text{ for } x < 0, \\qquad s(x) = 1 \\text{ for } x > 0.$$\n\nAt every point of $X$, $s$ is continuous: near any $x < 0$ it is constantly $-1$, and near any $x > 0$ it is constantly $1$. The point $0$, where the jump would happen, is not in $X$. Yet $s$ takes the values $-1$ and $1$ and never the value $0$ in between.\n\nSo the intermediate value theorem needs more than continuity. It needs the domain to be an interval. On $[-1,1]$ a continuous function really cannot jump from $-1$ to $1$ without passing through $0$.\n\nWhat is special about an interval? It cannot be split into two parts that each \"keep to themselves\". The set $X$ above can: the left part and the right part are both open in $X$, and neither touches the other inside $X$. That splitting idea works in any metric space, so it gives a definition that does not mention order or intervals at all."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Continuity alone does not give intermediate values",
+          "md": "The statement \"if $f$ is continuous and takes the values $a$ and $b$, it takes every value in between\" is **false** in general. The function $s$ above is continuous on $(-1,0)\\cup(0,1)$ and skips $0$.\n\nThe correct statement needs a hypothesis on the **domain**: it must be connected. Whenever you use the intermediate value theorem, check that the domain is an interval."
+        },
+        {
+          "type": "text",
+          "md": "## Separations and connected spaces\n\n**Plain words.** A space is disconnected if you can cut it into two non-empty pieces, each of which is open. A space that cannot be cut this way is connected.\n\n**Definition.** Let $(X,d)$ be a metric space. A **separation** of $X$ is a pair of sets $U, V \\subseteq X$ with\n\n$$X = U \\cup V, \\qquad U \\cap V = \\emptyset, \\qquad U \\ne \\emptyset,\\ V \\ne \\emptyset, \\qquad U, V \\text{ open in } X.$$\n\n($\\emptyset$ is the empty set; $U \\cap V = \\emptyset$ says the pieces share no point.) $X$ is **disconnected** if it has a separation, and **connected** if it has none. A subset $A \\subseteq X$ is connected if it is connected as a subspace, with the metric restricted to $A$.\n\n**A reminder from lesson 8.2.** \"Open in $A$\" uses balls of $A$ only. For $A \\subseteq \\mathbb{R}$ this means: a set is open in $A$ exactly when it equals $A \\cap W$ for some open $W \\subseteq \\mathbb{R}$. For example $[0,\\tfrac12) = [0,1] \\cap (-1,\\tfrac12)$ is open in $[0,1]$.\n\n**Examples.**\n- $A = (0,1) \\cup (1,2)$ is disconnected: $U = (0,1)$, $V = (1,2)$. The pieces are at distance $0$ from each other; they need not be far apart.\n- $A = [0,1] \\cup [2,3]$ is disconnected: $U = [0,1] = A \\cap (-1, 1.5)$ is open in $A$, and so is $V = [2,3]$.\n- A discrete space with at least two points is disconnected: every subset is open (lesson 8.2), so $U = \\{p\\}$ and $V = X \\setminus \\{p\\}$ work.\n\n**Non-example.** In $[0,1]$, try $U = [0,\\tfrac12)$ and $V = [\\tfrac12, 1]$. They are disjoint, non-empty and cover $[0,1]$. But $V$ is **not** open in $[0,1]$: every ball around $\\tfrac12$ contains points below $\\tfrac12$. So this is not a separation. In fact no separation of $[0,1]$ exists, as you will prove below."
+        },
+        {
+          "type": "check",
+          "question": "A student claims $[0,2]$ is disconnected because $[0,2] = [0,1] \\cup (1,2]$ with the two pieces disjoint and non-empty. What is wrong?",
+          "options": [
+            "Nothing: this is a separation, so $[0,2]$ is disconnected",
+            "$[0,1]$ is not open in $[0,2]$, since every ball around $1$ contains points of $(1,2]$",
+            "The pieces must be at positive distance from each other",
+            "The pieces must have the same length"
+          ],
+          "correct": 1,
+          "explanation": "Both pieces must be open in $[0,2]$. Any ball $B(1,r)$ in $[0,2]$ contains points just above $1$, which are not in $[0,1]$, so $[0,1]$ is not open in $[0,2]$. Distance between the pieces is not the issue: $(0,1)\\cup(1,2)$ is disconnected with pieces at distance $0$. Length plays no role."
+        },
+        {
+          "type": "text",
+          "md": "## Two equivalent tests\n\nThe definition is not always the easiest thing to check. Two reformulations are used all the time.\n\n**Test 1: clopen sets.** Call a set **clopen** if it is both open and closed. In any space, $\\emptyset$ and $X$ are clopen (lesson 8.2).\n\n$$X \\text{ is connected} \\iff \\text{the only clopen subsets of } X \\text{ are } \\emptyset \\text{ and } X.$$\n\nWhy: if $U, V$ is a separation, then $V = X \\setminus U$, so $U$ is open and its complement $V$ is open, which makes $U$ closed too. So $U$ is clopen, and it is neither $\\emptyset$ nor $X$. Conversely, a clopen $U$ other than $\\emptyset, X$ gives the separation $U, X\\setminus U$.\n\n**Test 2: maps to $\\{0,1\\}$.** Give $\\{0,1\\}$ the usual distance $|a - b|$. Each point is an open ball on its own: $B(0, \\tfrac12) = \\{0\\}$.\n\n$$X \\text{ is connected} \\iff \\text{every continuous } f : X \\to \\{0,1\\} \\text{ is constant.}$$\n\nWhy: if $f$ is continuous and takes both values, then $U = f^{-1}(\\{0\\})$ and $V = f^{-1}(\\{1\\})$ are open (preimages of open sets under a continuous map are open, as previewed in lessons 5.7 and 8.4; $f^{-1}(\\{0\\})$ means the set of $x$ with $f(x) = 0$). They are disjoint, non-empty and cover $X$: a separation. Conversely, from a separation define $f = 0$ on $U$ and $f = 1$ on $V$; this is continuous because near each point $f$ is constant.\n\n**Example.** On $(-1,0)\\cup(0,1)$, the map equal to $0$ on the left part and $1$ on the right part is continuous and not constant. So the set is disconnected, matching what we saw with $s$.\n\nTest 2 is often the quickest way to prove that something **is** connected: assume $f : X \\to \\{0,1\\}$ is continuous and show $f$ must be constant."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each space to the reason it is disconnected.",
+          "pairs": [
+            {
+              "left": "$(0,1)\\cup(1,2)$",
+              "right": "$U = (0,1)$, $V = (1,2)$ is a separation"
+            },
+            {
+              "left": "$\\{0, 1\\}$ with the usual metric",
+              "right": "$\\{0\\}$ is clopen and is neither $\\emptyset$ nor the whole space"
+            },
+            {
+              "left": "$\\mathbb{Q}$",
+              "right": "Cut at $\\sqrt{2}$: rationals below it and rationals above it"
+            },
+            {
+              "left": "$\\mathbb{R}\\setminus\\{0\\}$",
+              "right": "The map $0$ for $x<0$, $1$ for $x>0$ is continuous and not constant"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Connected subsets of the real line\n\nOn $\\mathbb{R}$, connectedness turns out to be a familiar idea.\n\n**Definition.** A set $I \\subseteq \\mathbb{R}$ is an **interval** if whenever $a, b \\in I$ and $a < c < b$, also $c \\in I$. In words: it has no gaps. This includes $[0,1]$, $(0,1]$, $[0,\\infty)$, $\\mathbb{R}$ itself, and a single point $\\{5\\}$ (there is no $c$ strictly between $5$ and $5$).\n\n**Theorem.** A subset of $\\mathbb{R}$ is connected if and only if it is an interval.\n\n**Not an interval $\\Rightarrow$ disconnected.** This half is short. If $A$ is not an interval, there are $a < c < b$ with $a, b \\in A$ and $c \\notin A$. Put\n\n$$U = A \\cap (-\\infty, c), \\qquad V = A \\cap (c, \\infty).$$\n\nBoth are open in $A$ (each is $A$ intersected with an open set of $\\mathbb{R}$), $a \\in U$ and $b \\in V$, they are disjoint, and since $c \\notin A$ they cover $A$. That is a separation.\n\n**Examples of this cut.**\n- $\\mathbb{Z}$: cut at $c = \\tfrac12$.\n- $\\{x : x^2 > 1\\} = (-\\infty,-1)\\cup(1,\\infty)$: cut at $c = 0$.\n- $\\mathbb{Q}$: cut at $c = \\sqrt2$, which is not rational. Cutting at an irrational works between any two rationals, so the only connected subsets of $\\mathbb{Q}$ are single points. Such a space is called **totally disconnected**.\n\n**Interval $\\Rightarrow$ connected.** This is the harder half, and it needs the completeness of $\\mathbb{R}$ (lesson 2.10) through a supremum. You will see the proof for $[0,1]$ in the worked steps below; any interval works the same way. Notice that $\\mathbb{Q}$, which lacks completeness, fails exactly here."
+        },
+        {
+          "type": "check",
+          "question": "Which of these subsets of $\\mathbb{R}$ is connected?",
+          "options": [
+            "$[0,1]\\cup[1,2]$",
+            "$[0,1]\\cup(1.5,2]$",
+            "$\\mathbb{Q}\\cap[0,1]$",
+            "$\\mathbb{R}\\setminus\\{3\\}$"
+          ],
+          "correct": 0,
+          "explanation": "$[0,1]\\cup[1,2] = [0,2]$ is an interval, so it is connected. The second has a gap at $c = 1.2$. $\\mathbb{Q}\\cap[0,1]$ has a gap at the irrational $c = \\tfrac{1}{\\sqrt2}$. $\\mathbb{R}\\setminus\\{3\\}$ has a gap at $3$, between $2$ and $4$."
+        },
+        {
+          "type": "text",
+          "md": "## Continuous images, and the intermediate value theorem\n\nHere is the result that makes connectedness useful.\n\n**Theorem.** If $f : X \\to Y$ is continuous and $X$ is connected, then the image $f(X) = \\{f(x) : x \\in X\\}$ is connected.\n\n**Proof idea, using Test 2.** Let $g : f(X) \\to \\{0,1\\}$ be continuous. Then $g \\circ f : X \\to \\{0,1\\}$ (first $f$, then $g$) is continuous, as a composition of continuous maps. $X$ is connected, so $g \\circ f$ is constant. Every point of $f(X)$ is $f(x)$ for some $x$, so $g$ is constant too. Hence $f(X)$ is connected.\n\n**The intermediate value theorem drops out.** Let $f : [a,b] \\to \\mathbb{R}$ be continuous. Then:\n1. $[a,b]$ is an interval, so it is connected.\n2. So $f([a,b])$ is a connected subset of $\\mathbb{R}$, so it is an interval.\n3. It contains $f(a)$ and $f(b)$, so it contains every number between them.\n\n**Examples.**\n- $f(x) = x^3 + x - 1$ on $[0,1]$: $f(0) = -1$ and $f(1) = 1$, so $f(c) = 0$ for some $c \\in (0,1)$.\n- A continuous $f : \\mathbb{R} \\to \\mathbb{R}$ that takes only the values $0$ and $1$ must be constant: its image is a connected subset of $\\{0,1\\}$, and $\\{0,1\\}$ is not an interval.\n- Edge case: the image of a disconnected set can be connected. $x \\mapsto x^2$ maps $[-2,-1]\\cup[1,2]$ onto $[1,4]$. The theorem only goes one way."
+        },
+        {
+          "type": "check",
+          "question": "$f : [0,1] \\to \\mathbb{R}$ is continuous with $f(0) = -1$ and $f(1) = 2$. Which conclusion follows from connectedness alone?",
+          "options": [
+            "$f$ is increasing",
+            "$f$ takes every value in $[-1,2]$",
+            "$f$ takes no values outside $[-1,2]$",
+            "$f(\\tfrac12) = \\tfrac12$"
+          ],
+          "correct": 1,
+          "explanation": "$f([0,1])$ is an interval containing $-1$ and $2$, so it contains $[-1,2]$. It may be bigger: $f$ could rise to $5$ and come back, so the third option fails. Nothing forces $f$ to be increasing or to take a particular value at $\\tfrac12$."
+        },
+        {
+          "type": "text",
+          "md": "## Building connected sets, and paths\n\n**Unions.** A union of connected sets need not be connected: $[0,1]\\cup[2,3]$. But if two connected sets share a point, their union is connected.\n\n*Why (Test 2):* let $f : A \\cup B \\to \\{0,1\\}$ be continuous. It is constant on $A$ and constant on $B$, since each is connected. At a common point $p$ both constants equal $f(p)$, so $f$ is constant on $A\\cup B$. Example: the letter X, two crossing segments in $\\mathbb{R}^2$, is connected.\n\n**Components.** The **connected components** of a space are its largest connected pieces. $\\mathbb{R}\\setminus\\{0,1\\}$ has three: $(-\\infty,0)$, $(0,1)$ and $(1,\\infty)$. A connected space has exactly one.\n\n**Paths.** A **path** from $p$ to $q$ in $X$ is a continuous $\\gamma : [0,1] \\to X$ with $\\gamma(0) = p$ and $\\gamma(1) = q$. $X$ is **path-connected** if any two points are joined by a path. For instance, a disc in $\\mathbb{R}^2$ is path-connected: join $p$ to $q$ by the straight segment $\\gamma(t) = (1-t)p + tq$.\n\n**Path-connected implies connected.** Fix $p$. Each path from $p$ has a connected image (continuous image of $[0,1]$), and all these images share $p$, so their union, which is all of $X$, is connected.\n\n**The converse fails.** The **topologist's sine curve**, the graph of $\\sin(1/x)$ for $0 < x \\le 1$ together with the segment $\\{0\\}\\times[-1,1]$, is connected but no path reaches the segment from the graph: near $x = 0$ the graph wiggles between $-1$ and $1$ infinitely often. For open subsets of $\\mathbb{R}^n$, the two ideas agree."
+        },
+        {
+          "type": "check",
+          "question": "You know that $A$ and $B$ are connected subsets of $\\mathbb{R}^2$. Which extra fact guarantees that $A \\cup B$ is connected?",
+          "options": [
+            "$A$ and $B$ are both bounded",
+            "$A \\cap B \\ne \\emptyset$",
+            "The distance between $A$ and $B$ is $0$",
+            "$A$ and $B$ are both closed"
+          ],
+          "correct": 1,
+          "explanation": "A common point forces any continuous $f : A\\cup B \\to \\{0,1\\}$ to take the same constant value on both. Distance $0$ is not enough: $(0,1)$ and $(1,2)$ are at distance $0$ and their union is disconnected. Boundedness and closedness are irrelevant: $[0,1]\\cup[2,3]$ is bounded and closed but disconnected."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Separation",
+              "back": "Two **disjoint, non-empty, open** sets $U, V$ with $X = U\\cup V$.\n\n*Example:* $U = (0,1)$, $V = (1,2)$ separate $(0,1)\\cup(1,2)$."
+            },
+            {
+              "front": "Connected space",
+              "back": "A space with **no separation**: it cannot be cut into two non-empty open pieces.\n\n*Example:* $[0,1]$. *Non-example:* $\\mathbb{Q}$."
+            },
+            {
+              "front": "Clopen set",
+              "back": "A set that is both **open and closed**. $X$ is connected exactly when only $\\emptyset$ and $X$ are clopen.\n\n*Example:* $\\{0\\}$ in $\\{0,1\\}$."
+            },
+            {
+              "front": "Test with maps to $\\{0,1\\}$",
+              "back": "$X$ is connected iff every **continuous** $f : X \\to \\{0,1\\}$ is **constant**.\n\n*Example:* the sign map on $\\mathbb{R}\\setminus\\{0\\}$ shows it is disconnected."
+            },
+            {
+              "front": "Connected subsets of $\\mathbb{R}$",
+              "back": "Exactly the **intervals**: sets with no gaps.\n\n*Example:* $[0,\\infty)$ and $\\{5\\}$ are connected; $\\mathbb{Z}$ is not."
+            },
+            {
+              "front": "Continuous image theorem",
+              "back": "If $X$ is connected and $f$ is **continuous**, then $f(X)$ is connected.\n\n*Example:* it gives the intermediate value theorem on $[a,b]$."
+            },
+            {
+              "front": "Path-connected",
+              "back": "Any two points are joined by a continuous $\\gamma : [0,1]\\to X$. This **implies** connected, not conversely.\n\n*Example:* a disc in $\\mathbb{R}^2$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You want to prove that a metric space $X$ is connected. You take an arbitrary continuous $f : X \\to \\{0,1\\}$. What must you now show?",
+          "options": [
+            "That $f$ is surjective",
+            "That $f$ is constant",
+            "That $f^{-1}(\\{0\\})$ is open",
+            "That $X$ is an interval"
+          ],
+          "correct": 1,
+          "explanation": "$X$ is connected exactly when every continuous map to $\\{0,1\\}$ is constant. Surjective is the opposite of what you want: a surjective map would give a separation. $f^{-1}(\\{0\\})$ is open automatically, by continuity. \"Interval\" only makes sense for subsets of $\\mathbb{R}$."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: $[0,1]$ is connected",
+          "steps": [
+            {
+              "title": "Suppose not",
+              "md": "Assume $[0,1] = U \\cup V$ is a separation: $U, V$ disjoint, non-empty and open in $[0,1]$. Swapping the names if needed, $0 \\in U$."
+            },
+            {
+              "title": "Define the furthest point you can reach",
+              "md": "Let\n\n$$S = \\{x \\in [0,1] : [0,x] \\subseteq U\\}, \\qquad c = \\sup S.$$\n\n$S$ contains $0$ and is bounded above by $1$, so $c$ exists by completeness (lesson 2.10), and $0 \\le c \\le 1$. The supremum is the key move: it is where completeness enters, and it is exactly what $\\mathbb{Q}$ lacks."
+            },
+            {
+              "title": "Rule out $c \\in V$",
+              "md": "$V$ is open in $[0,1]$, so some $\\delta > 0$ has $(c-\\delta, c+\\delta)\\cap[0,1] \\subseteq V$. Since $0 \\in U$, $c \\ne 0$, so $c > 0$. By the definition of supremum there is $x \\in S$ with $c - \\delta < x \\le c$. Then $x \\in [0,x] \\subseteq U$ and also $x \\in V$. That contradicts $U \\cap V = \\emptyset$."
+            },
+            {
+              "title": "So $c \\in U$, and push past $c$",
+              "md": "$U$ is open in $[0,1]$, so some $\\delta > 0$ has $(c-\\delta,c+\\delta)\\cap[0,1] \\subseteq U$. Pick $x \\in S$ with $x > c - \\delta$. Then $[0,x] \\subseteq U$, and the rest of $[0, c + \\tfrac\\delta2]\\cap[0,1]$ lies in $(c-\\delta,c+\\delta)$, so it is in $U$ too. If $c < 1$, the point $\\min(c + \\tfrac\\delta2, 1)$ is in $S$ and bigger than $c$, which contradicts $c = \\sup S$."
+            },
+            {
+              "title": "Conclude",
+              "md": "So $c = 1$, and the previous step shows $[0,1] \\subseteq U$. Then $V = \\emptyset$, contradicting that $V$ is non-empty. No separation exists, so $[0,1]$ is connected. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why do we need $c = \\sup S$ to exist?",
+          "options": [
+            "Because $S$ is open",
+            "Because the whole argument is about the point $c$ where $U$ \"would stop\", and a supremum of a bounded non-empty set exists only thanks to completeness",
+            "Because $c$ must equal $1$ by definition",
+            "It is not needed; any point of $U$ would do"
+          ],
+          "correct": 1,
+          "explanation": "The proof studies the edge of $U$. Completeness guarantees that edge, $\\sup S$, exists in $\\mathbb{R}$. In $\\mathbb{Q}$ the \"edge\" could be $\\sqrt2$, which is missing, and that is why $\\mathbb{Q}$ is disconnected. $S$ need not be open, $c = 1$ is the conclusion rather than a definition, and an arbitrary point of $U$ tells you nothing about where $U$ ends."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **if $X$ is connected and $f : X \\to Y$ is continuous, then $f(X)$ is connected.**",
+          "items": [
+            "Let $g : f(X) \\to \\{0,1\\}$ be any continuous map.",
+            "Then $g \\circ f : X \\to \\{0,1\\}$ is continuous, as a composition of continuous maps.",
+            "Since $X$ is connected, $g \\circ f$ is constant.",
+            "Every point of $f(X)$ is $f(x)$ for some $x \\in X$, so $g$ is constant on $f(X)$.",
+            "Every continuous map from $f(X)$ to $\\{0,1\\}$ is constant, so $f(X)$ is connected. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the intermediate value theorem from connectedness",
+          "problem": "Let $f : [a,b] \\to \\mathbb{R}$ be continuous, and let $y$ lie strictly between $f(a)$ and $f(b)$. Prove that $f(c) = y$ for some $c \\in (a,b)$. You may use: (i) intervals are connected; (ii) connected subsets of $\\mathbb{R}$ are intervals; (iii) continuous images of connected sets are connected.",
+          "solution": "**Proof.** By (i), $[a,b]$ is connected. By (iii), $f([a,b])$ is a connected subset of $\\mathbb{R}$, so by (ii) it is an interval.\n\nThis interval contains $f(a)$ and $f(b)$, and $y$ lies between them. By the definition of an interval (no gaps), $y \\in f([a,b])$. So $y = f(c)$ for some $c \\in [a,b]$.\n\nFinally $c \\ne a$ and $c \\ne b$, because $y$ is **strictly** between $f(a)$ and $f(b)$, so $y \\ne f(a)$ and $y \\ne f(b)$. Hence $c \\in (a,b)$. $\\blacksquare$\n\n**Check your version:** did you say why $f([a,b])$ is an interval, not just connected? Did you use the \"no gaps\" definition to get $y$ in the image? Did you explain why $c$ is not an endpoint?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Must the two pieces of a disconnected set be far apart?",
+              "a": "No. $(0,1)\\cup(1,2)$ is disconnected, yet the pieces are at distance $0$ and their closures meet at $1$. What matters is that each piece is open in the subspace. The point $1$, which would glue them, is missing."
+            },
+            {
+              "q": "Is a union of connected sets connected?",
+              "a": "Not in general: $[0,1]\\cup[2,3]$. It is connected if the sets have a point in common (or, more generally, if they can be chained together by overlaps)."
+            },
+            {
+              "q": "Is connected the same as path-connected?",
+              "a": "Path-connected implies connected, but not conversely. The topologist's sine curve $\\{(x,\\sin(1/x)) : 0<x\\le1\\}\\cup(\\{0\\}\\times[-1,1])$ is connected but not path-connected. For open subsets of $\\mathbb{R}^n$ the two notions agree."
+            },
+            {
+              "q": "Why is $\\mathbb{Q}$ disconnected when it has no \"holes\" you can see?",
+              "a": "Between any two rationals there is an irrational, such as a rational plus $\\frac{\\sqrt2}{n}$ for large $n$ (lesson 2.12). Cutting at that irrational splits $\\mathbb{Q}$ into two open pieces. The holes are invisible because they are everywhere."
+            },
+            {
+              "q": "If $f$ is continuous and $f(X)$ is connected, must $X$ be connected?",
+              "a": "No. A constant map has a one-point image, which is connected, whatever $X$ is. The theorem only says connectedness passes **forwards** through a continuous map."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $X$ is **connected** if it cannot be split into two disjoint, non-empty, **open** pieces.\n- Equivalent tests: the only clopen sets are $\\emptyset$ and $X$; every continuous $f : X\\to\\{0,1\\}$ is constant.\n- In $\\mathbb{R}$, connected sets are exactly the **intervals**. $\\mathbb{Q}$ and $\\mathbb{Z}$ are disconnected.\n- Continuous images of connected sets are connected; with \"intervals are connected\" this **is** the intermediate value theorem.\n- Connected sets sharing a point have a connected union. Path-connected implies connected, but not conversely."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which subset of $\\mathbb{R}$ is connected?",
+          "options": [
+            "$\\{x : x^2>1\\}$",
+            "$[0,\\infty)$",
+            "$\\mathbb{Z}$",
+            "$\\mathbb{R}\\setminus\\{0\\}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Connected subsets of $\\mathbb{R}$ are exactly intervals, and $[0,\\infty)$ is an interval. $\\{x : x^2 > 1\\} = (-\\infty,-1)\\cup(1,\\infty)$ has a gap at $0$, $\\mathbb{Z}$ has a gap at $\\tfrac12$, and $\\mathbb{R}\\setminus\\{0\\}$ has a gap at $0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $A$ and $B$ are connected and $A\\cap B\\ne\\emptyset$, then $A\\cup B$ is connected.",
+          "answer": [
+            true
+          ],
+          "explanation": "If $f:A\\cup B\\to\\{0,1\\}$ is continuous, it is constant on $A$ and on $B$, and these constants agree at a common point. So $f$ is constant and $A\\cup B$ is connected."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every connected metric space is path-connected.",
+          "answer": [
+            false
+          ],
+          "explanation": "The topologist's sine curve is connected but not path-connected. Only the converse implication (path-connected $\\Rightarrow$ connected) holds in general."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which conditions are equivalent to a metric space $X$ being connected?",
+          "options": [
+            "The only subsets of $X$ that are both open and closed are $\\emptyset$ and $X$",
+            "Every continuous $f:X\\to\\{0,1\\}$ is constant",
+            "$X$ is an interval",
+            "$X$ is not the union of two disjoint nonempty open sets"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The clopen test, the $\\{0,1\\}$ test and the definition itself are all equivalent. Being an interval only makes sense for subsets of $\\mathbb{R}$; it characterises connectedness there, not in a general metric space such as $\\mathbb{R}^2$."
+        },
+        {
+          "prompt": "Let $f:[0,1]\\to\\mathbb{R}$ be continuous with $f(0)=-1$ and $f(1)=2$. Which conclusion follows from the connectedness of $[0,1]$?",
+          "options": [
+            "$f$ is increasing",
+            "$f$ has maximum value $2$",
+            "$f(c)=0$ for some $c\\in(0,1)$",
+            "$f(\\tfrac12)=\\tfrac12$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$f([0,1])$ is a connected subset of $\\mathbb{R}$, so an interval containing $-1$ and $2$, hence $0$; and $c$ is not an endpoint since $f(0), f(1) \\ne 0$. $f$ need not be increasing, its maximum could exceed $2$, and $f(\\tfrac12)$ can be anything."
+        },
+        {
+          "type": "short",
+          "prompt": "How many connected components does $\\mathbb{R}\\setminus\\{0,1\\}$ have?",
+          "answer": [
+            "3",
+            "three"
+          ],
+          "explanation": "The components (largest connected pieces) are $(-\\infty,0)$, $(0,1)$ and $(1,\\infty)$."
+        },
+        {
+          "type": "single",
+          "prompt": "In the subspace $[0,2]$ of $\\mathbb{R}$, why is $U = [0,1]$, $V = (1,2]$ **not** a separation?",
+          "options": [
+            "$U$ and $V$ overlap",
+            "$U$ is not open in $[0,2]$",
+            "$V$ is not open in $[0,2]$",
+            "$U \\cup V \\ne [0,2]$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Every ball around $1$ in $[0,2]$ contains points of $(1,2]$, so $U = [0,1]$ is not open in $[0,2]$. $V = (1,2] = [0,2]\\cap(1,3)$ **is** open in $[0,2]$. The sets are disjoint and do cover $[0,2]$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these metric spaces are disconnected? Select all that apply.",
+          "options": [
+            "$\\mathbb{Q}$ with the usual metric",
+            "$[0,1]\\cup[2,3]$ with the usual metric",
+            "A set with two points and the discrete metric",
+            "The closed disc $\\{(x,y) : x^2+y^2 \\le 1\\}$ in $\\mathbb{R}^2$",
+            "$\\mathbb{Z}$ with the usual metric"
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            4
+          ],
+          "explanation": "$\\mathbb{Q}$ splits at $\\sqrt2$; $[0,1]\\cup[2,3]$ splits into its two intervals; in a discrete space each point is open, so $\\{p\\}$ and the other point separate it. $\\mathbb{Z}$ splits at $\\tfrac12$. Only the disc is connected: it is path-connected (straight segments)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f : X \\to Y$ is continuous and $f(X)$ is connected, then $X$ is connected.",
+          "answer": [
+            false
+          ],
+          "explanation": "A constant map from the disconnected set $[0,1]\\cup[2,3]$ has image a single point, which is connected. Connectedness passes forwards through continuous maps, not backwards."
+        },
+        {
+          "type": "single",
+          "prompt": "A continuous function $f : \\mathbb{R} \\to \\mathbb{R}$ takes only rational values. What can you conclude?",
+          "options": [
+            "Nothing: such functions can be very wild",
+            "$f$ is constant",
+            "$f$ takes only integer values",
+            "No such function exists"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$f(\\mathbb{R})$ is connected, so it is an interval inside $\\mathbb{Q}$. Any interval with two different points contains an irrational, so $f(\\mathbb{R})$ is a single point and $f$ is constant. Constant functions such as $f(x) = 3$ exist, so the last option is wrong."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The single-point set $\\{5\\}$ is a connected subset of $\\mathbb{R}$.",
+          "answer": [
+            true
+          ],
+          "explanation": "A separation needs two non-empty disjoint pieces, which a one-point set cannot provide. Equivalently, $\\{5\\}$ is an interval: there is no $c$ strictly between $5$ and $5$ to be missing."
+        },
+        {
+          "type": "single",
+          "prompt": "To show that $A = \\{x \\in \\mathbb{R} : x \\ne 2\\}$ is not an interval, which choice of $a < c < b$ works?",
+          "options": [
+            "$a = 0$, $c = 1$, $b = 3$",
+            "$a = 1$, $c = 2$, $b = 3$",
+            "$a = 2$, $c = 3$, $b = 4$",
+            "$a = 3$, $c = 4$, $b = 5$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "You need $a, b \\in A$ and $c \\notin A$. Only $c = 2$ is missing from $A$, and $1, 3 \\in A$. In the first and last options $c \\in A$; in the third, $a = 2 \\notin A$."
+        }
+      ]
+    },
+    {
+      "slug": "8-6-completeness-of-metric-spaces",
+      "title": "Completeness of metric spaces",
+      "summary": "Spaces with no holes: every Cauchy sequence actually converges.",
+      "est_minutes": 38,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Spaces with no holes",
+          "md": "In lesson 3.12 you saw that in $\\mathbb{R}$ a sequence converges exactly when it is Cauchy. That is not true in every metric space, and the spaces where it is true are called complete.\n\n**In this lesson you will learn to:**\n- say what a **Cauchy sequence** is in a metric space, and spot sequences that only look Cauchy\n- decide whether a space is **complete**, and find the \"hole\" when it is not\n- use the rule: a subset of a complete space is complete exactly when it is closed\n- prove and use the **Banach fixed point theorem** for contractions\n\n**You need:** metric spaces (lesson 8.1), closed sets (lesson 8.2), compactness (lesson 8.4), and Cauchy sequences in $\\mathbb{R}$ (lessons 3.11 and 3.12)."
+        },
+        {
+          "type": "text",
+          "md": "## A sequence that should converge but cannot\n\nWork inside the rational numbers $\\mathbb{Q}$, with the usual distance $d(x,y) = |x-y|$. Look at the decimal approximations to $\\sqrt2$:\n\n$$1,\\quad 1.4,\\quad 1.41,\\quad 1.414,\\quad 1.4142,\\ \\dots$$\n\nEvery term is rational. From the $n$-th term on, all terms agree in their first $n-1$ decimal places, so any two of them differ by less than $10^{-(n-1)}$. The terms crowd together as tightly as you like. In $\\mathbb{R}$ they converge to $\\sqrt2$. But $\\sqrt2$ is not rational (lesson 2.1), so **inside $\\mathbb{Q}$ the sequence has no limit**. There is a hole exactly where the limit should be.\n\nA one-line reminder of convergence in a metric space: $x_n \\to x$ means $d(x_n, x) \\to 0$, that is, for every $\\varepsilon > 0$ there is $N$ with $d(x_n,x) < \\varepsilon$ for all $n \\ge N$. Lesson 8.7 studies this in detail. The limit $x$ must be a point **of the space**.\n\nCompleteness is the property \"no holes of this kind\". It is what made $\\mathbb{R}$ the right setting for analysis, and in this lesson you will see which other spaces have it."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The limit has to live in the space",
+          "md": "The sequence $x_n = \\frac1n$ in the space $X = (0,1)$ gets closer and closer to $0$. But $0 \\notin X$, so $(x_n)$ does **not** converge in $X$. Saying \"it converges to $0$\" silently moves you into a bigger space.\n\nAlways ask: converges **in which space**?"
+        },
+        {
+          "type": "text",
+          "md": "## Cauchy sequences\n\n**Plain words.** A sequence is Cauchy if its terms eventually stay as close to **each other** as you like. The definition never mentions a limit, which is exactly why it is useful when the limit might be missing.\n\n**Definition.** A sequence $(x_n)$ in a metric space $(X,d)$ is **Cauchy** if\n\n$$\\forall \\varepsilon > 0\\ \\ \\exists N\\ \\ \\forall m, n \\ge N:\\ \\ d(x_m, x_n) < \\varepsilon.$$\n\nRead: for every tolerance $\\varepsilon$, from some index $N$ on, **every pair** of terms is within $\\varepsilon$. This is the definition from lesson 3.11 with $|x_m - x_n|$ replaced by $d(x_m,x_n)$.\n\n**Examples.**\n- $x_n = \\frac1n$ in $(0,1)$: $d(x_m,x_n) = |\\frac1m - \\frac1n| \\le \\frac1N$ when $m,n \\ge N$, so take $N > \\frac1\\varepsilon$. Cauchy, though it has no limit in $(0,1)$.\n- The decimals of $\\sqrt2$ in $\\mathbb{Q}$: Cauchy, as above.\n- In a discrete space ($d = 1$ between different points), take $\\varepsilon = \\tfrac12$: eventually $d(x_m,x_n) < \\tfrac12$ forces $x_m = x_n$. So a Cauchy sequence is **eventually constant**.\n\n**Non-examples.**\n- $x_n = (-1)^n$ in $\\mathbb{R}$: consecutive terms are always $2$ apart.\n- The edge case: $x_n = \\sqrt n$ in $\\mathbb{R}$. Consecutive gaps shrink, $\\sqrt{n+1} - \\sqrt n = \\frac{1}{\\sqrt{n+1}+\\sqrt n} \\to 0$. But $x_{4n} - x_n = 2\\sqrt n - \\sqrt n = \\sqrt n$, which is large. Cauchy needs **all** pairs $m,n \\ge N$ close, not just neighbours."
+        },
+        {
+          "type": "check",
+          "question": "A student argues: \"$d(x_{n+1}, x_n) \\to 0$, so $(x_n)$ is Cauchy.\" Which sequence shows the argument is wrong?",
+          "options": [
+            "$x_n = \\frac1n$ in $\\mathbb{R}$",
+            "$x_n = \\sqrt n$ in $\\mathbb{R}$",
+            "$x_n = (-1)^n$ in $\\mathbb{R}$",
+            "$x_n = 5$ for every $n$"
+          ],
+          "correct": 1,
+          "explanation": "For $\\sqrt n$ the neighbouring gaps tend to $0$, but $x_{4n} - x_n = \\sqrt n$ grows, so it is not Cauchy. $\\frac1n$ and the constant sequence really are Cauchy, so they do not disprove anything. For $(-1)^n$ the neighbouring gaps do not tend to $0$, so the hypothesis fails."
+        },
+        {
+          "type": "text",
+          "md": "## Three facts true in every metric space\n\nThese hold whether or not the space has holes.\n\n**1. Convergent implies Cauchy.** If $x_n \\to x$, choose $N$ with $d(x_n, x) < \\frac\\varepsilon2$ for $n \\ge N$. For $m, n \\ge N$, the triangle inequality (M3) gives\n\n$$d(x_m, x_n) \\le d(x_m, x) + d(x, x_n) < \\tfrac\\varepsilon2 + \\tfrac\\varepsilon2 = \\varepsilon.$$\n\n**2. Cauchy implies bounded.** With $\\varepsilon = 1$, every term from $x_N$ on is within $1$ of $x_N$. The finitely many earlier terms are within some finite distance of $x_N$ too. So all terms lie in one ball around $x_N$.\n\n**3. A Cauchy sequence with a convergent subsequence converges** (to the same limit). If $x_{n_k} \\to x$, then for large $n$ pick $n_k \\ge n$ with $x_{n_k}$ close to $x$; the Cauchy property makes $x_n$ close to $x_{n_k}$, so $x_n$ is close to $x$.\n\n**What is not true in general:** \"Cauchy implies convergent.\" The decimals of $\\sqrt2$ in $\\mathbb{Q}$ and $\\frac1n$ in $(0,1)$ are Cauchy and do not converge. The whole lesson is about the spaces where this missing implication does hold.\n\n**Example of fact 3 in action.** Suppose $(x_n)$ is Cauchy in $\\mathbb{R}$ and the even-numbered terms $x_2, x_4, x_6, \\dots$ tend to $7$. Then the whole sequence tends to $7$."
+        },
+        {
+          "type": "check",
+          "question": "$(x_n)$ is a Cauchy sequence in some metric space $X$, and you know nothing else about $X$. Which conclusion is safe?",
+          "options": [
+            "$(x_n)$ converges in $X$",
+            "All terms lie in some ball $B(p, R)$",
+            "$(x_n)$ is eventually constant",
+            "$(x_n)$ has a convergent subsequence"
+          ],
+          "correct": 1,
+          "explanation": "Cauchy sequences are always bounded. Convergence needs completeness (it fails for $\\frac1n$ in $(0,1)$), and so does a convergent subsequence: a Cauchy sequence with a convergent subsequence would converge. Eventually constant only holds in special spaces such as discrete ones."
+        },
+        {
+          "type": "text",
+          "md": "## Complete spaces\n\n**Definition.** A metric space $(X,d)$ is **complete** if every Cauchy sequence in $X$ converges to a point **of $X$**.\n\n**Complete:**\n- $\\mathbb{R}$, by the Cauchy criterion (lesson 3.12).\n- $\\mathbb{R}^n$ with $d_1$, $d_2$ or $d_\\infty$ (lesson 8.1): a Cauchy sequence of points is Cauchy in each coordinate, each coordinate converges in $\\mathbb{R}$, and the limits form the limit point.\n- $\\mathbb{Z}$, and any discrete space: Cauchy sequences are eventually constant, and an eventually constant sequence converges.\n- $C[a,b]$, the continuous functions on $[a,b]$, with the sup metric $d_\\infty(f,g) = \\sup_x |f(x) - g(x)|$. The proof idea: a Cauchy sequence $(f_n)$ is Cauchy at each fixed $x$, so define $f(x) = \\lim f_n(x)$; then show $d_\\infty(f_n, f) \\to 0$ and that $f$ is continuous. That last step is the \"$\\varepsilon/3$ argument\" of lesson 8.10.\n\n**Not complete (find the hole):**\n- $\\mathbb{Q}$: the decimals of $\\sqrt2$.\n- $(0,1]$: the sequence $\\frac1n$ heads for $0$.\n- $\\mathbb{R}\\setminus\\{0\\}$: again $\\frac1n$.\n- Another hole in $\\mathbb{Q}$: $x_n = \\sum_{k=1}^n \\frac{1}{k^2}$ is rational for each $n$ and converges in $\\mathbb{R}$ to $\\frac{\\pi^2}{6}$, which is irrational.\n\n**Edge case: the same sequence, different verdicts.** $\\frac1n$ is Cauchy in both $[0,1]$ and $(0,1]$. In $[0,1]$ it converges to $0$; in $(0,1]$ it does not converge at all. Completeness is a property of the space, not of the sequence."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each space (usual metric) to the right verdict.",
+          "pairs": [
+            {
+              "left": "$\\mathbb{Q}$",
+              "right": "Not complete: the decimals of $\\sqrt2$ have no limit in it"
+            },
+            {
+              "left": "$\\mathbb{Z}$",
+              "right": "Complete: Cauchy sequences are eventually constant"
+            },
+            {
+              "left": "$(0,1]$",
+              "right": "Not complete: $\\frac1n$ is Cauchy with no limit in it"
+            },
+            {
+              "left": "$\\mathbb{R}^2$",
+              "right": "Complete: converge coordinate by coordinate"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Closed subsets and compact spaces\n\nChecking completeness from scratch is tedious. Two results do most of the work.\n\n**Theorem.** Let $X$ be complete and $Y \\subseteq X$, with the restricted metric. Then\n\n$$Y \\text{ is complete} \\iff Y \\text{ is closed in } X.$$\n\n**Why.** Recall from lesson 8.2: $Y$ is closed exactly when it contains the limit of every convergent sequence of its points.\n- ($\\Leftarrow$) A Cauchy sequence in $Y$ is Cauchy in $X$, so it converges in $X$, since $X$ is complete. $Y$ is closed, so the limit is in $Y$.\n- ($\\Rightarrow$) If $y_n \\in Y$ and $y_n \\to x$ in $X$, then $(y_n)$ is Cauchy (fact 1), so it converges in $Y$, since $Y$ is complete. Limits are unique, so $x \\in Y$.\n\n**Examples.** $[0,1]$, $[0,\\infty)$, $\\mathbb{Z}$ and the unit circle are closed in a complete space, so they are complete. $(0,1]$ and $\\mathbb{Q}$ are not closed in $\\mathbb{R}$, so they are not complete.\n\n**Theorem.** Every compact metric space is complete.\n\n**Why.** A Cauchy sequence in a compact space has a convergent subsequence (sequential compactness, lesson 8.4). By fact 3, the whole sequence converges.\n\n**Careful: compact is enough but not needed.** $\\mathbb{R}$ is complete but not compact. Also \"closed\" only gives completeness **inside a complete space**: every space is closed in itself, and $\\mathbb{Q}$ is not complete."
+        },
+        {
+          "type": "check",
+          "question": "Which set, with the usual metric from $\\mathbb{R}$, is complete?",
+          "options": [
+            "$\\{\\frac1n : n \\in \\mathbb{N}\\}$",
+            "$\\{\\frac1n : n \\in \\mathbb{N}\\} \\cup \\{0\\}$",
+            "$(0, \\infty)$",
+            "$\\mathbb{Q} \\cap [0,1]$"
+          ],
+          "correct": 1,
+          "explanation": "Adding $0$ makes the set closed in $\\mathbb{R}$ (it now contains the limit of $\\frac1n$), and a closed subset of a complete space is complete. Without $0$, the sequence $\\frac1n$ is Cauchy with no limit in the set. $(0,\\infty)$ misses the limit $0$ of $\\frac1n$, and $\\mathbb{Q}\\cap[0,1]$ misses limits such as $\\frac{1}{\\sqrt2}$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Completeness depends on the metric, not just the open sets",
+          "md": "The map $h(x) = \\frac1\\pi\\arctan x + \\frac12$ is a continuous bijection from $\\mathbb{R}$ onto $(0,1)$, and its inverse is continuous too. So the two spaces have \"the same\" open sets and convergent sequences. Yet $\\mathbb{R}$ is complete and $(0,1)$ is not: $x_n = \\tfrac1n$ is Cauchy in $(0,1)$ with no limit there.\n\nPulled back to $\\mathbb{R}$, the metric $d(x,y) = |\\arctan x - \\arctan y|$ makes $x_n = n$ a Cauchy sequence with no limit. So changing the metric, even to one with the same open sets, can create or destroy completeness. Completeness is about **distances**, not just about which sets are open."
+        },
+        {
+          "type": "text",
+          "md": "## Contractions and the Banach fixed point theorem\n\nCompleteness pays off when you want to **solve an equation** but cannot write the solution down.\n\nA **fixed point** of a map $T : X \\to X$ is a point with $T(x) = x$. Solving $\\cos x = x$ means finding a fixed point of $T = \\cos$.\n\n**Definition.** $T : X \\to X$ is a **contraction** if there is a constant $q$ with $0 \\le q < 1$ such that\n\n$$d(Tx, Ty) \\le q\\, d(x,y) \\quad \\text{for all } x, y \\in X.$$\n\n(We often write $Tx$ for $T(x)$.) In words: $T$ shrinks every distance by at least the factor $q$.\n\n**Theorem (Banach).** If $X$ is a non-empty **complete** metric space and $T$ is a contraction, then $T$ has **exactly one** fixed point $x^*$, and for **any** starting point $x_0$ the iterates $x_{n+1} = Tx_n$ converge to $x^*$.\n\n**Examples.**\n- $T(x) = \\frac x2 + 1$ on $\\mathbb{R}$: $|Tx - Ty| = \\frac12|x - y|$, so $q = \\frac12$. Solving $x = \\frac x2 + 1$ gives $x^* = 2$. From $x_0 = 0$: $1, 1.5, 1.75, \\dots \\to 2$.\n- $T = \\cos$ on $[0,1]$: it maps $[0,1]$ into $[\\cos 1, 1] \\subseteq [0,1]$, and by the mean value theorem (lesson 6.7) $|\\cos x - \\cos y| \\le \\sin(1)\\,|x-y|$ with $\\sin 1 \\approx 0.84 < 1$. So $\\cos x = x$ has exactly one solution in $[0,1]$ (about $0.739$), found by pressing \"cos\" repeatedly on a calculator.\n\n**Non-examples.**\n- Completeness matters: $T(x) = \\frac x2$ on $(0,1]$ is a contraction with no fixed point. The would-be fixed point $0$ is the hole.\n- $q < 1$ matters: $T(x) = x + 1$ has $|Tx - Ty| = |x-y|$ ($q = 1$) and no fixed point."
+        },
+        {
+          "type": "check",
+          "question": "$T(x) = 3x$ on $\\mathbb{R}$ has the fixed point $0$. Is this a counterexample to the claim \"only contractions have fixed points\"?",
+          "options": [
+            "No: $T$ is a contraction",
+            "Yes, but that claim was never made: Banach's theorem says contractions on complete spaces **have** a unique fixed point, not that only contractions do",
+            "No: $\\mathbb{R}$ is not complete",
+            "Yes, and it shows Banach's theorem is false"
+          ],
+          "correct": 1,
+          "explanation": "$|3x - 3y| = 3|x-y|$, so $T$ is not a contraction, yet it has a fixed point. That is fine: Banach's theorem is \"contraction on a complete space $\\Rightarrow$ unique fixed point\", and its converse is not claimed. $\\mathbb{R}$ is complete, and the theorem is not contradicted."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Cauchy sequence",
+              "back": "For every $\\varepsilon > 0$, eventually **every pair** of terms has $d(x_m, x_n) < \\varepsilon$. No limit is mentioned.\n\n*Example:* $\\frac1n$ in $(0,1)$."
+            },
+            {
+              "front": "Complete metric space",
+              "back": "A space in which every Cauchy sequence **converges to a point of the space**.\n\n*Example:* $\\mathbb{R}$. *Non-example:* $\\mathbb{Q}$."
+            },
+            {
+              "front": "Closed subset of a complete space",
+              "back": "It is complete **exactly when** it is closed.\n\n*Example:* $[0,1] \\subseteq \\mathbb{R}$ is complete; $(0,1]$ is not."
+            },
+            {
+              "front": "Compact implies complete",
+              "back": "Every **compact** metric space is complete; the converse fails.\n\n*Example:* $[0,1]$ is both. *Non-example of the converse:* $\\mathbb{R}$ is complete, not compact."
+            },
+            {
+              "front": "Contraction",
+              "back": "A map with $d(Tx,Ty) \\le q\\,d(x,y)$ for a fixed $q$ with **$0 \\le q < 1$**.\n\n*Example:* $T(x) = \\frac x2 + 1$, with $q = \\frac12$."
+            },
+            {
+              "front": "Banach fixed point theorem",
+              "back": "A contraction on a non-empty **complete** space has **exactly one** fixed point; iterating from any start converges to it.\n\n*Example:* $\\cos x = x$ on $[0,1]$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You want to solve $x = g(x)$ by iterating $x_{n+1} = g(x_n)$. You have shown $|g(x) - g(y)| \\le 0.9|x-y|$ on $(0,2)$, and $g$ maps $(0,2)$ into itself. What is still missing before Banach's theorem applies?",
+          "options": [
+            "Nothing; the theorem applies",
+            "A complete space: for example, check that $g$ maps the closed interval $[0,2]$ into itself",
+            "A proof that $g$ is differentiable",
+            "A proof that $q = 0.9$ is the smallest possible constant"
+          ],
+          "correct": 1,
+          "explanation": "$(0,2)$ is not complete, and the iterates could head for a missing endpoint, as $\\frac x2$ on $(0,1]$ does. Working on $[0,2]$, which is closed in $\\mathbb{R}$ and so complete, fixes this. Differentiability is not part of the theorem, and any constant $q < 1$ works, not just the best one."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: the Banach fixed point theorem",
+          "steps": [
+            {
+              "title": "Iterate from any point",
+              "md": "Fix $x_0 \\in X$ and set $x_{n+1} = Tx_n$. Applying the contraction inequality once, $d(x_2,x_1) = d(Tx_1, Tx_0) \\le q\\,d(x_1,x_0)$. By induction,\n\n$$d(x_{n+1}, x_n) \\le q^n\\, d(x_1, x_0).$$"
+            },
+            {
+              "title": "Show the sequence is Cauchy",
+              "md": "For $m > n$, use the triangle inequality along the chain $x_n, x_{n+1}, \\dots, x_m$, then sum the geometric series (lesson 4.5):\n\n$$d(x_m,x_n) \\le \\sum_{k=n}^{m-1} q^k d(x_1,x_0) \\le \\frac{q^n}{1-q}\\, d(x_1,x_0).$$\n\nSince $0 \\le q < 1$, $q^n \\to 0$, so this is less than any $\\varepsilon$ once $n$ is large. The subtle point: neighbouring gaps shrinking is **not** enough (recall $\\sqrt n$); the geometric bound controls **all** pairs."
+            },
+            {
+              "title": "Use completeness",
+              "md": "$(x_n)$ is Cauchy and $X$ is complete, so $x_n \\to x^*$ for some $x^* \\in X$. This is the only place completeness is used."
+            },
+            {
+              "title": "Check the limit is fixed",
+              "md": "$d(Tx_n, Tx^*) \\le q\\,d(x_n, x^*) \\to 0$, so $Tx_n \\to Tx^*$. But $Tx_n = x_{n+1} \\to x^*$. Limits are unique, so $Tx^* = x^*$."
+            },
+            {
+              "title": "Show there is only one",
+              "md": "If $Tx = x$ and $Ty = y$, then $d(x,y) = d(Tx,Ty) \\le q\\,d(x,y)$, so $(1-q)\\,d(x,y) \\le 0$. Since $1 - q > 0$, $d(x,y) = 0$, and $x = y$ by (M1). $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the uniqueness step, where exactly is $q < 1$ used?",
+          "options": [
+            "To divide by $1 - q > 0$ and conclude $d(x,y) \\le 0$",
+            "To show $T$ is continuous",
+            "To show $X$ is complete",
+            "It is not used there"
+          ],
+          "correct": 0,
+          "explanation": "From $(1-q)\\,d(x,y) \\le 0$ we need $1 - q > 0$ to get $d(x,y) \\le 0$. With $q = 1$ the inequality says nothing, and indeed the identity map ($q = 1$) has every point as a fixed point. Continuity is used in the previous step, and completeness is a hypothesis, not something proved."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **a closed subset $Y$ of a complete space $X$ is complete.**",
+          "items": [
+            "Let $(y_n)$ be a Cauchy sequence in $Y$.",
+            "Distances in $Y$ are distances in $X$, so $(y_n)$ is also Cauchy in $X$.",
+            "$X$ is complete, so $y_n \\to x$ for some $x \\in X$.",
+            "$Y$ is closed, so it contains the limits of its convergent sequences; hence $x \\in Y$.",
+            "So every Cauchy sequence in $Y$ converges in $Y$: $Y$ is complete. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: finding $\\sqrt2$ with a contraction",
+          "problem": "Let $T(x) = \\frac12\\left(x + \\frac2x\\right)$ on $X = [1,2]$.\n\n(a) Show that $T$ maps $[1,2]$ into itself.\n(b) Show that $T$ is a contraction with $q = \\frac12$. (Hint: compute $T'$ and use the mean value theorem, lesson 6.7.)\n(c) Find the fixed point, and compute $x_1, x_2$ starting from $x_0 = 1$.",
+          "solution": "**(a)** $T'(x) = \\frac12 - \\frac{1}{x^2}$, which is negative for $x < \\sqrt2$ and positive for $x > \\sqrt2$. So the smallest value of $T$ on $[1,2]$ is $T(\\sqrt2) = \\sqrt2$, and the largest is at an endpoint: $T(1) = 1.5$ and $T(2) = 1.5$. So $T([1,2]) \\subseteq [\\sqrt2, 1.5] \\subseteq [1,2]$.\n\n**(b)** On $[1,2]$, $\\frac1{x^2} \\in [\\frac14, 1]$, so $T'(x) \\in [-\\frac12, \\frac14]$ and $|T'(x)| \\le \\frac12$. By the mean value theorem, $|Tx - Ty| = |T'(\\xi)|\\,|x - y| \\le \\frac12 |x-y|$.\n\n**(c)** $[1,2]$ is closed in $\\mathbb{R}$, so it is complete, and Banach's theorem applies. A fixed point solves $x = \\frac12(x + \\frac2x)$, so $x = \\frac2x$, $x^2 = 2$, and $x^* = \\sqrt2$ (the positive root, as $x \\in [1,2]$). From $x_0 = 1$: $x_1 = \\frac12(1 + 2) = 1.5$ and $x_2 = \\frac12(1.5 + \\frac{2}{1.5}) = \\frac{17}{12} \\approx 1.4167$.\n\nNotice the link with the start of the lesson: every iterate is **rational**, so in $\\mathbb{Q}\\cap[1,2]$ this is a Cauchy sequence with no limit. The same contraction has no fixed point in an incomplete space.\n\n**Check your version:** did you show $T$ maps $X$ into $X$ (not just that it shrinks distances)? Did you say why $[1,2]$ is complete? Did you reject the root $-\\sqrt2$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is \"Cauchy\" just another word for \"convergent\"?",
+              "a": "Only in complete spaces. In $\\mathbb{Q}$ the decimals of $\\sqrt2$ are Cauchy but not convergent. Convergent always implies Cauchy; the reverse is exactly the definition of completeness."
+            },
+            {
+              "q": "If every closed set is complete, is $\\mathbb{Q}$ complete, since $\\mathbb{Q}$ is closed in itself?",
+              "a": "No. The rule is \"closed **in a complete space** $\\Rightarrow$ complete\". $\\mathbb{Q}$ is closed in $\\mathbb{Q}$, but $\\mathbb{Q}$ itself is not complete, so the rule does not apply."
+            },
+            {
+              "q": "Why do we care whether $C[a,b]$ is complete?",
+              "a": "Many existence proofs, such as solving differential equations by Picard iteration, build a Cauchy sequence of functions and need a limit **inside** $C[a,b]$, often via Banach's theorem. Completeness of $C[a,b]$ with $d_\\infty$ guarantees it. With other metrics, such as $\\int_a^b |f - g|$, $C[a,b]$ is not complete."
+            },
+            {
+              "q": "Does $d(Tx,Ty) < d(x,y)$ for all $x \\ne y$ give a fixed point?",
+              "a": "Not always. $T(x) = x + \\frac1x$ on $[1,\\infty)$ satisfies $|Tx - Ty| < |x - y|$ for $x \\ne y$, yet $Tx > x$ always, so there is no fixed point. You need one constant $q < 1$ for all pairs."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A sequence is **Cauchy** if eventually all pairs of terms are close. Neighbouring terms being close is not enough.\n- Convergent $\\Rightarrow$ Cauchy $\\Rightarrow$ bounded, in every metric space. Cauchy $\\Rightarrow$ convergent is the definition of **complete**.\n- $\\mathbb{R}$, $\\mathbb{R}^n$, $\\mathbb{Z}$ and $C[a,b]$ with $d_\\infty$ are complete; $\\mathbb{Q}$ and $(0,1]$ are not.\n- Inside a complete space, a subset is complete exactly when it is **closed**. Compact spaces are complete.\n- **Banach:** a contraction ($q < 1$) on a non-empty complete space has exactly one fixed point, and iteration from any start finds it."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "Which metric space (usual metric) is **not** complete?",
+          "options": [
+            "$\\mathbb{Q}$",
+            "$[0,1]$",
+            "$\\mathbb{Z}$",
+            "$\\mathbb{R}^2$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Rational approximations of $\\sqrt2$ form a Cauchy sequence in $\\mathbb{Q}$ with no limit in $\\mathbb{Q}$. $[0,1]$ and $\\mathbb{Z}$ are closed subsets of the complete space $\\mathbb{R}$, and $\\mathbb{R}^2$ is complete coordinate by coordinate."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements hold in **every** metric space?",
+          "options": [
+            "Every convergent sequence is Cauchy",
+            "Every Cauchy sequence is bounded",
+            "Every Cauchy sequence converges",
+            "A Cauchy sequence with a convergent subsequence converges"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "Only the third requires completeness; it fails in $\\mathbb{Q}$ (decimals of $\\sqrt2$) and in $(0,1)$ ($\\frac1n$)."
+        },
+        {
+          "prompt": "Let $X$ be a complete metric space and $Y\\subseteq X$. When is $Y$ (with the restricted metric) complete?",
+          "options": [
+            "Exactly when $Y$ is bounded",
+            "Exactly when $Y$ is open",
+            "Exactly when $Y$ is closed in $X$",
+            "Exactly when $Y$ is compact"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Cauchy sequences in $Y$ converge in $X$; their limits stay in $Y$ exactly when $Y$ is closed. Bounded fails for $(0,1]$; open fails for $(0,1)$. Compactness is sufficient but not necessary ($Y=X=\\mathbb{R}$)."
+        },
+        {
+          "type": "short",
+          "prompt": "$T:\\mathbb{R}\\to\\mathbb{R}$, $T(x)=\\tfrac{x}{2}+1$, is a contraction. What is its unique fixed point?",
+          "answer": [
+            "2",
+            "2.0"
+          ],
+          "explanation": "Solve $x=\\tfrac x2+1$ to get $\\frac x2 = 1$, so $x=2$. The contraction constant is $q = \\tfrac12$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every compact metric space is complete.",
+          "answer": [
+            true
+          ],
+          "explanation": "A Cauchy sequence in a compact space has a convergent subsequence (sequential compactness), and a Cauchy sequence with a convergent subsequence converges."
+        },
+        {
+          "prompt": "Let $x_n=\\sum_{k=1}^n\\frac1{k^2}$, viewed as a sequence in $\\mathbb{Q}$. Then $(x_n)$ is",
+          "options": [
+            "convergent in $\\mathbb{Q}$",
+            "not Cauchy",
+            "unbounded",
+            "Cauchy but not convergent in $\\mathbb{Q}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "It converges in $\\mathbb{R}$ to $\\pi^2/6$, so it is Cauchy (and bounded), but $\\pi^2/6$ is irrational, so it has no limit in $\\mathbb{Q}$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $d(x_{n+1}, x_n) \\to 0$, then $(x_n)$ is a Cauchy sequence.",
+          "answer": [
+            false
+          ],
+          "explanation": "$x_n = \\sqrt n$ in $\\mathbb{R}$ has $\\sqrt{n+1} - \\sqrt n \\to 0$, but $x_{4n} - x_n = \\sqrt n \\to \\infty$, so it is not Cauchy. Cauchy needs every pair $m, n \\ge N$ to be close."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these spaces are complete? Select all that apply.",
+          "options": [
+            "$[0,\\infty)$ with the usual metric",
+            "$(0,1]$ with the usual metric",
+            "$\\mathbb{N}$ with the discrete metric",
+            "$\\mathbb{Q}\\cap[0,1]$ with the usual metric",
+            "$(0,\\infty)$ with the usual metric"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$[0,\\infty)$ is closed in $\\mathbb{R}$; in a discrete space Cauchy sequences are eventually constant. $(0,1]$ and $(0,\\infty)$ both miss the limit $0$ of $\\frac1n$, and $\\mathbb{Q}\\cap[0,1]$ misses irrational limits such as $\\frac1{\\sqrt2}$."
+        },
+        {
+          "type": "single",
+          "prompt": "$T(x) = \\frac x2$ on $X = (0,1]$ is a contraction with no fixed point. Which hypothesis of Banach's theorem fails?",
+          "options": [
+            "$T$ must map $X$ into $X$",
+            "$q$ must be less than $1$",
+            "$X$ must be complete",
+            "$X$ must be non-empty"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$T$ maps $(0,1]$ into $(0,\\tfrac12] \\subseteq X$, $q = \\frac12 < 1$ and $X \\ne \\emptyset$. But $(0,1]$ is not complete: the iterates $1, \\frac12, \\frac14, \\dots$ are Cauchy and head for $0 \\notin X$, the missing fixed point."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In a discrete metric space, every Cauchy sequence is eventually constant.",
+          "answer": [
+            true
+          ],
+          "explanation": "Take $\\varepsilon = \\frac12$. Eventually $d(x_m, x_n) < \\frac12$, and in the discrete metric that forces $x_m = x_n$. So discrete spaces are complete."
+        },
+        {
+          "type": "short",
+          "prompt": "Iterate $T(x) = \\frac12\\left(x + \\frac2x\\right)$ starting from $x_0 = 1$. What is $x_1$? Give a decimal.",
+          "answer": [
+            "1.5",
+            "1.50"
+          ],
+          "explanation": "$x_1 = \\frac12(1 + \\frac21) = \\frac32 = 1.5$. The iterates $1.5, 1.4167, \\dots$ converge to the fixed point $\\sqrt2$."
+        },
+        {
+          "type": "single",
+          "prompt": "Why does the proof of Banach's theorem bound $d(x_m, x_n)$ by $\\frac{q^n}{1-q}\\,d(x_1,x_0)$ rather than stopping at $d(x_{n+1},x_n) \\le q^n d(x_1,x_0)$?",
+          "options": [
+            "Because Cauchy requires all pairs $m, n \\ge N$ to be close, and neighbouring gaps shrinking is not enough",
+            "Because the second bound is false",
+            "Because it shows $T$ is continuous",
+            "Because it proves uniqueness of the fixed point"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The neighbour bound is true, but $\\sqrt n$ shows that shrinking neighbour gaps do not make a sequence Cauchy. Summing the geometric series controls every pair at once. Continuity and uniqueness are handled in other steps."
+        }
+      ]
+    },
+    {
+      "slug": "8-7-sequences-and-convergence-in-metric-spaces",
+      "title": "Sequences and convergence in metric spaces",
+      "summary": "$x_n\\to x$ means $d(x_n,x)\\to0$, and almost all your real-line theorems survive.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Convergence, with distance in place of absolute value",
+          "md": "You have used \"$x_n \\to x$\" in metric spaces informally since lesson 8.2. This lesson pins it down and shows which facts from the real line carry over and which do not.\n\n**In this lesson you will learn to:**\n- state and use the definition $x_n \\to x \\iff d(x_n, x) \\to 0$\n- say what convergence means concretely in $\\mathbb{R}^n$, in $C[a,b]$ and in a discrete space\n- prove that limits are unique, and use sequences to test closed sets\n- use **sequential continuity**, and avoid the \"one sequence is enough\" trap\n- explain why Bolzano–Weierstrass fails in general\n\n**You need:** the $\\varepsilon$–$N$ definition (lesson 3.4), subsequences and Bolzano–Weierstrass (lessons 3.9 and 3.10), metric spaces and $C[a,b]$ (lesson 8.1), closed sets (lesson 8.2), and Cauchy sequences in metric spaces (lesson 8.6)."
+        },
+        {
+          "type": "text",
+          "md": "## One definition for every space\n\nIn lesson 3.4, $a_n \\to L$ meant: for every $\\varepsilon > 0$ there is $N$ such that $|a_n - L| < \\varepsilon$ for all $n \\ge N$. The only thing $|a_n - L|$ did was measure the **distance** from $a_n$ to $L$. So in a metric space we simply use $d$.\n\n**Definition.** A sequence $(x_n)$ in a metric space $(X,d)$ **converges** to $x \\in X$, written $x_n \\to x$, if\n\n$$\\forall \\varepsilon > 0\\ \\ \\exists N\\ \\ \\forall n \\ge N:\\ \\ d(x_n, x) < \\varepsilon.$$\n\nIn words: the **real** numbers $d(x_n, x)$ tend to $0$. In ball language (lesson 8.1): every ball $B(x, \\varepsilon)$ contains all the terms from some point on.\n\n**Examples.**\n- In $\\mathbb{R}^2$ with $d_2$, let $x_n = (\\frac1n, 2 - \\frac1n)$ and $x = (0,2)$. Then $d_2(x_n, x) = \\sqrt{\\frac1{n^2} + \\frac1{n^2}} = \\frac{\\sqrt2}{n} \\to 0$, so $x_n \\to (0,2)$.\n- In $C[0,1]$ with $d_\\infty$, let $f_n(x) = \\frac xn$. Then $d_\\infty(f_n, 0) = \\sup_{x\\in[0,1]} \\frac xn = \\frac1n \\to 0$, so $f_n \\to 0$, the zero function.\n- Edge case: the limit must be in $X$. In $X = (0,1)$, the sequence $\\frac1n$ does **not** converge, since $0 \\notin X$. (It is still Cauchy, lesson 8.6.)\n\n**Non-example.** In $\\mathbb{R}^2$, $x_n = ((-1)^n, \\frac1n)$ does not converge: the first coordinate keeps jumping between $-1$ and $1$, so the points cannot all stay within $\\frac12$ of any single point."
+        },
+        {
+          "type": "check",
+          "question": "In $\\mathbb{R}^2$ with $d_2$, what is $d_2(x_n, (0,0))$ for $x_n = (\\frac3n, \\frac4n)$, and does $x_n \\to (0,0)$?",
+          "options": [
+            "$\\frac7n$; yes",
+            "$\\frac5n$; yes",
+            "$\\frac5n$; no, because each coordinate is non-zero",
+            "$\\frac{25}{n^2}$; yes"
+          ],
+          "correct": 1,
+          "explanation": "$d_2 = \\sqrt{\\frac9{n^2} + \\frac{16}{n^2}} = \\frac5n \\to 0$, so $x_n \\to (0,0)$. $\\frac7n$ is the $d_1$ distance, not $d_2$. $\\frac{25}{n^2}$ forgets the square root. The terms need not equal the limit; they only need to get close."
+        },
+        {
+          "type": "text",
+          "md": "## What carries over from the real line\n\nThe proofs from Level 3 used only the three metric axioms, so they work word for word.\n\n**1. Limits are unique.** Suppose $x_n \\to x$ and $x_n \\to y$. Given $\\varepsilon > 0$, for large $n$ both $d(x_n,x) < \\frac\\varepsilon2$ and $d(x_n,y) < \\frac\\varepsilon2$, so by (M3) and (M2)\n\n$$d(x,y) \\le d(x,x_n) + d(x_n,y) < \\varepsilon.$$\n\nA number $d(x,y) \\ge 0$ that is below every $\\varepsilon > 0$ is $0$, so $x = y$ by (M1). This is why \"**the** limit\" makes sense.\n\n**2. Subsequences.** If $x_n \\to x$, every subsequence $x_{n_1}, x_{n_2}, \\dots$ (with $n_1 < n_2 < \\cdots$) also tends to $x$, because $n_k \\ge k$.\n\n**3. Convergent sequences are bounded:** all terms lie in some ball. Take $\\varepsilon = 1$; from $N$ on, terms are in $B(x,1)$, and finitely many earlier terms fit in a bigger ball.\n\n**4. Distances behave.** If $x_n \\to x$ then $d(x_n, y) \\to d(x, y)$ for every $y$, by the inequality $|d(x_n,y) - d(x,y)| \\le d(x_n,x)$ from lesson 8.1.\n\n**5. Closed sets keep their limits** (lesson 8.2): $F$ is closed exactly when $x_n \\in F$ and $x_n \\to x$ always give $x \\in F$.\n\n**Using fact 5.** $(0,1]$ is not closed in $\\mathbb{R}$: $\\frac1n \\in (0,1]$ and $\\frac1n \\to 0 \\notin (0,1]$. A useful trick: if a sequence has two subsequences with different limits, fact 2 says it cannot converge. So $(-1)^n$ diverges, since its even terms tend to $1$ and odd terms to $-1$."
+        },
+        {
+          "type": "check",
+          "question": "A sequence $(x_n)$ in a metric space has $x_{2n} \\to p$ and $x_{2n+1} \\to q$ with $p \\ne q$. What can you conclude?",
+          "options": [
+            "$x_n \\to p$, since the even terms come first",
+            "$(x_n)$ does not converge",
+            "$x_n$ converges to the midpoint of $p$ and $q$",
+            "Nothing, without knowing the space"
+          ],
+          "correct": 1,
+          "explanation": "If $x_n \\to x$, every subsequence would tend to $x$, so $p = x = q$ by uniqueness. Since $p \\ne q$, the sequence diverges, in any metric space. A general metric space need not even have a \"midpoint\"."
+        },
+        {
+          "type": "text",
+          "md": "## What convergence looks like in different spaces\n\nThe definition is the same everywhere, but what it **means** depends on the metric.\n\n**In $\\mathbb{R}^n$: coordinate by coordinate.** For the metrics of lesson 8.1,\n\n$$d_\\infty \\le d_2 \\le d_1 \\le n\\, d_\\infty.$$\n\nSo if one of them tends to $0$, all do. And $d_\\infty(x_k, x) = \\max_i |x_{k,i} - x_i|$ tends to $0$ exactly when each coordinate converges. (Here $x_{k,i}$ is the $i$-th coordinate of the $k$-th point.) Example: $(\\cos\\frac1n, \\sin\\frac1n) \\to (1, 0)$ because $\\cos\\frac1n \\to 1$ and $\\sin\\frac1n \\to 0$.\n\n**In $C[a,b]$ with $d_\\infty$: closeness everywhere at once.** $d_\\infty(f_n, f) < \\varepsilon$ says $|f_n(x) - f(x)| < \\varepsilon$ for **every** $x \\in [a,b]$ simultaneously. This is called **uniform convergence**, the topic of lesson 8.9. It implies that $f_n(x) \\to f(x)$ at each single point, since $|f_n(x) - f(x)| \\le d_\\infty(f_n,f)$.\n\n**In a discrete space: eventually constant.** Here $d(x,y) = 1$ whenever $x \\ne y$. Take $\\varepsilon = \\frac12$: $d(x_n, x) < \\frac12$ forces $x_n = x$. So $x_n \\to x$ exactly when $x_n = x$ for all large $n$. The sequence $1, 2, 1, 2, \\dots$ never converges, and neither does $1, 2, 3, \\dots$.\n\n**Edge case: the same set, different metrics.** On $\\mathbb{R}$ with the metric $d(x,y) = |\\arctan x - \\arctan y|$, the sequence $x_n = n$ is Cauchy, because $\\arctan n \\to \\frac\\pi2$. It does not converge: a limit $x$ would need $\\arctan x = \\frac\\pi2$, which no real number satisfies. In the usual metric the same sequence is not even Cauchy."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each space to what \"$x_n \\to x$\" means there.",
+          "pairs": [
+            {
+              "left": "$\\mathbb{R}^n$ with $d_1$, $d_2$ or $d_\\infty$",
+              "right": "Each coordinate converges"
+            },
+            {
+              "left": "$C[a,b]$ with $d_\\infty$",
+              "right": "$\\sup_x |f_n(x) - f(x)| \\to 0$: uniform convergence"
+            },
+            {
+              "left": "A discrete space",
+              "right": "$x_n = x$ for all large $n$"
+            },
+            {
+              "left": "$\\mathbb{R}$ with the usual metric",
+              "right": "$|x_n - x| \\to 0$, as in lesson 3.4"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Sequential continuity\n\nSequences give a second way to test continuity, and it is often the easiest.\n\nA one-line reminder: $f : (X, d_X) \\to (Y, d_Y)$ is **continuous at $x$** if for every $\\varepsilon > 0$ there is $\\delta > 0$ with $d_Y(f(z), f(x)) < \\varepsilon$ whenever $d_X(z, x) < \\delta$. This is lesson 5.6 with distances in place of absolute values.\n\n**Theorem.** $f$ is continuous at $x$ **if and only if** for **every** sequence with $x_n \\to x$, we have $f(x_n) \\to f(x)$.\n\nIn words: continuous maps send convergent sequences to convergent sequences, with the right limit. The forward direction is proved in the worked steps below.\n\n**Using it to prove continuity.** $f : \\mathbb{R}^2 \\to \\mathbb{R}$, $f(a,b) = ab$. If $(a_n, b_n) \\to (a,b)$, then $a_n \\to a$ and $b_n \\to b$ (coordinates), so $a_n b_n \\to ab$ by the limit laws (lesson 3.6). So $f$ is continuous.\n\n**Using it to disprove continuity.** One bad sequence is enough. The sign function, $-1$ for $x < 0$, $0$ at $0$, $1$ for $x > 0$, is not continuous at $0$: $\\frac1n \\to 0$ but $\\operatorname{sign}(\\frac1n) = 1 \\not\\to 0$.\n\n**The trap.** One **good** sequence proves nothing. For the sign function, the constant sequence $x_n = 0$ gives $f(x_n) = 0 \\to f(0)$, yet $f$ is discontinuous. The theorem needs **every** sequence."
+        },
+        {
+          "type": "check",
+          "question": "To show $f$ is **not** continuous at $x$, what is enough?",
+          "options": [
+            "One sequence $x_n \\to x$ with $f(x_n) \\to f(x)$",
+            "One sequence $x_n \\to x$ for which $f(x_n) \\not\\to f(x)$",
+            "Showing that $f(x_n) \\to f(x)$ for every constant sequence",
+            "Showing that $f$ is not defined near $x$"
+          ],
+          "correct": 1,
+          "explanation": "Continuity requires $f(x_n) \\to f(x)$ for **every** sequence $x_n \\to x$, so a single failing sequence breaks it. One good sequence shows nothing (the sign function works along $x_n = 0$). Constant sequences always work trivially. $f$ is defined on all of $X$, so the last option does not apply."
+        },
+        {
+          "type": "text",
+          "md": "## What fails: Bolzano–Weierstrass\n\nIn $\\mathbb{R}$, every bounded sequence has a convergent subsequence (lesson 3.10). This is **false** in a general metric space.\n\n**Counterexample 1: an infinite discrete space.** Take $\\mathbb{N}$ with the discrete metric and the sequence $x_n = n$. Every distance is at most $1$, so it is bounded. But any subsequence consists of distinct points, so it is never eventually constant, and in a discrete space only eventually constant sequences converge.\n\n**Counterexample 2: $C[0,1]$ with $d_\\infty$.** The functions $g_n(x) = x^n$ all satisfy $d_\\infty(g_n, 0) = 1$, so they are bounded. Any $d_\\infty$-limit of a subsequence would also be its limit at each point, which is $0$ for $x < 1$ and $1$ at $x = 1$. That function is not continuous, so it is not in $C[0,1]$. No subsequence converges.\n\n**What survives.** In $\\mathbb{R}^n$, Bolzano–Weierstrass still holds: apply the one-dimensional version to each coordinate in turn, taking a subsequence of a subsequence. And in a **compact** space every sequence has a convergent subsequence: that is sequential compactness (lesson 8.4). The failure above is the same as the failure of Heine–Borel outside $\\mathbb{R}^n$: closed and bounded does not imply compact."
+        },
+        {
+          "type": "check",
+          "question": "Which space has a bounded sequence with **no** convergent subsequence?",
+          "options": [
+            "$\\mathbb{R}^3$ with $d_2$",
+            "$[0,1]$ with the usual metric",
+            "$\\mathbb{N}$ with the discrete metric",
+            "$\\mathbb{R}$ with the usual metric"
+          ],
+          "correct": 2,
+          "explanation": "In discrete $\\mathbb{N}$, $x_n = n$ is bounded (distances at most $1$) but no subsequence is eventually constant, so none converges. Bolzano–Weierstrass holds in $\\mathbb{R}$ and $\\mathbb{R}^3$, and $[0,1]$ is compact."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Convergence $x_n \\to x$",
+              "back": "For every $\\varepsilon > 0$, eventually $d(x_n, x) < \\varepsilon$. Equivalently, the **real** sequence $d(x_n,x) \\to 0$.\n\n*Example:* $(\\frac1n, 2-\\frac1n) \\to (0,2)$ in $\\mathbb{R}^2$."
+            },
+            {
+              "front": "Uniqueness of limits",
+              "back": "A sequence has **at most one** limit, by the triangle inequality and (M1).\n\n*Example:* $(-1)^n$ diverges, since two subsequences have different limits."
+            },
+            {
+              "front": "Convergence in $\\mathbb{R}^n$",
+              "back": "The same as **coordinatewise** convergence, for $d_1$, $d_2$ and $d_\\infty$.\n\n*Example:* $(\\cos\\frac1n, \\sin\\frac1n) \\to (1,0)$."
+            },
+            {
+              "front": "Convergence in a discrete space",
+              "back": "$x_n \\to x$ exactly when $x_n = x$ for all **large** $n$.\n\n*Example:* $1, 2, 1, 2, \\dots$ diverges."
+            },
+            {
+              "front": "Sequential continuity",
+              "back": "$f$ is continuous at $x$ iff $f(x_n) \\to f(x)$ for **every** sequence $x_n \\to x$.\n\n*Example:* $\\frac1n \\to 0$ but $\\operatorname{sign}(\\frac1n) \\not\\to 0$."
+            },
+            {
+              "front": "Bolzano–Weierstrass in metric spaces",
+              "back": "**Fails** in general: bounded sequences need not have convergent subsequences. Holds in $\\mathbb{R}^n$ and in compact spaces.\n\n*Example:* $x_n = n$ in discrete $\\mathbb{N}$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In $C[0,1]$ with $d_\\infty$, you know $f_n \\to f$. A friend asks whether $f_n(0.3) \\to f(0.3)$. What do you say?",
+          "options": [
+            "Yes, because $|f_n(0.3) - f(0.3)| \\le d_\\infty(f_n, f) \\to 0$",
+            "Not necessarily; $d_\\infty$ only controls the maximum",
+            "Only if each $f_n$ is increasing",
+            "Only if $f$ is the zero function"
+          ],
+          "correct": 0,
+          "explanation": "$d_\\infty$ is the supremum of $|f_n(x) - f(x)|$ over all $x$, so it bounds the gap at $x = 0.3$ in particular. Controlling the maximum gap controls every gap. Monotonicity and the zero function are irrelevant."
+        },
+        {
+          "type": "steps",
+          "title": "Worked proof: continuous implies sequentially continuous",
+          "steps": [
+            {
+              "title": "Set up",
+              "md": "Let $f : (X,d_X) \\to (Y,d_Y)$ be continuous at $x$, and let $x_n \\to x$. We must show $f(x_n) \\to f(x)$: for every $\\varepsilon > 0$, eventually $d_Y(f(x_n), f(x)) < \\varepsilon$."
+            },
+            {
+              "title": "Fix the target tolerance",
+              "md": "Let $\\varepsilon > 0$. Everything that follows must work for this $\\varepsilon$, which is arbitrary."
+            },
+            {
+              "title": "Use continuity to get a δ",
+              "md": "By continuity at $x$, there is $\\delta > 0$ with $d_Y(f(z), f(x)) < \\varepsilon$ whenever $d_X(z, x) < \\delta$."
+            },
+            {
+              "title": "Use convergence with δ as the tolerance",
+              "md": "The subtle move: $x_n \\to x$ works for **every** positive tolerance, so we may use $\\delta$ in place of $\\varepsilon$. There is $N$ with $d_X(x_n, x) < \\delta$ for all $n \\ge N$."
+            },
+            {
+              "title": "Conclude",
+              "md": "For $n \\ge N$, $x_n$ is within $\\delta$ of $x$, so $d_Y(f(x_n), f(x)) < \\varepsilon$. Hence $f(x_n) \\to f(x)$. $\\blacksquare$\n\nThe converse is proved by contrapositive: if $f$ is not continuous at $x$, some $\\varepsilon$ has no working $\\delta$, so for $\\delta = \\frac1n$ pick $x_n$ with $d_X(x_n,x) < \\frac1n$ but $d_Y(f(x_n),f(x)) \\ge \\varepsilon$. Then $x_n \\to x$ and $f(x_n) \\not\\to f(x)$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, why may we apply the definition of $x_n \\to x$ with the tolerance $\\delta$ instead of $\\varepsilon$?",
+          "options": [
+            "Because $\\delta = \\varepsilon$",
+            "Because the definition of convergence holds for every positive tolerance, and $\\delta > 0$",
+            "Because $\\delta < \\varepsilon$ always",
+            "Because $f$ is continuous"
+          ],
+          "correct": 1,
+          "explanation": "\"$x_n \\to x$\" says: for **every** tolerance $t > 0$ there is $N$ with $d_X(x_n,x) < t$ from $N$ on. We choose $t = \\delta$. $\\delta$ need not equal $\\varepsilon$ or be smaller than it, and continuity was used to find $\\delta$, not to justify this step."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **a sequence in a metric space has at most one limit.**",
+          "items": [
+            "Suppose $x_n \\to x$ and $x_n \\to y$, and let $\\varepsilon > 0$.",
+            "Choose $N_1, N_2$ with $d(x_n, x) < \\frac\\varepsilon2$ for $n \\ge N_1$ and $d(x_n, y) < \\frac\\varepsilon2$ for $n \\ge N_2$.",
+            "For $n = \\max(N_1, N_2)$, the triangle inequality gives $d(x,y) \\le d(x,x_n) + d(x_n,y) < \\varepsilon$.",
+            "Since $\\varepsilon > 0$ was arbitrary and $d(x,y) \\ge 0$, $d(x,y) = 0$.",
+            "By (M1), $x = y$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: two sequences in $C[0,1]$",
+          "problem": "In $C[0,1]$ with the sup metric $d_\\infty$, decide whether each sequence converges, and find the limit if it does.\n\n(a) $f_n(x) = \\dfrac{x}{n}$\n(b) $g_n(x) = x^n$",
+          "solution": "**(a)** Guess the limit $0$ (the zero function). Then $d_\\infty(f_n, 0) = \\sup_{x\\in[0,1]} \\frac xn = \\frac1n \\to 0$. So $f_n \\to 0$ in $C[0,1]$.\n\n**(b)** Suppose $g_n \\to g$ in $d_\\infty$ for some $g \\in C[0,1]$. Since $|g_n(x) - g(x)| \\le d_\\infty(g_n, g)$, we would have $g_n(x) \\to g(x)$ at every single $x$. But $x^n \\to 0$ for $0 \\le x < 1$, and $1^n = 1$. By uniqueness of limits in $\\mathbb{R}$, $g(x) = 0$ for $x < 1$ and $g(1) = 1$. This $g$ jumps at $1$, so it is not continuous: it is not in $C[0,1]$. Contradiction. So $(g_n)$ does **not** converge in $C[0,1]$. $\\blacksquare$\n\n**Check your version:** in (a), did you compute the supremum over **all** $x$, not just at one point? In (b), did you use that a $d_\\infty$-limit is also the limit at each point, and did you say why the candidate is not allowed (it is not in the space)?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is convergence in a metric space really new, or just the old definition?",
+              "a": "The definition is the old one with $d$ in place of $|\\cdot|$. What is new is how different it **feels**: in $C[a,b]$ it means uniform convergence of functions, and in a discrete space it means eventually constant."
+            },
+            {
+              "q": "If $d(x_n, x) \\to 0$ for some $x$ outside the space, does the sequence converge?",
+              "a": "Not in that space. $\\frac1n$ in $(0,1)$ gets close to $0$, but $0$ is not a point of $(0,1)$, so the sequence diverges in $(0,1)$. It converges in $[0,1]$."
+            },
+            {
+              "q": "If $f(x_n) \\to f(x)$ for one particular sequence $x_n \\to x$, is $f$ continuous at $x$?",
+              "a": "No. The sign function at $0$ gives $f(x_n) \\to f(0) = 0$ along $x_n = 0$, but $f(x_n) = 1$ along $x_n = \\frac1n$ and $f(x_n) = -1$ along $x_n = -\\frac1n$. So it is not continuous at $0$. You need **every** sequence to work."
+            },
+            {
+              "q": "Do I ever need to check all three metrics on $\\mathbb{R}^n$ separately?",
+              "a": "No. Because $d_\\infty \\le d_2 \\le d_1 \\le n\\,d_\\infty$, a sequence converges in one of them exactly when it converges in all three, and the limit is the same."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $x_n \\to x$ means the real numbers $d(x_n, x) \\to 0$, and the limit must be a point **of the space**.\n- Limits are unique, subsequences share the limit, convergent sequences are bounded, and closed sets contain the limits of their sequences.\n- In $\\mathbb{R}^n$ convergence is coordinatewise; in $C[a,b]$ with $d_\\infty$ it is uniform convergence; in a discrete space it means eventually constant.\n- $f$ is continuous at $x$ iff $f(x_n) \\to f(x)$ for **every** $x_n \\to x$. One bad sequence disproves continuity; one good sequence proves nothing.\n- Bolzano–Weierstrass **fails** in general (discrete $\\mathbb{N}$, $x^n$ in $C[0,1]$); it holds in $\\mathbb{R}^n$ and in compact spaces."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "In a discrete metric space, a sequence converges if and only if it is eventually constant.",
+          "answer": [
+            true
+          ],
+          "explanation": "With $\\varepsilon=\\tfrac12$, $d(x_n,x)<\\varepsilon$ means $x_n=x$. Conversely, an eventually constant sequence clearly converges to its eventual value."
+        },
+        {
+          "prompt": "Which sequence converges in $\\mathbb{R}^2$ with the Euclidean metric?",
+          "options": [
+            "$\\big((-1)^n,\\tfrac1n\\big)$",
+            "$\\big(\\tfrac1n,n\\big)$",
+            "$\\big(\\cos\\tfrac1n,\\sin\\tfrac1n\\big)$",
+            "$(n,0)$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Convergence in $\\mathbb{R}^2$ is coordinatewise, and $\\cos(1/n)\\to1$, $\\sin(1/n)\\to0$, so the limit is $(1,0)$. The others have a coordinate that diverges: $(-1)^n$, $n$ and $n$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements hold in **every** metric space?",
+          "options": [
+            "A convergent sequence has exactly one limit",
+            "Every subsequence of a convergent sequence converges to the same limit",
+            "Every bounded sequence has a convergent subsequence",
+            "If $x_n\\to x$ then $d(x_n,y)\\to d(x,y)$ for every $y$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The fourth follows from $|d(x_n,y)-d(x,y)|\\le d(x_n,x)$. Bolzano–Weierstrass fails in general: in an infinite discrete space, a sequence of distinct points is bounded but has no convergent subsequence."
+        },
+        {
+          "prompt": "In $C[0,1]$ with the sup metric, the sequence $g_n(x)=x^n$",
+          "options": [
+            "converges to $0$",
+            "converges to the function equal to $0$ on $[0,1)$ and $1$ at $1$",
+            "converges to the constant $1$",
+            "does not converge"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "A $d_\\infty$-limit would also be the pointwise limit, which is $0$ on $[0,1)$ and $1$ at $1$. That function is discontinuous, so it is not in $C[0,1]$. Hence there is no limit in the space. (Also $d_\\infty(g_n, 0) = 1$ for every $n$, so $g_n \\not\\to 0$.)"
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f(x_n)\\to f(x)$ for **one** particular sequence $x_n\\to x$, then $f$ is continuous at $x$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Sequential continuity requires this for **every** sequence $x_n\\to x$. For the sign function at $0$, the constant sequence $x_n=0$ gives $f(x_n)\\to f(0)$, yet $f$ is discontinuous at $0$: along $x_n=1/n$ we get $f(x_n)=1\\not\\to0$."
+        },
+        {
+          "prompt": "On $\\mathbb{R}$ put the metric $d(x,y)=|\\arctan x-\\arctan y|$. The sequence $x_n=n$ is",
+          "options": [
+            "convergent",
+            "Cauchy but not convergent",
+            "not Cauchy",
+            "unbounded in this metric"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\arctan n\\to\\pi/2$, so $d(x_m,x_n)\\to0$ and the sequence is Cauchy. A limit $x$ would need $\\arctan x=\\pi/2$, which is impossible. All distances are below $\\pi$, so the set is bounded."
+        },
+        {
+          "type": "short",
+          "prompt": "In $\\mathbb{R}^2$ with the Euclidean metric $d_2$, compute $d_2\\big((\\tfrac3n,\\tfrac4n),(0,0)\\big)$ when $n = 10$. Give a decimal.",
+          "answer": [
+            "0.5",
+            ".5",
+            "1/2"
+          ],
+          "explanation": "$d_2 = \\sqrt{\\frac{9}{n^2} + \\frac{16}{n^2}} = \\frac5n$, which is $0.5$ for $n = 10$."
+        },
+        {
+          "type": "single",
+          "prompt": "In the metric space $X = (0,1)$ with the usual metric, the sequence $x_n = \\frac1{n+1}$",
+          "options": [
+            "converges to $0$",
+            "converges to $\\frac12$",
+            "does not converge in $X$, although it is Cauchy",
+            "is not Cauchy"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "The terms approach $0$, but $0 \\notin (0,1)$, so there is no limit in $X$. The sequence is Cauchy, because it converges in $\\mathbb{R}$. It cannot converge to $\\frac12$: $d(x_n, \\frac12) \\to \\frac12 \\ne 0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "In $\\mathbb{N}$ with the discrete metric, which sequences converge? Select all that apply.",
+          "options": [
+            "$1, 2, 3, 4, \\dots$",
+            "$5, 5, 5, 5, \\dots$",
+            "$1, 2, 7, 7, 7, 7, \\dots$",
+            "$1, 2, 1, 2, \\dots$"
+          ],
+          "answer": [
+            1,
+            2
+          ],
+          "explanation": "In a discrete space a sequence converges exactly when it is eventually constant: $5,5,5,\\dots \\to 5$ and $1,2,7,7,\\dots \\to 7$. The other two are never eventually constant."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f_n \\to f$ in $C[a,b]$ with the sup metric, then $f_n(x) \\to f(x)$ for every $x \\in [a,b]$.",
+          "answer": [
+            true
+          ],
+          "explanation": "For each $x$, $|f_n(x) - f(x)| \\le \\sup_t |f_n(t) - f(t)| = d_\\infty(f_n,f) \\to 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which fact shows that $(-1)^n$ does not converge in $\\mathbb{R}$, using only general metric-space results?",
+          "options": [
+            "It is unbounded",
+            "Its even and odd subsequences have different limits, but subsequences of a convergent sequence share its limit",
+            "It is not monotone",
+            "Its terms are integers"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The even terms tend to $1$ and the odd terms to $-1$; a convergent sequence would force both to equal its unique limit. The sequence is bounded, non-monotone sequences can converge (e.g. $\\frac{(-1)^n}{n}$), and integer sequences can converge (constant ones)."
+        },
+        {
+          "type": "single",
+          "prompt": "Why does Bolzano–Weierstrass still hold in $\\mathbb{R}^2$?",
+          "options": [
+            "Because every metric space satisfies it",
+            "Because a bounded sequence has bounded coordinates; take a convergent subsequence for the first coordinate, then a further one for the second",
+            "Because $\\mathbb{R}^2$ is compact",
+            "Because $\\mathbb{R}^2$ is discrete"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Apply the one-dimensional theorem to each coordinate in turn; coordinatewise convergence is convergence in $\\mathbb{R}^2$. It fails in general metric spaces, $\\mathbb{R}^2$ is not compact (it is unbounded), and it is not discrete."
+        }
+      ]
+    },
+    {
+      "slug": "8-8-pointwise-convergence-of-functions",
+      "title": "Pointwise convergence of functions",
+      "summary": "Converging one point at a time, and why that is often too weak.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Limits of functions, one point at a time",
+          "md": "Many important functions are built as limits of simpler ones. This lesson looks at the most natural way to take such a limit, and at the surprising things it can break.\n\n**In this lesson you will learn to:**\n- read the notation $f_n \\to f$ for a **sequence of functions**\n- state the definition of **pointwise convergence**, and notice that $N$ may depend on the point $x$\n- compute pointwise limits by fixing $x$ and splitting into cases\n- give examples where the pointwise limit loses continuity, boundedness, or the value of the integral\n\n**You need:** limits of real sequences (lessons 3.4 and 3.6), continuity (lesson 5.6), the Riemann integral (lesson 7.5), and the idea that $x^n \\to 0$ when $|x| < 1$ (lesson 4.5)."
+        },
+        {
+          "type": "text",
+          "md": "## Functions as limits\n\nYou already know functions defined by limits. A power series (lesson 4.14) is a limit of polynomials: for every real $x$,\n\n$$e^x = \\lim_{n\\to\\infty}\\left(1 + x + \\frac{x^2}{2!} + \\cdots + \\frac{x^n}{n!}\\right).$$\n\nEach partial sum is a polynomial $f_n(x)$, and $e^x$ is what they approach. Fourier series and solutions of differential equations are built the same way. So we need to say what it means for functions $f_n$ to converge to a function $f$, and then ask: **which properties of the $f_n$ survive in the limit?** If every $f_n$ is continuous, is $f$? If we know $\\int f_n$, do we know $\\int f$?\n\n**Notation.** A **sequence of functions** is a list $f_1, f_2, f_3, \\dots$ of functions, all defined on the same set $E \\subseteq \\mathbb{R}$. We write it as $(f_n)$. The key observation:\n\n> If you **fix** a point $x \\in E$, then $f_1(x), f_2(x), f_3(x), \\dots$ is an ordinary sequence of real numbers.\n\nFor example, with $f_n(x) = x^n$ on $[0,1]$:\n- at $x = \\frac12$ you get $\\frac12, \\frac14, \\frac18, \\dots$, which tends to $0$;\n- at $x = 1$ you get $1, 1, 1, \\dots$, which tends to $1$.\n\nSo at each point you can ask the Level 3 question: does this real sequence converge? That is the whole idea of pointwise convergence."
+        },
+        {
+          "type": "text",
+          "md": "## The definition\n\n**Plain words.** $f_n \\to f$ pointwise if, at every single point $x$, the numbers $f_n(x)$ tend to the number $f(x)$.\n\n**Definition.** Let $f_n, f : E \\to \\mathbb{R}$. Then $f_n \\to f$ **pointwise** on $E$ if $f_n(x) \\to f(x)$ for every $x \\in E$. Written out with the $\\varepsilon$–$N$ definition:\n\n$$\\forall x \\in E\\ \\ \\forall \\varepsilon > 0\\ \\ \\exists N\\ \\ \\forall n \\ge N:\\ \\ |f_n(x) - f(x)| < \\varepsilon.$$\n\n**The order of the quantifiers matters.** $x$ is chosen **before** $N$. So $N$ is allowed to depend on both $x$ and $\\varepsilon$; sometimes we write $N(x, \\varepsilon)$ to stress it. (Quantifier order was lesson 1.3.)\n\n**Example: $f_n(x) = \\frac xn$ on $\\mathbb{R}$.** Fix $x$. Then $\\frac xn \\to 0$, so $f_n \\to 0$ pointwise. To get $|\\frac xn| < \\varepsilon$ you need $n > \\frac{|x|}{\\varepsilon}$. At $x = 1$ with $\\varepsilon = 0.1$, $N = 11$ works; at $x = 1000$ you need $N = 10001$. No single $N$ works for every $x$ at once, and that is allowed.\n\n**Example: $f_n(x) = \\frac{\\sin(nx)}{n}$ on $\\mathbb{R}$.** Since $|\\sin| \\le 1$, $|f_n(x)| \\le \\frac1n \\to 0$, so $f_n \\to 0$ pointwise. Here $N > \\frac1\\varepsilon$ works for every $x$; it happens not to depend on $x$.\n\n**Edge case: $f_n(x) = x^n$ on $[0,1]$.** For $0 \\le x < 1$, $x^n \\to 0$. At $x = 1$, $1^n = 1$. So the limit is\n\n$$f(x) = \\begin{cases} 0 & 0 \\le x < 1, \\\\ 1 & x = 1. \\end{cases}$$\n\nA common slip is to say the limit is \"$0$\", forgetting the single point $x = 1$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each sequence to its pointwise limit.",
+          "pairs": [
+            {
+              "left": "$\\frac xn$ on $\\mathbb{R}$",
+              "right": "$0$ for every $x$"
+            },
+            {
+              "left": "$x^n$ on $[0,1]$",
+              "right": "$0$ for $x < 1$, and $1$ at $x = 1$"
+            },
+            {
+              "left": "$1 + \\frac{x}{n}$ on $\\mathbb{R}$",
+              "right": "$1$ for every $x$"
+            },
+            {
+              "left": "$\\arctan(nx)$ on $\\mathbb{R}$",
+              "right": "$\\frac\\pi2$ for $x>0$, $0$ at $x=0$, $-\\frac\\pi2$ for $x<0$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## How to compute a pointwise limit\n\nThe method is always the same: **freeze $x$, then treat $n$ as the only variable.** The answer often depends on which region $x$ is in, so split into cases.\n\n**Example: $f_n(x) = \\dfrac{x^n}{1 + x^n}$ on $[0,\\infty)$.**\n- If $0 \\le x < 1$: $x^n \\to 0$, so $f_n(x) \\to \\frac{0}{1+0} = 0$.\n- If $x = 1$: $f_n(1) = \\frac{1}{2}$ for every $n$, so the limit is $\\frac12$.\n- If $x > 1$: $x^n \\to \\infty$, so divide top and bottom by $x^n$: $f_n(x) = \\frac{1}{x^{-n} + 1}$. Since $x^{-n} = (\\frac1x)^n \\to 0$, $f_n(x) \\to 1$.\n\nSo the limit is $0$ on $[0,1)$, $\\frac12$ at $1$, and $1$ on $(1,\\infty)$.\n\n**Why the cases split at $x = 1$.** Everything depends on $x^n$, whose behaviour changes at $|x| = 1$ (lesson 4.5). Look for the expression whose limit depends on $x$, and split where its behaviour changes.\n\n**Example where the limit fails to exist.** $f_n(x) = (\\sin x)^n$ on $\\mathbb{R}$. At $x = -\\frac\\pi2$, $\\sin x = -1$, so $f_n(x) = (-1)^n$, which diverges. So $(f_n)$ does **not** converge pointwise on $\\mathbb{R}$, even though it converges at most points (to $0$ where $|\\sin x| < 1$, and to $1$ where $\\sin x = 1$). Pointwise convergence on $E$ needs **every** point of $E$."
+        },
+        {
+          "type": "check",
+          "question": "What is the pointwise limit of $f_n(x) = \\dfrac{nx}{1 + nx}$ on $[0,\\infty)$?",
+          "options": [
+            "$1$ for every $x$",
+            "$0$ at $x = 0$, and $1$ for $x > 0$",
+            "$x$ for every $x$",
+            "It does not exist at $x = 0$"
+          ],
+          "correct": 1,
+          "explanation": "At $x = 0$, $f_n(0) = 0$ for every $n$. For $x > 0$, divide by $nx$: $f_n(x) = \\frac{1}{\\frac{1}{nx} + 1} \\to 1$. Saying \"$1$ everywhere\" forgets the point $x = 0$, the same slip as with $x^n$ at $x = 1$."
+        },
+        {
+          "type": "text",
+          "md": "## N depends on the point\n\nLook again at $x^n \\to 0$ on $[0,1)$, with $\\varepsilon = 0.1$. How large must $n$ be?\n\n- At $x = 0.5$: $0.5^4 = 0.0625 < 0.1$ but $0.5^3 = 0.125$, so $N = 4$.\n- At $x = 0.9$: $0.9^{22} \\approx 0.098 < 0.1$ but $0.9^{21} \\approx 0.109$, so $N = 22$.\n- At $x = 0.99$: you need $n \\ge 230$.\n\nAs $x$ creeps towards $1$, the required $N$ grows without bound. In fact for $x_n = 2^{-1/n}$, which lies in $[0,1)$, $x_n^{\\,n} = \\frac12$ exactly. So for every $n$ there is a point where $f_n$ is still $\\frac12$ away from the limit $0$. The convergence happens at every point, but **slower and slower** near $1$.\n\nThis is the weakness of pointwise convergence: there is no single $N$ that works for the whole set. Convergence with one $N$ for all $x$ is **uniform convergence**, the topic of lesson 8.9.\n\n**Contrast:** for $\\frac{\\sin(nx)}{n}$, $N > \\frac1\\varepsilon$ works at every $x$. That sequence converges pointwise and, as you will see in 8.9, uniformly."
+        },
+        {
+          "type": "check",
+          "question": "For $f_n(x) = x^n \\to 0$ on $[0,1)$ with $\\varepsilon = 0.1$, the smallest working $N$ is $4$ at $x = 0.5$ and $22$ at $x = 0.9$. What does this show?",
+          "options": [
+            "The sequence does not converge pointwise",
+            "$N$ depends on $x$, which the definition of pointwise convergence allows",
+            "The limit is not $0$ at $x = 0.9$",
+            "The definition needs $N = 4$ at every point"
+          ],
+          "correct": 1,
+          "explanation": "In the pointwise definition, $x$ is fixed before $N$ is chosen, so $N$ may change from point to point. The sequence does converge to $0$ at every $x \\in [0,1)$. Insisting on one $N$ for all $x$ is a stronger notion, uniform convergence."
+        },
+        {
+          "type": "text",
+          "md": "## Continuity can be lost\n\nEach $f_n(x) = x^n$ is continuous on $[0,1]$. Their pointwise limit is $0$ on $[0,1)$ and $1$ at $1$, which **jumps** at $x = 1$. So:\n\n> A pointwise limit of continuous functions need not be continuous.\n\nThe same happens for $\\frac{x^n}{1+x^n}$ (a jump at $1$), for $\\frac{nx}{1+nx}$ (a jump at $0$) and for $\\arctan(nx)$ (a jump at $0$).\n\n**What really goes wrong: swapping two limits.** Continuity of $f$ at $1$ would mean $\\lim_{x \\to 1^-} f(x) = f(1)$. Write both sides using $f(x) = \\lim_n x^n$:\n\n$$\\lim_{x\\to1^-}\\ \\lim_{n\\to\\infty} x^n = \\lim_{x \\to 1^-} 0 = 0, \\qquad \\lim_{n\\to\\infty}\\ \\lim_{x\\to1^-} x^n = \\lim_{n\\to\\infty} 1 = 1.$$\n\nThe two orders give different answers. Pointwise convergence gives you no right to swap $\\lim_x$ and $\\lim_n$.\n\n**Boundedness can be lost too.** On $(0,1]$, let $f_n(x) = \\min(n, \\frac1x)$. Each $f_n$ is bounded by $n$. At a fixed $x$, once $n \\ge \\frac1x$ we get $f_n(x) = \\frac1x$, so $f_n \\to \\frac1x$ pointwise, and $\\frac1x$ is unbounded on $(0,1]$.\n\n**And derivatives.** $f_n(x) = \\frac{\\sin(nx)}{n} \\to 0$, but $f_n'(x) = \\cos(nx)$. At $x = \\pi$ this is $(-1)^n$, which diverges, and at $x = 0$ it is $1$, not the derivative $0$ of the limit."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Pointwise limits can destroy continuity and integrals",
+          "md": "Each $x^n$ is continuous on $[0,1]$, but the pointwise limit jumps at $x=1$. So **a pointwise limit of continuous functions need not be continuous**.\n\nIn the same way, $\\lim_n\\int f_n$ need not equal $\\int\\lim_n f_n$, and derivatives need not converge to the derivative of the limit. In each case we are swapping two limits, which pointwise convergence does not justify."
+        },
+        {
+          "type": "text",
+          "md": "## Integrals can be lost\n\nAn integral is also a limit (of Riemann sums, lesson 7.5), so the same swapping problem appears.\n\n**Notation.** For a set $A$, the **indicator function** $\\mathbf{1}_A$ is $1$ on $A$ and $0$ off it. So $\\mathbf{1}_{(0,1/n)}(x) = 1$ when $0 < x < \\frac1n$, and $0$ otherwise.\n\n**Example 1: a moving spike.** On $[0,1]$ let $f_n = n\\,\\mathbf{1}_{(0,1/n)}$: a rectangle of height $n$ and width $\\frac1n$.\n- **Pointwise:** at $x = 0$ every term is $0$. At a fixed $x > 0$, once $\\frac1n \\le x$ the point is outside the rectangle, so $f_n(x) = 0$. So $f_n \\to 0$ pointwise.\n- **Integrals:** $\\int_0^1 f_n = n \\cdot \\frac1n = 1$ for every $n$.\n\nSo $\\lim_n \\int_0^1 f_n = 1$, but $\\int_0^1 \\lim_n f_n = \\int_0^1 0 = 0$.\n\n**Example 2: a smooth version.** $f_n(x) = n^2 x e^{-nx}$ on $[0,1]$. Each $f_n$ is continuous.\n- **Pointwise:** $f_n(0) = 0$. For fixed $x > 0$, $n^2 e^{-nx} \\to 0$ because exponentials beat polynomials, so $f_n(x) \\to 0$.\n- **Integrals:** substitute $t = nx$, so $dx = \\frac{dt}{n}$:\n\n$$\\int_0^1 n^2xe^{-nx}\\,dx=\\int_0^n te^{-t}\\,dt=1-(n+1)e^{-n}\\to1.$$\n\nThe mass of the function does not disappear; it gets squeezed into a narrower and narrower region near $0$, where each fixed point eventually escapes it. Lesson 8.11 shows that uniform convergence on $[a,b]$ stops this from happening."
+        },
+        {
+          "type": "check",
+          "question": "For $f_n = n\\,\\mathbf{1}_{(0,1/n)}$ on $[0,1]$, which statement is true?",
+          "options": [
+            "$f_n(0.01) = 0$ for all $n \\ge 100$",
+            "$f_n(0.01) \\to \\infty$",
+            "$\\int_0^1 f_n \\to 0$",
+            "The pointwise limit is $1$"
+          ],
+          "correct": 0,
+          "explanation": "For $n \\ge 100$, $\\frac1n \\le 0.01$, so $0.01$ is outside $(0,\\frac1n)$ and $f_n(0.01) = 0$. The spike's height grows, but it moves past every fixed point, so $f_n(0.01) \\to 0$. The integrals are all $1$, and the pointwise limit is $0$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Sequence of functions",
+              "back": "A list $f_1, f_2, \\dots$ on one set $E$. **Fixing** $x$ gives a sequence of real numbers $f_n(x)$.\n\n*Example:* $f_n(x) = x^n$; at $x = \\frac12$ you get $\\frac12, \\frac14, \\dots$"
+            },
+            {
+              "front": "Pointwise convergence",
+              "back": "$f_n(x) \\to f(x)$ for **every** $x \\in E$, with $N$ allowed to depend on $x$ and $\\varepsilon$.\n\n*Example:* $\\frac xn \\to 0$ on $\\mathbb{R}$."
+            },
+            {
+              "front": "Computing a pointwise limit",
+              "back": "**Freeze $x$**, take the limit in $n$, and split into cases where the behaviour changes.\n\n*Example:* $\\frac{x^n}{1+x^n}$: cases $x<1$, $x=1$, $x>1$."
+            },
+            {
+              "front": "Loss of continuity",
+              "back": "A pointwise limit of continuous functions **need not** be continuous.\n\n*Example:* $x^n$ on $[0,1]$; the limit jumps at $1$."
+            },
+            {
+              "front": "Loss of the integral",
+              "back": "Pointwise convergence does **not** give $\\int f_n \\to \\int f$.\n\n*Example:* $n\\,\\mathbf{1}_{(0,1/n)} \\to 0$ but every integral is $1$."
+            },
+            {
+              "front": "Indicator function",
+              "back": "$\\mathbf{1}_A(x) = 1$ if $x \\in A$ and $0$ otherwise.\n\n*Example:* $\\mathbf{1}_{(0,1/2)}(0.3) = 1$, $\\mathbf{1}_{(0,1/2)}(0.7) = 0$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A friend says: \"Each $f_n$ is continuous on $[0,1]$ and $f_n \\to f$ pointwise, so $f$ is continuous, and $\\int_0^1 f_n \\to \\int_0^1 f$.\" How should you respond?",
+          "options": [
+            "Both conclusions are correct",
+            "Both can fail; $x^n$ breaks continuity and $n^2 x e^{-nx}$ breaks the integral",
+            "Continuity is fine, but the integral can fail",
+            "The integral is fine, but continuity can fail"
+          ],
+          "correct": 1,
+          "explanation": "$x^n$ is continuous with a discontinuous pointwise limit. $n^2xe^{-nx}$ is continuous, tends to $0$ pointwise, but has integrals tending to $1$. Both conclusions need something stronger than pointwise convergence, such as uniform convergence (lessons 8.10 and 8.11)."
+        },
+        {
+          "type": "steps",
+          "title": "Worked example: the pointwise limit of $\\arctan(nx)$",
+          "steps": [
+            {
+              "title": "Freeze x",
+              "md": "Let $f_n(x) = \\arctan(nx)$ on $\\mathbb{R}$. Fix a real number $x$. Now $nx$ is a real sequence in $n$, and we want the limit of $\\arctan$ of it."
+            },
+            {
+              "title": "Find where the behaviour changes",
+              "md": "$nx \\to \\infty$ if $x > 0$, $nx \\to -\\infty$ if $x < 0$, and $nx = 0$ if $x = 0$. So split into three cases. The sign of $x$ is what matters, not its size."
+            },
+            {
+              "title": "Compute each case",
+              "md": "- $x > 0$: $nx \\to \\infty$ and $\\arctan t \\to \\frac\\pi2$ as $t \\to \\infty$, so $f_n(x) \\to \\frac\\pi2$.\n- $x = 0$: $f_n(0) = \\arctan 0 = 0$ for every $n$.\n- $x < 0$: $nx \\to -\\infty$, so $f_n(x) \\to -\\frac\\pi2$."
+            },
+            {
+              "title": "Write the limit function",
+              "md": "$$f(x) = \\begin{cases} \\frac\\pi2 & x > 0,\\\\ 0 & x = 0,\\\\ -\\frac\\pi2 & x < 0.\\end{cases}$$\n\nSo $f_n \\to f$ pointwise on $\\mathbb{R}$."
+            },
+            {
+              "title": "Ask what survived",
+              "md": "Each $f_n$ is continuous, but $f$ jumps at $0$. Each $f_n$ is strictly increasing, but $f$ is only non-decreasing (it is constant on $(0,\\infty)$). Continuity is lost; boundedness (by $\\frac\\pi2$) survives."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the worked example, why is $x = 0$ treated as its own case?",
+          "options": [
+            "Because $\\arctan$ is not defined at $0$",
+            "Because $nx$ does not tend to $\\pm\\infty$ when $x = 0$: it is $0$ for every $n$",
+            "Because pointwise limits always have a special value at $0$",
+            "It is not needed; the case $x > 0$ covers it"
+          ],
+          "correct": 1,
+          "explanation": "For $x \\ne 0$, $nx$ runs off to $\\pm\\infty$, but at $x = 0$ the sequence is constantly $0$, so the limit is $\\arctan 0 = 0$, different from both $\\pm\\frac\\pi2$. $\\arctan$ is defined everywhere, and nothing makes $0$ special in general; it is special here because of $nx$."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **find the pointwise limit of $f_n(x) = \\frac{x^n}{1+x^n}$ at a point $x > 1$.**",
+          "items": [
+            "Fix $x > 1$; then $x^n \\to \\infty$, so the fraction has the form $\\frac{\\infty}{\\infty}$.",
+            "Divide top and bottom by $x^n$: $f_n(x) = \\frac{1}{x^{-n} + 1}$.",
+            "Since $0 < \\frac1x < 1$, $x^{-n} = (\\frac1x)^n \\to 0$.",
+            "So $f_n(x) \\to \\frac{1}{0 + 1} = 1$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: a bump that slides towards 0",
+          "problem": "Let $f_n(x) = \\dfrac{nx}{1 + n^2x^2}$ on $\\mathbb{R}$.\n\n(a) Find the pointwise limit $f$.\n(b) Compute $f_n(\\frac1n)$.\n(c) What does (b) tell you about how the convergence behaves near $0$?",
+          "solution": "**(a)** At $x = 0$: $f_n(0) = 0$ for every $n$. For fixed $x \\ne 0$, divide top and bottom by $n^2$:\n\n$$f_n(x) = \\frac{x/n}{1/n^2 + x^2} \\to \\frac{0}{0 + x^2} = 0.$$\n\nSo $f_n \\to 0$ pointwise on all of $\\mathbb{R}$. Here the limit function is continuous, and the two cases happen to give the same answer.\n\n**(b)** $f_n(\\frac1n) = \\dfrac{1}{1 + 1} = \\dfrac12$.\n\n**(c)** For every $n$ there is a point, $x = \\frac1n$, where $f_n$ is still $\\frac12$ away from the limit $0$. So no single $N$ makes $|f_n(x)| < \\frac12$ for all $x$ at once. The bump of height $\\frac12$ slides towards $0$: each fixed point is eventually passed, but the bump never shrinks. This is pointwise but not uniform convergence (lesson 8.9).\n\n**Check your version:** did you handle $x = 0$ separately? Did you divide by the highest power of $n$ before taking the limit? In (c), did you notice that a continuous limit does not mean the convergence is \"nice\"?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is a pointwise limit of bounded functions bounded?",
+              "a": "Not necessarily. On $(0,1]$ let $f_n(x)=\\min(n,1/x)$. Each $f_n$ is bounded by $n$, but $f_n\\to1/x$ pointwise, which is unbounded."
+            },
+            {
+              "q": "What exactly goes wrong at $x=1$ for $x^n$?",
+              "a": "It is a swap of limits: $\\lim_{x\\to1^-}\\lim_{n\\to\\infty}x^n=0$, but $\\lim_{n\\to\\infty}\\lim_{x\\to1^-}x^n=1$."
+            },
+            {
+              "q": "How can I disprove something stronger than pointwise convergence?",
+              "a": "Find points $x_n$ where $|f_n(x_n)-f(x_n)|$ stays large. For $x^n$ on $[0,1)$, take $x_n=2^{-1/n}$: then $x_n^n=\\tfrac12$ for every $n$, even though $x^n\\to0$ at every point of $[0,1)$."
+            },
+            {
+              "q": "If the pointwise limit is continuous, is everything fine?",
+              "a": "No. $\\frac{nx}{1+n^2x^2} \\to 0$, a continuous limit, yet $f_n(\\frac1n) = \\frac12$ for every $n$. And $n^2xe^{-nx} \\to 0$ with integrals tending to $1$. A nice limit function does not mean the convergence was nice."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $f_n \\to f$ **pointwise** on $E$ means $f_n(x) \\to f(x)$ for every $x \\in E$: fix $x$, then it is a real sequence.\n- In the definition, $N$ may depend on $x$ as well as on $\\varepsilon$.\n- To compute a pointwise limit, freeze $x$ and split into cases where the behaviour changes (for $x^n$, at $|x| = 1$). Don't forget single points like $x = 1$ or $x = 0$.\n- Pointwise limits can lose **continuity** ($x^n$), **boundedness** ($\\min(n, 1/x)$), **integrals** ($n\\,\\mathbf{1}_{(0,1/n)}$) and **derivatives** ($\\frac{\\sin nx}{n}$).\n- Each failure is a swap of two limits. Uniform convergence (lesson 8.9) is the fix."
+        }
+      ],
+      "questions": [
+        {
+          "prompt": "What is the pointwise limit of $f_n(x)=x^n$ on $[0,1]$?",
+          "options": [
+            "$0$ everywhere",
+            "$f(x)=0$ for $x<1$ and $f(1)=1$",
+            "$1$ everywhere",
+            "It does not exist at $x=1$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$x^n\\to0$ for $0\\le x<1$, and $1^n=1$ for every $n$, so the limit at $1$ exists and equals $1$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The pointwise limit of a sequence of continuous functions on $[0,1]$ is always continuous.",
+          "answer": [
+            false
+          ],
+          "explanation": "$x^n$ on $[0,1]$ is the standard counterexample: each term is continuous, but the limit jumps at $1$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f_n(x)=\\dfrac{x^n}{1+x^n}$ on $[0,\\infty)$ and $f$ its pointwise limit. What is $f(1)$?",
+          "answer": [
+            "1/2",
+            "0.5",
+            ".5"
+          ],
+          "explanation": "$f_n(1)=\\frac{1}{1+1}=\\frac{1}{2}$ for every $n$, so the limit at $1$ is $\\frac12$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which sequences converge pointwise on all of $\\mathbb{R}$?",
+          "options": [
+            "$\\dfrac{\\sin(nx)}{n}$",
+            "$(\\sin x)^n$",
+            "$\\dfrac{x}{n}$",
+            "$\\arctan(nx)$"
+          ],
+          "answer": [
+            0,
+            2,
+            3
+          ],
+          "explanation": "$\\frac{\\sin(nx)}{n}\\to0$, $\\frac xn\\to0$, and $\\arctan(nx)\\to\\frac\\pi2,0,-\\frac\\pi2$ for $x>0$, $x=0$, $x<0$. But at $x=-\\frac\\pi2$, $(\\sin x)^n=(-1)^n$ diverges."
+        },
+        {
+          "prompt": "On $[0,1]$, $f_n=n\\,\\mathbf{1}_{(0,1/n)}$ converges pointwise to $0$, while $\\int_0^1 f_n=1$ for every $n$. What does this show?",
+          "options": [
+            "The functions $f_n$ are not integrable",
+            "Pointwise limits are never integrable",
+            "The pointwise limit is not $0$",
+            "Pointwise convergence does not justify swapping limit and integral"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "Each $f_n$ is a step function (integrable), and the limit $0$ is integrable, yet $\\lim\\int f_n=1\\ne0=\\int\\lim f_n$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In the definition of pointwise convergence on $E$, the index $N$ is allowed to depend on both $\\varepsilon$ and the point $x$.",
+          "answer": [
+            true
+          ],
+          "explanation": "$x$ is fixed before $N$ is chosen. That dependence on $x$ is exactly what separates pointwise from uniform convergence (lesson 8.9)."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f_n(x) = x^n$ at the point $x = 0.9$ with $\\varepsilon = 0.1$, what is the smallest $N$ such that $0.9^n < 0.1$ for all $n \\ge N$?",
+          "answer": [
+            "22",
+            "N=22",
+            "N = 22"
+          ],
+          "explanation": "$0.9^{21} \\approx 0.109 > 0.1$ and $0.9^{22} \\approx 0.098 < 0.1$, and the powers keep decreasing, so $N = 22$. At $x = 0.5$ the answer is only $4$: $N$ depends on $x$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Each $f_n$ below is continuous. For which sequences is the pointwise limit **discontinuous**? Select all that apply.",
+          "options": [
+            "$x^n$ on $[0,1]$",
+            "$\\dfrac{x}{n}$ on $\\mathbb{R}$",
+            "$\\arctan(nx)$ on $\\mathbb{R}$",
+            "$\\dfrac{nx}{1+n^2x^2}$ on $\\mathbb{R}$"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "$x^n$ has a limit that jumps at $1$, and $\\arctan(nx)$ has a limit that jumps at $0$. $\\frac xn \\to 0$ and $\\frac{nx}{1+n^2x^2} \\to 0$, and the zero function is continuous."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the pointwise limit of $f_n(x) = \\dfrac{nx}{1+nx}$ at $x = 0$ and at $x = 2$?",
+          "options": [
+            "$0$ at both",
+            "$1$ at both",
+            "$0$ at $x = 0$ and $1$ at $x = 2$",
+            "$0$ at $x = 0$ and $\\frac23$ at $x = 2$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$f_n(0) = 0$ for every $n$. At $x = 2$, $f_n(2) = \\frac{2n}{1+2n} \\to 1$. The value $\\frac23$ is $f_1(2)$, not the limit."
+        },
+        {
+          "type": "single",
+          "prompt": "$f_n(x) = n^2xe^{-nx}$ on $[0,1]$ tends to $0$ pointwise. What is $\\lim_{n\\to\\infty}\\int_0^1 f_n(x)\\,dx$?",
+          "options": [
+            "$0$",
+            "$1$",
+            "$\\infty$",
+            "The limit does not exist"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "With $t = nx$, $\\int_0^1 f_n = \\int_0^n te^{-t}\\,dt = 1 - (n+1)e^{-n} \\to 1$. So the limit of the integrals is $1$, not the integral of the limit, which is $0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which properties can be lost when passing to a pointwise limit? Select all that apply.",
+          "options": [
+            "Continuity",
+            "Boundedness",
+            "The value of the integral",
+            "Convergence of the derivatives to the derivative of the limit"
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "explanation": "All four: $x^n$ loses continuity, $\\min(n, \\frac1x)$ loses boundedness, $n\\,\\mathbf{1}_{(0,1/n)}$ loses the integral, and $\\frac{\\sin(nx)}{n} \\to 0$ has derivatives $\\cos(nx)$ that do not tend to $0$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f_n \\to f$ pointwise on $E$ and every $f_n$ is bounded on $E$, then $f$ is bounded on $E$.",
+          "answer": [
+            false
+          ],
+          "explanation": "On $(0,1]$, $f_n(x) = \\min(n, \\frac1x)$ is bounded by $n$, but $f_n \\to \\frac1x$ pointwise, which is unbounded."
+        }
+      ]
+    }
+  ]
+}

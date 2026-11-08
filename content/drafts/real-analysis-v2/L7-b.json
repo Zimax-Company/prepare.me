@@ -1,0 +1,1404 @@
+{
+  "concepts": [
+    {
+      "slug": "7-5-riemann-integrability",
+      "title": "Riemann integrability",
+      "summary": "When upper and lower integrals agree, and the $\\varepsilon$-criterion that decides it.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Riemann integrability",
+          "md": "Lesson 7.4 gave every bounded function two numbers: a best over-estimate and a best under-estimate of its area. This lesson says what it means for them to agree, and gives a practical test for checking it.\n\n**In this lesson you will learn to:**\n- state what it means for a function to be **Riemann integrable**, and read the notation $\\mathcal{R}[a,b]$\n- use **Riemann's criterion**: find one partition with $U(f,P) - L(f,P) < \\varepsilon$\n- prove a function is integrable and compute its integral as a limit of upper sums\n- handle the classic edge cases: a function changed at one point, and the Dirichlet function\n\n**You need:** upper and lower sums $U(f,P)$ and $L(f,P)$, and the refinement lemma (lesson 7.3: adding points lowers $U$ and raises $L$); upper and lower integrals (lesson 7.4); and the fact that for any $\\varepsilon > 0$ there is an element of a set within $\\varepsilon$ of its supremum (lesson 2.9)."
+        },
+        {
+          "type": "text",
+          "md": "## When is there exactly one area?\n\nRecall the picture from lessons 7.3 and 7.4. For a bounded $f$ on $[a,b]$ and any partitions $P$ and $Q$,\n\n$$L(f,P) \\le \\underline{\\int_a^b} f \\le \\overline{\\int_a^b} f \\le U(f,Q).$$\n\nHere $\\underline{\\int_a^b} f = \\sup_P L(f,P)$ is the **lower integral** (the best under-estimate) and $\\overline{\\int_a^b} f = \\inf_P U(f,P)$ is the **upper integral** (the best over-estimate).\n\nAny sensible value for \"the area under $f$\" must lie between every lower sum and every upper sum. So it must lie in the interval from the lower integral to the upper integral.\n\n- If the two integrals are **equal**, that interval is a single point. There is exactly one candidate for the area, and we call it the integral.\n- If they are **different**, there is a whole range of candidates and no way to choose one.\n\nThe second case really happens. For the **Dirichlet function** $D$ (value $1$ at rationals, $0$ at irrationals), lesson 7.4 showed that every subinterval contains both kinds of number, so every $M_i = 1$ and every $m_i = 0$. Hence the upper integral is $1$ and the lower integral is $0$. Any number in $[0,1]$ is equally good as an \"area\", so $D$ has none."
+        },
+        {
+          "type": "text",
+          "md": "## The definition\n\n**Plain words.** A function is integrable when the best over-estimate and the best under-estimate of its area are the same number.\n\n**Definition.** A bounded function $f:[a,b]\\to\\mathbb{R}$ is **Riemann integrable** on $[a,b]$ if\n\n$$\\underline{\\int_a^b} f=\\overline{\\int_a^b} f .$$\n\nThe common value is the **Riemann integral**, written $\\int_a^b f$ or $\\int_a^b f(x)\\,dx$.\n\n**Notation.**\n- $\\mathcal{R}[a,b]$ is the set of all Riemann integrable functions on $[a,b]$. So $f \\in \\mathcal{R}[a,b]$ is read \"$f$ is Riemann integrable on $[a,b]$\".\n- In $\\int_a^b f(x)\\,dx$, the $dx$ only names the variable. The letter does not matter: $\\int_0^1 x\\,dx = \\int_0^1 t\\,dt$.\n\n**Examples.**\n- **Constant function** $f(x) = c$. On every subinterval $M_i = m_i = c$, so $U(f,P) = L(f,P) = c(b-a)$ for every $P$. Both integrals equal $c(b-a)$, so $\\int_a^b c\\,dx = c(b-a)$. This includes negative $c$: $\\int_1^4 (-2)\\,dx = -6$. An integral can be negative; it is a \"signed area\".\n- **Dirichlet function.** Upper integral $1$, lower integral $0$. **Not** integrable.\n\n**Edge case.** The definition only applies to **bounded** functions. For an unbounded $f$, some $M_i$ is not a real number, so $U(f,P)$ does not exist. Such functions are not Riemann integrable at all (lesson 7.11 extends the integral to some of them by taking limits)."
+        },
+        {
+          "type": "check",
+          "question": "For a bounded function $h$ on $[0,2]$ you are told $\\underline{\\int_0^2} h = 1.5$ and $\\overline{\\int_0^2} h = 1.5$. What can you conclude?",
+          "options": [
+            "$h$ is integrable and $\\int_0^2 h = 1.5$",
+            "$h$ is integrable only if it is also continuous",
+            "$h$ is not integrable, because the integral should be $3$",
+            "Nothing until we know $U(h,P)$ for every partition $P$"
+          ],
+          "correct": 0,
+          "explanation": "Equal upper and lower integrals is exactly the definition, and the common value is the integral. Continuity is not part of the definition. There is no reason the answer should be $3$. And the upper and lower integrals already summarise all partitions, so nothing more is needed."
+        },
+        {
+          "type": "text",
+          "md": "## Riemann's criterion\n\n**Why we need it.** The definition talks about an infimum and a supremum over **all** partitions. That is hard to compute directly. We want a test that involves just one partition at a time.\n\n**Plain words.** $f$ is integrable exactly when, however small a tolerance you name, you can find **one** partition whose upper and lower sums are within that tolerance of each other.\n\n**Theorem (Riemann's criterion).** A bounded $f$ is integrable on $[a,b]$ if and only if for every $\\varepsilon>0$ there is a partition $P$ with\n\n$$U(f,P)-L(f,P)<\\varepsilon .$$\n\nThe quantity $U(f,P)-L(f,P)$ is the **gap**. Written out,\n\n$$U(f,P)-L(f,P) = \\sum_{i=1}^n (M_i - m_i)\\,\\Delta x_i,$$\n\nwhere $M_i - m_i$ is how much $f$ varies on the $i$-th subinterval and $\\Delta x_i = x_i - x_{i-1}$ is its length. Picture the thin strips between the upper and lower rectangles: the gap is their total area.\n\n**Read the quantifiers carefully** (lesson 1.3). It is \"for every $\\varepsilon$ there is a $P$\". You choose $P$ **after** seeing $\\varepsilon$, and it is fine for smaller $\\varepsilon$ to need finer partitions. It is not \"one $P$ works for all $\\varepsilon$\", and it is not \"every $P$ has a small gap\": the trivial partition $\\{a, b\\}$ usually has a big gap even for integrable functions.\n\nThe proof below uses only the chain of inequalities from the previous section and the refinement lemma."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of Riemann's criterion",
+          "steps": [
+            {
+              "title": "(⇐) Squeeze the two integrals together",
+              "md": "Assume the $\\varepsilon$-condition. For any $\\varepsilon>0$ pick $P$ with $U(f,P)-L(f,P)<\\varepsilon$. Since $L(f,P)\\le\\underline{\\int_a^b} f\\le\\overline{\\int_a^b} f\\le U(f,P)$,\n\n$$0\\le\\overline{\\int_a^b} f-\\underline{\\int_a^b} f\\le U(f,P)-L(f,P)<\\varepsilon.$$\n\nThe two integrals sit inside an interval that is shorter than $\\varepsilon$."
+            },
+            {
+              "title": "(⇐) Conclude they are equal",
+              "md": "The number $\\overline{\\int_a^b} f-\\underline{\\int_a^b} f$ is non-negative and smaller than **every** $\\varepsilon>0$. The only such number is $0$ (if it were some $d > 0$, take $\\varepsilon = d$). So the upper and lower integrals are equal and $f$ is integrable."
+            },
+            {
+              "title": "(⇒) Approximate the inf and the sup",
+              "md": "Now assume $f$ is integrable with $I=\\int_a^b f$, and let $\\varepsilon>0$. Since $I$ is the infimum of the upper sums, $I + \\frac{\\varepsilon}{2}$ is not a lower bound for them, so there is $P_1$ with $U(f,P_1)<I+\\frac{\\varepsilon}{2}$. Since $I$ is also the supremum of the lower sums, there is $P_2$ with $L(f,P_2)>I-\\frac{\\varepsilon}{2}$.\n\nThe subtle point: $P_1$ and $P_2$ are probably **different** partitions, and the criterion needs a single one."
+            },
+            {
+              "title": "Merge them with a common refinement",
+              "md": "Let $P=P_1\\cup P_2$, which contains every point of both. By the refinement lemma, $U(f,P)\\le U(f,P_1)$ and $L(f,P)\\ge L(f,P_2)$, so\n\n$$U(f,P)-L(f,P)<\\left(I+\\tfrac{\\varepsilon}{2}\\right)-\\left(I-\\tfrac{\\varepsilon}{2}\\right)=\\varepsilon. \\quad\\blacksquare$$\n\nWe split $\\varepsilon$ into two halves so that the two errors add up to exactly $\\varepsilon$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the (⇒) direction we have $P_1$ with a small upper sum and $P_2$ with a large lower sum. Why do we pass to $P = P_1 \\cup P_2$?",
+          "options": [
+            "The criterion needs one partition with a small gap, and refining keeps both good estimates",
+            "Because $U(f,P_1) - L(f,P_2)$ is always negative",
+            "Because a union of partitions always has mesh $0$",
+            "It is not needed; $U(f,P_1) - L(f,P_1)$ is already less than $\\varepsilon$"
+          ],
+          "correct": 0,
+          "explanation": "We know nothing about $L(f,P_1)$ or $U(f,P_2)$, so neither partition alone is known to have a small gap. On $P_1 \\cup P_2$ the upper sum can only go down and the lower sum can only go up, so both estimates survive on one partition. The difference $U(f,P_1) - L(f,P_2)$ is never negative (every lower sum is at most every upper sum), and adding finitely many points never makes the mesh $0$."
+        },
+        {
+          "type": "text",
+          "md": "## Using the criterion: $f(x) = x$ on $[0,1]$\n\nTake the **uniform partition** $P_n$ (lesson 7.2): $n$ equal pieces with points $x_i = \\frac{i}{n}$ and each $\\Delta x_i = \\frac1n$. Since $f$ is increasing, the largest value on $[x_{i-1}, x_i]$ is at the right end and the smallest at the left end: $M_i = \\frac{i}{n}$ and $m_i = \\frac{i-1}{n}$. Using $1 + 2 + \\cdots + n = \\frac{n(n+1)}{2}$,\n\n$$U(f,P_n) = \\sum_{i=1}^n \\frac{i}{n}\\cdot\\frac1n = \\frac{n+1}{2n},\\qquad L(f,P_n) = \\frac{n-1}{2n},\\qquad U-L=\\frac1n.$$\n\n**Integrable.** Given $\\varepsilon>0$, choose $n>1/\\varepsilon$. Then the gap $\\frac1n < \\varepsilon$, so Riemann's criterion applies. For example, $\\varepsilon = 0.01$ needs $n > 100$, so $n = 101$ works.\n\n**The value.** A useful consequence of the criterion:\n\n**Sequential form.** If partitions $P_n$ have $U(f,P_n)-L(f,P_n)\\to 0$, then $f$ is integrable and\n$$\\int_a^b f=\\lim_{n\\to\\infty}U(f,P_n)=\\lim_{n\\to\\infty}L(f,P_n).$$\n\nWhy: the integral always lies between $L(f,P_n)$ and $U(f,P_n)$, and these squeeze together. Here $\\int_0^1 x\\,dx = \\lim \\frac{n+1}{2n} = \\frac12$, the area of a triangle with base $1$ and height $1$, as it should be.\n\n**Uniqueness.** If $f$ is integrable, $\\int_a^b f$ is the **only** number $I$ with $L(f,P)\\le I\\le U(f,P)$ for every partition $P$. Any such $I$ lies between the lower and upper integrals, and those are equal."
+        },
+        {
+          "type": "check",
+          "question": "Which inequality must you establish, for every $\\varepsilon>0$, to apply Riemann's criterion?",
+          "options": [
+            "$|S(f,P,t)-I|<\\varepsilon$ for one choice of tags",
+            "$U(f,P)<\\varepsilon$ for some $P$",
+            "$U(f,P)-L(f,P)<\\varepsilon$ for some $P$",
+            "$U(f,P)-L(f,P)<\\varepsilon$ for all $P$"
+          ],
+          "correct": 2,
+          "explanation": "The criterion needs just one partition (for each $\\varepsilon$) with a small gap. \"For all $P$\" is too strong: the trivial partition $\\{a,b\\}$ usually fails. A small upper sum says nothing about the gap. One family of Riemann sums is too weak, as the Dirichlet function shows below."
+        },
+        {
+          "type": "text",
+          "md": "## Edge case: change a function at one point\n\nLet $g(x)=0$ for $x\\in[0,1]$ except $g(\\frac12)=1$. One spike, of zero width. Is $g$ integrable, and is its integral $0$?\n\n**Lower sums.** Every subinterval contains points other than $\\frac12$, where $g = 0$. So every $m_i = 0$ and $L(g,P) = 0$ for every $P$.\n\n**Upper sums.** The trick is to trap the bad point in a very thin subinterval. Given $0 < \\varepsilon < 1$, let $\\delta = \\varepsilon/4$ and\n\n$$P=\\left\\{0,\\ \\tfrac12-\\delta,\\ \\tfrac12+\\delta,\\ 1\\right\\}.$$\n\nOnly the middle piece contains $\\frac12$, so $M_1 = M_3 = 0$ and $M_2 = 1$. Thus $U(g,P) = 1 \\cdot 2\\delta = \\frac{\\varepsilon}{2}$, and the gap is $\\frac{\\varepsilon}{2} < \\varepsilon$. (For $\\varepsilon \\ge 1$, the same partition with $\\delta = \\frac14$ already works.) So $g \\in \\mathcal{R}[0,1]$.\n\n**The value.** For every such $P$, $0 = L(g,P) \\le \\int_0^1 g \\le U(g,P) < \\varepsilon$. A number in $[0, \\varepsilon)$ for every $\\varepsilon > 0$ is $0$. So $\\int_0^1 g=0$.\n\n**The lesson.** Changing a function at a single point (or at finitely many points) changes neither integrability nor the integral. If the spike had height $5$, the upper sum would be $5 \\cdot 2\\delta = 10\\delta$, still as small as you like.\n\nThe general strategy, which you will use again and again:"
+        },
+        {
+          "type": "diagram",
+          "title": "Strategy for an integrability proof",
+          "nodes": [
+            "Fix $\\varepsilon>0$",
+            "Choose a partition $P$ adapted to $f$ (uniform, or isolating bad points)",
+            "Bound each $M_i-m_i$",
+            "Estimate $U-L=\\sum (M_i-m_i)\\Delta x_i<\\varepsilon$",
+            "Conclude by Riemann's criterion"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "One convergent family of Riemann sums proves nothing",
+          "md": "Recall a **Riemann sum** $S(f,P,t) = \\sum f(t_i)\\,\\Delta x_i$ uses one chosen point $t_i$ (a **tag**) in each subinterval (lesson 7.1).\n\nFor the Dirichlet function $D$, every Riemann sum with **rational** tags equals $\\sum 1 \\cdot \\Delta x_i = 1$, for every partition. So these sums \"converge\" to $1$ as the pieces shrink. Yet $D$ is not integrable: **irrational** tags give $0$.\n\nIntegrability needs control of $U-L$, which accounts for _all_ possible tags at once, because every Riemann sum lies between $L(f,P)$ and $U(f,P)$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function on $[0,1]$ to the right conclusion.",
+          "pairs": [
+            {
+              "left": "$f(x) = 3$",
+              "right": "Integrable: $U = L = 3$ for every partition"
+            },
+            {
+              "left": "$f(x) = x$",
+              "right": "Integrable: the gap on $P_n$ is $\\frac1n$"
+            },
+            {
+              "left": "$0$ everywhere except value $5$ at $\\frac12$",
+              "right": "Integrable with integral $0$: trap the spike in a thin piece"
+            },
+            {
+              "left": "The Dirichlet function",
+              "right": "Not integrable: upper integral $1$, lower integral $0$"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Riemann integrable",
+              "back": "Bounded $f$ whose **upper and lower integrals are equal**; the common value is $\\int_a^b f$.\n\n*Example:* $f(x) = c$ gives $\\int_a^b c\\,dx = c(b-a)$."
+            },
+            {
+              "front": "$\\mathcal{R}[a,b]$",
+              "back": "The **set** of Riemann integrable functions on $[a,b]$.\n\n*Example:* $f(x) = x$ is in $\\mathcal{R}[0,1]$; the Dirichlet function is not."
+            },
+            {
+              "front": "Gap",
+              "back": "$U(f,P) - L(f,P) = \\sum (M_i - m_i)\\Delta x_i$, the total area **between** upper and lower rectangles.\n\n*Example:* for $f(x) = x$ on $P_n$ it is $\\frac1n$."
+            },
+            {
+              "front": "Riemann's criterion",
+              "back": "$f$ is integrable **iff** for every $\\varepsilon > 0$ some partition has gap $< \\varepsilon$.\n\n*Example:* $f(x) = x$: take $P_n$ with $n > 1/\\varepsilon$."
+            },
+            {
+              "front": "Sequential form",
+              "back": "If $U(f,P_n) - L(f,P_n) \\to 0$, then $\\int_a^b f = \\lim U(f,P_n) = \\lim L(f,P_n)$.\n\n*Example:* $\\int_0^1 x\\,dx = \\lim \\frac{n+1}{2n} = \\frac12$."
+            },
+            {
+              "front": "Isolating a bad point",
+              "back": "Put a troublesome point in a subinterval of **tiny width**, so it adds little to the gap.\n\n*Example:* a single spike of height $1$ in width $2\\delta$ adds $2\\delta$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A classmate shows that for $f$ on $[0,1]$ the partition $Q = \\{0, 0.5, 1\\}$ has $U(f,Q) - L(f,Q) = 0.001$, and concludes that $f$ is integrable. What is wrong?",
+          "options": [
+            "Nothing: a gap of $0.001$ is small enough",
+            "One partition gives one gap; the criterion needs a partition with gap below **every** $\\varepsilon > 0$",
+            "The gap should be computed with Riemann sums, not upper and lower sums",
+            "The criterion only works for uniform partitions with many points"
+          ],
+          "correct": 1,
+          "explanation": "A single partition only shows the upper and lower integrals differ by at most $0.001$. To conclude they are equal you need, for every $\\varepsilon$ (say $\\varepsilon = 0.0001$), some partition with a smaller gap. Upper and lower sums are exactly the right tool, and the criterion allows any partition, uniform or not."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **prove that $f(x) = 0$ on $[0,2]$, except $f(1) = 4$, is integrable with integral $0$.**",
+          "items": [
+            "Every subinterval contains points where $f = 0$, so every $m_i = 0$ and $L(f,P) = 0$ for every $P$.",
+            "Let $\\varepsilon > 0$ and choose $\\delta$ with $0 < \\delta < 1$ and $8\\delta < \\varepsilon$.",
+            "Take $P = \\{0,\\ 1-\\delta,\\ 1+\\delta,\\ 2\\}$; only the middle piece contains $1$, so $U(f,P) = 4 \\cdot 2\\delta = 8\\delta$.",
+            "Then $U(f,P) - L(f,P) = 8\\delta < \\varepsilon$, so $f$ is integrable by Riemann's criterion.",
+            "Finally $0 \\le \\int_0^2 f \\le 8\\delta < \\varepsilon$ for every $\\varepsilon > 0$, so $\\int_0^2 f = 0$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $\\int_0^2 3x\\,dx$ from the definition",
+          "problem": "Let $f(x) = 3x$ on $[0,2]$. Using the uniform partition $P_n$, compute $U(f,P_n)$ and $L(f,P_n)$. Then prove $f$ is integrable and find $\\int_0^2 3x\\,dx$. Try it before opening the solution.",
+          "solution": "**Set up.** $P_n$ has $\\Delta x_i = \\frac2n$ and $x_i = \\frac{2i}{n}$. Since $f$ is increasing, $M_i = f(x_i) = \\frac{6i}{n}$ and $m_i = f(x_{i-1}) = \\frac{6(i-1)}{n}$.\n\n**Upper sum.**\n$$U(f,P_n) = \\sum_{i=1}^n \\frac{6i}{n}\\cdot\\frac2n = \\frac{12}{n^2}\\cdot\\frac{n(n+1)}{2} = \\frac{6(n+1)}{n}.$$\n\n**Lower sum.** The same with $i-1$ in place of $i$, and $0 + 1 + \\cdots + (n-1) = \\frac{(n-1)n}{2}$:\n$$L(f,P_n) = \\frac{6(n-1)}{n}.$$\n\n**Gap.** $U - L = \\frac{12}{n}$. Given $\\varepsilon > 0$, choose $n > \\frac{12}{\\varepsilon}$; then the gap is less than $\\varepsilon$, so $f \\in \\mathcal{R}[0,2]$ by Riemann's criterion.\n\n**Value.** By the sequential form, $\\int_0^2 3x\\,dx = \\lim \\frac{6(n+1)}{n} = 6$. Check: the region is a triangle with base $2$ and height $6$, area $6$.\n\n**Check your version:** did you say why $M_i$ is at the right endpoint? Did you choose $n$ **after** $\\varepsilon$? Did you justify the value with the sequential form rather than just a picture?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Is a Riemann integral just \"the area under the graph\"?",
+              "a": "It is a **signed** area: parts below the axis count negatively. For example $\\int_1^4 (-2)\\,dx = -6$. For $f \\ge 0$ it matches area. The definition is what makes \"area\" precise for strange functions like the one-spike function $g$."
+            },
+            {
+              "q": "If $f^2$ is integrable, must $f$ be?",
+              "a": "No. Let $f = 1$ on rationals and $-1$ on irrationals. Then $f^2 = 1$ everywhere, which is integrable. But every subinterval has $M_i = 1$ and $m_i = -1$, so the gap of $f$ is always $2(b-a)$."
+            },
+            {
+              "q": "Why not just make one partition with $U(f,P) = L(f,P)$?",
+              "a": "That forces $M_i = m_i$ on each piece, so $f$ is constant on every closed subinterval, and hence constant on all of $[a,b]$ (neighbouring pieces share an endpoint). Even $f(x) = x$ never has gap $0$. The criterion asks only for gaps **as small as you like**."
+            },
+            {
+              "q": "Do I always have to compute sums like this to find an integral?",
+              "a": "No. Lessons 7.6 and 7.7 show whole classes of functions are integrable, lesson 7.8 gives rules for combining integrals, and the Fundamental Theorem of Calculus (lesson 7.9) lets you compute most integrals with antiderivatives."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- A bounded $f$ is **Riemann integrable**, $f \\in \\mathcal{R}[a,b]$, when its upper and lower integrals are equal; the common value is $\\int_a^b f$.\n- **Riemann's criterion:** $f$ is integrable iff for every $\\varepsilon > 0$ there is **one** partition with $U(f,P) - L(f,P) < \\varepsilon$.\n- **Sequential form:** if the gaps on $P_n$ tend to $0$, then $\\int_a^b f = \\lim U(f,P_n) = \\lim L(f,P_n)$.\n- Changing $f$ at finitely many points changes neither integrability nor the integral: isolate each point in a tiny subinterval.\n- The Dirichlet function is not integrable; one family of Riemann sums converging is not enough."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "To show $f(x)=x$ satisfies Riemann's criterion on $[0,1]$ for a given $\\varepsilon>0$, it suffices to use the uniform partition $P_n$ with",
+          "options": [
+            "$n>\\varepsilon$",
+            "$n>1/\\varepsilon$",
+            "$n>1/\\varepsilon^2$ only",
+            "$n=2$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$U(f,P_n)-L(f,P_n)=\\frac1n<\\varepsilon$ exactly when $n>1/\\varepsilon$. $n > \\varepsilon$ fails for small $\\varepsilon$ (e.g. $\\varepsilon = 0.01$, $n = 1$). $n>1/\\varepsilon^2$ also works when $\\varepsilon<1$, but it is not the only choice. $n = 2$ gives gap $\\frac12$, too big for small $\\varepsilon$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The Dirichlet function is Riemann integrable on $[0,1]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Every subinterval contains rationals and irrationals, so every $M_i = 1$ and $m_i = 0$. Its upper integral is $1$ and its lower integral is $0$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "For a bounded $f$ on $[a,b]$, which conditions are equivalent to $f\\in\\mathcal{R}[a,b]$?",
+          "options": [
+            "$\\underline{\\int_a^b} f=\\overline{\\int_a^b} f$",
+            "For every $\\varepsilon>0$ there is $P$ with $U(f,P)-L(f,P)<\\varepsilon$",
+            "There are partitions $P_n$ with $U(f,P_n)-L(f,P_n)\\to 0$",
+            "There is a partition $P$ with $U(f,P)=L(f,P)$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The first is the definition, the second is Riemann's criterion, the third its sequential form (given $\\varepsilon$, take $n$ large). $U(f,P)=L(f,P)$ forces $f$ to be constant on each closed subinterval, hence constant on $[a,b]$: far too strong."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x)=0$ on $[0,1]$ except $f(\\tfrac12)=5$. What is $\\int_0^1 f$?",
+          "answer": [
+            "0",
+            "zero"
+          ],
+          "explanation": "Lower sums are all $0$, and isolating $\\frac12$ in a subinterval of length $2\\delta$ gives $U=10\\delta$, which can be made arbitrarily small. So the integral is squeezed to $0$."
+        },
+        {
+          "type": "single",
+          "prompt": "If $f\\in\\mathcal{R}[a,b]$, then $\\int_a^b f$ is characterised as",
+          "options": [
+            "the unique $I$ with $L(f,P)\\le I\\le U(f,P)$ for all partitions $P$",
+            "$U(f,P)$ for the finest partition $P$",
+            "the average of $U(f,P)$ and $L(f,P)$ for any $P$",
+            "$\\lim_{n\\to\\infty}f(b-1/n)\\,(b-a)$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "Any such $I$ lies between the lower and upper integrals, which coincide; so it is unique and equals the integral. There is no \"finest\" partition (you can always add a point). The average of $U$ and $L$ depends on $P$; for $f(x) = x^2$ on $[0,1]$ and $P = \\{0,1\\}$ it is $\\frac12$, not $\\frac13$. The last option only looks at values near $b$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f^2$ is Riemann integrable on $[a,b]$, then $f$ is Riemann integrable on $[a,b]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Let $f=1$ on rationals and $-1$ on irrationals. Then $f^2\\equiv 1$ is integrable, but $U(f,P)=b-a$ and $L(f,P)=-(b-a)$ for every $P$."
+        },
+        {
+          "type": "short",
+          "prompt": "What is $\\int_1^4 (-2)\\,dx$?",
+          "answer": [
+            "-6",
+            "−6"
+          ],
+          "explanation": "For a constant, $U(f,P) = L(f,P) = c(b-a)$ for every $P$. Here $(-2)(4-1) = -6$. Integrals can be negative."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If one partition $P$ of $[a,b]$ has $U(f,P) - L(f,P) < 0.01$, then $f$ is Riemann integrable on $[a,b]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "It only shows the upper and lower integrals are within $0.01$ of each other. Riemann's criterion needs such a partition for **every** $\\varepsilon > 0$. The function $f = 0.001 D$, a small multiple of the Dirichlet function, has gap $0.001(b-a)$ on every partition of an interval of length $b - a \\le 1$, yet is not integrable."
+        },
+        {
+          "type": "multiple",
+          "prompt": "A bounded function $f$ on $[0,1]$ has a partition $P$ with $L(f,P) = 1.9$ and a partition $Q$ with $U(f,Q) = 2.3$. If $f$ is integrable, which values could $\\int_0^1 f$ take? Select all that apply.",
+          "options": [
+            "$1.8$",
+            "$2.0$",
+            "$2.25$",
+            "$2.4$"
+          ],
+          "answer": [
+            1,
+            2
+          ],
+          "explanation": "The integral lies between every lower sum and every upper sum, so it is in $[1.9, 2.3]$. Both $2.0$ and $2.25$ are possible; $1.8$ is below a lower sum and $2.4$ is above an upper sum."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = 3x$ on $[0,2]$ and the uniform partition $P_n$, the gap is $U(f,P_n) - L(f,P_n) = \\frac{12}{n}$. What is the gap when $n = 6$?",
+          "answer": [
+            "2"
+          ],
+          "explanation": "$\\frac{12}{6} = 2$. To get a gap below $\\varepsilon$ you need $n > \\frac{12}{\\varepsilon}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "You want to prove a bounded $f$ is integrable using Riemann's criterion. Which is the correct order of choices? Select the one correct description.",
+          "options": [
+            "First fix $\\varepsilon > 0$, then choose a partition $P$ (which may depend on $\\varepsilon$), then show $U(f,P) - L(f,P) < \\varepsilon$",
+            "First choose $P$, then show $U(f,P) - L(f,P) < \\varepsilon$ for every $\\varepsilon > 0$",
+            "Show $U(f,P) - L(f,P) < \\varepsilon$ for every $P$ and every $\\varepsilon$",
+            "Find tags $t_i$ with $S(f,P,t) \\to I$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The criterion reads \"for every $\\varepsilon$ there is a $P$\", so $P$ is chosen after $\\varepsilon$. Choosing $P$ first would force a gap of $0$. \"Every $P$\" is far too strong, and one family of tags is too weak (Dirichlet with rational tags)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every Riemann integrable function on $[a,b]$ is bounded.",
+          "answer": [
+            true
+          ],
+          "explanation": "Boundedness is part of the definition: upper and lower sums only exist when every $M_i$ and $m_i$ is a real number. Unbounded functions need improper integrals (lesson 7.11)."
+        }
+      ]
+    },
+    {
+      "slug": "7-6-integrability-of-continuous-functions",
+      "title": "Integrability of continuous functions",
+      "summary": "Uniform continuity makes every continuous function on $[a,b]$ integrable.",
+      "est_minutes": 30,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Integrability of continuous functions",
+          "md": "Your first big integrability theorem: one proof that covers every continuous function on a closed bounded interval.\n\n**In this lesson you will learn to:**\n- state and prove that every continuous $f$ on $[a,b]$ is Riemann integrable\n- explain why **uniform** continuity, not just continuity, is what makes the proof work\n- get an explicit partition size for **Lipschitz** functions such as $x^2$\n- recognise what the theorem does not cover: open intervals, unbounded functions, and functions with a few jumps\n\n**You need:** Riemann's criterion (lesson 7.5); the Extreme Value Theorem (lesson 5.10: a continuous function on $[a,b]$ attains a maximum and a minimum); uniform continuity and the Heine–Cantor theorem (lessons 5.11 and 5.12); and the mesh $\\|P\\|$ of a partition (lesson 7.2: the length of its longest subinterval)."
+        },
+        {
+          "type": "text",
+          "md": "## Why a whole-class theorem?\n\nIn lesson 7.5 we proved $f(x) = x$ and $f(x) = 3x$ integrable by computing their upper and lower sums. That worked because the sums had neat formulas. Try the same for $e^{x^2}$ on $[0,1]$ or $\\sin x$ on $[0,\\pi]$ and you get sums with no closed form.\n\nWe need theorems that say \"every function of this kind is integrable\", so we never have to compute sums just to know an integral exists. The most important kind is the continuous functions.\n\n**Plain words.** If you can draw the graph over the closed interval $[a,b]$ without lifting your pen, the area under it is well defined.\n\n**Theorem.** If $f:[a,b]\\to\\mathbb{R}$ is continuous, then $f\\in\\mathcal{R}[a,b]$.\n\n**What the hypotheses give us.**\n- $f$ is **bounded** (Extreme Value Theorem), so upper and lower sums exist at all.\n- On each subinterval $[x_{i-1},x_i]$, $f$ is still continuous on a closed interval, so its sup $M_i$ and inf $m_i$ are **attained**: $M_i = f(u_i)$ and $m_i = f(s_i)$ for some points $u_i, s_i$ in that subinterval.\n\n**Examples it covers at once:** polynomials, $\\sin x$, $e^{x^2}$, $|x - 1|$ (continuous, even with a corner), all on any closed bounded interval.\n\nThe remaining question is how to make the gap $\\sum (M_i - m_i)\\Delta x_i$ small. That is where uniform continuity comes in."
+        },
+        {
+          "type": "text",
+          "md": "## The key ingredient: uniform continuity\n\n**Reminder (lesson 5.11).** $f$ is **uniformly continuous** on a set if for every $\\varepsilon > 0$ there is one $\\delta > 0$ that works everywhere:\n\n$$\\forall\\varepsilon>0\\ \\exists\\delta>0:\\ x,y\\in[a,b],\\ |x-y|<\\delta\\implies|f(x)-f(y)|<\\varepsilon.$$\n\nIn words: points closer than $\\delta$ have values closer than $\\varepsilon$, **wherever** they are. Ordinary continuity only promises a $\\delta$ for each point separately, and that $\\delta$ may shrink as the point moves.\n\n**The Heine–Cantor theorem (lesson 5.12)** says: a continuous function on a closed bounded interval $[a,b]$ is uniformly continuous.\n\n**Why it matters here.** The gap is a sum over **all** subintervals. To make every $M_i - m_i$ small at once, we want one subinterval length that controls $f$ everywhere. A uniform $\\delta$ is exactly that: choose a partition with all pieces shorter than $\\delta$, and on every piece $f$ varies by less than $\\varepsilon$.\n\n**Examples.**\n- $x^2$ on $[0,1]$: uniformly continuous (Heine–Cantor), and in fact $\\delta = \\varepsilon/2$ works, as you will see below.\n- $1/x$ on $(0,1]$: continuous but **not** uniformly continuous. Near $0$ the graph is so steep that no single $\\delta$ works. The interval $(0,1]$ is not closed, so Heine–Cantor does not apply."
+        },
+        {
+          "type": "check",
+          "question": "Which of these is guaranteed to be uniformly continuous by the Heine–Cantor theorem?",
+          "options": [
+            "$f(x) = \\sin(x^2)$ on $[0, 5]$",
+            "$f(x) = 1/x$ on $(0, 1]$",
+            "$f(x) = x^2$ on $[0, \\infty)$",
+            "The Dirichlet function on $[0,1]$"
+          ],
+          "correct": 0,
+          "explanation": "$\\sin(x^2)$ is continuous on the closed bounded interval $[0,5]$. The interval $(0,1]$ is not closed and $[0,\\infty)$ is not bounded, so Heine–Cantor says nothing there (and in fact neither function is uniformly continuous on those sets). The Dirichlet function is not continuous anywhere."
+        },
+        {
+          "type": "text",
+          "md": "## The plan of the proof\n\nWe want $U(f,P) - L(f,P) = \\sum_{i=1}^n (M_i - m_i)\\Delta x_i < \\varepsilon$.\n\n**Idea.** Make every oscillation $M_i - m_i$ smaller than some number $\\eta$ (the Greek letter \"eta\"). Then\n\n$$U(f,P) - L(f,P) < \\eta \\sum_{i=1}^n \\Delta x_i = \\eta\\,(b-a),$$\n\nbecause the lengths of the pieces add up to the length of the whole interval.\n\n**Choosing $\\eta$.** We want $\\eta(b-a) = \\varepsilon$, so we aim for $\\eta = \\frac{\\varepsilon}{b-a}$. This is a standard move: decide at the start what accuracy each piece needs so that the total comes out as exactly $\\varepsilon$.\n\n**Getting each $M_i - m_i < \\eta$.** Use uniform continuity with $\\eta$ in place of $\\varepsilon$: there is a $\\delta$ such that points closer than $\\delta$ have values closer than $\\eta$. If every piece of $P$ is shorter than $\\delta$ (that is, $\\|P\\| < \\delta$), then the points $u_i$ and $s_i$ where $f$ attains $M_i$ and $m_i$ are closer than $\\delta$, so $M_i - m_i = f(u_i) - f(s_i) < \\eta$.\n\nHere is the proof written out in full."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: continuous implies integrable",
+          "steps": [
+            {
+              "title": "Choose δ from uniform continuity",
+              "md": "Let $\\varepsilon>0$. By Heine–Cantor, $f$ is uniformly continuous on $[a,b]$, so there is $\\delta>0$ such that $|x-y|<\\delta$ implies $|f(x)-f(y)|<\\frac{\\varepsilon}{b-a}$.\n\nWe use $\\frac{\\varepsilon}{b-a}$, not $\\varepsilon$, because the oscillations will be multiplied by lengths adding up to $b-a$."
+            },
+            {
+              "title": "Choose a fine partition",
+              "md": "Let $P$ be any partition with $\\|P\\|<\\delta$, for example the uniform partition with $n>\\frac{b-a}{\\delta}$ pieces (each piece then has length $\\frac{b-a}{n} < \\delta$)."
+            },
+            {
+              "title": "Bound the oscillation on each piece",
+              "md": "By the Extreme Value Theorem on $[x_{i-1},x_i]$ there are $s_i,u_i$ there with $M_i=f(u_i)$ and $m_i=f(s_i)$. As both lie in the same piece, $|u_i-s_i|\\le\\Delta x_i<\\delta$, so\n\n$$M_i-m_i=f(u_i)-f(s_i)<\\frac{\\varepsilon}{b-a}.$$\n\nThis is where **uniform** continuity is essential: the same $\\delta$ works on every piece, wherever $u_i$ and $s_i$ turn out to be."
+            },
+            {
+              "title": "Add up the pieces",
+              "md": "$$U(f,P)-L(f,P)=\\sum_{i=1}^n (M_i-m_i)\\Delta x_i<\\frac{\\varepsilon}{b-a}\\sum_{i=1}^n\\Delta x_i=\\varepsilon.$$"
+            },
+            {
+              "title": "Conclude",
+              "md": "By Riemann's criterion, $f\\in\\mathcal{R}[a,b]$. In fact **every** partition with $\\|P\\|<\\delta$ has gap less than $\\varepsilon$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the step \"Bound the oscillation\", why may we write $M_i = f(u_i)$ for a point $u_i$ in $[x_{i-1}, x_i]$?",
+          "options": [
+            "Because $f$ is continuous on the closed interval $[x_{i-1}, x_i]$, so the Extreme Value Theorem says the supremum is attained",
+            "Because every bounded function attains its supremum",
+            "Because $f$ is increasing, so the supremum is at $x_i$",
+            "Because $M_i$ is defined as $f(x_i)$"
+          ],
+          "correct": 0,
+          "explanation": "A supremum need not be a value of $f$ in general (lesson 7.3 gave an example with a jump), but for a continuous function on a closed bounded interval it is, by the Extreme Value Theorem. $f$ need not be increasing, and $M_i$ is defined as a supremum, not as $f(x_i)$."
+        },
+        {
+          "type": "text",
+          "md": "## An explicit δ: Lipschitz functions\n\nThe proof says some $\\delta$ exists, but not how big it is. For many functions we can find it exactly.\n\n**Definition.** $f$ is **Lipschitz** on $[a,b]$ with constant $K$ if\n$$|f(x)-f(y)|\\le K|x-y| \\quad\\text{for all } x, y \\in [a,b].$$\nIn words: the graph is never steeper than slope $K$. Then $\\delta = \\frac{\\eta}{K}$ works in uniform continuity, so a Lipschitz function is uniformly continuous with a $\\delta$ you can write down.\n\n**The gap bound.** On each piece, $M_i - m_i = f(u_i) - f(s_i) \\le K|u_i - s_i| \\le K\\|P\\|$. Adding up,\n$$U(f,P)-L(f,P)\\le K\\|P\\|\\sum\\Delta x_i = K(b-a)\\|P\\|.$$\n\n**Examples.**\n- $f(x) = x^2$ on $[0,1]$: $|x^2 - y^2| = |x+y|\\,|x-y| \\le 2|x-y|$, so $K = 2$ and the gap is at most $2\\|P\\|$. Any $P$ with $\\|P\\| < \\varepsilon/2$ has gap below $\\varepsilon$.\n- $f(x) = 5x - 2$: $|f(x) - f(y)| = 5|x-y|$, so $K = 5$.\n- $\\sin x$: Lipschitz with $K = 1$ (by the Mean Value Theorem, lesson 6.7, since $|\\cos| \\le 1$).\n\n**Edge case.** $\\sqrt{x}$ on $[0,1]$ is **not** Lipschitz: near $0$ the graph is vertical, since $\\frac{\\sqrt{x} - 0}{x - 0} = \\frac{1}{\\sqrt{x}}$ is unbounded. But it is continuous on $[0,1]$, so it is still integrable. Lipschitz is a convenient extra, not a requirement."
+        },
+        {
+          "type": "check",
+          "question": "$f(x) = 3x + 1$ on $[0, 2]$ is Lipschitz with $K = 3$, so $U(f,P) - L(f,P) \\le 3 \\cdot 2 \\cdot \\|P\\| = 6\\|P\\|$. Which mesh guarantees a gap below $0.06$?",
+          "options": [
+            "$\\|P\\| < 0.01$",
+            "$\\|P\\| < 0.02$",
+            "$\\|P\\| < 0.06$",
+            "$\\|P\\| < 0.36$"
+          ],
+          "correct": 0,
+          "explanation": "$6\\|P\\| < 0.06$ exactly when $\\|P\\| < 0.01$. The option $0.02$ forgets the length $b - a = 2$; $0.06$ ignores the constant altogether; $0.36$ multiplies instead of dividing."
+        },
+        {
+          "type": "text",
+          "md": "## What the theorem does not cover\n\n**Both hypotheses matter: continuous, and on a closed bounded interval.**\n\n**Non-example: an open end.** $f(x) = 1/x$ on $(0,1]$, with $f(0) = 0$, is continuous at every point except $0$. But it is **unbounded**: the piece containing $0$ has no finite $M_i$, so upper sums do not exist and $f$ is not Riemann integrable. The theorem fails because $f$ is not continuous on all of the closed interval $[0,1]$.\n\n**Extension: finitely many bad points.** If $f$ is **bounded** on $[a,b]$ and continuous except at finitely many points, then $f\\in\\mathcal{R}[a,b]$. The idea is the trick from lesson 7.5. Say $m \\le f \\le M$. Trap each bad point in a tiny subinterval, of total length $\\ell$; those pieces contribute at most $(M - m)\\ell$ to the gap, which is small if $\\ell$ is small. On the closed pieces in between, $f$ is continuous, so the theorem makes their gap small too.\n\n- $\\sin(1/x)$ on $[0,1]$, with value $0$ at $0$: bounded by $1$, continuous except at $0$. **Integrable**, even though it oscillates infinitely often near $0$.\n- A step function such as $\\lfloor x \\rfloor$ on $[0,3]$ (the greatest integer $\\le x$): bounded, jumps at $1, 2, 3$. **Integrable**.\n\n**Continuity is sufficient, not necessary.** Lesson 7.7 shows every monotone function is integrable, even one with infinitely many jumps. The Dirichlet function, discontinuous everywhere, is not."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Continuity on the closed interval matters",
+          "md": "The theorem needs continuity on all of $[a,b]$, including the endpoints. \"Continuous on $(0,1]$\" is not enough: $1/x$ is continuous there but unbounded, so it is not Riemann integrable on $[0,1]$ whatever value you give it at $0$. Boundedness and uniform continuity both come from the interval being **closed and bounded**; on $(0,1]$ they can fail."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function on $[0,1]$ to the reason for its status. (Where a formula is undefined at $0$, the value there is $0$.)",
+          "pairs": [
+            {
+              "left": "$e^{x^2}$",
+              "right": "Integrable: continuous on the closed interval"
+            },
+            {
+              "left": "$\\sin(1/x)$",
+              "right": "Integrable: bounded, with only one discontinuity"
+            },
+            {
+              "left": "$1/x$",
+              "right": "Not integrable: unbounded"
+            },
+            {
+              "left": "The Dirichlet function",
+              "right": "Not integrable: bounded, but discontinuous everywhere and the gap never shrinks"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Continuous ⇒ integrable",
+              "back": "Every function **continuous on a closed bounded** $[a,b]$ is in $\\mathcal{R}[a,b]$.\n\n*Example:* $e^{x^2}$ on $[0,1]$, though its sums have no formula."
+            },
+            {
+              "front": "Uniformly continuous",
+              "back": "For every $\\varepsilon > 0$, **one** $\\delta$ works at every point: $|x - y| < \\delta \\Rightarrow |f(x) - f(y)| < \\varepsilon$.\n\n*Example:* $x^2$ on $[0,1]$; *non-example:* $1/x$ on $(0,1]$."
+            },
+            {
+              "front": "Heine–Cantor theorem",
+              "back": "Continuous on a **closed bounded** interval implies uniformly continuous.\n\n*Example:* $\\sin(x^2)$ on $[0,5]$."
+            },
+            {
+              "front": "Oscillation on a piece",
+              "back": "$M_i - m_i$: how much $f$ **varies** on the $i$-th subinterval.\n\n*Example:* $x^2$ on $[0.5, 1]$ has oscillation $1 - 0.25 = 0.75$."
+            },
+            {
+              "front": "Lipschitz with constant K",
+              "back": "$|f(x) - f(y)| \\le K|x - y|$ for all $x, y$: slope never steeper than $K$. Gives gap $\\le K(b-a)\\|P\\|$.\n\n*Example:* $x^2$ on $[0,1]$ with $K = 2$."
+            },
+            {
+              "front": "Finitely many discontinuities",
+              "back": "**Bounded** and continuous except at finitely many points implies integrable.\n\n*Example:* $\\sin(1/x)$ on $[0,1]$ with value $0$ at $0$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A student writes: \"$f$ is continuous on $[a,b]$, so at each point $c$ there is a $\\delta_c$ with $|x - c| < \\delta_c \\Rightarrow |f(x) - f(c)| < \\eta$. Take a partition with $\\|P\\| < \\delta_c$.\" What is wrong?",
+          "options": [
+            "$\\delta_c$ depends on the point $c$, so there may be no single mesh that works everywhere; you need one uniform $\\delta$",
+            "Nothing; this is the standard proof",
+            "Continuity gives $\\varepsilon$ from $\\delta$, not $\\delta$ from $\\varepsilon$",
+            "The partition should have $\\|P\\| > \\delta_c$"
+          ],
+          "correct": 0,
+          "explanation": "\"$\\|P\\| < \\delta_c$\" makes no sense when $\\delta_c$ changes with $c$: which $c$? The partition must be chosen before we know where the $M_i$ and $m_i$ occur. Heine–Cantor supplies one $\\delta$ for the whole interval. The direction \"$\\delta$ from $\\varepsilon$\" is correct, and a larger mesh would only make things worse."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps of the proof in order: **if $f$ is continuous on $[a,b]$, then $f \\in \\mathcal{R}[a,b]$.**",
+          "items": [
+            "Let $\\varepsilon > 0$. By Heine–Cantor, choose $\\delta > 0$ so that $|x - y| < \\delta$ implies $|f(x) - f(y)| < \\frac{\\varepsilon}{b-a}$.",
+            "Take any partition $P$ with $\\|P\\| < \\delta$.",
+            "On each piece, the Extreme Value Theorem gives $u_i, s_i$ with $M_i = f(u_i)$, $m_i = f(s_i)$, and $|u_i - s_i| < \\delta$, so $M_i - m_i < \\frac{\\varepsilon}{b-a}$.",
+            "Summing, $U(f,P) - L(f,P) < \\frac{\\varepsilon}{b-a}\\sum \\Delta x_i = \\varepsilon$.",
+            "By Riemann's criterion, $f$ is integrable. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: an explicit mesh for $x^3$",
+          "problem": "Let $f(x) = x^3$ on $[0,1]$. Show that $U(f,P) - L(f,P) \\le 3\\|P\\|$ for every partition $P$. Then find a mesh that guarantees a gap below $0.6$. Try it before opening the solution.",
+          "solution": "**Lipschitz bound.** For $x, y \\in [0,1]$, factor the difference of cubes:\n$$|x^3 - y^3| = |x - y|\\,|x^2 + xy + y^2| \\le 3|x - y|,$$\nsince each of $x^2$, $xy$, $y^2$ is at most $1$. So $f$ is Lipschitz with $K = 3$.\n\n**Oscillation.** $f$ is continuous, so on each piece $M_i = f(u_i)$ and $m_i = f(s_i)$ with $u_i, s_i$ in that piece. Then\n$$M_i - m_i \\le 3|u_i - s_i| \\le 3\\Delta x_i \\le 3\\|P\\|.$$\n\n**Sum.**\n$$U(f,P) - L(f,P) = \\sum (M_i - m_i)\\Delta x_i \\le 3\\|P\\|\\sum\\Delta x_i = 3\\|P\\|.$$\n\n**Mesh.** $3\\|P\\| < 0.6$ when $\\|P\\| < 0.2$. For example, the uniform partition with $n = 6$ pieces has $\\|P\\| = \\frac16 < 0.2$, so its gap is below $0.6$.\n\n**Check your version:** did you bound $x^2 + xy + y^2$ using that $x, y \\in [0,1]$? Did you use that the lengths $\\Delta x_i$ add up to $b - a = 1$? Did you choose $\\|P\\| < 0.2$ strictly?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "What about functions with a few jumps?",
+              "a": "**Theorem.** If $f$ is bounded on $[a,b]$ and continuous except at finitely many points, then $f\\in\\mathcal{R}[a,b]$. Proof idea: say $m \\le f \\le M$. Enclose the bad points in tiny subintervals of total length less than $\\frac{\\varepsilon}{2(M-m)+1}$, so these pieces contribute less than $\\frac{\\varepsilon}{2}$ to $U-L$. On the remaining closed pieces $f$ is continuous, so the theorem makes their contribution less than $\\frac{\\varepsilon}{2}$ too."
+            },
+            {
+              "q": "So is $\\sin(1/x)$ (with value $0$ at $0$) integrable on $[0,1]$?",
+              "a": "Yes. It is bounded by $1$ and continuous except at $0$, so the previous theorem applies, even though it oscillates infinitely often near $0$. The wild part is squeezed into a piece $[0, \\delta]$ that contributes at most $2\\delta$ to the gap."
+            },
+            {
+              "q": "Is continuity necessary for integrability?",
+              "a": "No. Step functions and monotone functions (lesson 7.7) can be discontinuous and still integrable. Continuity is sufficient, not necessary."
+            },
+            {
+              "q": "Does the proof tell me the value of $\\int_a^b f$?",
+              "a": "Not directly; it only shows the integral exists. To find the value you can use the sequential form from lesson 7.5 with uniform partitions, or, far more easily, the Fundamental Theorem of Calculus (lesson 7.9)."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- Every function continuous on a **closed bounded** interval $[a,b]$ is Riemann integrable.\n- The proof: Heine–Cantor gives one $\\delta$ for $\\eta = \\frac{\\varepsilon}{b-a}$; any $P$ with $\\|P\\| < \\delta$ has every $M_i - m_i < \\eta$, so the gap is below $\\varepsilon$.\n- **Uniform** continuity is essential, because one partition must control every piece at once.\n- A **Lipschitz** function with constant $K$ has gap at most $K(b-a)\\|P\\|$, which gives $\\delta$ explicitly.\n- Bounded functions with finitely many discontinuities are integrable too; unbounded ones like $1/x$ on $[0,1]$ are not."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "Which property of continuous functions on $[a,b]$ is the key to proving they are integrable?",
+          "options": [
+            "They are differentiable almost everywhere",
+            "They have antiderivatives given by formulas",
+            "They are monotone on some subinterval",
+            "They are uniformly continuous"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "Heine–Cantor gives one $\\delta$ for the whole interval, so a single partition with $\\|P\\|<\\delta$ makes every $M_i-m_i$ small. Continuous functions need not be differentiable or monotone anywhere, and most have no antiderivative formula (e.g. $e^{x^2}$)."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is continuous on $(0,1]$ and we set $f(0)=0$, then $f$ is Riemann integrable on $[0,1]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Not always: $f(x)=1/x$ is continuous on $(0,1]$ but unbounded, so it is not Riemann integrable on $[0,1]$. (If $f$ happens to be bounded, as $\\sin(1/x)$ is, it is integrable.)"
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which functions are Riemann integrable on $[0,1]$? (Each is given the value $0$ at $x=0$ where a formula is undefined.)",
+          "options": [
+            "$f(x)=\\sin(1/x)$",
+            "$f(x)=x^3$",
+            "The Dirichlet function",
+            "$f(x)=1/x$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "$\\sin(1/x)$ is bounded with one discontinuity; $x^3$ is continuous. Dirichlet has upper integral $1$ and lower integral $0$; $1/x$ is unbounded."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof that continuous $f$ is integrable, $\\delta$ is chosen so that $|x-y|<\\delta$ implies $|f(x)-f(y)|<\\eta$. Which $\\eta$ makes $U(f,P)-L(f,P)<\\varepsilon$ whenever $\\|P\\|<\\delta$?",
+          "options": [
+            "$\\eta=\\varepsilon$",
+            "$\\eta=\\varepsilon(b-a)$",
+            "$\\eta=\\frac{\\varepsilon}{b-a}$",
+            "$\\eta=\\frac{\\varepsilon}{n}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "Then $U-L=\\sum(M_i-m_i)\\Delta x_i<\\eta\\,(b-a)=\\varepsilon$. With $\\eta=\\varepsilon$ you only get $U-L<\\varepsilon(b-a)$, and $\\eta=\\varepsilon(b-a)$ is worse still. $\\eta=\\varepsilon/n$ depends on the partition, which is circular: $\\delta$ must be chosen before the partition."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x)=x^2$ on $[0,1]$ we have $U(f,P)-L(f,P)\\le 2\\|P\\|$. What is the largest $\\delta$ such that this bound guarantees $U-L<0.1$ whenever $\\|P\\|<\\delta$?",
+          "answer": [
+            "0.05",
+            "1/20",
+            ".05"
+          ],
+          "explanation": "$2\\|P\\|<0.1$ exactly when $\\|P\\|<0.05$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Uniform continuity is needed in the proof because a single $\\delta$ must work on all subintervals of the partition at once.",
+          "answer": [
+            true
+          ],
+          "explanation": "Pointwise continuity gives a $\\delta$ depending on the point, and a partition has to be chosen before knowing where $M_i$ and $m_i$ occur."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = x^3$ on $[0,1]$ we have $U(f,P) - L(f,P) \\le 3\\|P\\|$. What is the largest $\\delta$ such that this bound guarantees $U - L < 0.6$ whenever $\\|P\\| < \\delta$?",
+          "answer": [
+            "0.2",
+            "1/5",
+            ".2"
+          ],
+          "explanation": "$3\\|P\\| < 0.6$ exactly when $\\|P\\| < 0.2$."
+        },
+        {
+          "type": "single",
+          "prompt": "In the proof, which theorem lets us write $M_i = f(u_i)$ for some $u_i$ in the $i$-th subinterval?",
+          "options": [
+            "The Extreme Value Theorem",
+            "The Intermediate Value Theorem",
+            "The Heine–Cantor theorem",
+            "Riemann's criterion"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "A continuous function on a closed bounded interval attains its maximum and minimum (lesson 5.10). The Intermediate Value Theorem is about hitting values in between, Heine–Cantor gives the uniform $\\delta$, and Riemann's criterion is the final step."
+        },
+        {
+          "type": "true_false",
+          "prompt": "In the proof, once $\\delta$ is chosen, every partition $P$ with $\\|P\\| < \\delta$ has $U(f,P) - L(f,P) < \\varepsilon$, not just one special partition.",
+          "answer": [
+            true
+          ],
+          "explanation": "The argument used nothing about $P$ except $\\|P\\| < \\delta$, so it applies to every such partition."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which functions are Riemann integrable on $[0,2]$? Select all that apply. (Where a formula is undefined, the value there is $0$.)",
+          "options": [
+            "$e^x$",
+            "$|x - 1|$",
+            "$\\lfloor x \\rfloor$",
+            "$\\frac{1}{x-1}$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "$e^x$ and $|x - 1|$ are continuous on $[0,2]$ (a corner does not break continuity). $\\lfloor x \\rfloor$ is bounded with jumps only at $1$ and $2$. $\\frac{1}{x-1}$ is unbounded near $1$, so it is not Riemann integrable."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every Riemann integrable function on $[a,b]$ is continuous.",
+          "answer": [
+            false
+          ],
+          "explanation": "Continuity is sufficient, not necessary. $\\lfloor x \\rfloor$ on $[0,2]$ and the one-spike function from lesson 7.5 are integrable but not continuous."
+        },
+        {
+          "type": "short",
+          "prompt": "$f(x) = 5x - 2$ is Lipschitz on $[0,1]$. What is the smallest Lipschitz constant $K$?",
+          "answer": [
+            "5",
+            "K=5",
+            "K = 5"
+          ],
+          "explanation": "$|f(x) - f(y)| = |5x - 5y| = 5|x - y|$, so $K = 5$ works and no smaller constant does."
+        }
+      ]
+    },
+    {
+      "slug": "7-7-integrability-of-monotone-functions",
+      "title": "Integrability of monotone functions",
+      "summary": "A telescoping sum shows every monotone function is integrable, jumps and all.",
+      "est_minutes": 30,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Integrability of monotone functions",
+          "md": "A second large class of integrable functions, this time including functions that jump, even infinitely often.\n\n**In this lesson you will learn to:**\n- say what an increasing, decreasing and monotone function is, and spot one\n- find $M_i$ and $m_i$ for a monotone function straight away: they sit at the endpoints\n- prove every monotone function on $[a,b]$ is integrable using a **telescoping** sum\n- choose $n$ so that the gap on the uniform partition is below a given $\\varepsilon$\n\n**You need:** Riemann's criterion (lesson 7.5); the uniform partition $P_n$ of $[a,b]$ into $n$ equal pieces of length $\\frac{b-a}{n}$ (lesson 7.2); and the theorem that continuous functions are integrable (lesson 7.6), for comparison."
+        },
+        {
+          "type": "text",
+          "md": "## Functions that only go one way\n\nLesson 7.6 covered continuous functions. But many useful functions jump: a postage price that rises in steps with weight, or the floor function $\\lfloor x \\rfloor$ (the greatest integer $\\le x$, so $\\lfloor 2.7 \\rfloor = 2$). These are not continuous, yet they never go back down. That one-way behaviour turns out to be enough for integrability.\n\n**Definition.** $f:[a,b]\\to\\mathbb{R}$ is\n- **increasing** if $x < y$ implies $f(x) \\le f(y)$;\n- **decreasing** if $x < y$ implies $f(x) \\ge f(y)$;\n- **monotone** if it is increasing or decreasing.\n\n(This matches lesson 3.7 for sequences. Some books say \"non-decreasing\" for our \"increasing\"; we allow equal values.)\n\n**Examples.**\n- $x^2$ on $[0,1]$ is increasing; $-x^3$ on any interval is decreasing.\n- $\\lfloor x \\rfloor$ on $[0,3]$ is increasing, even though it jumps at $1$, $2$ and $3$.\n- A **constant** function is both increasing and decreasing. Students often forget this edge case: the inequalities allow equality.\n\n**Non-examples.**\n- $x^2$ on $[-1,1]$: it goes down then up, so it is neither. Monotone depends on the interval.\n- $\\sin(\\pi x)$ on $[0,2]$: up, down, then up again.\n- The Dirichlet function: it jumps between $0$ and $1$ in every interval."
+        },
+        {
+          "type": "check",
+          "question": "Which of these functions is monotone on $[-1, 1]$?",
+          "options": [
+            "$x^2$",
+            "$\\lfloor x \\rfloor$",
+            "$|x|$",
+            "$\\cos(\\pi x)$"
+          ],
+          "correct": 1,
+          "explanation": "$\\lfloor x \\rfloor$ takes the values $-1$, then $0$, then $1$ (at $x = 1$): it never decreases, so it is increasing despite its jumps. $x^2$ and $|x|$ go down then up on $[-1,1]$, and $\\cos(\\pi x)$ goes up then down."
+        },
+        {
+          "type": "text",
+          "md": "## Two facts that make monotone functions easy\n\n**Fact 1: bounded for free.** If $f$ is increasing on $[a,b]$, then for every $x$ in $[a,b]$ we have $a \\le x \\le b$, so\n$$f(a) \\le f(x) \\le f(b).$$\nSo $f$ is bounded, and upper and lower sums exist. (For decreasing $f$, the inequalities reverse.) No continuity is needed.\n\n**Fact 2: sup and inf sit at the endpoints.** On a subinterval $[x_{i-1}, x_i]$, an increasing $f$ is smallest at the left end and largest at the right end:\n$$M_i = f(x_i), \\qquad m_i = f(x_{i-1}).$$\nThis holds even if $f$ jumps inside the piece or at its ends, because every value in the piece is between $f(x_{i-1})$ and $f(x_i)$, and those two values are attained. For decreasing $f$, swap them: $M_i = f(x_{i-1})$ and $m_i = f(x_i)$.\n\n**Example.** $f(x) = \\lfloor x \\rfloor$ on $[0,2]$ with $P = \\{0, 0.5, 1, 1.5, 2\\}$, each piece of length $0.5$.\n\n- Pieces $[0,0.5]$, $[0.5,1]$, $[1,1.5]$, $[1.5,2]$ have $M_i = f(\\text{right end}) = 0, 1, 1, 2$.\n- They have $m_i = f(\\text{left end}) = 0, 0, 1, 1$.\n\nSo $U(f,P) = 0.5(0+1+1+2) = 2$ and $L(f,P) = 0.5(0+0+1+1) = 1$.\n\nNotice the edge case on $[0.5, 1]$: $f = 0$ on almost all of it, but $f(1) = 1$, so $M_2 = 1$. The right endpoint counts."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is **decreasing** on $[0,4]$ and $P = \\{0, 1, 3, 4\\}$. What is $M_2$, the supremum on the second piece?",
+          "options": [
+            "$f(1)$",
+            "$f(3)$",
+            "$f(1) - f(3)$",
+            "It cannot be found without a formula for $f$"
+          ],
+          "correct": 0,
+          "explanation": "The second piece is $[1,3]$. A decreasing function is largest at the left end, so $M_2 = f(1)$ and $m_2 = f(3)$. $f(3)$ is the infimum, and $f(1) - f(3)$ is the oscillation $M_2 - m_2$. No formula is needed: monotonicity alone locates the sup and inf."
+        },
+        {
+          "type": "text",
+          "md": "## The telescoping trick\n\nTake an increasing $f$ and the uniform partition $P_n$, so every $\\Delta x_i = \\frac{b-a}{n}$. Using Fact 2, the gap is\n$$U(f,P_n)-L(f,P_n) = \\sum_{i=1}^n \\big(f(x_i) - f(x_{i-1})\\big)\\frac{b-a}{n}.$$\nBecause all pieces have the same length, $\\frac{b-a}{n}$ comes out of the sum. What is left is a **telescoping sum** (like a telescope folding up, everything in the middle disappears; you met these in lessons 4.1 and 4.2):\n$$\\big(f(x_1) - f(x_0)\\big) + \\big(f(x_2) - f(x_1)\\big) + \\cdots + \\big(f(x_n) - f(x_{n-1})\\big) = f(x_n) - f(x_0).$$\nEach $f(x_i)$ appears once with $+$ and once with $-$, except the first and last. Since $x_0 = a$ and $x_n = b$:\n\n**Key identity (increasing $f$, uniform partition $P_n$).**\n$$U(f,P_n)-L(f,P_n)=\\frac{\\big(f(b)-f(a)\\big)(b-a)}{n}.$$\n\n**Picture.** The thin strips between upper and lower rectangles all have width $\\frac{b-a}{n}$. Slide them sideways into one column: their heights stack up to exactly $f(b) - f(a)$, the total rise of $f$.\n\n**Examples.**\n- $f(x) = x$ on $[0,1]$: gap $= \\frac{(1-0)(1)}{n} = \\frac1n$, matching lesson 7.5.\n- $f$ increasing on $[0,3]$ with $f(0) = -1$, $f(3) = 2$: gap $= \\frac{3 \\cdot 3}{n} = \\frac9n$. Watch the sign: $f(b) - f(a) = 2 - (-1) = 3$, not $1$.\n- Constant $f$: $f(b) - f(a) = 0$, so the gap is $0$ for every $n$."
+        },
+        {
+          "type": "check",
+          "question": "Let $f$ be increasing on $[0,3]$ with $f(0)=-1$ and $f(3)=2$. For the uniform partition $P_n$, $U(f,P_n)-L(f,P_n)$ equals",
+          "options": [
+            "$\\frac{3}{n}$",
+            "$\\frac{9}{n}$",
+            "$\\frac{1}{n}$",
+            "$\\frac{6}{n}$"
+          ],
+          "correct": 1,
+          "explanation": "$\\frac{(f(3)-f(0))(3-0)}{n}=\\frac{3\\cdot 3}{n}=\\frac9n$. $\\frac3n$ forgets one of the two factors of $3$; $\\frac1n$ uses $2 + (-1) = 1$ instead of $2 - (-1) = 3$; $\\frac6n$ uses $f(3) \\cdot 3$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof: every monotone function is integrable",
+          "steps": [
+            {
+              "title": "Locate the sup and inf",
+              "md": "Suppose first $f$ is increasing. On $[x_{i-1},x_i]$ we have $M_i=f(x_i)$ and $m_i=f(x_{i-1})$. (Monotone also gives boundedness, so these sums exist.)"
+            },
+            {
+              "title": "Use the uniform partition",
+              "md": "Take $P_n$ with $\\Delta x_i=\\frac{b-a}{n}$ for all $i$. Then\n\n$$U(f,P_n)-L(f,P_n)=\\frac{b-a}{n}\\sum_{i=1}^{n}\\big(f(x_i)-f(x_{i-1})\\big).$$\n\nEqual widths are what let us pull $\\frac{b-a}{n}$ out of the sum."
+            },
+            {
+              "title": "Telescope",
+              "md": "The sum collapses to $f(x_n)-f(x_0)=f(b)-f(a)$, giving\n\n$$U(f,P_n)-L(f,P_n)=\\frac{(f(b)-f(a))(b-a)}{n}.$$"
+            },
+            {
+              "title": "Apply the criterion",
+              "md": "Given $\\varepsilon>0$, choose $n>\\frac{(f(b)-f(a))(b-a)}{\\varepsilon}$. Then $U-L<\\varepsilon$, so $f\\in\\mathcal{R}[a,b]$.\n\n$n$ depends on $\\varepsilon$, which is allowed: the criterion says \"for every $\\varepsilon$ there is a partition\"."
+            },
+            {
+              "title": "Decreasing case",
+              "md": "If $f$ is decreasing, now $M_i=f(x_{i-1})$ and $m_i=f(x_i)$, and the same telescoping gives $U-L=\\frac{(f(a)-f(b))(b-a)}{n}$, which again tends to $0$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "Why does the proof use the **uniform** partition rather than an arbitrary one?",
+          "options": [
+            "So that every $\\Delta x_i$ is the same and can be taken out of the sum, leaving a sum that telescopes",
+            "Because monotone functions are only integrable on uniform partitions",
+            "Because $M_i = f(x_i)$ only holds when the pieces have equal length",
+            "Because Riemann's criterion only allows uniform partitions"
+          ],
+          "correct": 0,
+          "explanation": "With equal widths, $\\sum (f(x_i) - f(x_{i-1}))\\Delta x_i$ becomes $\\frac{b-a}{n}\\sum (f(x_i) - f(x_{i-1}))$, which telescopes. (For any partition, the same idea gives $U - L \\le (f(b) - f(a))\\|P\\|$.) $M_i = f(x_i)$ holds on any piece, and the criterion allows any partition."
+        },
+        {
+          "type": "text",
+          "md": "## Infinitely many jumps, still integrable\n\nDefine $f$ on $[0,1]$ by $f(0)=0$ and\n$$f(x)=\\frac1k \\quad\\text{for } x\\in\\left(\\tfrac{1}{k+1},\\tfrac1k\\right],\\quad k=1,2,3,\\dots$$\nSo $f = 1$ on $(\\frac12, 1]$, $f = \\frac12$ on $(\\frac13, \\frac12]$, $f = \\frac13$ on $(\\frac14, \\frac13]$, and so on: a staircase with steps getting smaller as you approach $0$.\n\n**Increasing.** The intervals $\\left(\\frac{1}{k+1},\\frac1k\\right]$ fill $(0,1]$ without overlapping. If $0<x<y\\le1$, with $x$ in the $j$-th interval and $y$ in the $k$-th, then $y$ is further right, so $k\\le j$ and $f(x)=\\frac1j\\le\\frac1k=f(y)$. Also $f(0)=0<f(x)$ for $x>0$.\n\n**Infinitely many discontinuities.** At $x=\\frac1k$ with $k\\ge 2$: $f(\\frac1k)=\\frac1k$, but just to the right of $\\frac1k$ we have $f=\\frac{1}{k-1}$. So $f$ jumps by $\\frac{1}{k-1}-\\frac1k$ at every $\\frac1k$, $k \\ge 2$. That is infinitely many jumps, so the \"finitely many discontinuities\" result from lesson 7.6 does not apply.\n\n**Integrable.** $f$ is monotone, so the theorem applies directly:\n$$U(f,P_n)-L(f,P_n)=\\frac{(f(1)-f(0))(1-0)}{n}=\\frac1n\\to0.$$\n\n**Edge case: what happens at $0$?** If $x \\in \\left(\\frac{1}{k+1}, \\frac1k\\right]$, then $f(x) = \\frac1k \\le \\frac{2}{k+1} < 2x$. So $0 \\le f(x) < 2x$, and $f(x) \\to 0 = f(0)$ as $x \\to 0^+$: $f$ is **continuous** at $0$. The jumps are only at $\\frac12, \\frac13, \\frac14, \\dots$"
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "What monotonicity does not cover",
+          "md": "- **Not monotone does not mean not integrable.** $\\sin x$ on $[0, 2\\pi]$ is not monotone but is integrable (it is continuous). The theorem is a sufficient condition only.\n- **Pieces need a later lesson.** A function that is monotone on $[0,1]$ and on $[1,2]$ separately, like $x^2$ on $[-1,1]$ split at $0$, is integrable on the whole interval. That needs additivity, $\\int_a^b = \\int_a^c + \\int_c^b$, which is proved in lesson 7.8.\n- **Always check monotone on the whole interval** before quoting the formula. For $x^2$ on $[-1,1]$, the \"gap formula\" would give $\\frac{(1-1)\\cdot 2}{n} = 0$, which is false: the gap on $P_2 = \\{-1, 0, 1\\}$ is $2$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function to the best reason it is (or is not) integrable on the given interval.",
+          "pairs": [
+            {
+              "left": "$\\lfloor 10x \\rfloor$ on $[0,1]$",
+              "right": "Integrable: increasing, though it jumps ten times"
+            },
+            {
+              "left": "The staircase $f = \\frac1k$ on $\\left(\\frac{1}{k+1}, \\frac1k\\right]$",
+              "right": "Integrable: increasing, with infinitely many jumps"
+            },
+            {
+              "left": "$\\cos x$ on $[0, 2\\pi]$",
+              "right": "Integrable: not monotone, but continuous"
+            },
+            {
+              "left": "The Dirichlet function on $[0,1]$",
+              "right": "Not integrable: neither monotone nor continuous anywhere, and the gap is always $1$"
+            }
+          ]
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Increasing function",
+              "back": "$x < y$ implies $f(x) \\le f(y)$: **never goes down**. Equal values allowed.\n\n*Example:* $\\lfloor x \\rfloor$; a constant function also counts."
+            },
+            {
+              "front": "Monotone function",
+              "back": "A function that is **increasing or decreasing** on the whole interval.\n\n*Example:* $-x^3$. *Non-example:* $x^2$ on $[-1,1]$."
+            },
+            {
+              "front": "Sup and inf of increasing f on a piece",
+              "back": "$M_i = f(\\text{right end})$, $m_i = f(\\text{left end})$, **even with jumps**.\n\n*Example:* $\\lfloor x \\rfloor$ on $[0.5, 1]$ has $M = 1$, $m = 0$."
+            },
+            {
+              "front": "Telescoping sum",
+              "back": "A sum of differences where middle terms **cancel**, leaving last minus first.\n\n*Example:* $\\sum_{i=1}^n (f(x_i) - f(x_{i-1})) = f(b) - f(a)$."
+            },
+            {
+              "front": "Gap for monotone f on P_n",
+              "back": "$U - L = \\frac{|f(b) - f(a)|\\,(b-a)}{n}$, which **tends to $0$**.\n\n*Example:* increasing on $[0,2]$ from $1$ to $5$, $n = 4$: gap $2$."
+            },
+            {
+              "front": "Monotone ⇒ integrable",
+              "back": "Every monotone function on $[a,b]$ is Riemann integrable, **however many jumps** it has.\n\n*Example:* the staircase with jumps at every $\\frac1k$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A function $f$ on $[0,1]$ is increasing and has a jump at every point $\\frac1k$, $k \\ge 2$. A student says: \"Lesson 7.6 only handles finitely many discontinuities, so we cannot conclude $f$ is integrable.\" What is the best response?",
+          "options": [
+            "$f$ is monotone, so it is integrable by this lesson's theorem; the number of jumps does not matter",
+            "The student is right: infinitely many jumps make $f$ non-integrable",
+            "$f$ is integrable only if the jumps add up to less than $1$",
+            "We must first show $f$ is continuous at $0$"
+          ],
+          "correct": 0,
+          "explanation": "The monotone theorem uses no continuity at all, only the endpoint values $f(0)$ and $f(1)$. The number of jumps is irrelevant; the gap on $P_n$ is $\\frac{(f(1) - f(0))}{n}$. (For an increasing function the jumps automatically add up to at most $f(1) - f(0)$, but the proof never needs this.)"
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **prove that a decreasing $f$ on $[a,b]$ is integrable.**",
+          "items": [
+            "Let $\\varepsilon > 0$ and take the uniform partition $P_n$, with each $\\Delta x_i = \\frac{b-a}{n}$.",
+            "Since $f$ is decreasing, on each piece $M_i = f(x_{i-1})$ and $m_i = f(x_i)$.",
+            "So $U(f,P_n) - L(f,P_n) = \\frac{b-a}{n}\\sum_{i=1}^n \\big(f(x_{i-1}) - f(x_i)\\big)$.",
+            "The sum telescopes to $f(a) - f(b)$, so the gap is $\\frac{(f(a) - f(b))(b-a)}{n}$.",
+            "Choosing $n > \\frac{(f(a) - f(b))(b-a)}{\\varepsilon}$ makes the gap less than $\\varepsilon$, so $f$ is integrable. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: how many pieces for $\\frac1x$ on $[1,2]$?",
+          "problem": "Let $f(x) = \\frac1x$ on $[1,2]$. Explain why $f$ is integrable using this lesson's theorem, find $U(f,P_n) - L(f,P_n)$, and find the smallest $n$ with $U(f,P_n) - L(f,P_n) < 0.01$. Try it before opening the solution.",
+          "solution": "**Monotone.** If $1 \\le x < y \\le 2$, then $\\frac1x > \\frac1y$, so $f$ is decreasing. By the theorem, $f$ is integrable. (It is also continuous, so lesson 7.6 applies too, but the monotone route gives an exact gap.)\n\n**Gap.** For decreasing $f$ on the uniform partition,\n$$U(f,P_n) - L(f,P_n) = \\frac{(f(1) - f(2))(2 - 1)}{n} = \\frac{\\left(1 - \\frac12\\right)\\cdot 1}{n} = \\frac{1}{2n}.$$\n\n**Smallest $n$.** $\\frac{1}{2n} < 0.01$ means $2n > 100$, so $n > 50$. The smallest such integer is $n = 51$. (At $n = 50$ the gap is exactly $0.01$, which is not **less** than $0.01$.)\n\n**Check your version:** did you use $f(a) - f(b)$ (positive) for the decreasing case rather than $f(b) - f(a)$? Did you take care with the strict inequality at $n = 50$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why is the monotone proof shorter than the continuous one?",
+              "a": "Monotonicity tells you **exactly** where $M_i$ and $m_i$ are (the endpoints), so the gap can be computed, not just estimated. For continuous functions we only know the sup and inf are attained somewhere, and need uniform continuity to bound them."
+            },
+            {
+              "q": "Can a monotone function have uncountably many jumps?",
+              "a": "No. Each jump of an increasing function is a gap in its values, and each gap contains a different rational number, so there are at most countably many jumps. But the integrability proof does not need this fact."
+            },
+            {
+              "q": "Is \"increasing\" the same as \"strictly increasing\"?",
+              "a": "No. Strictly increasing means $x < y \\Rightarrow f(x) < f(y)$. Our \"increasing\" allows $f(x) = f(y)$, so step functions and constants count. The theorem works for both."
+            },
+            {
+              "q": "Is every integrable function monotone or continuous?",
+              "a": "No. The one-spike function from lesson 7.5 ($0$ except value $1$ at $\\frac12$) is integrable but neither monotone nor continuous. Lesson 7.12 gives the exact test: bounded, with a \"negligible\" set of discontinuities."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $f$ is **increasing** if $x < y \\Rightarrow f(x) \\le f(y)$, **decreasing** if $f(x) \\ge f(y)$, and **monotone** if either. Constants are both.\n- A monotone $f$ on $[a,b]$ is bounded by $f(a)$ and $f(b)$, and on each piece its sup and inf are the endpoint values.\n- On the uniform partition the gap **telescopes**: $U(f,P_n) - L(f,P_n) = \\frac{|f(b) - f(a)|\\,(b-a)}{n} \\to 0$.\n- So every monotone function is integrable, however many jumps it has.\n- Monotone and continuous are both **sufficient** conditions; neither is necessary."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "For increasing $f$ on $[a,b]$ and the uniform partition into $n$ pieces, $U(f,P_n)-L(f,P_n)$ equals",
+          "options": [
+            "$\\frac{f(b)-f(a)}{n}$",
+            "$\\frac{b-a}{n}$",
+            "$\\frac{(f(b)-f(a))(b-a)}{n}$",
+            "$\\frac{(f(b)-f(a))(b-a)}{n^2}$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$\\sum (f(x_i)-f(x_{i-1}))\\cdot\\frac{b-a}{n}$ telescopes to $(f(b)-f(a))\\frac{b-a}{n}$. The first option forgets the width $b - a$, the second forgets the rise $f(b) - f(a)$, and there is only one factor of $\\frac1n$."
+        },
+        {
+          "type": "short",
+          "prompt": "$f$ is increasing on $[0,2]$ with $f(0)=1$ and $f(2)=5$. Using the uniform partition with $n=4$, what is $U(f,P_4)-L(f,P_4)$?",
+          "answer": [
+            "2"
+          ],
+          "explanation": "$\\frac{(5-1)(2-0)}{4}=2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A monotone function on $[a,b]$ can have infinitely many discontinuities and still be Riemann integrable.",
+          "answer": [
+            true
+          ],
+          "explanation": "Every monotone function is integrable; the staircase with jumps at each $\\frac1k$ is an example."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which functions are Riemann integrable on $[0,1]$?",
+          "options": [
+            "$f(x)=\\lfloor 10x\\rfloor$",
+            "$f(0)=0$, $f(x)=\\frac1k$ on $\\left(\\frac1{k+1},\\frac1k\\right]$",
+            "The Dirichlet function",
+            "$f(x)=x^2$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first, second and fourth are monotone (the fourth is also continuous). The Dirichlet function is not monotone and not integrable."
+        },
+        {
+          "type": "single",
+          "prompt": "Why is a monotone function on $[a,b]$ automatically bounded?",
+          "options": [
+            "Its values lie between $f(a)$ and $f(b)$",
+            "It is continuous",
+            "It is differentiable almost everywhere",
+            "Its discontinuities are countable"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "For increasing $f$, $f(a)\\le f(x)\\le f(b)$; for decreasing, reverse. Monotone functions need not be continuous ($\\lfloor x \\rfloor$ is not), and the other two facts, though true, do not by themselves give a bound."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Every Riemann integrable function on $[a,b]$ is either monotone or continuous.",
+          "answer": [
+            false
+          ],
+          "explanation": "$g(x)=0$ except $g(\\frac12)=1$ on $[0,1]$ is integrable but neither monotone nor continuous. So is $\\sin(1/x)$ with value $0$ at $0$."
+        },
+        {
+          "type": "short",
+          "prompt": "$f$ is decreasing on $[1,5]$ with $f(1) = 4$ and $f(5) = -2$. What is $U(f,P_8) - L(f,P_8)$ for the uniform partition into $8$ pieces?",
+          "answer": [
+            "3"
+          ],
+          "explanation": "For decreasing $f$, the gap is $\\frac{(f(1) - f(5))(5 - 1)}{8} = \\frac{6 \\cdot 4}{8} = 3$. Note $f(1) - f(5) = 4 - (-2) = 6$."
+        },
+        {
+          "type": "short",
+          "prompt": "For $f(x) = \\frac1x$ on $[1,2]$, the gap on the uniform partition is $\\frac{1}{2n}$. What is the smallest $n$ with $U(f,P_n) - L(f,P_n) < 0.01$?",
+          "answer": [
+            "51"
+          ],
+          "explanation": "$\\frac{1}{2n} < 0.01$ means $n > 50$. At $n = 50$ the gap is exactly $0.01$, which is not less than $0.01$, so $n = 51$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is increasing on $[x_{i-1}, x_i]$, then $M_i = f(x_i)$, even if $f$ has a jump inside that subinterval.",
+          "answer": [
+            true
+          ],
+          "explanation": "Every $x$ in the piece has $x \\le x_i$, so $f(x) \\le f(x_i)$, and the value $f(x_i)$ is attained. Jumps do not change this."
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = \\lfloor x \\rfloor$ on $[0,2]$ and $P = \\{0, 0.5, 1, 1.5, 2\\}$, what is $U(f,P)$?",
+          "options": [
+            "$2$",
+            "$1$",
+            "$1.5$",
+            "$4$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The right-endpoint values are $0, 1, 1, 2$, so $U = 0.5(0 + 1 + 1 + 2) = 2$. The answer $1$ is $L(f,P)$. $1.5$ forgets that $f(1) = 1$ counts on $[0.5, 1]$, and $4$ forgets the width $0.5$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which functions are monotone on $[0,2]$? Select all that apply.",
+          "options": [
+            "$(x-1)^2$",
+            "$\\lfloor x \\rfloor$",
+            "$-x^3$",
+            "$\\sin(\\pi x)$"
+          ],
+          "answer": [
+            1,
+            2
+          ],
+          "explanation": "$\\lfloor x \\rfloor$ is increasing and $-x^3$ is decreasing. $(x-1)^2$ decreases on $[0,1]$ then increases, and $\\sin(\\pi x)$ rises, falls and rises again."
+        },
+        {
+          "type": "true_false",
+          "prompt": "A constant function on $[a,b]$ is both increasing and decreasing.",
+          "answer": [
+            true
+          ],
+          "explanation": "If $f(x) = c$, then for $x < y$ both $f(x) \\le f(y)$ and $f(x) \\ge f(y)$ hold, since the values are equal. Its gap on any partition is $0$."
+        }
+      ]
+    },
+    {
+      "slug": "7-8-properties-of-the-riemann-integral",
+      "title": "Properties of the Riemann integral",
+      "summary": "Linearity, monotonicity, additivity and $\\left|\\int f\\right|\\le\\int|f|$, proved from the definition.",
+      "est_minutes": 40,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Properties of the Riemann integral",
+          "md": "The rules you used in school to work with integrals, now proved from the definition, along with the places where they break.\n\n**In this lesson you will learn to:**\n- use **linearity**: $\\int (kf + g) = k\\int f + \\int g$\n- use **monotonicity** to compare integrals and to estimate them\n- split an integral at a point (**additivity**) and use the conventions for $\\int_b^a$\n- prove $|f|$ is integrable with $\\left|\\int_a^b f\\right| \\le \\int_a^b |f|$, and know that $\\int fg \\ne \\int f \\int g$ in general\n\n**You need:** Riemann's criterion (lesson 7.5) and the refinement lemma (lesson 7.3); the fact that every lower sum is at most every upper sum (lesson 7.4); and the triangle inequality $|a + b| \\le |a| + |b|$ with its reverse form $\\big||a| - |b|\\big| \\le |a - b|$ (lesson 2.5)."
+        },
+        {
+          "type": "text",
+          "md": "## Why we need rules\n\nSo far each integral has cost us a page: choose partitions, compute sums, take a limit. Even with lessons 7.6 and 7.7 telling us **which** functions are integrable, finding $\\int_0^1 (3x + 2)\\,dx$ from scratch would mean new sums.\n\nRules let us build new integrals from old ones. If we already know $\\int_0^1 x\\,dx = \\frac12$ and $\\int_0^1 1\\,dx = 1$, then a rule like \"the integral of a sum is the sum of the integrals\" gives $\\int_0^1 (3x + 2)\\,dx = 3 \\cdot \\frac12 + 2 \\cdot 1 = \\frac72$ at once.\n\nThese rules feel obvious from the \"area\" picture, but the definition does not mention area: it is about suprema and infima of sums. So each rule needs a proof, and checking the proof is what tells us exactly when the rule holds. One rule that looks just as natural, $\\int fg = \\int f \\cdot \\int g$, turns out to be **false**.\n\nThroughout, $f$ and $g$ are in $\\mathcal{R}[a,b]$ (integrable on $[a,b]$) and $k$ is a real constant. For a subinterval $I_i$ of a partition we write $M_i(f)$ and $m_i(f)$ for the sup and inf of $f$ on $I_i$, so we can compare them for different functions.\n\nThe main results:\n1. **Linearity:** $\\int_a^b (f + g) = \\int_a^b f + \\int_a^b g$ and $\\int_a^b kf = k\\int_a^b f$.\n2. **Monotonicity:** if $f \\le g$ on $[a,b]$, then $\\int_a^b f \\le \\int_a^b g$.\n3. **Additivity:** $\\int_a^b f = \\int_a^c f + \\int_c^b f$ for $a < c < b$.\n4. **Absolute value:** $\\left|\\int_a^b f\\right| \\le \\int_a^b |f|$.\n\nWe take them one at a time."
+        },
+        {
+          "type": "text",
+          "md": "## Linearity\n\n**Plain words.** You can integrate a sum term by term, and pull constants out.\n\n**Theorem (linearity).** If $f, g \\in \\mathcal{R}[a,b]$ and $k \\in \\mathbb{R}$, then $f + g$ and $kf$ are integrable and\n$$\\int_a^b(f+g)=\\int_a^b f+\\int_a^b g, \\qquad \\int_a^b kf=k\\int_a^b f.$$\nTogether: $\\int_a^b (\\alpha f + \\beta g) = \\alpha\\int_a^b f + \\beta\\int_a^b g$ for any constants $\\alpha, \\beta$.\n\n**Examples.**\n- $\\int_0^1 (3x + 2)\\,dx = 3\\int_0^1 x\\,dx + \\int_0^1 2\\,dx = \\frac32 + 2 = \\frac72$.\n- If $\\int_a^b f = 4$ and $\\int_a^b g = 1$, then $\\int_a^b (2f - 3g) = 8 - 3 = 5$.\n\n**Edge case: a negative constant.** Multiplying by $-1$ turns the largest value into the smallest. On each piece $M_i(-f) = -m_i(f)$ and $m_i(-f) = -M_i(f)$, so\n$$U(-f, P) = -L(f, P), \\qquad L(-f,P) = -U(f,P).$$\nUpper and lower **swap** as well as changing sign. The rule $\\int (-f) = -\\int f$ still holds, but a proof that just \"pulls out the $-1$\" from $U(f,P)$ is wrong.\n\n**Non-example: products.** There is no product rule of this kind: $\\int_0^1 x \\cdot x\\,dx = \\frac13$, but $\\int_0^1 x\\,dx \\cdot \\int_0^1 x\\,dx = \\frac14$.\n\nThe proof of the sum rule is below; it is a good model of how all these proofs go."
+        },
+        {
+          "type": "check",
+          "question": "Suppose $\\int_0^2 f = 5$ and $\\int_0^2 g = -1$. What is $\\int_0^2 (3f + 4g)$?",
+          "options": [
+            "$11$",
+            "$19$",
+            "$-11$",
+            "$4$"
+          ],
+          "correct": 0,
+          "explanation": "By linearity, $3 \\cdot 5 + 4 \\cdot (-1) = 15 - 4 = 11$. The answer $19$ ignores the minus sign, $4 = 5 + (-1)$ forgets the constants $3$ and $4$, and $-11$ has the sign reversed."
+        },
+        {
+          "type": "steps",
+          "title": "Proof that the integral of a sum is the sum of the integrals",
+          "steps": [
+            {
+              "title": "Compare suprema on one piece",
+              "md": "On any subinterval $I_i$ and any $x\\in I_i$: $f(x)+g(x)\\le M_i(f)+M_i(g)$. So $M_i(f)+M_i(g)$ is an upper bound for $f + g$ on $I_i$, and the least upper bound is no bigger: $M_i(f+g)\\le M_i(f)+M_i(g)$. Similarly $m_i(f+g)\\ge m_i(f)+m_i(g)$.\n\nOnly \"$\\le$\", not \"$=$\": $f$ and $g$ may be largest at different points."
+            },
+            {
+              "title": "Compare sums",
+              "md": "Multiplying by $\\Delta x_i$ and summing, for every partition $P$:\n\n$$L(f,P)+L(g,P)\\le L(f+g,P)\\le U(f+g,P)\\le U(f,P)+U(g,P).$$"
+            },
+            {
+              "title": "Use one partition for both",
+              "md": "Given $\\varepsilon>0$, Riemann's criterion gives $P_1,P_2$ with $U(f,P_1)-L(f,P_1)<\\frac\\varepsilon2$ and $U(g,P_2)-L(g,P_2)<\\frac\\varepsilon2$. Their common refinement $P = P_1 \\cup P_2$ satisfies both, because refining only shrinks the gap."
+            },
+            {
+              "title": "Integrability",
+              "md": "By the chain of inequalities, $U(f+g,P)-L(f+g,P)\\le \\big(U(f,P) - L(f,P)\\big) + \\big(U(g,P) - L(g,P)\\big) <\\varepsilon$, so $f+g\\in\\mathcal{R}[a,b]$ by Riemann's criterion."
+            },
+            {
+              "title": "The value",
+              "md": "Both $\\int(f+g)$ and $\\int f+\\int g$ lie in $[L(f,P)+L(g,P),\\,U(f,P)+U(g,P)]$, an interval of length $<\\varepsilon$. So they differ by less than $\\varepsilon$. As $\\varepsilon$ is arbitrary, they are equal. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the first step, why can we only claim $M_i(f + g) \\le M_i(f) + M_i(g)$, not equality?",
+          "options": [
+            "$f$ and $g$ may reach their largest values at different points of the piece",
+            "Because suprema are never attained",
+            "Because $f + g$ might not be bounded",
+            "Equality always holds; \"$\\le$\" is just a weaker statement"
+          ],
+          "correct": 0,
+          "explanation": "On $[0,1]$, $x$ is largest at $1$ and $1 - x$ is largest at $0$: $\\sup(x + (1 - x)) = 1$ but $\\sup x + \\sup(1 - x) = 2$. Suprema are often attained (e.g. for continuous functions), $f + g$ is bounded since $f$ and $g$ are, and equality does not always hold, as this example shows."
+        },
+        {
+          "type": "text",
+          "md": "## Monotonicity and estimates\n\n**Plain words.** A bigger function has a bigger integral.\n\n**Theorem (monotonicity).** If $f, g \\in \\mathcal{R}[a,b]$ and $f(x) \\le g(x)$ for all $x \\in [a,b]$, then $\\int_a^b f \\le \\int_a^b g$.\n\n**Proof.** $h = g - f$ is integrable by linearity, and $h \\ge 0$, so every $m_i(h) \\ge 0$ and $L(h,P) \\ge 0$. The integral is at least any lower sum, so $\\int_a^b h \\ge 0$. By linearity, $\\int_a^b g - \\int_a^b f \\ge 0$. $\\blacksquare$\n\n**Consequence: bounds from bounds.** If $m \\le f \\le M$ on $[a,b]$, comparing with constants gives\n$$m(b-a) \\le \\int_a^b f \\le M(b-a).$$\nIn particular, if $|f|\\le K$ on $[a,b]$ (that is, $-K \\le f \\le K$), then $\\left|\\int_a^b f\\right|\\le K(b-a)$. This **standard estimate** is used constantly.\n\n**Examples.**\n- On $[0,1]$, $x^2 \\le x$, so $\\int_0^1 x^2\\,dx \\le \\int_0^1 x\\,dx = \\frac12$. (Indeed $\\frac13 \\le \\frac12$.)\n- On $[0,1]$, $\\frac12 \\le \\frac{1}{1+x^2} \\le 1$, so $\\frac12 \\le \\int_0^1 \\frac{dx}{1+x^2} \\le 1$, with no antiderivative needed.\n\n**Non-example (the converse fails).** $\\int_a^b f \\ge 0$ does **not** mean $f \\ge 0$. For $f(x) = x$ on $[-1, 2]$, the integral is $\\frac{2^2}{2} - \\frac{1}{2} = \\frac32 > 0$ (positive area $2$ minus negative area $\\frac12$), yet $f(-1) = -1 < 0$.\n\n**Edge case.** If $f \\ge 0$ and $\\int_a^b f = 0$, must $f = 0$? Not in general: the one-spike function of lesson 7.5 is $\\ge 0$ with integral $0$. But if $f$ is also **continuous**, yes (see the questions at the end)."
+        },
+        {
+          "type": "check",
+          "question": "For $f$ integrable on $[1,3]$ you know $2 \\le f(x) \\le 5$ for every $x$. What is the best range you can give for $\\int_1^3 f$?",
+          "options": [
+            "Between $4$ and $10$",
+            "Between $2$ and $5$",
+            "Between $6$ and $15$",
+            "Exactly $7$"
+          ],
+          "correct": 0,
+          "explanation": "Monotonicity with constants gives $2(3 - 1) \\le \\int_1^3 f \\le 5(3-1)$, so between $4$ and $10$. The bounds on $f$ must be multiplied by the length $b - a = 2$. $6$ to $15$ uses length $3$ instead of $2$. Nothing forces the value $7$: $f = 2$ gives $4$ and $f = 5$ gives $10$."
+        },
+        {
+          "type": "text",
+          "md": "## Additivity: splitting the interval\n\n**Plain words.** The area from $a$ to $b$ is the area from $a$ to $c$ plus the area from $c$ to $b$.\n\n**Theorem (additivity).** For $a<c<b$, $f\\in\\mathcal{R}[a,b]$ if and only if $f\\in\\mathcal{R}[a,c]$ and $f\\in\\mathcal{R}[c,b]$, and then\n$$\\int_a^b f=\\int_a^c f+\\int_c^b f.$$\n\n**Proof idea.** Adding the point $c$ to a partition only refines it, so we may assume $c$ is a partition point. Then $P$ splits into a partition $P'$ of $[a,c]$ and $P''$ of $[c,b]$, with $U(f,P) = U(f,P') + U(f,P'')$ and the same for $L$. The gap on $[a,b]$ is small exactly when both gaps are small.\n\n**Conventions.** We define $\\int_a^a f = 0$ and $\\int_b^a f=-\\int_a^b f$ (going backwards reverses the sign). With these, additivity holds for $a, b, c$ in **any** order.\n\n**Examples.**\n- **Piecewise functions.** Let $f = 1$ on $[0,1]$ and $f = 3$ on $(1, 2]$. Then $\\int_0^2 f = \\int_0^1 1\\,dx + \\int_1^2 3\\,dx = 1 + 3 = 4$. (The value at $x = 1$ does not matter, by lesson 7.5.)\n- **Finding a missing piece.** If $\\int_0^2 f = 3$ and $\\int_0^5 f = 7$, then $\\int_2^5 f = 7 - 3 = 4$.\n- **Edge case: reversed limits.** With the same data, $\\int_5^2 f = -\\int_2^5 f = -4$.\n\n**Payoff from lesson 7.7.** A function that is monotone on $[a,c]$ and on $[c,b]$ separately, such as $x^2$ on $[-1,1]$ with $c = 0$, is integrable on each piece, so by additivity it is integrable on $[a,b]$."
+        },
+        {
+          "type": "match",
+          "prompt": "Suppose $\\int_0^2 f = 3$, $\\int_0^5 f = 7$ and $\\int_0^2 g = 1$. Match each expression to its value.",
+          "pairs": [
+            {
+              "left": "$\\int_2^5 f$",
+              "right": "$4$"
+            },
+            {
+              "left": "$\\int_5^2 f$",
+              "right": "$-4$"
+            },
+            {
+              "left": "$\\int_0^2 (f - 2g)$",
+              "right": "$1$"
+            },
+            {
+              "left": "$\\int_2^2 f$",
+              "right": "$0$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Absolute values and products\n\n**Theorem.** If $f \\in \\mathcal{R}[a,b]$, then $|f| \\in \\mathcal{R}[a,b]$ and\n$$\\left|\\int_a^b f\\right|\\le\\int_a^b|f|.$$\n\n**Plain words.** Positive and negative parts of $f$ can cancel inside $\\int f$; in $\\int |f|$ nothing cancels, so it is at least as big. This is the **triangle inequality for integrals**, the continuous version of $|a_1 + \\cdots + a_n| \\le |a_1| + \\cdots + |a_n|$.\n\n**Example.** $f(x) = x$ on $[-1,1]$: $\\int_{-1}^1 x\\,dx = 0$, while $\\int_{-1}^1 |x|\\,dx = 1$. Strict inequality, because of cancellation.\n\n**Non-example (the converse fails).** $|f|$ integrable does not make $f$ integrable. Let $f = 1$ on rationals and $-1$ on irrationals. Then $|f| = 1$ is integrable, but every piece has $M_i = 1$ and $m_i = -1$, so the gap of $f$ never shrinks. You will prove the theorem itself in the \"Your turn\" below.\n\n**Products.** If $f, g \\in \\mathcal{R}[a,b]$, then $fg$ is integrable. Proof idea: if $|f| \\le K$, then $|f(x)^2 - f(y)^2| = |f(x) + f(y)|\\,|f(x) - f(y)| \\le 2K|f(x) - f(y)|$, so the gap of $f^2$ is at most $2K$ times the gap of $f$; then $fg = \\frac14\\big((f+g)^2 - (f-g)^2\\big)$ and linearity finish it.\n\nBut integrability of $fg$ is all you get: the **value** is not $\\int f \\cdot \\int g$.\n\n**Positivity for continuous functions.** If $f$ is continuous, $f \\ge 0$ and $\\int_a^b f = 0$, then $f = 0$ everywhere. If $f(x_0) > 0$, continuity keeps $f > \\frac{f(x_0)}{2}$ on a small interval, which forces the integral to be positive."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Integrals do not respect products",
+          "md": "In general $\\int_a^b fg\\neq\\left(\\int_a^b f\\right)\\left(\\int_a^b g\\right)$. For $f=g=x$ on $[0,1]$: $\\int_0^1 x^2\\,dx=\\frac13$, but $\\left(\\int_0^1 x\\,dx\\right)^2=\\frac14$.\n\nAlso, $f\\ge0$ with $\\int_a^b f=0$ does **not** force $f\\equiv0$ unless $f$ is continuous: take $f\\equiv 0$ and change it at a single point."
+        },
+        {
+          "type": "check",
+          "question": "Which statement about $f(x) = x$ on $[-1, 1]$ is correct?",
+          "options": [
+            "$\\left|\\int_{-1}^1 f\\right| = 0 < 1 = \\int_{-1}^1 |f|$, so the inequality can be strict",
+            "$\\left|\\int_{-1}^1 f\\right| = \\int_{-1}^1 |f| = 1$",
+            "$\\int_{-1}^1 f = 1$ because area is always positive",
+            "$|f|$ is not integrable because $f$ changes sign"
+          ],
+          "correct": 0,
+          "explanation": "The areas above and below the axis cancel, so $\\int_{-1}^1 x\\,dx = 0$, while $\\int_{-1}^1 |x|\\,dx = 2 \\cdot \\frac12 = 1$. The integral is a signed area, so it can be $0$. $|f| = |x|$ is continuous, hence integrable."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Linearity",
+              "back": "$\\int_a^b(\\alpha f+\\beta g)=\\alpha\\int_a^b f+\\beta\\int_a^b g$: integrate **term by term**, pull out constants.\n\n*Example:* $\\int_0^1 (3x + 2)\\,dx = \\frac32 + 2 = \\frac72$."
+            },
+            {
+              "front": "Monotonicity",
+              "back": "If $f \\le g$ on $[a,b]$, then $\\int_a^b f\\le\\int_a^b g$: a **bigger function** has a bigger integral.\n\n*Example:* $x^2 \\le x$ on $[0,1]$, so $\\frac13 \\le \\frac12$."
+            },
+            {
+              "front": "Additivity",
+              "back": "$\\int_a^b f=\\int_a^c f+\\int_c^b f$: **split** the interval at any point.\n\n*Example:* $\\int_0^2 f = 3$, $\\int_0^5 f = 7$ give $\\int_2^5 f = 4$."
+            },
+            {
+              "front": "Reversed limits",
+              "back": "By **convention** $\\int_b^a f = -\\int_a^b f$ and $\\int_a^a f = 0$.\n\n*Example:* if $\\int_2^5 f = 4$ then $\\int_5^2 f = -4$."
+            },
+            {
+              "front": "Triangle inequality",
+              "back": "$\\left|\\int_a^b f\\right|\\le\\int_a^b|f|$: inside $\\int f$ positive and negative parts can **cancel**.\n\n*Example:* $\\int_{-1}^1 x\\,dx = 0 \\le 1 = \\int_{-1}^1 |x|\\,dx$."
+            },
+            {
+              "front": "Standard estimate",
+              "back": "If $|f|\\le K$ on $[a,b]$, then $\\left|\\int_a^b f\\right|\\le K(b-a)$: **bound times length**.\n\n*Example:* $|f| \\le 4$ on $[1,3]$ gives $\\left|\\int_1^3 f\\right| \\le 8$."
+            },
+            {
+              "front": "Positivity for continuous f",
+              "back": "$f$ **continuous**, $f\\ge0$ and $\\int_a^b f=0$ imply $f = 0$ everywhere.\n\n*Non-example:* the one-spike function ($0$ except at one point) is not continuous."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "You need an upper bound for $\\left|\\int_0^{\\pi} \\sin(x^3)\\,dx\\right|$, but there is no antiderivative formula. Which property gives one immediately?",
+          "options": [
+            "The standard estimate: $|\\sin(x^3)| \\le 1$, so the integral is at most $1 \\cdot \\pi = \\pi$ in size",
+            "Linearity: pull the cube out to get $3\\int_0^\\pi \\sin x\\,dx$",
+            "Additivity: split at $\\frac{\\pi}{2}$ and the two halves cancel",
+            "The product rule: $\\int \\sin(x^3) = \\int \\sin x \\cdot \\int x^3$"
+          ],
+          "correct": 0,
+          "explanation": "$|\\sin(x^3)| \\le 1$ on $[0,\\pi]$, so $\\left|\\int_0^\\pi \\sin(x^3)\\,dx\\right| \\le 1 \\cdot (\\pi - 0) = \\pi$. Linearity only pulls out constant **multiples** of the function, not powers inside it. Nothing makes the halves cancel. And there is no product rule for integrals; $\\sin(x^3)$ is not even a product."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order: **prove that if $f, g \\in \\mathcal{R}[a,b]$ and $f \\le g$, then $\\int_a^b f \\le \\int_a^b g$.**",
+          "items": [
+            "Let $h = g - f$. By linearity, $h$ is integrable.",
+            "Since $f \\le g$, we have $h \\ge 0$ on $[a,b]$, so every $m_i(h) \\ge 0$.",
+            "Hence $L(h,P) \\ge 0$ for every partition $P$.",
+            "The integral is at least any lower sum, so $\\int_a^b h \\ge 0$.",
+            "By linearity, $\\int_a^b g - \\int_a^b f = \\int_a^b h \\ge 0$, which is the claim. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: $|f|$ is integrable, and $\\left|\\int f\\right| \\le \\int |f|$",
+          "problem": "Let $f\\in\\mathcal{R}[a,b]$. Prove that $|f|\\in\\mathcal{R}[a,b]$ and that $\\left|\\int_a^b f\\right|\\le\\int_a^b|f|$.\n\nHint: compare the oscillation of $|f|$ on each piece with that of $f$, using the reverse triangle inequality $\\big||u| - |v|\\big| \\le |u - v|$. For the inequality, use $-|f| \\le f \\le |f|$. Try it before opening the solution.",
+          "solution": "**Integrability.** For $x,y$ in a subinterval $I_i$, the reverse triangle inequality gives\n\n$$\\big||f(x)|-|f(y)|\\big|\\le|f(x)-f(y)|\\le M_i(f)-m_i(f).$$\n\nThe largest possible value of the left side over $x,y\\in I_i$ is $M_i(|f|)-m_i(|f|)$, the oscillation of $|f|$. So $M_i(|f|)-m_i(|f|)\\le M_i(f)-m_i(f)$. Multiplying by $\\Delta x_i$ and summing,\n\n$$U(|f|,P)-L(|f|,P)\\le U(f,P)-L(f,P).$$\n\nGiven $\\varepsilon>0$, Riemann's criterion gives $P$ making the right side $<\\varepsilon$; then the left side is too, so $|f|$ is integrable.\n\n**Inequality.** Since $-|f|\\le f\\le|f|$ everywhere, monotonicity and linearity give\n\n$$-\\int_a^b|f|\\le\\int_a^b f\\le\\int_a^b|f|,$$\n\nwhich says exactly $\\left|\\int_a^b f\\right|\\le\\int_a^b|f|$ (a number between $-A$ and $A$ has absolute value at most $A$). $\\blacksquare$\n\n**Check your version:** did you prove $|f|$ is integrable **before** writing $\\int |f|$? Did you compare gaps on the same partition? Did you use linearity to write $\\int (-|f|) = -\\int |f|$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why must we prove $|f|$ is integrable before using $\\int |f|$?",
+              "a": "$\\int_a^b |f|$ only means something if $|f|$ is integrable. Monotonicity compares integrals of integrable functions; applying it to a function not yet known to be integrable would be circular."
+            },
+            {
+              "q": "If $fg$ is integrable, why isn't $\\int fg = \\int f \\cdot \\int g$?",
+              "a": "Integration adds up products $f(x) g(x)$ point by point; $\\int f \\cdot \\int g$ multiplies two totals. Totals of products are not products of totals: $\\int_0^1 x \\cdot x\\,dx = \\frac13$ but $\\frac12 \\cdot \\frac12 = \\frac14$. Integration by parts (after lesson 7.9) is the tool for products."
+            },
+            {
+              "q": "Does additivity need $c$ to lie between $a$ and $b$?",
+              "a": "With the conventions $\\int_b^a f = -\\int_a^b f$ and $\\int_a^a f = 0$, no, as long as $f$ is integrable on the largest interval involved. For example $\\int_0^2 f = \\int_0^5 f + \\int_5^2 f$."
+            },
+            {
+              "q": "If $\\int_a^b f > 0$, is $f$ positive somewhere?",
+              "a": "Yes. If $f \\le 0$ everywhere, monotonicity would give $\\int_a^b f \\le 0$. But $f$ may also be negative elsewhere, as $x$ on $[-1,2]$ shows."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- **Linearity:** $\\int(\\alpha f + \\beta g) = \\alpha\\int f + \\beta\\int g$. Multiplying by a negative constant swaps upper and lower sums.\n- **Monotonicity:** $f \\le g$ gives $\\int f \\le \\int g$; hence $m(b-a) \\le \\int_a^b f \\le M(b-a)$ and $\\left|\\int_a^b f\\right| \\le K(b-a)$ when $|f| \\le K$.\n- **Additivity:** $\\int_a^b f = \\int_a^c f + \\int_c^b f$, in any order using $\\int_b^a f = -\\int_a^b f$.\n- $|f|$ and $fg$ are integrable, and $\\left|\\int f\\right| \\le \\int |f|$; but $\\int fg \\ne \\int f \\int g$ in general.\n- $f \\ge 0$ with $\\int f = 0$ forces $f = 0$ only when $f$ is continuous."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "If $\\int_0^2 f=3$ and $\\int_0^5 f=7$, then $\\int_2^5 f$ equals",
+          "options": [
+            "$10$",
+            "$-4$",
+            "$4$",
+            "$\\frac73$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "By additivity, $\\int_0^5 f=\\int_0^2 f+\\int_2^5 f$, so $\\int_2^5 f=7-3=4$. $10$ adds instead of subtracting, $-4$ is $\\int_5^2 f$, and integrals over intervals do not divide."
+        },
+        {
+          "type": "true_false",
+          "prompt": "For all $f,g\\in\\mathcal{R}[a,b]$, $\\int_a^b fg=\\left(\\int_a^b f\\right)\\left(\\int_a^b g\\right)$.",
+          "answer": [
+            false
+          ],
+          "explanation": "With $f=g=x$ on $[0,1]$: $\\int_0^1 x^2\\,dx=\\frac13\\ne\\frac14=\\left(\\int_0^1 x\\,dx\\right)^2$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f,g\\in\\mathcal{R}[a,b]$. Which statements always hold?",
+          "options": [
+            "$\\int_a^b(2f-3g)=2\\int_a^b f-3\\int_a^b g$",
+            "$\\left|\\int_a^b f\\right|\\le\\int_a^b|f|$",
+            "If $f\\le g$ then $\\int_a^b f\\le\\int_a^b g$",
+            "If $\\int_a^b f\\ge0$ then $f\\ge0$ on $[a,b]$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The first is linearity, the second the triangle inequality, the third monotonicity. The last fails: $f(x)=x$ on $[-1,2]$ has integral $\\frac32 > 0$ but takes negative values."
+        },
+        {
+          "type": "short",
+          "prompt": "Suppose $f\\in\\mathcal{R}[1,3]$ and $|f(x)|\\le 4$ for all $x$. What is the largest possible value of $\\left|\\int_1^3 f\\right|$?",
+          "answer": [
+            "8"
+          ],
+          "explanation": "$\\left|\\int_1^3 f\\right|\\le\\int_1^3|f|\\le 4\\cdot 2=8$, and $f\\equiv4$ attains it."
+        },
+        {
+          "type": "single",
+          "prompt": "In proving $U(f+g,P)\\le U(f,P)+U(g,P)$, the key fact used on each subinterval $I$ is",
+          "options": [
+            "$\\sup_I(f+g)=\\sup_I f+\\sup_I g$",
+            "$\\sup_I(f+g)\\le\\sup_I f+\\sup_I g$",
+            "$\\sup_I(f+g)\\ge\\sup_I f+\\sup_I g$",
+            "$f$ and $g$ attain their suprema on $I$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "For each $x\\in I$, $f(x)+g(x)\\le\\sup_I f+\\sup_I g$. Equality can fail: on $[0,1]$, $\\sup(x+(1-x))=1<2=\\sup x+\\sup(1-x)$. Integrable functions need not attain their suprema."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is continuous on $[a,b]$, $f\\ge0$ and $\\int_a^b f=0$, then $f(x)=0$ for all $x\\in[a,b]$.",
+          "answer": [
+            true
+          ],
+          "explanation": "If $f(x_0)>0$, continuity gives an interval of length $\\delta>0$ inside $[a,b]$ on which $f>f(x_0)/2$. By monotonicity and additivity, $\\int_a^b f\\ge\\delta f(x_0)/2>0$, a contradiction."
+        },
+        {
+          "type": "short",
+          "prompt": "Using $\\int_0^1 x\\,dx = \\frac12$, what is $\\int_0^1 (3x + 2)\\,dx$? Give a decimal or fraction.",
+          "answer": [
+            "3.5",
+            "7/2"
+          ],
+          "explanation": "By linearity, $3 \\cdot \\frac12 + 2 \\cdot 1 = \\frac72 = 3.5$."
+        },
+        {
+          "type": "short",
+          "prompt": "If $\\int_0^2 f = 3$ and $\\int_0^5 f = 7$, what is $\\int_5^2 f$?",
+          "answer": [
+            "-4",
+            "−4"
+          ],
+          "explanation": "$\\int_2^5 f = 7 - 3 = 4$, and reversing the limits changes the sign: $\\int_5^2 f = -4$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $|f|$ is Riemann integrable on $[a,b]$, then $f$ is Riemann integrable on $[a,b]$.",
+          "answer": [
+            false
+          ],
+          "explanation": "Let $f = 1$ on rationals and $-1$ on irrationals. Then $|f| = 1$ is integrable, but every piece has $M_i(f) = 1$ and $m_i(f) = -1$, so the gap of $f$ is always $2(b-a)$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which range must contain $\\int_0^1 \\frac{1}{1+x^2}\\,dx$, using only monotonicity?",
+          "options": [
+            "$\\left[\\frac12, 1\\right]$",
+            "$[0, \\frac12]$",
+            "$[1, 2]$",
+            "$\\left[\\frac14, \\frac12\\right]$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "On $[0,1]$, $1 \\le 1 + x^2 \\le 2$, so $\\frac12 \\le \\frac{1}{1+x^2} \\le 1$. Multiplying by the length $1$ gives $\\frac12 \\le \\int_0^1 \\frac{dx}{1+x^2} \\le 1$. (The exact value is $\\frac{\\pi}{4} \\approx 0.785$.)"
+        },
+        {
+          "type": "multiple",
+          "prompt": "For a bounded $f$ on $[a,b]$ and a partition $P$, which identity is correct? Select all that apply.",
+          "options": [
+            "$U(-f,P) = -U(f,P)$",
+            "$U(-f,P) = -L(f,P)$",
+            "$L(-f,P) = -L(f,P)$",
+            "$U(-f,P) = L(f,P)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "On each piece $M_i(-f) = -m_i(f)$: the largest value of $-f$ is minus the smallest value of $f$. So $U(-f,P) = -L(f,P)$ (and $L(-f,P) = -U(f,P)$). Upper and lower sums swap as well as changing sign."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f = 1$ on $[0,1]$ and $f = 3$ on $(1,2]$. What is $\\int_0^2 f$?",
+          "answer": [
+            "4"
+          ],
+          "explanation": "By additivity, $\\int_0^1 1\\,dx + \\int_1^2 3\\,dx = 1 + 3 = 4$. On $[1,2]$, $f$ equals $3$ except possibly at $x = 1$, which does not change the integral."
+        }
+      ]
+    }
+  ]
+}

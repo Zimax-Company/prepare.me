@@ -1,0 +1,1128 @@
+{
+  "concepts": [
+    {
+      "slug": "6-8-cauchys-mean-value-theorem",
+      "title": "Cauchy's Mean Value Theorem",
+      "summary": "A mean value theorem for two functions at once, with a single common point $\\xi$.",
+      "est_minutes": 35,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Two functions, one point",
+          "md": "**In this lesson you will learn to:**\n- explain why applying the Mean Value Theorem to two functions separately is not enough\n- state Cauchy's Mean Value Theorem in its product form and its ratio form\n- find the common point $\\xi$ for simple pairs of functions\n- prove the theorem from Rolle's theorem with a well-chosen helper function\n\n**You need:** Rolle's theorem (lesson 6.6) and the Mean Value Theorem (lesson 6.7). As a reminder, the MVT says: if $f$ is continuous on $[a, b]$ and differentiable on $(a, b)$, then $f(b) - f(a) = f'(\\xi)(b - a)$ for some $\\xi$ in $(a, b)$. The Greek letter $\\xi$ is read \"ksee\" (or \"ksai\"); it just names that unknown point."
+        },
+        {
+          "type": "text",
+          "md": "## Why compare two functions?\n\nThe MVT compares the change in **one** function, $f(b) - f(a)$, with the change in the input, $b - a$. Often we want to compare the changes in **two** functions over the same interval.\n\nHere is a typical situation. Two cars leave at time $a$ and arrive at time $b$. Car 1 travels a distance $f(b) - f(a)$ and car 2 travels $g(b) - g(a)$. Suppose car 1 covers twice the distance of car 2. Is there an instant when car 1 is going exactly twice as fast as car 2? In symbols, is there one time $\\xi$ with\n\n$$\\frac{f'(\\xi)}{g'(\\xi)} = \\frac{f(b) - f(a)}{g(b) - g(a)} ?$$\n\nThe key word is **one**: the same instant for both cars. Cauchy's Mean Value Theorem says yes (under the usual conditions).\n\nThis is not a curiosity. In lesson 6.13 it is the engine behind L'Hôpital's rule, which handles limits like $\\lim_{x \\to 0} \\frac{\\sin x}{x}$ by comparing $\\sin x$ and $x$ at a common point. It also gives an alternative proof of Taylor's theorem (lesson 6.10)."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Why not just apply the MVT twice?",
+          "md": "Applying the MVT to $f$ and to $g$ separately gives\n\n$$f(b) - f(a) = f'(\\xi_1)(b - a), \\qquad g(b) - g(a) = g'(\\xi_2)(b - a).$$\n\nDividing, the ratio is $\\dfrac{f'(\\xi_1)}{g'(\\xi_2)}$ with **two different points** in general.\n\nFor $f(x) = x^3$ and $g(x) = x^2$ on $[0, 1]$: the MVT for $f$ needs $3\\xi_1^2 = 1$, so $\\xi_1 = 1/\\sqrt{3} \\approx 0.577$. The MVT for $g$ needs $2\\xi_2 = 1$, so $\\xi_2 = 0.5$. Different points. The whole content of Cauchy's theorem is that **one common** $\\xi$ works, which needs a new argument."
+        },
+        {
+          "type": "check",
+          "question": "A student applies the MVT to $f$ and to $g$ on $[a, b]$ and divides, getting $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(\\xi_1)}{g'(\\xi_2)}$. What is wrong with claiming this proves Cauchy's theorem?",
+          "options": [
+            "Nothing: it is a complete proof",
+            "$\\xi_1$ and $\\xi_2$ may be different points, but Cauchy's theorem needs one common point",
+            "The MVT cannot be applied to $g$",
+            "You may never divide two equations"
+          ],
+          "correct": 1,
+          "explanation": "The MVT is applied correctly and dividing is fine (when nothing is zero), but the result involves two points. For $x^3$ and $x^2$ on $[0, 1]$ they are $0.577\\ldots$ and $0.5$. Cauchy's theorem asserts a single $\\xi$ that works for $f'$ and $g'$ at once."
+        },
+        {
+          "type": "text",
+          "md": "## The theorem\n\n**In plain words:** over the same interval, the ratio of the total changes of $f$ and $g$ equals the ratio of their rates of change at some single point inside.\n\n**Theorem (Cauchy's Mean Value Theorem).** Let $f$ and $g$ be continuous on $[a, b]$ and differentiable on $(a, b)$, where $a < b$. Then there is a point $\\xi \\in (a, b)$ such that\n\n$$\\big(f(b) - f(a)\\big)\\,g'(\\xi) = \\big(g(b) - g(a)\\big)\\,f'(\\xi).$$\n\nThis is the **product form**. It needs no division, so it always makes sense.\n\nIf in addition $g'(x) \\ne 0$ for every $x \\in (a, b)$, then $g(b) \\ne g(a)$ and we may divide to get the **ratio form**:\n\n$$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(\\xi)}{g'(\\xi)}.$$\n\nPoints to notice:\n- The hypotheses are exactly the MVT's hypotheses, asked of **both** functions.\n- $\\xi$ lies strictly between $a$ and $b$, and it is the **same** $\\xi$ on both sides.\n- Like the MVT, the theorem says $\\xi$ exists. It gives no formula, and there may be more than one such point.\n- The extra condition $g' \\ne 0$ is only needed to divide."
+        },
+        {
+          "type": "check",
+          "question": "Which hypothesis is needed for the **ratio** form but not for the product form?",
+          "options": [
+            "$f$ and $g$ are continuous on $[a, b]$",
+            "$f$ and $g$ are differentiable on $(a, b)$",
+            "$g'(x) \\ne 0$ for all $x \\in (a, b)$",
+            "$f(a) = f(b)$"
+          ],
+          "correct": 2,
+          "explanation": "Continuity and differentiability are needed for both forms. $g' \\ne 0$ is what guarantees $g(b) - g(a) \\ne 0$ and $g'(\\xi) \\ne 0$, so that dividing is allowed. $f(a) = f(b)$ is a Rolle-type condition that the theorem does not need at all."
+        },
+        {
+          "type": "text",
+          "md": "## Examples, an edge case and a non-example\n\n**Recovering the MVT.** Take $g(x) = x$. Then $g'(\\xi) = 1$ and $g(b) - g(a) = b - a$, so the product form reads $f(b) - f(a) = f'(\\xi)(b - a)$. The MVT is the special case $g(x) = x$.\n\n**A common point.** For $f(x) = x^3$, $g(x) = x^2$ on $[0, 1]$, the product form needs\n\n$$(1 - 0)\\cdot 2\\xi = (1 - 0)\\cdot 3\\xi^2 \\iff \\xi(3\\xi - 2) = 0.$$\n\nSince $\\xi$ must lie in the open interval $(0, 1)$, $\\xi = 0$ is ruled out, so $\\xi = \\tfrac{2}{3}$. Neither MVT point ($0.577\\ldots$ or $0.5$) equals it. Note that $g'(0) = 0$ only at an endpoint, so $g' \\ne 0$ on $(0, 1)$ and the ratio form also holds.\n\n**Edge case: $g(b) = g(a)$.** Take $f(x) = x$, $g(x) = x^2$ on $[-1, 1]$. Then $g(1) - g(-1) = 0$, so the ratio form would divide by zero. The product form still works:\n\n$$(1 - (-1))\\cdot 2\\xi = 0 \\cdot 1 \\iff \\xi = 0.$$\n\nThere is no contradiction: $g'(0) = 0$ inside the interval, so the ratio form was never promised.\n\n**Non-example.** Take $f(x) = |x|$, $g(x) = x$ on $[-1, 1]$. The product form would need $0 \\cdot 1 = 2 f'(\\xi)$, so $f'(\\xi) = 0$. But $f'(x) = \\pm 1$ wherever it exists. The theorem fails here because $f$ is not differentiable at $0$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each situation to what Cauchy's theorem says (or why it does not apply).",
+          "pairs": [
+            {
+              "left": "$g(x) = x$",
+              "right": "It becomes the ordinary MVT"
+            },
+            {
+              "left": "$f(x) = x^3$, $g(x) = x^2$ on $[0, 1]$",
+              "right": "The common point is $\\xi = \\tfrac23$"
+            },
+            {
+              "left": "$f(x) = x$, $g(x) = x^2$ on $[-1, 1]$",
+              "right": "Only the product form holds, with $\\xi = 0$"
+            },
+            {
+              "left": "$f(x) = |x|$, $g(x) = x$ on $[-1, 1]$",
+              "right": "No such $\\xi$: $f$ is not differentiable at $0$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## The picture behind the theorem\n\nThe MVT has a picture: some tangent line is parallel to the chord. Cauchy's theorem has one too, but for a **curve traced out by a moving point**.\n\nAs $t$ runs from $a$ to $b$, plot the point $\\big(g(t), f(t)\\big)$ in the plane. (Here $t$ is just the input; think of it as time.) This traces a curve from $\\big(g(a), f(a)\\big)$ to $\\big(g(b), f(b)\\big)$.\n\n- The **chord** joining the two ends has slope $\\dfrac{f(b) - f(a)}{g(b) - g(a)}$: rise over run.\n- Near the time $t$, the point moves $g'(t)$ across and $f'(t)$ up per unit of time, so the **tangent** has slope $\\dfrac{f'(t)}{g'(t)}$.\n\nCauchy's theorem says: at some time $\\xi$, the tangent is parallel to the chord.\n\n**Example.** $t \\mapsto (t^2, t^3)$ for $t \\in [0, 1]$ runs from $(0, 0)$ to $(1, 1)$, so the chord has slope $1$. The tangent slope at time $t$ is $\\frac{3t^2}{2t} = \\frac{3t}{2}$, which equals $1$ when $t = \\frac23$. That is the same $\\xi$ as in the example above, as it should be: there $g(x) = x^2$ and $f(x) = x^3$."
+        },
+        {
+          "type": "check",
+          "question": "A point moves along the curve $t \\mapsto \\big(g(t), f(t)\\big)$ for $t \\in [a, b]$. Which quantity is the slope of the tangent at time $t$ (when $g'(t) \\ne 0$)?",
+          "options": [
+            "$\\dfrac{g'(t)}{f'(t)}$",
+            "$\\dfrac{f'(t)}{g'(t)}$",
+            "$f'(t)$",
+            "$\\dfrac{f(b) - f(a)}{g(b) - g(a)}$"
+          ],
+          "correct": 1,
+          "explanation": "The horizontal coordinate is $g$ and the vertical one is $f$, so slope is (vertical rate) over (horizontal rate) $= f'(t)/g'(t)$. The first option is upside down. $f'(t)$ alone would be the slope only if $g(t) = t$. The last option is the slope of the chord, not the tangent."
+        },
+        {
+          "type": "text",
+          "md": "## How to prove it\n\nThe MVT was proved by building a helper function with equal values at the ends and applying Rolle's theorem. We do the same here, but the helper must involve both $f$ and $g$.\n\nTry a combination $h(x) = \\alpha\\, g(x) - \\beta\\, f(x)$ with constants $\\alpha$ and $\\beta$. Then $h'(\\xi) = \\alpha g'(\\xi) - \\beta f'(\\xi)$, and the conclusion we want is exactly $h'(\\xi) = 0$ with\n\n$$\\alpha = f(b) - f(a), \\qquad \\beta = g(b) - g(a).$$\n\nSo the natural guess is\n\n$$h(x) = \\big(f(b) - f(a)\\big)\\,g(x) - \\big(g(b) - g(a)\\big)\\,f(x).$$\n\nFor Rolle we need $h(a) = h(b)$. The check below is pure algebra: four terms in each, two of which cancel. Then Rolle hands us $\\xi$ with $h'(\\xi) = 0$, which is the theorem.\n\nNotice that $\\alpha$ and $\\beta$ are **numbers** (they do not depend on $x$), so differentiating $h$ only touches $g(x)$ and $f(x)$."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of Cauchy's Mean Value Theorem",
+          "steps": [
+            {
+              "title": "Define the helper function",
+              "md": "For $x \\in [a, b]$ let\n\n$$h(x) = \\big(f(b) - f(a)\\big)\\,g(x) - \\big(g(b) - g(a)\\big)\\,f(x).$$\n\nIt is a combination of $f$ and $g$ with constant coefficients, so it is continuous on $[a, b]$ and differentiable on $(a, b)$."
+            },
+            {
+              "title": "Check the ends agree",
+              "md": "Expand both ends:\n\n$$h(a) = f(b)g(a) - f(a)g(a) - g(b)f(a) + g(a)f(a) = f(b)g(a) - g(b)f(a),$$\n\n$$h(b) = f(b)g(b) - f(a)g(b) - g(b)f(b) + g(a)f(b) = f(b)g(a) - f(a)g(b).$$\n\nThe terms $f(a)g(a)$ cancel in the first line and $f(b)g(b)$ cancel in the second. So $h(a) = h(b)$."
+            },
+            {
+              "title": "Apply Rolle's theorem",
+              "md": "Rolle gives $\\xi \\in (a, b)$ with\n\n$$0 = h'(\\xi) = \\big(f(b) - f(a)\\big)g'(\\xi) - \\big(g(b) - g(a)\\big)f'(\\xi).$$\n\nRearranging gives the product form."
+            },
+            {
+              "title": "Get the ratio form",
+              "md": "Now assume $g' \\ne 0$ on $(a, b)$. If $g(b) = g(a)$, Rolle applied to $g$ itself would give a point where $g' = 0$, which is impossible. So $g(b) - g(a) \\ne 0$, and $g'(\\xi) \\ne 0$ too. Dividing the product form by $\\big(g(b) - g(a)\\big)g'(\\xi)$ gives the ratio form. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the last step of the proof, why can we be sure that $g(b) \\ne g(a)$?",
+          "options": [
+            "Because $a \\ne b$",
+            "Because $g$ is continuous",
+            "If $g(b) = g(a)$, Rolle's theorem for $g$ would give a point in $(a, b)$ with $g' = 0$, contradicting $g' \\ne 0$",
+            "Because $h(a) = h(b)$"
+          ],
+          "correct": 2,
+          "explanation": "This is a short proof by contradiction using Rolle on $g$. $a \\ne b$ alone does not help: $g(x) = x^2$ on $[-1, 1]$ has $g(-1) = g(1)$. Continuity alone does not help either. $h(a) = h(b)$ is true always and says nothing about $g$."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Cauchy's MVT (product form)",
+              "back": "If $f, g$ are continuous on $[a,b]$ and differentiable on $(a,b)$, some **single** $\\xi \\in (a,b)$ has $(f(b)-f(a))g'(\\xi) = (g(b)-g(a))f'(\\xi)$.\n\n*Example:* $x^3, x^2$ on $[0,1]$: $\\xi = \\tfrac23$."
+            },
+            {
+              "front": "Cauchy's MVT (ratio form)",
+              "back": "If also $g' \\ne 0$ on $(a,b)$: $\\dfrac{f(b)-f(a)}{g(b)-g(a)} = \\dfrac{f'(\\xi)}{g'(\\xi)}$.\n\n*Example:* fails for $g = x^2$ on $[-1,1]$, where $g'(0) = 0$."
+            },
+            {
+              "front": "The helper function",
+              "back": "$h(x) = (f(b)-f(a))\\,g(x) - (g(b)-g(a))\\,f(x)$. It has $h(a) = h(b)$, so **Rolle** applies.\n\n*Example:* $h'(\\xi) = 0$ is exactly the product form."
+            },
+            {
+              "front": "Special case $g(x) = x$",
+              "back": "Cauchy's MVT becomes the **ordinary MVT**: $f(b) - f(a) = f'(\\xi)(b-a)$.\n\n*Example:* $g' = 1$, $g(b) - g(a) = b - a$."
+            },
+            {
+              "front": "Geometric meaning",
+              "back": "On the curve $t \\mapsto (g(t), f(t))$, some **tangent** is parallel to the chord joining the ends.\n\n*Example:* $(t^2, t^3)$ on $[0,1]$: tangent slope $\\tfrac{3t}{2} = 1$ at $t = \\tfrac23$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "For $f(x) = \\ln x$ and $g(x) = x^2$ you need one point $\\xi \\in (1, 2)$ where $\\frac{f'(\\xi)}{g'(\\xi)}$ equals $\\frac{f(2) - f(1)}{g(2) - g(1)}$. Which tool gives this directly?",
+          "options": [
+            "The MVT applied to $f$ and to $g$ separately",
+            "Cauchy's MVT in ratio form, since $g'(x) = 2x \\ne 0$ on $(1, 2)$",
+            "Rolle's theorem applied to $f$",
+            "The Intermediate Value Theorem applied to $f$"
+          ],
+          "correct": 1,
+          "explanation": "Both functions are continuous on $[1, 2]$ and differentiable on $(1, 2)$, and $g' = 2x$ is never $0$ there, so the ratio form applies with one common $\\xi$. Two separate MVTs give two points. Rolle needs $f(1) = f(2)$, which fails ($0 \\ne \\ln 2$). The IVT is about values, not derivatives."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to find $\\xi$ in Cauchy's MVT for $f(x) = x^2$ and $g(x) = x^3$ on $[0, 2]$.",
+          "items": [
+            "Compute the changes: $f(2) - f(0) = 4$ and $g(2) - g(0) = 8$.",
+            "Compute the derivatives: $f'(x) = 2x$ and $g'(x) = 3x^2$.",
+            "Write the product form: $4 \\cdot 3\\xi^2 = 8 \\cdot 2\\xi$, that is $12\\xi^2 = 16\\xi$.",
+            "Factorise: $4\\xi(3\\xi - 4) = 0$, so $\\xi = 0$ or $\\xi = \\tfrac43$.",
+            "Keep only the root in the open interval $(0, 2)$: $\\xi = \\tfrac43$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: sine and cosine",
+          "problem": "Let $f(x) = \\sin x$ and $g(x) = \\cos x$ on $\\left[0, \\frac{\\pi}{2}\\right]$. Check the hypotheses of Cauchy's MVT, decide whether the ratio form applies, and find $\\xi$.",
+          "solution": "**Hypotheses.** $\\sin$ and $\\cos$ are continuous and differentiable everywhere, so they are continuous on $\\left[0, \\frac{\\pi}{2}\\right]$ and differentiable on $\\left(0, \\frac{\\pi}{2}\\right)$.\n\n**Ratio form?** $g'(x) = -\\sin x$, which is never $0$ on $\\left(0, \\frac{\\pi}{2}\\right)$ (it is $0$ only at the endpoint $0$). So the ratio form applies.\n\n**Find $\\xi$.** The changes are $f\\left(\\frac{\\pi}{2}\\right) - f(0) = 1$ and $g\\left(\\frac{\\pi}{2}\\right) - g(0) = -1$. The product form needs\n\n$$1 \\cdot (-\\sin\\xi) = (-1)\\cdot\\cos\\xi \\iff \\sin\\xi = \\cos\\xi \\iff \\tan\\xi = 1.$$\n\nIn $\\left(0, \\frac{\\pi}{2}\\right)$ this gives $\\xi = \\frac{\\pi}{4}$.\n\n**Check your version:** did you check $g' \\ne 0$ on the **open** interval only? Did you keep the signs ($g$ decreases, so its change is $-1$)? Did you discard any roots outside $\\left(0, \\frac{\\pi}{2}\\right)$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why is it called a \"mean value\" theorem?",
+              "a": "\"Mean\" means average. The MVT says the average rate $\\frac{f(b) - f(a)}{b - a}$ is achieved as an instantaneous rate. Cauchy's version says the average ratio of changes $\\frac{f(b) - f(a)}{g(b) - g(a)}$ is achieved as an instantaneous ratio $\\frac{f'(\\xi)}{g'(\\xi)}$."
+            },
+            {
+              "q": "If $g$ is the identity, I get the MVT. Can I get Rolle too?",
+              "a": "Yes. Take $g(x) = x$ and suppose $f(a) = f(b)$. The product form gives $0 \\cdot 1 = (b - a) f'(\\xi)$, so $f'(\\xi) = 0$. But this is circular as a proof, because Cauchy's theorem was itself proved from Rolle."
+            },
+            {
+              "q": "Can I swap the roles of $f$ and $g$?",
+              "a": "Yes. The product form is symmetric: swapping $f$ and $g$ gives the same equation (both sides swap). The ratio form just flips upside down, and then you need $f' \\ne 0$ instead of $g' \\ne 0$."
+            },
+            {
+              "q": "Where will I use this?",
+              "a": "Mainly in lesson 6.13. If $f(a) = g(a) = 0$, Cauchy's theorem on $[a, x]$ gives $\\frac{f(x)}{g(x)} = \\frac{f'(\\xi_x)}{g'(\\xi_x)}$ for some $\\xi_x$ between $a$ and $x$. Letting $x \\to a$ forces $\\xi_x \\to a$, and that is L'Hôpital's rule."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- Applying the MVT to $f$ and $g$ separately gives **two** points; Cauchy's theorem gives **one** common point $\\xi$.\n- **Product form:** $(f(b) - f(a))\\,g'(\\xi) = (g(b) - g(a))\\,f'(\\xi)$, under the MVT hypotheses for both functions.\n- **Ratio form:** if also $g' \\ne 0$ on $(a, b)$, then $\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(\\xi)}{g'(\\xi)}$.\n- $g(x) = x$ gives back the ordinary MVT.\n- Proof: Rolle applied to $h(x) = (f(b) - f(a))\\,g(x) - (g(b) - g(a))\\,f(x)$, which has $h(a) = h(b)$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "short",
+          "prompt": "Find $\\xi$ in Cauchy's MVT for $f(x) = x^3$ and $g(x) = x^2$ on $[0, 3]$.",
+          "answer": [
+            "2"
+          ],
+          "explanation": "$(27 - 0)\\cdot 2\\xi = (9 - 0)\\cdot 3\\xi^2$ gives $54\\xi = 27\\xi^2$, so $27\\xi(\\xi - 2) = 0$. Since $\\xi \\in (0, 3)$, $\\xi \\ne 0$ and $\\xi = 2$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Cauchy's Mean Value Theorem with $g(x) = x$ reduces to the ordinary Mean Value Theorem.",
+          "answer": [
+            true
+          ],
+          "explanation": "Then $g'(\\xi) = 1$ and $g(b) - g(a) = b - a$, giving $f(b) - f(a) = f'(\\xi)(b - a)$."
+        },
+        {
+          "type": "single",
+          "prompt": "Which auxiliary function is used to prove Cauchy's MVT via Rolle's theorem?",
+          "options": [
+            "$h(x) = f(x)g(x)$",
+            "$h(x) = \\dfrac{f(x)}{g(x)}$",
+            "$h(x) = f(x) - g(x)$",
+            "$h(x) = \\big(f(b) - f(a)\\big)g(x) - \\big(g(b) - g(a)\\big)f(x)$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "This $h$ satisfies $h(a) = h(b) = f(b)g(a) - g(b)f(a)$, and $h'(\\xi) = 0$ is exactly the conclusion. The product and quotient do not have equal end values in general (and the quotient may not be defined), and $f - g$ has $h(a) = h(b)$ only if $f$ and $g$ happen to change by the same amount."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Cauchy's MVT can be proved by applying the ordinary MVT to $f$ and to $g$ separately and dividing the results.",
+          "answer": [
+            false
+          ],
+          "explanation": "That produces two possibly different points $\\xi_1, \\xi_2$. Cauchy's theorem asserts a single common $\\xi$. For $x^3$ and $x^2$ on $[0, 1]$ the separate points are $\\frac{1}{\\sqrt3}$ and $\\frac12$, while the common point is $\\frac23$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Suppose $f, g$ are continuous on $[a, b]$, differentiable on $(a, b)$, and $g'(x) \\neq 0$ for all $x \\in (a, b)$. Which statements must hold?",
+          "options": [
+            "$g(b) \\neq g(a)$",
+            "There is $\\xi \\in (a, b)$ with $\\dfrac{f(b) - f(a)}{g(b) - g(a)} = \\dfrac{f'(\\xi)}{g'(\\xi)}$",
+            "There is $\\xi \\in (a, b)$ with $f'(\\xi) = g'(\\xi)$",
+            "$f(b) - f(a) = g(b) - g(a)$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "The first follows from Rolle applied to $g$, and the second is Cauchy's MVT. For $f(x) = 2x$, $g(x) = x$, we have $f' = 2 \\ne 1 = g'$ everywhere and $f(b) - f(a) = 2(b - a) \\ne b - a = g(b) - g(a)$, so the last two can fail."
+        },
+        {
+          "type": "single",
+          "prompt": "For which result is Cauchy's MVT the key ingredient?",
+          "options": [
+            "The intermediate value theorem",
+            "L'Hôpital's rule",
+            "The extreme value theorem",
+            "The product rule"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "Applying Cauchy's MVT on $[a, x]$ to functions with $f(a) = g(a) = 0$ gives $\\frac{f(x)}{g(x)} = \\frac{f'(\\xi_x)}{g'(\\xi_x)}$, which is the heart of L'Hôpital's rule (lesson 6.13). The IVT and EVT come from completeness of $\\mathbb{R}$ and are used to prove Rolle, not the other way round; the product rule comes straight from the definition of the derivative."
+        },
+        {
+          "type": "short",
+          "prompt": "Find $\\xi$ in Cauchy's MVT for $f(x) = x^3$ and $g(x) = x^2$ on $[0, 6]$.",
+          "answer": [
+            "4"
+          ],
+          "explanation": "$(216 - 0)\\cdot 2\\xi = (36 - 0)\\cdot 3\\xi^2$ gives $432\\xi = 108\\xi^2$, so $108\\xi(\\xi - 4) = 0$. As $\\xi \\in (0, 6)$, $\\xi = 4$. (On $[0, b]$ this pair always gives $\\xi = \\frac{2b}{3}$.)"
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = x$ and $g(x) = x^2$ on $[-1, 1]$, which point satisfies the product form $\\big(f(1) - f(-1)\\big)g'(\\xi) = \\big(g(1) - g(-1)\\big)f'(\\xi)$?",
+          "options": [
+            "$\\xi = 0$",
+            "$\\xi = \\tfrac12$",
+            "No point: the theorem fails because $g(1) = g(-1)$",
+            "Every $\\xi \\in (-1, 1)$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "The equation reads $2 \\cdot 2\\xi = 0 \\cdot 1$, so $\\xi = 0$. The product form holds even when $g(b) = g(a)$; only the ratio form breaks, because it would divide by $0$. Here $g'(0) = 0$, so the ratio form's extra hypothesis fails."
+        },
+        {
+          "type": "true_false",
+          "prompt": "The product form of Cauchy's MVT still holds when $g(b) = g(a)$.",
+          "answer": [
+            true
+          ],
+          "explanation": "The product form needs only continuity on $[a, b]$ and differentiability on $(a, b)$ for both functions. When $g(b) = g(a)$ it says $(f(b) - f(a))\\,g'(\\xi) = 0$ for some $\\xi$, which is fine. Only the ratio form needs $g(b) \\ne g(a)$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which of these are hypotheses of the product form of Cauchy's MVT on $[a, b]$? Select all that apply.",
+          "options": [
+            "$f$ is continuous on $[a, b]$",
+            "$g$ is continuous on $[a, b]$",
+            "$f$ and $g$ are differentiable on $(a, b)$",
+            "$g(a) = g(b)$",
+            "$f'(x) \\ne 0$ for all $x \\in (a, b)$"
+          ],
+          "answer": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "The product form asks for the MVT hypotheses for both functions and nothing more. $g(a) = g(b)$ is a Rolle-type condition that is not needed, and no non-vanishing condition on $f'$ or $g'$ is needed unless you want to divide."
+        },
+        {
+          "type": "single",
+          "prompt": "Geometrically, Cauchy's MVT says that on the curve $t \\mapsto \\big(g(t), f(t)\\big)$, $t \\in [a, b]$, there is a point where…",
+          "options": [
+            "the curve crosses the $x$-axis",
+            "the tangent is parallel to the chord joining the two ends",
+            "the tangent is horizontal",
+            "$f(t) = g(t)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The chord has slope $\\frac{f(b) - f(a)}{g(b) - g(a)}$ and the tangent at time $t$ has slope $\\frac{f'(t)}{g'(t)}$; the theorem makes them equal at $t = \\xi$. A horizontal tangent is Rolle's picture, which needs equal heights at the ends."
+        },
+        {
+          "type": "single",
+          "prompt": "For $f(x) = \\sin x$ and $g(x) = \\cos x$ on $\\left[0, \\frac{\\pi}{2}\\right]$, what is the point $\\xi$ in Cauchy's MVT?",
+          "options": [
+            "$\\dfrac{\\pi}{6}$",
+            "$\\dfrac{\\pi}{4}$",
+            "$\\dfrac{\\pi}{3}$",
+            "$\\dfrac{\\pi}{2}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The changes are $1$ and $-1$, so $1 \\cdot (-\\sin\\xi) = (-1)\\cos\\xi$, i.e. $\\tan\\xi = 1$, giving $\\xi = \\frac{\\pi}{4}$. $\\frac{\\pi}{2}$ is an endpoint, and $\\xi$ must lie in the open interval."
+        }
+      ]
+    },
+    {
+      "slug": "6-9-applications-of-the-mean-value-theorem",
+      "title": "Applications of the Mean Value Theorem",
+      "summary": "Monotonicity, constancy, inequalities and estimates, all from one theorem.",
+      "est_minutes": 40,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "From $f'$ to $f$",
+          "md": "**In this lesson you will learn to:**\n- show that $f' = 0$ on an interval forces $f$ to be constant\n- decide where a function is increasing or decreasing from the sign of $f'$\n- prove inequalities such as $e^x > 1 + x$ and $\\ln(1 + x) < x$\n- estimate numbers like $\\sqrt{101}$ and bound how far $f$ can move using a bound on $f'$\n- use the derivative limit theorem to find $f'(c)$ at a \"join\" point\n\n**You need:** the Mean Value Theorem (lesson 6.7). You may also use the usual derivatives $(e^x)' = e^x$, $(\\ln x)' = \\frac1x$, $(\\sin x)' = \\cos x$, and the product rule (lesson 6.4)."
+        },
+        {
+          "type": "text",
+          "md": "## One line does all the work\n\nThe derivative $f'(x)$ is **local** information: it describes $f$ only very near $x$. Questions like \"is $f$ increasing on $[0, 5]$?\" or \"how big can $f(4) - f(1)$ be?\" are **global**: they are about $f$ on a whole stretch. The MVT is the bridge between the two.\n\nThroughout this lesson $I$ is an **interval** (a set with no gaps, such as $[0, 1]$, $(2, \\infty)$ or all of $\\mathbb{R}$; see lesson 2.6), and $f$ is differentiable on $I$.\n\nTake any two points $x < y$ in $I$. Because $I$ has no gaps, the whole of $[x, y]$ lies in $I$, so $f$ is continuous on $[x, y]$ and differentiable on $(x, y)$. (Remember from lesson 6.3 that differentiable implies continuous.) The MVT gives some $\\xi \\in (x, y)$ with\n\n$$f(y) - f(x) = f'(\\xi)\\,(y - x).$$\n\nEvery result in this lesson comes from reading this line:\n- $y - x > 0$, so the **sign** of $f(y) - f(x)$ is the sign of $f'(\\xi)$;\n- the **size** of $f(y) - f(x)$ is controlled by the size of $f'(\\xi)$.\n\nWe never need to know where $\\xi$ is, only what is true of $f'$ everywhere in $I$."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "The domain must be an interval",
+          "md": "Let $f(x) = 0$ for $x \\in (0, 1)$ and $f(x) = 1$ for $x \\in (2, 3)$. Then $f'(x) = 0$ at every point of its domain, yet $f$ is **not** constant.\n\nWhat went wrong? For $x = 0.5$ and $y = 2.5$, the interval $[x, y]$ is not inside the domain, so the MVT cannot be applied there. Every result below needs an interval. The same trap catches $f(x) = \\frac{x}{|x|}$ on $\\mathbb{R} \\setminus \\{0\\}$ (all reals except $0$): $f' = 0$ everywhere it is defined, but $f$ jumps from $-1$ to $1$."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is differentiable on $(-\\infty, 0) \\cup (0, \\infty)$ and $f'(x) = 0$ for every $x$ in that set. What can you conclude?",
+          "options": [
+            "$f$ is constant on its whole domain",
+            "$f$ is constant on $(-\\infty, 0)$ and constant on $(0, \\infty)$, possibly with different constants",
+            "Nothing at all",
+            "$f(x) = 0$ for all $x \\ne 0$"
+          ],
+          "correct": 1,
+          "explanation": "Each piece is an interval, so the MVT works on each piece separately. But the domain is not one interval, so the two constants need not match: $\\frac{x}{|x|}$ is $-1$ on the left and $1$ on the right. Nothing forces the constant to be $0$."
+        },
+        {
+          "type": "text",
+          "md": "## Constant functions and equal derivatives\n\n**Why it matters.** This is how you know that \"the antiderivative\" is unique up to a constant, and how you prove two formulas are equal by comparing derivatives.\n\n**Corollary 1.** If $f'(x) = 0$ for all $x \\in I$, then $f$ is constant on $I$.\n\n_Why:_ for any $x < y$ in $I$, $f(y) - f(x) = f'(\\xi)(y - x) = 0 \\cdot (y - x) = 0$.\n\n**Corollary 2.** If $f' = g'$ on $I$, then $f - g$ is constant on $I$: $f(x) = g(x) + C$ for some number $C$.\n\n_Why:_ apply Corollary 1 to $f - g$, whose derivative is $f' - g' = 0$.\n\n**Examples.**\n- If $f'(x) = 2$ on $\\mathbb{R}$, then $f(x) - 2x$ has derivative $0$, so $f(x) = 2x + C$. Knowing one value pins down $C$: if $f(0) = 3$ then $C = 3$.\n- If $f'(x) = \\cos x$ on $\\mathbb{R}$, then $f(x) = \\sin x + C$.\n- Edge case: $f'(x) = 0$ with $f(0) = 0$ on $\\mathbb{R}$ forces $f(x) = 0$ for every $x$. \"Constant\" includes the zero function.\n\n**Uniqueness trick.** To show $f$ equals some known function $F$, show $(f - F)' = 0$ on an interval and check one value. You will do this for $f' = f$ in the \"Your turn\" at the end."
+        },
+        {
+          "type": "check",
+          "question": "$f$ is differentiable on $\\mathbb{R}$ with $f'(x) = 3x^2$ for all $x$, and $f(1) = 5$. What is $f(2)$?",
+          "options": [
+            "$8$",
+            "$12$",
+            "$13$",
+            "$17$"
+          ],
+          "correct": 1,
+          "explanation": "$f$ and $x^3$ have the same derivative on the interval $\\mathbb{R}$, so $f(x) = x^3 + C$. From $f(1) = 1 + C = 5$, $C = 4$, so $f(2) = 8 + 4 = 12$. $8$ forgets the constant; $13$ uses $C = 5$ (confusing $f(1)$ with $C$); $17$ adds $f(1)$ to $f(2) = 12$."
+        },
+        {
+          "type": "text",
+          "md": "## The sign of $f'$ and monotonicity\n\n**Definitions.** $f$ is **increasing** on $I$ if $x < y$ implies $f(x) \\le f(y)$, and **strictly increasing** if $x < y$ implies $f(x) < f(y)$. Decreasing and strictly decreasing are defined the same way with the inequalities reversed. These match the words for sequences in lesson 3.7.\n\n**Corollary 3.** On an interval $I$:\n- if $f' \\ge 0$ on $I$, then $f$ is increasing;\n- if $f' > 0$ on $I$, then $f$ is strictly increasing;\n- similarly $f' \\le 0$ gives decreasing and $f' < 0$ strictly decreasing.\n\n**Example.** $f(x) = x^3 - 3x$ has $f'(x) = 3(x - 1)(x + 1)$. This is negative on $(-1, 1)$ and positive on $(1, \\infty)$, so $f$ is strictly decreasing on $[-1, 1]$ and strictly increasing on $[1, \\infty)$.\n\n**Counting roots.** $p(x) = x^3 + x - 5$ has $p'(x) = 3x^2 + 1 > 0$, so $p$ is strictly increasing and can cross $0$ at most once. Since $p(1) = -3 < 0 < 5 = p(2)$, the IVT (lesson 5.9) gives a root. So there is **exactly one** real root.\n\n**Edge case.** $x^3$ is strictly increasing on $\\mathbb{R}$, but $(x^3)' = 0$ at $x = 0$. So $f' > 0$ is sufficient for strictly increasing, not necessary.\n\n**Non-example.** $f(x) = \\frac1x$ has $f'(x) = -\\frac{1}{x^2} < 0$ on its domain, yet $f(-1) = -1 < 1 = f(1)$. It is decreasing on each of $(-\\infty, 0)$ and $(0, \\infty)$, but not on their union, which is not an interval."
+        },
+        {
+          "type": "steps",
+          "title": "Proof that $f' \\ge 0$ implies $f$ is increasing",
+          "steps": [
+            {
+              "title": "Take two arbitrary points",
+              "md": "Let $x, y \\in I$ with $x < y$. We must show $f(x) \\le f(y)$. Since $I$ is an interval, $[x, y] \\subseteq I$. (This is exactly where the interval hypothesis is used.)"
+            },
+            {
+              "title": "Check the hypotheses of the MVT",
+              "md": "$f$ is differentiable on $I$, hence continuous on $[x, y]$ and differentiable on $(x, y)$."
+            },
+            {
+              "title": "Apply the MVT",
+              "md": "There is $\\xi \\in (x, y)$ with $f(y) - f(x) = f'(\\xi)(y - x)$."
+            },
+            {
+              "title": "Read off the sign",
+              "md": "$f'(\\xi) \\ge 0$ and $y - x > 0$, so their product is $\\ge 0$ and $f(y) \\ge f(x)$. If $f' > 0$ the product is $> 0$ and the inequality is strict. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof above, which step would fail if $I$ were $(0, 1) \\cup (2, 3)$?",
+          "options": [
+            "Taking two points $x < y$ in $I$",
+            "Saying $[x, y] \\subseteq I$, so that the MVT applies on $[x, y]$",
+            "Saying $y - x > 0$",
+            "Saying a product of two nonnegative numbers is nonnegative"
+          ],
+          "correct": 1,
+          "explanation": "With $x = 0.5$ and $y = 2.5$, the interval $[x, y]$ contains $[1, 2]$, where $f$ is not even defined, so the MVT cannot be used. The other steps are pure arithmetic or logic and work for any set."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each hypothesis on the interval $I$ with the conclusion the MVT gives",
+          "pairs": [
+            {
+              "left": "$f' = 0$ on $I$",
+              "right": "$f$ is constant"
+            },
+            {
+              "left": "$f' > 0$ on $I$",
+              "right": "$f$ is strictly increasing"
+            },
+            {
+              "left": "$|f'| \\le M$ on $I$",
+              "right": "$|f(x) - f(y)| \\le M|x - y|$"
+            },
+            {
+              "left": "$f' = g'$ on $I$",
+              "right": "$f - g$ is constant"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Proving inequalities\n\n**Method.** To compare two expressions, write their difference as $f(x) - f(a)$ for a suitable function $f$ and point $a$, apply the MVT, and bound $f'(\\xi)$ using only what you know about where $\\xi$ lies.\n\n**Example: $e^x > 1 + x$ for all $x \\ne 0$.** Apply the MVT to $e^t$ on the interval between $0$ and $x$. There is $\\xi$ strictly between $0$ and $x$ with\n\n$$e^x - e^0 = e^\\xi (x - 0), \\quad\\text{that is}\\quad e^x - 1 = e^\\xi x.$$\n\n- If $x > 0$: then $\\xi > 0$, so $e^\\xi > 1$, and multiplying by $x > 0$ gives $e^\\xi x > x$.\n- If $x < 0$: then $\\xi < 0$, so $0 < e^\\xi < 1$. Multiplying by $x < 0$ **reverses** the inequality: $e^\\xi x > x$.\n\nIn both cases $e^x - 1 > x$. The case $x < 0$ is the one students get wrong: forgetting to flip the inequality gives the false conclusion $e^x < 1 + x$.\n\n**Example: $\\ln(1 + x) < x$ for $x > 0$.** The MVT for $\\ln(1 + t)$ on $[0, x]$ gives $\\ln(1 + x) - 0 = \\frac{1}{1 + \\xi}\\,x$ with $0 < \\xi < x$. Since $1 + \\xi > 1$, $\\frac{1}{1 + \\xi} < 1$, so $\\ln(1 + x) < x$.\n\n**Edge case.** At $x = 0$ both inequalities become equalities ($e^0 = 1$, $\\ln 1 = 0$). That is why they are stated for $x \\ne 0$ or $x > 0$."
+        },
+        {
+          "type": "check",
+          "question": "In the proof of $e^x > 1 + x$ for $x < 0$, we have $0 < e^\\xi < 1$. Why does this give $e^\\xi x > x$ and not $e^\\xi x < x$?",
+          "options": [
+            "Because $e^\\xi$ is positive",
+            "Because multiplying the inequality $e^\\xi < 1$ by the negative number $x$ reverses it",
+            "Because $\\xi > x$",
+            "It doesn't: in fact $e^\\xi x < x$"
+          ],
+          "correct": 1,
+          "explanation": "From $e^\\xi < 1$ and $x < 0$, multiplying by $x$ flips the sign: $e^\\xi x > 1 \\cdot x$. For instance with $x = -2$ and $e^\\xi = 0.5$: $-1 > -2$. Positivity of $e^\\xi$ alone does not decide the direction, and the position of $\\xi$ was already used to get $e^\\xi < 1$."
+        },
+        {
+          "type": "text",
+          "md": "## Estimates and Lipschitz bounds\n\n**Corollary 4.** If $|f'(x)| \\le M$ for all $x \\in I$, then\n\n$$|f(x) - f(y)| \\le M\\,|x - y| \\quad\\text{for all } x, y \\in I.$$\n\n_Why:_ take absolute values in $f(y) - f(x) = f'(\\xi)(y - x)$. A function with this property is called **Lipschitz** with constant $M$: it can never change faster than $M$ per unit of input. (In lesson 6.7 you saw $|\\sin x - \\sin y| \\le |x - y|$; that is the case $M = 1$.)\n\n**Example: how big can $f(4)$ be?** If $|f'| \\le 3$ on $\\mathbb{R}$ and $f(1) = 2$, then $|f(4) - f(1)| \\le 3 \\cdot 3 = 9$, so $-7 \\le f(4) \\le 11$. Both ends are reached, by $f(x) = 3x - 1$ and $f(x) = -3x + 5$, so the bound cannot be improved.\n\n**Example: estimating $\\sqrt{101}$.** Use $f(x) = \\sqrt{x}$, whose derivative is $\\frac{1}{2\\sqrt x}$, on $[100, 101]$:\n\n$$\\sqrt{101} - 10 = \\frac{1}{2\\sqrt{\\xi}}\\cdot 1, \\qquad 100 < \\xi < 101.$$\n\nSince $10 < \\sqrt\\xi < \\sqrt{101} < 11$, the right side lies between $\\frac{1}{22}$ and $\\frac{1}{20}$. So $10.045 < \\sqrt{101} < 10.05$. (In fact $\\sqrt{101} = 10.0499\\ldots$.)\n\n**Edge case.** The bound uses the **largest** possible $|f'|$ on the interval. If $f'$ is large somewhere you do not care about, restrict the interval: $\\sqrt x$ has unbounded derivative near $0$, but on $[100, 101]$ it is at most $\\frac{1}{20}$."
+        },
+        {
+          "type": "check",
+          "question": "$|f'(x)| \\le 2$ for all $x \\in \\mathbb{R}$ and $f(0) = 1$. Which value is **impossible** for $f(3)$?",
+          "options": [
+            "$-5$",
+            "$0$",
+            "$7$",
+            "$8$"
+          ],
+          "correct": 3,
+          "explanation": "By Corollary 4, $|f(3) - f(0)| \\le 2 \\cdot 3 = 6$, so $-5 \\le f(3) \\le 7$. The values $-5$ and $7$ are on the boundary and are attained by $f(x) = 1 - 2x$ and $f(x) = 1 + 2x$. $0$ is well inside. Only $8$ is out of reach."
+        },
+        {
+          "type": "text",
+          "md": "## The derivative limit theorem\n\n**Why it matters.** Piecewise functions often have a \"join\" point where the difference quotient is awkward. This theorem lets you find the derivative there from the derivatives on either side.\n\n**Theorem.** Let $f$ be continuous at $c$ and differentiable on $(c - \\delta, c + \\delta)$ except possibly at $c$. If $\\lim_{x \\to c} f'(x) = L$, then $f$ is differentiable at $c$ and $f'(c) = L$.\n\n_Proof._ For $0 < |x - c| < \\delta$, $f$ is continuous on the closed interval between $c$ and $x$ and differentiable inside it, so the MVT gives $\\frac{f(x) - f(c)}{x - c} = f'(\\xi_x)$ with $\\xi_x$ strictly between $c$ and $x$. As $x \\to c$, $\\xi_x$ is squeezed to $c$ and never equals $c$, so $f'(\\xi_x) \\to L$. Hence the difference quotient tends to $L$. $\\blacksquare$\n\n**Example.** Let $f(x) = e^x$ for $x \\ge 0$ and $f(x) = 1 + x$ for $x < 0$. Both pieces equal $1$ at $0$, so $f$ is continuous there. For $x > 0$, $f'(x) = e^x \\to 1$; for $x < 0$, $f'(x) = 1$. So $f'(0) = 1$.\n\n**Edge case: continuity is essential.** Let $f(x) = 0$ for $x < 0$ and $f(x) = 1$ for $x \\ge 0$. Then $f'(x) = 0$ for all $x \\ne 0$, so $\\lim_{x \\to 0} f'(x) = 0$, but $f$ is not even continuous at $0$, so not differentiable there.\n\n**The converse is false.** $f(x) = x^2 \\sin\\frac1x$ (with $f(0) = 0$) is differentiable at $0$ with $f'(0) = 0$, but $f'(x) = 2x\\sin\\frac1x - \\cos\\frac1x$ has no limit as $x \\to 0$. The theorem simply does not apply."
+        },
+        {
+          "type": "check",
+          "question": "$f(x) = x^2 + 1$ for $x \\ge 0$ and $f(x) = 2$ for $x < 0$. Can you use the derivative limit theorem to conclude $f'(0) = 0$?",
+          "options": [
+            "Yes: $f'(x) \\to 0$ from both sides",
+            "No: $f$ is not continuous at $0$, so the theorem does not apply (and in fact $f'(0)$ does not exist)",
+            "Yes, but the answer is $f'(0) = 2$",
+            "No: $f'(x)$ has no limit as $x \\to 0$"
+          ],
+          "correct": 1,
+          "explanation": "Both one-sided derivatives do tend to $0$, but $f(0) = 1$ while $f(x) = 2$ for $x < 0$, so $f$ jumps at $0$. A function that is not continuous at $0$ cannot be differentiable there (lesson 6.3). Always check continuity first."
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "Zero derivative on an interval",
+              "back": "If $f' = 0$ on an **interval** $I$, then $f$ is constant on $I$.\n\n*Example:* fails on $(0,1) \\cup (2,3)$, which is not an interval."
+            },
+            {
+              "front": "Equal derivatives",
+              "back": "If $f' = g'$ on an interval, then $f = g + C$ for a **constant** $C$.\n\n*Example:* $f' = \\cos x$ on $\\mathbb{R}$ gives $f = \\sin x + C$."
+            },
+            {
+              "front": "Sign of $f'$ and monotonicity",
+              "back": "On an interval, $f' \\ge 0$ gives increasing; $f' > 0$ gives **strictly** increasing.\n\n*Example:* $x^3$ is strictly increasing although $f'(0) = 0$."
+            },
+            {
+              "front": "Lipschitz bound",
+              "back": "If $|f'| \\le M$ on an interval, then $|f(x) - f(y)| \\le M|x - y|$ there.\n\n*Example:* $|\\sin x - \\sin y| \\le |x - y|$, with $M = 1$."
+            },
+            {
+              "front": "Derivative limit theorem",
+              "back": "If $f$ is **continuous** at $c$ and $f'(x) \\to L$ as $x \\to c$, then $f'(c) = L$.\n\n*Example:* $e^x$ for $x \\ge 0$, $1 + x$ for $x < 0$: $f'(0) = 1$."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A car's speedometer never shows more than $100$ km/h during a $3$-hour trip. You want to conclude it travelled at most $300$ km. Which result from this lesson is that?",
+          "options": [
+            "Corollary 1: zero derivative means constant",
+            "Corollary 3: the sign of $f'$ gives monotonicity",
+            "Corollary 4: a bound $|f'| \\le M$ gives $|f(x) - f(y)| \\le M|x - y|$",
+            "The derivative limit theorem"
+          ],
+          "correct": 2,
+          "explanation": "Position $f$ has $|f'| \\le 100$, so $|f(3) - f(0)| \\le 100 \\cdot 3 = 300$. Monotonicity tells you only the direction of travel, not the distance. Corollary 1 needs speed exactly $0$. The derivative limit theorem is about finding $f'$ at one point."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to prove $\\ln(1 + x) < x$ for all $x > 0$.",
+          "items": [
+            "Let $x > 0$ and set $f(t) = \\ln(1 + t)$, which is continuous on $[0, x]$ and differentiable on $(0, x)$.",
+            "By the MVT there is $\\xi \\in (0, x)$ with $f(x) - f(0) = f'(\\xi)\\,x$.",
+            "Since $f(0) = 0$ and $f'(t) = \\frac{1}{1 + t}$, this says $\\ln(1 + x) = \\frac{x}{1 + \\xi}$.",
+            "As $\\xi > 0$, we have $1 + \\xi > 1$, so $\\frac{1}{1 + \\xi} < 1$.",
+            "Multiplying by $x > 0$ gives $\\ln(1 + x) < x$. $\\blacksquare$"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the only solution of $f' = f$ with $f(0) = 1$",
+          "problem": "Suppose $f : \\mathbb{R} \\to \\mathbb{R}$ is differentiable with $f'(x) = f(x)$ for all $x$, and $f(0) = 1$. Prove that $f(x) = e^x$ for all $x$. Hint: show that $h(x) = f(x)e^{-x}$ is constant.",
+          "solution": "Let $h(x) = f(x)e^{-x}$. By the product rule and the chain rule (the derivative of $e^{-x}$ is $-e^{-x}$),\n\n$$h'(x) = f'(x)e^{-x} - f(x)e^{-x} = \\big(f'(x) - f(x)\\big)e^{-x} = 0.$$\n\nSo $h' = 0$ on $\\mathbb{R}$. Since $\\mathbb{R}$ is an interval, Corollary 1 says $h$ is constant, and $h(x) = h(0) = f(0)e^0 = 1$. Hence $f(x)e^{-x} = 1$, and multiplying by $e^x$ gives $f(x) = e^x$. $\\blacksquare$\n\n**Check your version:** did you say that $\\mathbb{R}$ is an **interval** before concluding $h$ is constant? Did you use the given value $f(0) = 1$ to find the constant? Did you get the sign right in the derivative of $e^{-x}$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "If $f'(c) > 0$ at a single point, is $f$ increasing near $c$?",
+              "a": "Not necessarily. $f(x) = x + 2x^2\\sin\\frac1x$ (with $f(0) = 0$) has $f'(0) = 1$, yet $f'(x) = 1 + 4x\\sin\\frac1x - 2\\cos\\frac1x$ equals $-1$ at the points $x = \\frac{1}{2k\\pi}$, which crowd in towards $0$. So $f$ is not monotone on any interval around $0$. The corollaries need the sign of $f'$ on a whole **interval**."
+            },
+            {
+              "q": "If $f$ is differentiable and increasing, must $f' \\ge 0$?",
+              "a": "Yes. For $h > 0$, $\\frac{f(x + h) - f(x)}{h} \\ge 0$ because the top is $\\ge 0$; letting $h \\to 0^+$ gives $f'(x) \\ge 0$. But strictly increasing does **not** give $f' > 0$: $x^3$ again."
+            },
+            {
+              "q": "Do I ever need to find $\\xi$?",
+              "a": "Almost never. Every application here uses only facts true for **all** points of the interval, such as $f' \\ge 0$, $|f'| \\le M$ or $e^\\xi > 1$ for $\\xi > 0$. That is why the MVT is so useful even though it does not say where $\\xi$ is."
+            },
+            {
+              "q": "Why not just check the inequality at a few points?",
+              "a": "As in lesson 1.1, checking examples proves nothing about infinitely many $x$. The MVT turns a fact about $f'$ everywhere into a fact about $f$ everywhere."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- Everything comes from $f(y) - f(x) = f'(\\xi)(y - x)$ for $x < y$ in an **interval** $I$.\n- $f' = 0$ on $I$ gives $f$ constant; $f' = g'$ gives $f = g + C$. The domain must be an interval.\n- $f' \\ge 0$ gives increasing, $f' > 0$ strictly increasing. The converse of the strict version fails ($x^3$).\n- For inequalities, bound $f'(\\xi)$ using where $\\xi$ lies, and flip the inequality when multiplying by a negative.\n- $|f'| \\le M$ gives $|f(x) - f(y)| \\le M|x - y|$. If $f$ is continuous at $c$ and $f'(x) \\to L$, then $f'(c) = L$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable on $(0, 1) \\cup (2, 3)$ with $f'(x) = 0$ for all $x$ there, then $f$ is constant.",
+          "answer": [
+            false
+          ],
+          "explanation": "The domain is not an interval. $f$ can equal $0$ on $(0, 1)$ and $1$ on $(2, 3)$. The MVT cannot be applied across the gap $[1, 2]$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable and strictly increasing on $\\mathbb{R}$, then $f'(x) > 0$ for all $x$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = x^3$ is strictly increasing with $f'(0) = 0$. One can only conclude $f' \\ge 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Applying the MVT to $\\sqrt{x}$ on $[100, 101]$, in which interval does $\\sqrt{101} - 10$ lie?",
+          "options": [
+            "$\\left(0, \\tfrac{1}{22}\\right)$",
+            "$\\left(\\tfrac{1}{22}, \\tfrac{1}{20}\\right)$",
+            "$\\left(\\tfrac{1}{20}, \\tfrac{1}{10}\\right)$",
+            "$\\left(\\tfrac{1}{10}, \\tfrac{1}{5}\\right)$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\sqrt{101} - 10 = \\frac{1}{2\\sqrt{\\xi}}$ with $100 < \\xi < 101$. So it lies strictly between $\\frac{1}{2\\sqrt{101}}$ and $\\frac{1}{20}$, and $\\frac{1}{2\\sqrt{101}} > \\frac{1}{2\\cdot 11} = \\frac{1}{22}$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which inequalities hold for **all** $x > 0$?",
+          "options": [
+            "$\\ln(1 + x) < x$",
+            "$\\sin x < x$",
+            "$e^x < 1 + x$",
+            "$\\arctan x > x$"
+          ],
+          "answer": [
+            0,
+            1
+          ],
+          "explanation": "By the MVT on $[0, x]$, $\\ln(1 + x) = \\frac{x}{1 + \\xi} < x$ since $\\xi > 0$. For $\\sin$: if $x > 1$ then $\\sin x \\le 1 < x$; if $0 < x \\le 1$, the MVT gives $\\sin x = x\\cos\\xi$ with $0 < \\xi < 1$, and $\\cos\\xi < 1$, so $\\sin x < x$. In fact $e^x > 1 + x$, and $\\arctan x = \\frac{x}{1 + \\xi^2} < x$."
+        },
+        {
+          "type": "single",
+          "prompt": "$f$ is differentiable on $\\mathbb{R}$ with $f'(x) = 2$ for all $x$ and $f(0) = 3$. What is $f(5)$?",
+          "options": [
+            "$10$",
+            "$5$",
+            "$13$",
+            "$8$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "$f(x) - 2x$ has zero derivative on the interval $\\mathbb{R}$, so it is constant, equal to $f(0) = 3$. Thus $f(5) = 10 + 3 = 13$. $10$ forgets the constant."
+        },
+        {
+          "type": "short",
+          "prompt": "$f$ is differentiable on $\\mathbb{R}$ with $|f'(x)| \\le 3$ for all $x$, and $f(1) = 2$. What is the largest possible value of $f(4)$?",
+          "answer": [
+            "11"
+          ],
+          "explanation": "By the MVT, $f(4) - f(1) = 3f'(\\xi) \\le 9$, so $f(4) \\le 11$. The value $11$ is attained by $f(x) = 3x - 1$."
+        },
+        {
+          "type": "single",
+          "prompt": "$f$ is continuous at $0$, differentiable for $x \\neq 0$, and $\\lim_{x \\to 0} f'(x) = 4$. What can you conclude?",
+          "options": [
+            "Nothing: $f'(0)$ may fail to exist",
+            "$f'(0)$ exists, but its value cannot be determined",
+            "$f'(0) = 4$",
+            "$f'(0) = 0$"
+          ],
+          "answer": [
+            2
+          ],
+          "explanation": "By the derivative limit theorem (a consequence of the MVT), $\\frac{f(x) - f(0)}{x} = f'(\\xi_x) \\to 4$. The continuity at $0$ is essential: without it, $f'(0)$ could fail to exist."
+        },
+        {
+          "type": "short",
+          "prompt": "$f$ is differentiable on $\\mathbb{R}$ with $f'(x) = 6x$ for all $x$ and $f(0) = -2$. What is $f(2)$?",
+          "answer": [
+            "10"
+          ],
+          "explanation": "$f$ and $3x^2$ have the same derivative on $\\mathbb{R}$, so $f(x) = 3x^2 + C$, and $f(0) = C = -2$. Then $f(2) = 12 - 2 = 10$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is differentiable and increasing on an interval $I$, then $f'(x) \\ge 0$ for all $x \\in I$.",
+          "answer": [
+            true
+          ],
+          "explanation": "For $h > 0$ the difference quotient $\\frac{f(x + h) - f(x)}{h}$ is $\\ge 0$, and a limit of nonnegative numbers is nonnegative, so $f'(x) \\ge 0$. (At a right endpoint use $h < 0$: then top and bottom are both $\\le 0$.)"
+        },
+        {
+          "type": "single",
+          "prompt": "How many real solutions does $x^3 + x - 5 = 0$ have?",
+          "options": [
+            "None",
+            "Exactly one",
+            "Exactly two",
+            "Exactly three"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$p(x) = x^3 + x - 5$ has $p'(x) = 3x^2 + 1 > 0$, so $p$ is strictly increasing and has at most one root. Since $p(1) = -3 < 0$ and $p(2) = 5 > 0$, the IVT gives one root. So exactly one."
+        },
+        {
+          "type": "multiple",
+          "prompt": "$f$ is differentiable on an interval $I$. Which conditions guarantee that $f$ is strictly increasing on $I$? Select all that apply.",
+          "options": [
+            "$f'(x) > 0$ for all $x \\in I$",
+            "$f'(x) \\ge 0$ for all $x \\in I$, and $f'(x) = 0$ only at a single point",
+            "$f'(c) > 0$ at one point $c \\in I$",
+            "$f'(x) \\ge 0$ for all $x \\in I$",
+            "$x < y$ in $I$ always gives $f(x) < f(y)$"
+          ],
+          "answer": [
+            0,
+            1,
+            4
+          ],
+          "explanation": "The first is Corollary 3. The last is the definition itself. For the second: if $f' = 0$ only at $c$, the MVT on any $[x, y]$ with $y \\le c$ or $x \\ge c$ only uses $f'$ at interior points, where $f' > 0$, so $f(x) < f(y)$; and if $x < c < y$ then $f(x) < f(c) < f(y)$ (think of $x^3$). One positive derivative proves nothing about an interval, and $f' \\ge 0$ allows constant functions."
+        },
+        {
+          "type": "single",
+          "prompt": "Let $f(x) = 0$ for $x < 0$ and $f(x) = 1$ for $x \\ge 0$. Then $f'(x) = 0$ for all $x \\ne 0$. Why does the derivative limit theorem **not** give $f'(0) = 0$?",
+          "options": [
+            "Because $\\lim_{x \\to 0} f'(x)$ does not exist",
+            "Because $f$ is not continuous at $0$",
+            "Because $f$ is not defined at $0$",
+            "It does give $f'(0) = 0$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "The limit of $f'$ exists (it is $0$), and $f(0) = 1$ is defined. The missing hypothesis is continuity at $0$: $f$ jumps from $0$ to $1$. A function that is not continuous at a point cannot be differentiable there."
+        }
+      ]
+    },
+    {
+      "slug": "6-10-taylors-theorem",
+      "title": "Taylor's theorem",
+      "summary": "Approximating $f$ by polynomials, with a remainder you can actually bound.",
+      "est_minutes": 40,
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Better than the tangent line",
+          "md": "**In this lesson you will learn to:**\n- read the notation $f''$, $f^{(k)}$ and $k!$\n- write down the Taylor polynomial $P_n$ of a function at a point\n- state Taylor's theorem with the Lagrange form of the remainder, and see it as a stronger MVT\n- bound the error of an approximation, for example $e \\approx 2.71825$ or $\\sin x \\approx x - \\frac{x^3}{6}$\n\n**You need:** Rolle's theorem (lesson 6.6) and the Mean Value Theorem (lesson 6.7). We use summation notation $\\sum$ from Level 4: $\\sum_{k=0}^{n} a_k$ means $a_0 + a_1 + \\cdots + a_n$."
+        },
+        {
+          "type": "text",
+          "md": "## Why approximate by polynomials?\n\nPolynomials are easy: you can evaluate them with only $+$, $-$ and $\\times$. Functions like $e^x$, $\\sin x$ and $\\sqrt{x}$ are not. A calculator works out $\\sin(0.3)$ by evaluating a polynomial that is very close to $\\sin$.\n\nYou already know the first step. The tangent line at $a$,\n\n$$f(a) + f'(a)(x - a),$$\n\nis the straight line that matches both the **value** and the **slope** of $f$ at $a$. Near $a$ it is a good approximation: $\\sin x \\approx x$ near $0$, $\\sqrt{4.1} \\approx 2 + \\frac{0.1}{4} = 2.025$.\n\nTwo questions follow naturally:\n1. Can we do better by also matching how the slope bends (and how that bends, and so on), using a polynomial of higher degree?\n2. How large is the error? An approximation is only useful if we can **guarantee** how close it is.\n\nTaylor's theorem answers both. Its answer to the second question looks just like the MVT, and for degree $0$ it **is** the MVT."
+        },
+        {
+          "type": "text",
+          "md": "## Notation: higher derivatives and factorials\n\n**Higher derivatives.** The derivative of $f'$ is the **second derivative** $f''$; the derivative of $f''$ is $f'''$. After three dashes we switch to a number in brackets: $f^{(k)}$ is the $k$-th derivative, so $f^{(4)}$ is the fourth. By convention $f^{(0)} = f$ (no differentiation at all). The brackets matter: $f^{(2)}$ means $f''$, while $f^2$ means $f \\cdot f$. Lesson 6.11 studies higher derivatives in depth; here we only need to compute them.\n\n**Examples.**\n- $f(x) = x^3$: $f' = 3x^2$, $f'' = 6x$, $f''' = 6$, and $f^{(4)} = 0$ (as are all later ones).\n- $f(x) = e^x$: every derivative is $e^x$, so $f^{(k)}(0) = 1$ for all $k$.\n- $f(x) = \\sin x$: the derivatives cycle $\\cos x, -\\sin x, -\\cos x, \\sin x, \\ldots$, so at $0$ the values $f^{(0)}(0), f^{(1)}(0), f^{(2)}(0), f^{(3)}(0), \\ldots$ are $0, 1, 0, -1, 0, 1, \\ldots$\n\n**Factorials.** For a whole number $k \\ge 1$, $k! = 1 \\times 2 \\times \\cdots \\times k$ (read \"$k$ factorial\"). So $3! = 6$, $4! = 24$, $5! = 120$. The edge case is $0! = 1$, by convention. It makes formulas like the one below work for $k = 0$ without a special case.\n\n**One key fact.** Differentiating $(x - a)^k$ exactly $k$ times gives the number $k!$: for $(x - a)^3$ we get $3(x - a)^2$, then $6(x - a)$, then $6 = 3!$. Differentiating fewer than $k$ times leaves a factor of $(x - a)$, which is $0$ at $x = a$."
+        },
+        {
+          "type": "check",
+          "question": "Let $f(x) = x^4$. What is $f^{(3)}(1)$?",
+          "options": [
+            "$4$",
+            "$12$",
+            "$24$",
+            "$1$"
+          ],
+          "correct": 2,
+          "explanation": "$f' = 4x^3$, $f'' = 12x^2$, $f''' = 24x$, so $f^{(3)}(1) = 24$. $12$ is $f''(1)$, one derivative short. $1$ is $f(1)^3$, confusing $f^{(3)}$ with a power."
+        },
+        {
+          "type": "text",
+          "md": "## Taylor polynomials\n\n**In plain words:** the Taylor polynomial of degree $n$ at $a$ is the polynomial that matches $f$ at $a$ in value, slope, second derivative, and so on up to the $n$-th derivative.\n\n**Definition.** If $f$ can be differentiated $n$ times at $a$, its **Taylor polynomial of degree $n$** at $a$ is\n\n$$P_n(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x - a)^k = f(a) + f'(a)(x - a) + \\frac{f''(a)}{2!}(x - a)^2 + \\cdots + \\frac{f^{(n)}(a)}{n!}(x - a)^n.$$\n\nWhen $a = 0$ it is also called a **Maclaurin polynomial**.\n\n**Why divide by $k!$?** Differentiate the $k$-th term $k$ times and put $x = a$: the $(x - a)^k$ becomes $k!$, which cancels the $k!$ underneath, leaving exactly $f^{(k)}(a)$. Every other term vanishes at $a$. So $P_n^{(k)}(a) = f^{(k)}(a)$ for $k = 0, 1, \\ldots, n$, and $P_n$ is the **only** polynomial of degree at most $n$ with this property.\n\n**Examples.**\n- $e^x$ at $0$: all $f^{(k)}(0) = 1$, so $P_3(x) = 1 + x + \\frac{x^2}{2} + \\frac{x^3}{6}$.\n- $\\sin x$ at $0$: $P_3(x) = x - \\frac{x^3}{6}$. Edge case: $P_4$ is the **same** polynomial, because the $x^4$ coefficient is $\\frac{\\sin^{(4)}(0)}{4!} = 0$. \"Degree $n$\" means \"degree at most $n$\".\n- $x^3$ at $a = 1$: $f(1) = 1$, $f'(1) = 3$, $f''(1) = 6$, $f'''(1) = 6$, so $P_3(x) = 1 + 3(x - 1) + 3(x - 1)^2 + (x - 1)^3$. Expanding gives back $x^3$ exactly: a polynomial is its own Taylor polynomial once $n$ reaches its degree."
+        },
+        {
+          "type": "check",
+          "question": "What is the Maclaurin polynomial of degree $2$ of $\\cos x$?",
+          "options": [
+            "$1 - x^2$",
+            "$1 - \\dfrac{x^2}{2}$",
+            "$x - \\dfrac{x^2}{2}$",
+            "$1 + \\dfrac{x^2}{2}$"
+          ],
+          "correct": 1,
+          "explanation": "$\\cos 0 = 1$, $\\cos'(0) = -\\sin 0 = 0$, $\\cos''(0) = -\\cos 0 = -1$, so $P_2(x) = 1 + 0 \\cdot x + \\frac{-1}{2!}x^2 = 1 - \\frac{x^2}{2}$. The first option forgets the $2!$; the third starts from $\\sin$'s values; the last has the wrong sign of $\\cos''(0)$."
+        },
+        {
+          "type": "match",
+          "prompt": "Match each function with its Maclaurin polynomial of degree $3$.",
+          "pairs": [
+            {
+              "left": "$e^x$",
+              "right": "$1 + x + \\frac{x^2}{2} + \\frac{x^3}{6}$"
+            },
+            {
+              "left": "$\\sin x$",
+              "right": "$x - \\frac{x^3}{6}$"
+            },
+            {
+              "left": "$\\cos x$",
+              "right": "$1 - \\frac{x^2}{2}$"
+            },
+            {
+              "left": "$\\frac{1}{1 - x}$",
+              "right": "$1 + x + x^2 + x^3$"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "md": "## Taylor's theorem\n\nThe **remainder** is the error $R_n(x) = f(x) - P_n(x)$. Taylor's theorem gives a formula for it.\n\n**In plain words:** the error looks like the **next term** of the Taylor polynomial, except that the $(n+1)$-th derivative is evaluated at some unknown point $\\xi$ between $a$ and $x$ instead of at $a$.\n\n**Theorem (Taylor, Lagrange form of the remainder).** Let $f$ be $n + 1$ times differentiable on an open interval $I$, and let $a, x \\in I$. Then there is a point $\\xi$ between $a$ and $x$ (with $\\xi = a$ if $x = a$) such that\n\n$$f(x) = P_n(x) + \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x - a)^{n+1}.$$\n\nPoints to notice:\n- **$n = 0$ is the MVT.** $P_0(x) = f(a)$, so the theorem reads $f(x) = f(a) + f'(\\xi)(x - a)$.\n- **$\\xi$ depends on $x$** (and on $n$). Change $x$ and the point usually moves.\n- Like the MVT, the theorem says $\\xi$ exists but not where it is. That is enough, because we only ever **bound** $f^{(n+1)}(\\xi)$.\n- **Edge case:** if $f$ is a polynomial of degree at most $n$, then $f^{(n+1)} = 0$, the remainder is $0$, and $f = P_n$ exactly."
+        },
+        {
+          "type": "check",
+          "question": "Which statement about the point $\\xi$ in the Lagrange remainder is correct?",
+          "options": [
+            "$\\xi = a$ always",
+            "$\\xi$ lies between $a$ and $x$, and in general it changes when $x$ changes",
+            "$\\xi$ is the same for every $x$ in the interval",
+            "$\\xi$ is given by an explicit formula in terms of $a$ and $x$"
+          ],
+          "correct": 1,
+          "explanation": "$\\xi$ is only known to lie between $a$ and $x$, and it depends on $x$ (just as the MVT point depends on the interval). If $\\xi = a$ always, the remainder would be the next Taylor term, which is generally false. There is no formula for $\\xi$; we bound $f^{(n+1)}$ over all possible positions instead."
+        },
+        {
+          "type": "steps",
+          "title": "Proof of Taylor's theorem by repeated Rolle",
+          "steps": [
+            {
+              "title": "Fix the target",
+              "md": "If $x = a$ there is nothing to prove. Otherwise say $x > a$ (the case $x < a$ is the same with intervals reversed). Choose the number $K$ so that\n\n$$f(x) = P_n(x) + K(x - a)^{n+1}.$$\n\nThis is possible because $(x - a)^{n+1} \\ne 0$. We must show $K = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}$ for some $\\xi \\in (a, x)$."
+            },
+            {
+              "title": "Build a helper function",
+              "md": "For $t \\in I$ let $g(t) = f(t) - P_n(t) - K(t - a)^{n+1}$. It is $n + 1$ times differentiable. We use a new letter $t$ because $x$ is now a fixed number."
+            },
+            {
+              "title": "Find the zeros",
+              "md": "$P_n^{(k)}(a) = f^{(k)}(a)$, and every derivative of order at most $n$ of $(t - a)^{n+1}$ still contains a factor $(t - a)$, so it is $0$ at $a$. Hence $g^{(k)}(a) = 0$ for $k = 0, 1, \\ldots, n$. Also $g(x) = 0$ by the choice of $K$."
+            },
+            {
+              "title": "Apply Rolle again and again",
+              "md": "$g(a) = g(x) = 0$ gives $x_1 \\in (a, x)$ with $g'(x_1) = 0$. Then $g'(a) = g'(x_1) = 0$ gives $x_2 \\in (a, x_1)$ with $g''(x_2) = 0$. Continuing, after $n + 1$ uses of Rolle we reach $\\xi = x_{n+1} \\in (a, x)$ with $g^{(n+1)}(\\xi) = 0$."
+            },
+            {
+              "title": "Compute $g^{(n+1)}$",
+              "md": "$P_n$ has degree at most $n$, so $P_n^{(n+1)} = 0$, and differentiating $(t - a)^{n+1}$ exactly $n + 1$ times gives $(n+1)!$. Hence\n\n$$0 = g^{(n+1)}(\\xi) = f^{(n+1)}(\\xi) - K(n+1)!,$$\n\nso $K = \\dfrac{f^{(n+1)}(\\xi)}{(n+1)!}$. $\\blacksquare$"
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "In the proof, why is $g^{(k)}(a) = 0$ for every $k \\le n$?",
+          "options": [
+            "Because $g(x) = 0$",
+            "Because $P_n$ matches the first $n$ derivatives of $f$ at $a$, and every derivative of order at most $n$ of $(t - a)^{n+1}$ is $0$ at $t = a$",
+            "Because $f^{(k)}(a) = 0$ for all $k$",
+            "Because $K = 0$"
+          ],
+          "correct": 1,
+          "explanation": "$g^{(k)}(a) = f^{(k)}(a) - P_n^{(k)}(a) - K \\cdot (\\text{something with a factor } (t - a))|_{t = a} = 0 - 0$. $g(x) = 0$ is the other zero, at the far end. Nothing says $f^{(k)}(a) = 0$ or $K = 0$."
+        },
+        {
+          "type": "text",
+          "md": "## Bounding the error\n\n**Method.** To guarantee an approximation $f(x) \\approx P_n(x)$ is good:\n1. Find a number $M$ with $|f^{(n+1)}(t)| \\le M$ for **every** $t$ between $a$ and $x$ (we do not know where $\\xi$ is, so we cover all options).\n2. Then $|R_n(x)| \\le \\dfrac{M}{(n+1)!}|x - a|^{n+1}$.\n\nThe error is small when $x$ is close to $a$ (the power $|x - a|^{n+1}$ is tiny) or when $n$ is large (the factorial grows very fast).\n\n**Example: $\\sqrt{4.1}$.** Take $f(x) = \\sqrt{x}$, $a = 4$, $n = 1$. The tangent line gives $P_1(4.1) = 2 + \\frac14(0.1) = 2.025$. Now $f''(t) = -\\frac{1}{4t^{3/2}}$, and for $t \\ge 4$, $t^{3/2} \\ge 8$, so $|f''(t)| \\le \\frac{1}{32}$. Hence\n\n$$|R_1(4.1)| \\le \\frac{1/32}{2!}(0.1)^2 = \\frac{1}{6400} \\approx 0.00016.$$\n\n(Indeed $\\sqrt{4.1} = 2.02485\\ldots$.)\n\n**Edge case: the sign.** For $e^x$ at $0$ the remainder is $\\frac{e^\\xi}{(n+1)!}x^{n+1}$, which is **positive** when $x > 0$. So the Taylor polynomial underestimates $e^x$ there. Looking at the sign of $f^{(n+1)}$ can tell you which side the truth lies on, not just how far."
+        },
+        {
+          "type": "example",
+          "title": "Worked example: approximating $e$",
+          "problem": "Show that $\\left|e - \\sum_{k=0}^{n}\\frac{1}{k!}\\right| < \\frac{3}{(n+1)!}$, and find $n$ guaranteeing an error below $10^{-4}$. (You may use $e < 3$.)",
+          "solution": "Apply Taylor's theorem to $f = \\exp$ at $a = 0$, $x = 1$. Every derivative of $\\exp$ is $\\exp$, so $f^{(k)}(0) = 1$ and\n\n$$e = \\sum_{k=0}^{n}\\frac{1}{k!} + \\frac{e^{\\xi}}{(n+1)!}, \\qquad 0 < \\xi < 1.$$\n\nSince $0 < e^\\xi < e < 3$, the remainder satisfies $0 < R_n(1) < \\frac{3}{(n+1)!}$.\n\nWe need $\\frac{3}{(n+1)!} < 10^{-4}$, that is $(n+1)! > 30000$. Since $7! = 5040$ and $8! = 40320$, $n = 7$ suffices: $\\sum_{k=0}^{7}\\frac{1}{k!} \\approx 2.71825$ is within $10^{-4}$ of $e$. $\\blacksquare$\n\nNotice the bound used the largest value of $e^\\xi$ over the whole interval $0 < \\xi < 1$, not a guess at $\\xi$."
+        },
+        {
+          "type": "check",
+          "question": "You approximate $\\cos(0.1)$ by $1 - \\frac{(0.1)^2}{2}$. Using the remainder after the degree-$3$ polynomial (which is the same polynomial, since the $x^3$ coefficient is $0$), what error bound do you get?",
+          "options": [
+            "$\\dfrac{(0.1)^3}{6} = \\dfrac{1}{6000}$",
+            "$\\dfrac{(0.1)^4}{24} = \\dfrac{1}{240000}$",
+            "$\\dfrac{(0.1)^2}{2} = \\dfrac{1}{200}$",
+            "$0$, because the approximation is exact"
+          ],
+          "correct": 1,
+          "explanation": "With $n = 3$, $R_3(x) = \\frac{\\cos^{(4)}(\\xi)}{4!}x^4 = \\frac{\\cos\\xi}{24}x^4$, and $|\\cos\\xi| \\le 1$, so $|R_3(0.1)| \\le \\frac{(0.1)^4}{24}$. The first option is the cruder bound from $n = 2$. The third is the size of the last term used, not the error. The approximation is not exact because $\\cos$ is not a polynomial."
+        },
+        {
+          "type": "callout",
+          "tone": "warning",
+          "title": "Taylor polynomials versus Taylor series",
+          "md": "Taylor's theorem is about a **finite** polynomial plus a remainder. It does _not_ say that $f$ equals its infinite Taylor series $\\sum_{k=0}^{\\infty} \\frac{f^{(k)}(a)}{k!}(x - a)^k$. The function\n\n$$f(x) = \\begin{cases} e^{-1/x^2}, & x \\neq 0, \\\\ 0, & x = 0 \\end{cases}$$\n\ncan be differentiated as often as you like on $\\mathbb{R}$, with $f^{(k)}(0) = 0$ for every $k$. Its Taylor series at $0$ is identically $0$, yet $f(x) > 0$ for every $x \\neq 0$. The series equals $f(x)$ only when $R_n(x) \\to 0$ as $n \\to \\infty$, and that must be checked. (For $e^x$ it does: $\\frac{e^{|x|}|x|^{n+1}}{(n+1)!} \\to 0$.)"
+        },
+        {
+          "type": "flashcards",
+          "cards": [
+            {
+              "front": "$f^{(k)}$ and $k!$",
+              "back": "$f^{(k)}$ is the **$k$-th derivative** ($f^{(0)} = f$). $k! = 1 \\cdot 2 \\cdots k$, with $0! = 1$.\n\n*Example:* for $x^4$, $f^{(3)} = 24x$; $4! = 24$."
+            },
+            {
+              "front": "Taylor polynomial $P_n$ of $f$ at $a$",
+              "back": "$\\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!}(x-a)^k$: the polynomial of degree $\\le n$ that **matches** $f$'s first $n$ derivatives at $a$.\n\n*Example:* $e^x$ at $0$: $1 + x + \\frac{x^2}{2}$."
+            },
+            {
+              "front": "Lagrange remainder",
+              "back": "$R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ for some $\\xi$ **between** $a$ and $x$.\n\n*Example:* $\\sin x - x = -\\frac{\\sin\\xi}{2}x^2$ (degree $1$ at $0$)."
+            },
+            {
+              "front": "Error bound",
+              "back": "If $|f^{(n+1)}| \\le M$ between $a$ and $x$, then $|R_n(x)| \\le \\frac{M}{(n+1)!}|x-a|^{n+1}$.\n\n*Example:* $|\\sin x - (x - \\frac{x^3}{6})| \\le \\frac{|x|^5}{120}$."
+            },
+            {
+              "front": "Peano form of the remainder",
+              "back": "If $f$ is $n$ times differentiable at $a$, then $\\frac{R_n(x)}{(x-a)^n} \\to 0$ as $x \\to a$: the error is **smaller than** $(x-a)^n$ near $a$.\n\n*Example:* $\\frac{e^x - 1 - x}{x} \\to 0$."
+            },
+            {
+              "front": "Taylor's theorem with $n = 0$",
+              "back": "The **Mean Value Theorem**: $f(x) = f(a) + f'(\\xi)(x - a)$.\n\n*Example:* $P_0(x) = f(a)$, the constant polynomial."
+            }
+          ]
+        },
+        {
+          "type": "check",
+          "question": "A calculator designer needs $e^x$ on $[0, 1]$ to within $10^{-6}$ using a Maclaurin polynomial. Which quantity should she make smaller than $10^{-6}$ to choose the degree $n$?",
+          "options": [
+            "The last term used, $\\frac{1}{n!}$",
+            "A bound on the remainder, such as $\\frac{3}{(n+1)!}$",
+            "$\\frac{1}{(n+1)!}$, taking $\\xi = 0$",
+            "$x^{n+1}$"
+          ],
+          "correct": 1,
+          "explanation": "The error is the remainder $\\frac{e^\\xi}{(n+1)!}x^{n+1}$, and for $0 \\le x \\le 1$ it is less than $\\frac{3}{(n+1)!}$. The size of the last term is not the error. Taking $\\xi = 0$ ignores that $\\xi$ is unknown and gives a bound that is too small (since $e^\\xi \\ge 1$). $x^{n+1}$ alone forgets the factorial and the derivative."
+        },
+        {
+          "type": "order",
+          "prompt": "Put the steps in order to approximate $\\sqrt{4.1}$ by a tangent line and bound the error.",
+          "items": [
+            "Choose $f(x) = \\sqrt{x}$, centre $a = 4$, and degree $n = 1$.",
+            "Compute $f(4) = 2$ and $f'(4) = \\frac{1}{2\\sqrt4} = \\frac14$, so $P_1(4.1) = 2 + \\frac14(0.1) = 2.025$.",
+            "Write the remainder: $R_1(4.1) = \\frac{f''(\\xi)}{2!}(0.1)^2$ for some $\\xi \\in (4, 4.1)$.",
+            "Bound the derivative: $|f''(t)| = \\frac{1}{4t^{3/2}} \\le \\frac{1}{32}$ for all $t \\ge 4$.",
+            "Conclude $|R_1(4.1)| \\le \\frac{1}{32}\\cdot\\frac{0.01}{2} = \\frac{1}{6400}$."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Your turn: the error in $\\sin x \\approx x - \\frac{x^3}{6}$",
+          "problem": "Show that $\\left|\\sin x - \\left(x - \\frac{x^3}{6}\\right)\\right| \\le \\frac{|x|^5}{120}$ for all $x$, and deduce an error bound on $|x| \\le \\frac12$. Hint: $x - \\frac{x^3}{6}$ is also the degree-$4$ Taylor polynomial.",
+          "solution": "The derivatives of $\\sin$ at $0$ cycle through $0, 1, 0, -1$, so the Maclaurin polynomial of degree $4$ is $P_4(x) = x - \\frac{x^3}{6}$ (the $x^4$ coefficient is $\\sin^{(4)}(0)/4! = 0$). Taylor's theorem with $n = 4$ gives\n\n$$\\sin x - P_4(x) = \\frac{\\sin^{(5)}(\\xi)}{5!}x^5 = \\frac{\\cos\\xi}{120}x^5.$$\n\nAs $|\\cos\\xi| \\le 1$, the error is at most $\\frac{|x|^5}{120}$. For $|x| \\le \\frac12$ this is at most $\\frac{1}{32\\cdot 120} = \\frac{1}{3840} < 2.7\\times 10^{-4}$. $\\blacksquare$\n\nUsing $n = 4$ rather than $n = 3$ is a deliberate trick: it gives the better bound $\\frac{|x|^5}{120}$ instead of $\\frac{|x|^4}{24}$.\n\n**Check your version:** did you use the **fifth** derivative in the remainder (one more than the degree $n = 4$)? Did you bound $|\\cos\\xi|$ by $1$ for every possible $\\xi$, rather than guessing $\\xi$? Did you get $5! = 120$ and $2^5 = 32$?"
+        },
+        {
+          "type": "reveal",
+          "items": [
+            {
+              "q": "Why is the remainder written with $f^{(n+1)}$, not $f^{(n)}$?",
+              "a": "$P_n$ already matches the first $n$ derivatives, so the error starts with the part $P_n$ cannot see: the $(n+1)$-th derivative. For $n = 0$ this is the MVT, which uses $f'$, not $f$."
+            },
+            {
+              "q": "Is a higher degree always better?",
+              "a": "Near $a$, usually yes, provided the derivatives stay under control. Far from $a$ it can fail: for $\\ln(1 + x)$ at $0$, the Taylor polynomials get **worse** as $n$ grows when $x > 1$. The remainder bound tells you honestly whether adding terms helps."
+            },
+            {
+              "q": "What is the Peano form for?",
+              "a": "It says only that $R_n(x)$ is small compared with $(x - a)^n$ as $x \\to a$, with no numerical bound, but it needs fewer hypotheses ($n$ derivatives at $a$ only). It is the right tool for limits; the Lagrange form is the right tool for numerical error bounds."
+            },
+            {
+              "q": "Can I prove Taylor's theorem with Cauchy's MVT instead?",
+              "a": "Yes. Applying Cauchy's MVT (lesson 6.8) repeatedly to $R_n(t)$ and $(t - a)^{n+1}$ gives the same formula. The repeated Rolle proof above is the same idea in disguise."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "success",
+          "title": "Key points",
+          "md": "- $f^{(k)}$ is the $k$-th derivative ($f^{(0)} = f$), and $k! = 1 \\cdot 2 \\cdots k$ with $0! = 1$.\n- $P_n(x) = \\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!}(x - a)^k$ is the polynomial matching $f$'s first $n$ derivatives at $a$.\n- **Taylor:** $f(x) = P_n(x) + \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x - a)^{n+1}$ for some $\\xi$ between $a$ and $x$. For $n = 0$ it is the MVT.\n- To bound the error, bound $|f^{(n+1)}|$ over **every** point between $a$ and $x$.\n- A finite Taylor polynomial is not the infinite series: the series equals $f$ only if $R_n(x) \\to 0$."
+        }
+      ],
+      "questions": [
+        {
+          "type": "single",
+          "prompt": "What is the Maclaurin polynomial of degree $2$ of $e^x$?",
+          "options": [
+            "$1 + x + x^2$",
+            "$x + \\dfrac{x^2}{2}$",
+            "$1 + x + 2x^2$",
+            "$1 + x + \\dfrac{x^2}{2}$"
+          ],
+          "answer": [
+            3
+          ],
+          "explanation": "All derivatives of $e^x$ at $0$ equal $1$, so $P_2(x) = 1 + x + \\frac{x^2}{2!}$. The first forgets the $2!$; the second drops the constant term $f(0) = 1$; the third multiplies by $2$ instead of dividing."
+        },
+        {
+          "type": "short",
+          "prompt": "What is the coefficient of $(x - 1)^2$ in the Taylor polynomial of degree $3$ of $f(x) = x^3$ about $a = 1$?",
+          "answer": [
+            "3"
+          ],
+          "explanation": "$f''(x) = 6x$, so the coefficient is $f''(1)/2! = 6/2 = 3$. Indeed $x^3 = 1 + 3(x-1) + 3(x-1)^2 + (x-1)^3$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is infinitely differentiable on $\\mathbb{R}$, then $f$ equals the sum of its Taylor series about $0$ at every $x \\in \\mathbb{R}$.",
+          "answer": [
+            false
+          ],
+          "explanation": "$f(x) = e^{-1/x^2}$ (with $f(0) = 0$) has all derivatives $0$ at $0$, so its Taylor series is $0$, but $f(x) > 0$ for $x \\neq 0$."
+        },
+        {
+          "type": "single",
+          "prompt": "Taylor's theorem for $e^x$ at $a = 0$ with $n = 3$ gives $e = \\sum_{k=0}^{3}\\frac{1}{k!} + R_3(1)$. Using $e^\\xi < e < 3$, which upper bound for $R_3(1)$ does the Lagrange remainder give directly?",
+          "options": [
+            "$\\tfrac{1}{24}$",
+            "$\\tfrac{1}{8}$",
+            "$\\tfrac{1}{40}$",
+            "$\\tfrac{1}{2}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$R_3(1) = \\frac{e^\\xi}{4!}$ with $0 < \\xi < 1$, so $0 < R_3(1) < \\frac{3}{24} = \\frac18$. The value $\\frac{1}{24}$ would need $e^\\xi \\le 1$, which is false for $\\xi > 0$; $\\frac{1}{40} = \\frac{3}{5!}$ is the bound for $n = 4$. (In fact $R_3(1) = e - \\frac{8}{3} \\approx 0.0516$.)"
+        },
+        {
+          "type": "multiple",
+          "prompt": "Let $f$ be $n+1$ times differentiable on an open interval containing $a$, and let $P_n$ be its Taylor polynomial of degree $n$ at $a$. Which statements are true?",
+          "options": [
+            "$P_n^{(k)}(a) = f^{(k)}(a)$ for $k = 0, 1, \\dots, n$",
+            "$\\dfrac{f(x) - P_n(x)}{(x - a)^n} \\to 0$ as $x \\to a$",
+            "The point $\\xi$ in the Lagrange remainder does not depend on $x$",
+            "$P_n$ is the only polynomial of degree at most $n$ whose derivatives up to order $n$ at $a$ agree with those of $f$"
+          ],
+          "answer": [
+            0,
+            1,
+            3
+          ],
+          "explanation": "The first and last describe $P_n$: a polynomial of degree $\\le n$ is determined by its first $n$ derivatives at $a$. The second is the Peano form of the remainder. The point $\\xi$ generally changes with $x$."
+        },
+        {
+          "type": "single",
+          "prompt": "What error bound does Taylor's theorem give for $\\sin x \\approx x - \\frac{x^3}{6}$ on $|x| \\le \\frac12$, using the remainder after the degree-$4$ polynomial?",
+          "options": [
+            "$\\tfrac{1}{3840}$",
+            "$\\tfrac{1}{384}$",
+            "$\\tfrac{1}{48}$",
+            "$\\tfrac{1}{120}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$|R_4(x)| = \\frac{|\\cos\\xi|}{120}|x|^5 \\le \\frac{(1/2)^5}{120} = \\frac{1}{3840}$. The bound $\\frac{1}{384}$ is what the degree-$3$ remainder gives: $\\frac{(1/2)^4}{24}$. $\\frac{1}{120}$ forgets the factor $|x|^5$."
+        },
+        {
+          "type": "short",
+          "prompt": "Let $f(x) = x^4$. What is $f^{(3)}(1)$?",
+          "answer": [
+            "24"
+          ],
+          "explanation": "$f'(x) = 4x^3$, $f''(x) = 12x^2$, $f'''(x) = 24x$, so $f^{(3)}(1) = 24$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "Taylor's theorem with $n = 0$ is exactly the Mean Value Theorem.",
+          "answer": [
+            true
+          ],
+          "explanation": "$P_0(x) = f(a)$, so the theorem reads $f(x) = f(a) + f'(\\xi)(x - a)$ with $\\xi$ between $a$ and $x$, which is the MVT."
+        },
+        {
+          "type": "single",
+          "prompt": "What is the Maclaurin polynomial of degree $2$ of $\\cos x$?",
+          "options": [
+            "$1 - x^2$",
+            "$1 - \\dfrac{x^2}{2}$",
+            "$x - \\dfrac{x^2}{2}$",
+            "$1 + \\dfrac{x^2}{2}$"
+          ],
+          "answer": [
+            1
+          ],
+          "explanation": "$\\cos 0 = 1$, $\\cos'(0) = 0$, $\\cos''(0) = -1$, so $P_2(x) = 1 - \\frac{x^2}{2!}$. The first forgets the $2!$, the third uses the values of $\\sin$, and the last gets the sign of $\\cos''(0)$ wrong."
+        },
+        {
+          "type": "single",
+          "prompt": "Using the remainder after the degree-$3$ Maclaurin polynomial of $\\cos x$, what is the best bound this gives for $\\left|\\cos(0.1) - \\left(1 - \\frac{(0.1)^2}{2}\\right)\\right|$?",
+          "options": [
+            "$\\dfrac{(0.1)^4}{24}$",
+            "$\\dfrac{(0.1)^3}{6}$",
+            "$\\dfrac{(0.1)^2}{2}$",
+            "$\\dfrac{(0.1)^4}{4}$"
+          ],
+          "answer": [
+            0
+          ],
+          "explanation": "$R_3(x) = \\frac{\\cos^{(4)}(\\xi)}{4!}x^4 = \\frac{\\cos\\xi}{24}x^4$ and $|\\cos\\xi| \\le 1$. $\\frac{(0.1)^3}{6}$ is the weaker degree-$2$ bound; $\\frac{(0.1)^2}{2}$ is the last term used, not the error; $\\frac{(0.1)^4}{4}$ divides by $4$ instead of $4! = 24$."
+        },
+        {
+          "type": "true_false",
+          "prompt": "If $f$ is a polynomial of degree $3$, then its Taylor polynomial of degree $3$ at any point $a$ equals $f$ exactly.",
+          "answer": [
+            true
+          ],
+          "explanation": "$f^{(4)} = 0$ everywhere, so the Lagrange remainder $\\frac{f^{(4)}(\\xi)}{4!}(x - a)^4$ is $0$ and $f = P_3$. For example, $x^3 = 1 + 3(x-1) + 3(x-1)^2 + (x-1)^3$."
+        },
+        {
+          "type": "multiple",
+          "prompt": "Which statements about the point $\\xi$ in the Lagrange form of the remainder are true? Select all that apply.",
+          "options": [
+            "$\\xi$ lies between $a$ and $x$",
+            "$\\xi$ can usually be computed exactly",
+            "In general $\\xi$ depends on $x$ and on $n$",
+            "$\\xi = a$ always"
+          ],
+          "answer": [
+            0,
+            2
+          ],
+          "explanation": "The theorem only says $\\xi$ lies between $a$ and $x$, and changing $x$ or $n$ usually moves it. It is an existence statement with no formula for $\\xi$, which is why we bound $f^{(n+1)}$ over the whole range. If $\\xi = a$ always, the error would equal the next Taylor term, which is false in general."
+        }
+      ]
+    }
+  ]
+}
