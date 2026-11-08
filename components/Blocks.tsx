@@ -177,7 +177,7 @@ function Flashcards({ cards }: Extract<Block, { type: 'flashcards' }>) {
           <div key={i} className={`flip ${flipped.has(i) ? 'on' : ''}`} onClick={() => toggle(i)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && toggle(i)}>
             <div className="flip-inner">
               <div className="flip-face flip-front"><InlineMd text={c.front} /></div>
-              <div className="flip-face flip-back"><span><InlineMd text={c.back} /></span></div>
+              <div className="flip-face flip-back"><span>{c.back.split(/\n\s*\n/).map((para, j) => <span key={j} className="flip-para"><InlineMd text={para} /></span>)}</span></div>
             </div>
           </div>
         ))}
